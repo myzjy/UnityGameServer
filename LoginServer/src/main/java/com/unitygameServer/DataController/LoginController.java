@@ -1,6 +1,6 @@
 package com.unitygameServer.DataController;
 
-import com.unitygameServer.common.protocol.login.LoginRequest;
+import com.unitygameServer.commonRefush.protocol.login.LoginRequest;
 import com.zfoo.event.model.anno.EventReceiver;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.model.AttributeType;

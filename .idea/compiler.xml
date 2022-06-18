@@ -8,8 +8,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="scheduler" />
         <module name="protocol" />
+        <module name="commonRefush" />
         <module name="util" />
-        <module name="common" />
         <module name="LoginServer" />
         <module name="monitor" />
         <module name="hotswap" />
@@ -20,5 +20,8 @@
         <module name="boot" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="common" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
