@@ -1,6 +1,8 @@
-package com.unitygameServer.DataController;
+package com.unitygameServer.serverGame.singleServer.DataController;
 
-import com.unitygameServer.model.UserModel;
+import com.unitygameServer.serverGame.singleServer.model.UserModel;
+import org.w3c.dom.events.Event;
+
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -15,7 +17,8 @@ public class UserController {
      * */
     public Dictionary<Integer, UserModel> UserModelDict=new Hashtable<>();
 
-    public void Init() {
+    public void Init(Event _event) {
+        boolean bubbles = _event.getBubbles();
 
     }
 }

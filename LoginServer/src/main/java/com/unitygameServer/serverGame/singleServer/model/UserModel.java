@@ -1,4 +1,4 @@
-package com.unitygameServer.model;
+package com.unitygameServer.serverGame.singleServer.model;
 
 /**
  * @author zjy

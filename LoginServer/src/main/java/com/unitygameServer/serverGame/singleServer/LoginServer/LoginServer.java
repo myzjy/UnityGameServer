@@ -1,4 +1,4 @@
-package com.unitygameServer.LoginServer;
+package com.unitygameServer.serverGame.singleServer.LoginServer;
 
 import com.zfoo.event.model.event.AppStartEvent;
 import com.zfoo.net.core.websocket.WebsocketServer;
@@ -14,8 +14,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration;
 import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
 import org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.stereotype.Controller;
+
 @SpringBootApplication(exclude = {
         // 排除MongoDB自动配置
         MongoDataAutoConfiguration.class,
@@ -33,8 +32,8 @@ public class LoginServer {
     public static final int WEBSOCKET_SERVER_PORT = 8080;
 
 
-    public static void main(String[] args) throws NullPointerException {
-        var springApp = SpringApplication.run(LoginServer.class,args);
+    public static void main(String[] args) {
+        var springApp = SpringApplication.run(LoginServer.class, args);
         springApp.registerShutdownHook();
         springApp.publishEvent(new AppStartEvent(springApp));
         // 启动websocket
