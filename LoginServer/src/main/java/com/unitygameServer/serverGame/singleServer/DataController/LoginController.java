@@ -6,6 +6,7 @@ import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.model.AttributeType;
 import com.zfoo.net.session.model.Session;
+import com.zfoo.orm.model.cache.IEntityCaches;
 import com.zfoo.protocol.util.StringUtils;
 import com.zfoo.util.math.HashUtils;
 
@@ -22,7 +23,7 @@ public class LoginController {
     /**
      *  用户数据
      * */
-    public Dictionary<Integer, UserModel> UserModelDict=new Hashtable<>();
+    private IEntityCaches<Integer, UserModel> UserModelDict=new Hashtable<>();
 
     /**
      * @apiNote 登录调用
