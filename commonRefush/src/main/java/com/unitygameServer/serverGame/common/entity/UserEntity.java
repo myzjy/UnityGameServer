@@ -14,6 +14,7 @@ import com.zfoo.orm.model.entity.IEntity;
 public class UserEntity implements IEntity<Long> {
     @Id
     private long id;
+    private long vs;
     /**
      * 用户token
      */
@@ -32,16 +33,25 @@ public class UserEntity implements IEntity<Long> {
 
     @Override
     public Long id() {
-        return null;
+        return id;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
 
     @Override
     public long gvs() {
-        return IEntity.super.gvs();
+        return vs;
     }
 
     @Override
     public void svs(long vs) {
-        IEntity.super.svs(vs);
+        this.vs=vs;
     }
 }
