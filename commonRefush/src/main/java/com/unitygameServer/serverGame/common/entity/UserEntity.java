@@ -29,6 +29,25 @@ public class UserEntity implements IEntity<Long> {
      * 注册时间
      */
     private long registerTime;
+    private String message;
+
+    /**
+     * 玩家数据结构
+     * @param id userId
+     * @param name userName
+     * @param lastLoginTime 上次登录时间
+     * @param registerTime 注册时间
+     * */
+    public static UserEntity valueOf(long id,String name,long lastLoginTime,long registerTime){
+        var entity=new UserEntity();
+
+        entity.id=id;
+        entity.name=name;
+        entity.lastLoginTime=lastLoginTime;
+        entity.registerTime=registerTime;
+
+        return entity;
+    }
 
 
     @Override
@@ -52,6 +71,60 @@ public class UserEntity implements IEntity<Long> {
 
     @Override
     public void svs(long vs) {
-        this.vs=vs;
+        this.vs = vs;
+    }
+
+    public long getVs() {
+        return vs;
+    }
+
+    public void setVs(long vs) {
+        this.vs = vs;
+    }
+
+    public long getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public long getRegisterTime() {
+        return registerTime;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getToken() {
+        return Token;
+    }
+
+    public void setLastLoginTime(long lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRegisterTime(long registerTime) {
+        this.registerTime = registerTime;
+    }
+
+    /**
+     * 设置当前玩家Token 除开第一次登录以外，都采用token形式
+     */
+    public void setToken(String token) {
+        Token = token;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * 设置消息
+     */
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
