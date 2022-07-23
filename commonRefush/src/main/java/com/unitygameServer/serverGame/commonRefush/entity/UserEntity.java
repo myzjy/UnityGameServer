@@ -1,4 +1,4 @@
-package com.unitygameServer.serverGame.common.entity;
+package com.unitygameServer.serverGame.commonRefush.entity;
 
 import com.zfoo.orm.model.anno.EntityCache;
 import com.zfoo.orm.model.anno.Id;
