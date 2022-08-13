@@ -6,18 +6,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="scheduler" />
-        <module name="protocol" />
         <module name="commonRefush" />
-        <module name="util" />
-        <module name="LoginServer" />
         <module name="monitor" />
         <module name="hotswap" />
         <module name="orm" />
         <module name="storage" />
+        <module name="scheduler" />
+        <module name="protocol" />
+        <module name="util" />
+        <module name="LoginServer" />
         <module name="event" />
         <module name="net" />
         <module name="boot" />
+        <module name="gameNet" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

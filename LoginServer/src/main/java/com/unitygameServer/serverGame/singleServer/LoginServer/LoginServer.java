@@ -15,18 +15,6 @@ import org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfigurati
 import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
 import org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration;
 
-@SpringBootApplication(exclude = {
-        // 排除MongoDB自动配置
-        MongoDataAutoConfiguration.class,
-        MongoRepositoriesAutoConfiguration.class,
-        MongoAutoConfiguration.class,
-        MongoReactiveAutoConfiguration.class,
-        MongoReactiveDataAutoConfiguration.class,
-        MongoReactiveRepositoriesAutoConfiguration.class,
-
-        TaskExecutionAutoConfiguration.class,
-        TaskSchedulingAutoConfiguration.class
-})
 public class LoginServer {
 
     public static final int WEBSOCKET_SERVER_PORT = 8080;
