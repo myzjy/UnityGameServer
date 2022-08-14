@@ -1,6 +1,7 @@
 package com.unitygameServer.serverGame.singleServer;
 
 import com.zfoo.event.model.event.AppStartEvent;
+import com.zfoo.net.core.websocket.WebsocketServer;
 import com.zfoo.util.net.HostAndPort;
 import com.zfoo.util.net.NetUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -23,5 +24,8 @@ public class Application {
         context.registerShutdownHook();
         context.publishEvent(new AppStartEvent(context));
 
+        //webSocket服务器
+        var websocketServer = new WebsocketServer(GATEWAY_HOST_AND_PORT);
+        websocketServer.start();
     }
 }
