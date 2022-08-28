@@ -9,7 +9,7 @@ public enum I18nEnum {
 
     error_0("错误"),
     error_account_not_exit("账号不存在"),
-
+    error_account_password("账号或密码错误"),
     ;
     private String message;
 

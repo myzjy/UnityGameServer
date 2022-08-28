@@ -1,5 +1,8 @@
 package com.unitygameServer.serverGame.singleServer.DataController;
 
+import com.unitygameServer.serverGame.commonRefush.constant.I18nEnum;
+import com.unitygameServer.serverGame.commonRefush.constant.TankDeployEnum;
+import com.unitygameServer.serverGame.commonRefush.entity.AccountEntity;
 import com.unitygameServer.serverGame.commonRefush.entity.UserEntity;
 import com.unitygameServer.serverGame.commonRefush.protocol.login.LoginRequest;
 import com.unitygameServer.serverGame.singleServer.model.UserModel;
@@ -12,10 +15,13 @@ import com.zfoo.net.session.model.Session;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.orm.model.anno.EntityCachesInjection;
 import com.zfoo.orm.model.cache.IEntityCaches;
+import com.zfoo.orm.util.MongoIdUtils;
 import com.zfoo.protocol.util.StringUtils;
+import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.util.math.HashUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Dictionary;
@@ -38,6 +44,8 @@ public class LoginController {
      */
     @EntityCachesInjection
     private IEntityCaches<Long, UserEntity> UserModelDict;
+    @Value("${spring.profiles.active}")
+    private TankDeployEnum deployEnum;
 
     /**
      * @apiNote 登录调用
@@ -59,11 +67,42 @@ public class LoginController {
 //
 //        }
 
-        var sid=session.getSid();
-        EventBus.execute(HashUtils.fnvHash(account),new Runnable() {
+        var sid = session.getSid();
+        EventBus.execute(HashUtils.fnvHash(account), new Runnable() {
             @Override
             public void run() {
-                var userEntity= OrmContext.getAccessor().load(account,UserEntity.class);
+                //数据库拿去
+                var userEntity = OrmContext.getAccessor().load(account, AccountEntity.class);
+                if (userEntity == null) {
+                    //没找到 生成新的uid uid只会在创建角色了会出现
+//                    var newUID= MongoIdUtils.getIncrementIdFromMongoDefault(UserEntity.class);
+                    userEntity = AccountEntity.valueOf(account, account, password, -1);
+                    //插入数据库
+                    OrmContext.getAccessor().insert(userEntity);
+                    OrmContext.getAccessor().insert(UserEntity.valueOf(-1,account, TimeUtils.now(),TimeUtils.now()));
+
+//                    OrmContext.getAccessor().update(userEntity);
+                }
+                if (deployEnum == TankDeployEnum.dev) {
+                    //验证密码
+                    if (StringUtils.isNotBlank(userEntity.getPassword()) && !userEntity.getPassword().trim().equals(password.trim())) {
+                        if (userEntity.getUid() > 0) {
+                            logger.info("[password:{}]账号或密码错误", password);
+                        } else {
+                            logger.info("[uid:{}][password:{}]账号或密码错误", userEntity.getUid(), password);
+                        }
+                        //给客户端服务器
+                        NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_password.toString()));
+                        return;
+                    }
+                }
+                var uid = userEntity.getUid();
+                if (uid > 0) {
+                    logger.info("[{}][{}]玩家登录[account:{}][password:{}]", uid, sid, account, password);
+                } else {
+                    logger.info("[{}]玩家登录[account:{}][password:{}]", sid, account, password);
+                }
+
             }
         });
     }
