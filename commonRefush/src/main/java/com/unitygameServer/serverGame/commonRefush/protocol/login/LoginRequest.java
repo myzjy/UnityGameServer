@@ -1,5 +1,7 @@
 package com.unitygameServer.serverGame.commonRefush.protocol.login;
 
+import com.baidu.bjf.remoting.protobuf.FieldType;
+import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.protocol.IPacket;
 

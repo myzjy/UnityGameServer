@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:net="http://www.zfoo.com/schema/net"
@@ -10,54 +9,57 @@
        xmlns="http://www.springframework.org/schema/beans"
 
        xsi:schemaLocation="
-       http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-       http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
 
-       http://www.zfoo.com/schema/net
-       http://www.zfoo.com/schema/net-1.0.xsd
+    http://www.zfoo.com/schema/net
+    http://www.zfoo.com/schema/net-1.0.xsd
 
-       http://www.zfoo.com/schema/storage
-       http://www.zfoo.com/schema/storage-1.0.xsd
+    http://www.zfoo.com/schema/storage
+    http://www.zfoo.com/schema/storage-1.0.xsd
 
-       http://www.zfoo.com/schema/orm
-       http://www.zfoo.com/schema/orm-1.0.xsd
+    http://www.zfoo.com/schema/orm
+    http://www.zfoo.com/schema/orm-1.0.xsd
 
-       http://www.zfoo.com/schema/event
-       http://www.zfoo.com/schema/event-1.0.xsd
+    http://www.zfoo.com/schema/event
+    http://www.zfoo.com/schema/event-1.0.xsd
 
-       http://www.zfoo.com/schema/scheduler
-       http://www.zfoo.com/schema/scheduler-1.0.xsd">
-
+    http://www.zfoo.com/schema/scheduler
+    http://www.zfoo.com/schema/scheduler-1.0.xsd">
+    <!--    区分开发还是正式的标志-->
     <context:property-placeholder location="classpath:deploy-${spring.profiles.active}.properties"/>
-
-    <context:component-scan base-package="com.unitygameServer.serverGame.singleServer"/>
+    <context:component-scan base-package="com.unitygameServer.serverGame.cache"/>
 
     <event:event id="eventBus"/>
 
     <scheduler:scheduler id="schedulerManager"/>
-
 <!--    <storage:storage id="resourceManager">-->
 <!--        <storage:scan package="${storage.excel.scan}"/>-->
 <!--        <storage:resource location="${storage.excel.location}"/>-->
 <!--    </storage:storage>-->
-    <net:config id="tankCache" protocol-location="protocol.xml"
-                csharp-protocol="${net.generate.cs.protocol}"
-                javascript-protocol="${net.generate.js.protocol}"
-                fold-protocol="${net.fold.protocol}">
+    <net:config id="tankCache" protocol-location="protocol.xml">
+
+        <net:registry center="${registry.center}" user="${registry.user}" password="${registry.password}">
+            <net:address name="${registry.address.name}" url="${registry.address.url}"/>
+        </net:registry>
+
+        <net:providers task-dispatch="consistent-hash">
+            <net:provider protocol-module="gameserver" provider="gameserverProvider"/>
+        </net:providers>
 
     </net:config>
-    <orm:config id="mongodbConfig" entity-package="com.unitygameServer.serverGame.commonRefush.**.entity">
 
-        <!-- 数据库相关配置 -->
+    <orm:config id="mongodbConfig" entity-package="com.zfoo.tank.common.**.entity">
+
         <orm:host database="${mongodb.database}" user="${mongodb.user}" password="${mongodb.password}">
             <orm:address name="${mongodb.address.name}" url="${mongodb.address.url}"/>
         </orm:host>
 
         <!-- 缓存策略 -->
         <orm:caches>
-            <orm:cache strategy="ten" size="10" expire-millisecond="600000"/>
+            <orm:cache strategy="hundred" size="100" expire-millisecond="600000"/>
             <orm:cache strategy="tenThousand" size="10000" expire-millisecond="600000"/>
         </orm:caches>
 

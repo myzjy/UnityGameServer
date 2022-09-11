@@ -12,6 +12,7 @@ import com.zfoo.orm.model.entity.IEntity;
  * @autor zjy
  * @since 2022/7/23 9:40 AM
  */
+@EntityCache(cacheStrategy = "tenThousand", persister = @Persister("time30s"))
 public class AccountEntity implements IEntity<String> {
     /**
      * 为account

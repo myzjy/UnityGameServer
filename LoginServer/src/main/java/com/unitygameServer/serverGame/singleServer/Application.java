@@ -15,17 +15,19 @@ public class Application {
     /*
      * TCP
      * */
-    public static final int TCP_SERVER_PORT = 5000;
+    public static final int WEBSOCKET_SERVER_PORT = 5000;
     //    public static final int WEBSOCKET_SERVER_PORT=5000;
-    public static final HostAndPort GATEWAY_HOST_AND_PORT = HostAndPort.valueOf(NetUtils.getLocalhostStr(), TCP_SERVER_PORT);
+    public static final HostAndPort GATEWAY_HOST_AND_PORT = HostAndPort.valueOf(NetUtils.getLocalhostStr(), WEBSOCKET_SERVER_PORT);
 
     public static void main(String[] args) {
+
         var context = new ClassPathXmlApplicationContext("application.xml");
         context.registerShutdownHook();
         context.publishEvent(new AppStartEvent(context));
 
+
         //webSocket服务器
-        var websocketServer = new WebsocketServer(GATEWAY_HOST_AND_PORT);
+        var websocketServer = new WebsocketServer(HostAndPort.valueOf(NetUtils.getLocalhostStr(), WEBSOCKET_SERVER_PORT));
         websocketServer.start();
     }
 }

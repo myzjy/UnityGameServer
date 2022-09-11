@@ -58,7 +58,7 @@ public class LoginController {
         if (StringUtils.isBlank(account)) {
             //传递过来的账号不对
             //信息传递给客户端
-            NetContext.getRouter().send(session, Error.valueOf(""));
+            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
 
             return;
         }
@@ -75,11 +75,11 @@ public class LoginController {
                 var userEntity = OrmContext.getAccessor().load(account, AccountEntity.class);
                 if (userEntity == null) {
                     //没找到 生成新的uid uid只会在创建角色了会出现
-//                    var newUID= MongoIdUtils.getIncrementIdFromMongoDefault(UserEntity.class);
+                    var newUID = MongoIdUtils.getIncrementIdFromMongoDefault(UserEntity.class);
                     userEntity = AccountEntity.valueOf(account, account, password, -1);
                     //插入数据库
                     OrmContext.getAccessor().insert(userEntity);
-                    OrmContext.getAccessor().insert(UserEntity.valueOf(-1,account, TimeUtils.now(),TimeUtils.now()));
+                    OrmContext.getAccessor().insert(UserEntity.valueOf(newUID, account, TimeUtils.now(), TimeUtils.now()));
 
 //                    OrmContext.getAccessor().update(userEntity);
                 }
@@ -97,22 +97,25 @@ public class LoginController {
                     }
                 }
                 var uid = userEntity.getUid();
-                if (uid > 0) {
-                    logger.info("[{}][{}]玩家登录[account:{}][password:{}]", uid, sid, account, password);
-                } else {
-                    logger.info("[{}]玩家登录[account:{}][password:{}]", sid, account, password);
-                }
 
+                logger.info("[{}][{}]玩家登录[account:{}][password:{}]", uid, sid, account, password);
+
+                var player = UserModelDict.load(uid);
+                player.setLastLoginTime(TimeUtils.now());
+
+                player.sid = sid;
+                player.session = session;
+//                session
             }
         });
     }
 
-    @PacketReceiver
-    private void LogoutRequest(Session session, LoginRequest request) {
-
-        //拿到uid
-        var uid = (long) session.getAttribute(AttributeType.UID);
-        var sid = session.getSid();
-//        EventBus.execute(HashUtils.fnvHash())
-    }
+//    @PacketReceiver
+//    private void LogoutRequest(Session session, LoginRequest request) {
+//
+//        //拿到uid
+//        var uid = (long) session.getAttribute(AttributeType.UID);
+//        var sid = session.getSid();
+////        EventBus.execute(HashUtils.fnvHash())
+//    }
 }

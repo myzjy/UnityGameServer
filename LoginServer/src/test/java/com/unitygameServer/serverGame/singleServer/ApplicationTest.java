@@ -1,7 +1,9 @@
 package com.unitygameServer.serverGame.singleServer;
 
 import com.unitygameServer.serverGame.commonRefush.constant.TankDeployEnum;
+import com.unitygameSever.gamenet.core.jsonbuf.JsonBufTcpSever;
 import com.zfoo.event.model.event.AppStartEvent;
+import com.zfoo.net.core.tcp.TcpServer;
 import com.zfoo.net.core.websocket.WebsocketServer;
 import com.zfoo.util.ThreadUtils;
 import org.junit.jupiter.api.Test;
@@ -18,13 +20,13 @@ public class ApplicationTest {
     }
 
     @Test
-    public void StartWebSocketApplication(){
+    public void StartTcpApplication(){
         var context = new ClassPathXmlApplicationContext("application.xml");
         context.registerShutdownHook();
         context.publishEvent(new AppStartEvent(context));
 
         //webSocket服务器
-        var websocketServer = new WebsocketServer(Application.GATEWAY_HOST_AND_PORT);
+        var websocketServer = new JsonBufTcpSever(Application.GATEWAY_HOST_AND_PORT);
         websocketServer.start();
         ThreadUtils.sleep(Long.MAX_VALUE);
 

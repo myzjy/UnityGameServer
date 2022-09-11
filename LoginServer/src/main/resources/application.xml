@@ -38,12 +38,17 @@
 
     <scheduler:scheduler id="schedulerManager"/>
 
-    <storage:storage id="resourceManager">
-        <storage:scan package="${storage.excel.scan}"/>
-        <storage:resource location="${storage.excel.location}"/>
-    </storage:storage>
+<!--    <storage:storage id="resourceManager">-->
+<!--        <storage:scan package="${storage.excel.scan}"/>-->
+<!--        <storage:resource location="${storage.excel.location}"/>-->
+<!--    </storage:storage>-->
+    <net:config id="tankCache" protocol-location="protocol.xml"
+                csharp-protocol="${net.generate.cs.protocol}"
+                javascript-protocol="${net.generate.js.protocol}"
+                fold-protocol="${net.fold.protocol}">
 
-    <orm:config id="mongodbConfig" entity-package="com.unitygameServer.serverGame.commonRefush.entity">
+    </net:config>
+    <orm:config id="mongodbConfig" entity-package="com.unitygameServer.serverGame.commonRefush.**.entity">
 
         <!-- 数据库相关配置 -->
         <orm:host database="${mongodb.database}" user="${mongodb.user}" password="${mongodb.password}">

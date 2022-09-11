@@ -1,5 +1,6 @@
 package com.unitygameServer.serverGame.commonRefush.entity;
 
+import com.zfoo.net.session.model.Session;
 import com.zfoo.orm.model.anno.EntityCache;
 import com.zfoo.orm.model.anno.Id;
 import com.zfoo.orm.model.anno.Persister;
@@ -12,6 +13,9 @@ import com.zfoo.orm.model.entity.IEntity;
  */
 @EntityCache(cacheStrategy = "tenThousand", persister = @Persister("time30s"))
 public class UserEntity implements IEntity<Long> {
+    // 记录会话信息
+    public transient long sid = 1;
+    public transient Session session = null;
     @Id
     private long id;
     private long vs;
