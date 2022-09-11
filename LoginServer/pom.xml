@@ -12,9 +12,14 @@
     <artifactId>LoginServer</artifactId>
     <dependencies>
         <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.19.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>5.3.4</version>
+            <version>5.3.19</version>
             <scope>compile</scope>
         </dependency>
 
