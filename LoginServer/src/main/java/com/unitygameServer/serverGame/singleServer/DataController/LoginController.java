@@ -66,37 +66,54 @@ public class LoginController {
         var sid = session.getSid();
         EventBus.execute(HashUtils.fnvHash(account), () -> {
             //数据库拿去
-            var userEntity = OrmContext.getAccessor().load(account, AccountEntity.class);
-            if (userEntity == null) {
-
-//                    OrmContext.getOrmManager().getCollection();
+            var accountUser = OrmContext.getAccessor().load(account, AccountEntity.class);
+            if (accountUser == null) {
                 //没找到 生成新的uid uid只会在创建角色了会出现
                 var newUID = MongoIdUtils.getIncrementIdFromMongoDefault(UserEntity.class) + 10000000;
-                userEntity = AccountEntity.valueOf(account, account, password, newUID);
+                var user = OrmContext.getAccessor().load(newUID, UserEntity.class);
+                //判断当前UID能不能找到对应
+                if (user == null) {
+                    accountUser = AccountEntity.valueOf(account, account, password, newUID);
+                } else {
+                    newUID += 1;
+                    user = OrmContext.getAccessor().load(newUID, UserEntity.class);
+                    while (user == null) {
+                        newUID += 1;
+                        user = OrmContext.getAccessor().load(newUID, UserEntity.class);
+                    }
+                }
 
 
                 //插入数据库
+                OrmContext.getAccessor().insert(accountUser);
+                UserEntity userEntity = UserEntity.valueOf(newUID, account, TimeUtils.now(), TimeUtils.now());
+                userEntity.setToken(getToken(accountUser));
                 OrmContext.getAccessor().insert(userEntity);
-                UserEntity user=UserEntity.valueOf(newUID, account, TimeUtils.now(), TimeUtils.now());
-                user.setToken(getToken(userEntity));
-                OrmContext.getAccessor().insert(user);
 
-//                    OrmContext.getAccessor().update(userEntity);
+            }
+            {
+
+                //通过UID获取
+                var user = OrmContext.getAccessor().load(accountUser.getUid(), UserEntity.class);
+                assert user != null;
+                //覆盖登录时间
+                user = UserEntity.valueOf(user.getId(), accountUser.getName(), TimeUtils.now(), user.getRegisterTime());
+                OrmContext.getAccessor().update(user);
             }
             if (deployEnum == TankDeployEnum.dev) {
                 //验证密码
-                if (StringUtils.isNotBlank(userEntity.getPassword()) && !userEntity.getPassword().trim().equals(password.trim())) {
-                    if (userEntity.getUid() > 0) {
+                if (StringUtils.isNotBlank(accountUser.getPassword()) && !accountUser.getPassword().trim().equals(password.trim())) {
+                    if (accountUser.getUid() > 0) {
                         logger.info("[password:{}]账号或密码错误", password);
                     } else {
-                        logger.info("[uid:{}][password:{}]账号或密码错误", userEntity.getUid(), password);
+                        logger.info("[uid:{}][password:{}]账号或密码错误", accountUser.getUid(), password);
                     }
                     //给客户端服务器
                     NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_password.toString()));
                     return;
                 }
             }
-            var uid = userEntity.getUid();
+            var uid = accountUser.getUid();
 
             logger.info("[{}][{}]玩家登录[account:{}][password:{}]", uid, sid, account, password);
 
@@ -114,8 +131,8 @@ public class LoginController {
         calendar.add(Calendar.YEAR, 10);
         JWTCreator.Builder builder = JWT.create();
         builder.withClaim("id", account.getId()).withClaim("UID", account.getUid()).withClaim("password", account.getPassword());
-        String token = builder.withExpiresAt(calendar.getTime()).sign(Algorithm.HMAC256(sun.security.x509.X509CertImpl.SIGNATURE));
-        logger.info("[token:{}]",token);
+        String token = builder.withExpiresAt(calendar.getTime()).sign(Algorithm.HMAC256("signature"));
+        logger.info("[token:{}]", token);
         return token;
     }
 
