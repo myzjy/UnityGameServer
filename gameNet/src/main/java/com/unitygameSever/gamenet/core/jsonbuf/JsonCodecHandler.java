@@ -100,7 +100,6 @@ public class JsonCodecHandler extends MessageToMessageCodec<WebSocketFrame, Enco
             if (item == "PROTOCOL_ID") {
                 continue;
             }
-//            jsonMap.
             Field field = protocolClass.getDeclaredField(item);
             if (field.isAnnotationPresent(Compatible.class) && !buffer.isReadable()) {
                 break;
@@ -112,26 +111,6 @@ public class JsonCodecHandler extends MessageToMessageCodec<WebSocketFrame, Enco
             var value = stringToTarget(fieldValue, ty.getTypeName());
             ReflectionUtils.setField(field, object, value);
         }
-
-//        for (int i = 0, length = jsonMap.size(); i < length; i++) {
-//            Field field = protocolClass.getFields();
-//            // 协议向后兼容
-//            if (field.isAnnotationPresent(Compatible.class) && !buffer.isReadable()) {
-//                break;
-//            }
-//            Object fieldValue = jsonMap.get(field.getName());
-//            ReflectionUtils.setField(field, object, fieldValue);
-//        }
-//        protocolClass.
-        IPacket packet = new IPacket() {
-            @Override
-            public short protocolId() {
-                return protocolId;
-            }
-        };
-//        var protobufCodec = ProtobufProxy.create(protocolClass);
-//        var bytes = ByteBufUtils.readAllBytes(buffer);
-
         DecodedPacketInfo decodedPacketInfo = DecodedPacketInfo.valueOf((IPacket) object, null);
         return decodedPacketInfo;
     }

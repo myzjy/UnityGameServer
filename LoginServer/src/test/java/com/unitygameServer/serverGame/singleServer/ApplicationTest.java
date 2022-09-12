@@ -3,6 +3,7 @@ package com.unitygameServer.serverGame.singleServer;
 import com.unitygameServer.serverGame.commonRefush.constant.TankDeployEnum;
 import com.unitygameSever.gamenet.core.jsonbuf.JsonBufTcpSever;
 import com.zfoo.event.model.event.AppStartEvent;
+import com.zfoo.net.core.json.JsonWebsocketServer;
 import com.zfoo.net.core.tcp.TcpServer;
 import com.zfoo.net.core.websocket.WebsocketServer;
 import com.zfoo.util.ThreadUtils;
@@ -26,7 +27,7 @@ public class ApplicationTest {
         context.publishEvent(new AppStartEvent(context));
 
         //webSocket服务器
-        var websocketServer = new JsonBufTcpSever(Application.GATEWAY_HOST_AND_PORT);
+        var websocketServer = new JsonWebsocketServer(Application.GATEWAY_HOST_AND_PORT);
         websocketServer.start();
         ThreadUtils.sleep(Long.MAX_VALUE);
 
