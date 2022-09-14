@@ -16,8 +16,12 @@ public class UserEntity implements IEntity<Long> {
     // 记录会话信息
     public transient long sid = 1;
     public transient Session session = null;
+    /**
+     * 相当于uid
+     * */
     @Id
     private long id;
+
     private long vs;
     /**
      * 用户token
@@ -37,22 +41,22 @@ public class UserEntity implements IEntity<Long> {
 
     /**
      * 玩家数据结构
-     * @param id userId
-     * @param name userName
+     *
+     * @param id            userId
+     * @param name          userName
      * @param lastLoginTime 上次登录时间
-     * @param registerTime 注册时间
-     * */
-    public static UserEntity valueOf(long id,String name,long lastLoginTime,long registerTime){
-        var entity=new UserEntity();
+     * @param registerTime  注册时间
+     */
+    public static UserEntity valueOf(long id, String name, long lastLoginTime, long registerTime) {
+        var entity = new UserEntity();
 
-        entity.id=id;
-        entity.name=name;
-        entity.lastLoginTime=lastLoginTime;
-        entity.registerTime=registerTime;
+        entity.id = id;
+        entity.name = name;
+        entity.lastLoginTime = lastLoginTime;
+        entity.registerTime = registerTime;
 
         return entity;
     }
-
 
     @Override
     public Long id() {

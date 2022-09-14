@@ -12,6 +12,7 @@ import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
 import com.zfoo.net.router.receiver.PacketReceiver;
+import com.zfoo.net.session.model.AttributeType;
 import com.zfoo.net.session.model.Session;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.orm.model.anno.EntityCachesInjection;
@@ -116,12 +117,27 @@ public class LoginController {
             var uid = accountUser.getUid();
 
             logger.info("[{}][{}]玩家登录[account:{}][password:{}]", uid, sid, account, password);
-
+            session.putAttribute(AttributeType.UID, accountUser.getUid());
+            //之前插入过数据库，现在是获取
             var player = UserModelDict.load(uid);
             player.setLastLoginTime(TimeUtils.now());
 
+            //设置临时值 sid session
             player.sid = sid;
             player.session = session;
+            //消息发送？
+            session.putAttribute(AttributeType.UID, uid);
+
+            //更新
+            UserModelDict.update(player);
+
+            //获取的玩家 uid小于0
+            if(player.getId()<=0){
+                NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
+                return;
+            }
+
+
 //                session
         });
     }
