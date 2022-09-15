@@ -8,6 +8,7 @@ import com.unitygameServer.serverGame.commonRefush.constant.TankDeployEnum;
 import com.unitygameServer.serverGame.commonRefush.entity.AccountEntity;
 import com.unitygameServer.serverGame.commonRefush.entity.UserEntity;
 import com.unitygameServer.serverGame.commonRefush.protocol.login.LoginRequest;
+import com.unitygameServer.serverGame.commonRefush.util.TokenUtils;
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
@@ -88,7 +89,7 @@ public class LoginController {
                 //插入数据库
                 OrmContext.getAccessor().insert(accountUser);
                 UserEntity userEntity = UserEntity.valueOf(newUID, account, TimeUtils.now(), TimeUtils.now());
-                userEntity.setToken(getToken(accountUser));
+                userEntity.setToken(TokenUtils.set(newUID));
                 OrmContext.getAccessor().insert(userEntity);
 
             }
