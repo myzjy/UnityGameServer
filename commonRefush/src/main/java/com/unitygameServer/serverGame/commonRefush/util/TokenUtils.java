@@ -12,7 +12,7 @@ import com.zfoo.util.security.AesUtils;
  * @since 2022/9/15 21:42
  */
 public abstract class TokenUtils {
-    private static final long TOKEN_EXPIRE_TIME = 1000 * TimeUtils.MILLIS_PER_WEEK;
+    private static final long TOKEN_EXPIRE_TIME = 100 * TimeUtils.MILLIS_PER_WEEK;
 
     /**
      * 加密方式：用户id，加盐，过期时间戳

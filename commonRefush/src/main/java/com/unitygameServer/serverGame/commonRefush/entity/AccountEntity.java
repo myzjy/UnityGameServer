@@ -20,18 +20,19 @@ public class AccountEntity implements IEntity<String> {
     @Id
     private String id;
 
+
     @Index(ascending = true, unique = true)
-    private String name;
+    private String account;
 
     private String password;
 
     @Index(ascending = true, unique = true)
     private long uid;
 
-    public static AccountEntity valueOf(String id, String name, String password, long uid) {
+    public static AccountEntity valueOf(String id,String account, String password, long uid) {
         var entity = new AccountEntity();
         entity.id = id;
-        entity.name = name;
+        entity.account=account;
         entity.password = password;
         entity.uid = uid;
         return entity;
@@ -50,14 +51,6 @@ public class AccountEntity implements IEntity<String> {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -70,7 +63,25 @@ public class AccountEntity implements IEntity<String> {
         return uid;
     }
 
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
     public void setUid(long uid) {
         this.uid = uid;
+    }
+
+    @Override
+    public String toString() {
+        return "AccountEntity{" +
+                "id='" + id + '\'' +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", uid=" + uid +
+                '}';
     }
 }

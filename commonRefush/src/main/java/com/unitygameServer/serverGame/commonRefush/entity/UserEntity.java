@@ -57,7 +57,16 @@ public class UserEntity implements IEntity<Long> {
 
         return entity;
     }
+    public static UserEntity valueOf(long id, String name, long lastLoginTime, long registerTime,String token) {
+        var entity = new UserEntity();
 
+        entity.id = id;
+        entity.name = name;
+        entity.lastLoginTime = lastLoginTime;
+        entity.registerTime = registerTime;
+        entity.Token=token;
+        return entity;
+    }
     @Override
     public Long id() {
         return id;
@@ -134,5 +143,20 @@ public class UserEntity implements IEntity<Long> {
      */
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "sid=" + sid +
+                ", session=" + session +
+                ", id=" + id +
+                ", vs=" + vs +
+                ", Token='" + Token + '\'' +
+                ", name='" + name + '\'' +
+                ", lastLoginTime=" + lastLoginTime +
+                ", registerTime=" + registerTime +
+                ", message='" + message + '\'' +
+                '}';
     }
 }
