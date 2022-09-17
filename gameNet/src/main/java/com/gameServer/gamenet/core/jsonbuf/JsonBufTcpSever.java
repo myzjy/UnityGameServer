@@ -1,4 +1,4 @@
-package com.gameSever.gamenet.core.jsonbuf;
+package com.gameServer.gamenet.core.jsonbuf;
 
 import com.zfoo.net.core.AbstractServer;
 import com.zfoo.net.handler.ServerRouteHandler;

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>LoginServer</artifactId>
+    <artifactId>GameServer</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.auth0</groupId>

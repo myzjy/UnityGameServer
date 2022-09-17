@@ -1,4 +1,4 @@
-package com.gameSever.gamenet.core.jsonbuf;
+package com.gameServer.gamenet.core.jsonbuf;
 
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.model.DecodedPacketInfo;

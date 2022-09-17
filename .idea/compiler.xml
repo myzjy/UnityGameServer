@@ -12,14 +12,15 @@
         <module name="hotswap" />
         <module name="orm" />
         <module name="storage" />
+        <module name="game-boot" />
         <module name="scheduler" />
         <module name="protocol" />
         <module name="util" />
-        <module name="LoginServer" />
         <module name="event" />
         <module name="net" />
         <module name="boot" />
         <module name="gameNet" />
+        <module name="GameServer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -28,7 +29,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="LoginServer" options="" />
+      <module name="GameServer" options="" />
     </option>
   </component>
 </project>
