@@ -239,7 +239,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.unitygameServer.serverGame.cache.Application</mainClass>
+                                    <mainClass>com.gameServer.cache.Application</mainClass>
                                 </transformer>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">

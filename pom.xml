@@ -11,6 +11,7 @@
         <module>LoginServer</module>
         <module>commonRefush</module>
         <module>cache</module>
+        <module>game-boot</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
