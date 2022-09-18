@@ -6,6 +6,7 @@ import com.gameServer.commonRefush.entity.AccountEntity;
 import com.gameServer.commonRefush.entity.UserEntity;
 import com.gameServer.commonRefush.protocol.login.LoginRequest;
 import com.gameServer.commonRefush.protocol.login.LoginResponse;
+import com.gameServer.commonRefush.protocol.login.LogoutRequest;
 import com.gameServer.commonRefush.util.TokenUtils;
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
@@ -170,12 +171,12 @@ public class LoginController {
     }
 
 
-//    @PacketReceiver
-//    private void LogoutRequest(Session session, LoginRequest request) {
-//
-//        //拿到uid
-//        var uid = (long) session.getAttribute(AttributeType.UID);
-//        var sid = session.getSid();
-////        EventBus.execute(HashUtils.fnvHash())
-//    }
+    @PacketReceiver
+    private void LogoutRequest(Session session, LogoutRequest request) {
+
+        //拿到uid
+        var uid = (long) session.getAttribute(AttributeType.UID);
+        var sid = session.getSid();
+//        EventBus.execute(HashUtils.fnvHash())
+    }
 }
