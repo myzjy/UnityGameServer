@@ -4,6 +4,7 @@ import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.constant.TankDeployEnum;
 import com.gameServer.commonRefush.entity.AccountEntity;
 import com.gameServer.commonRefush.entity.UserEntity;
+import com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest;
 import com.gameServer.commonRefush.protocol.login.LoginRequest;
 import com.gameServer.commonRefush.protocol.login.LoginResponse;
 import com.gameServer.commonRefush.protocol.login.LogoutRequest;
@@ -94,7 +95,7 @@ public class LoginController {
                 //插入数据库
                 OrmContext.getAccessor().insert(accountUser);
                 var token = TokenUtils.set(newUID);
-                UserEntity userEntity = UserEntity.valueOf(newUID, "", TimeUtils.now(), TimeUtils.now(),token);
+                UserEntity userEntity = UserEntity.valueOf(newUID, "", TimeUtils.now(), TimeUtils.now(), token);
                 userEntity.setToken(TokenUtils.set(newUID));
                 OrmContext.getAccessor().insert(userEntity);
 
@@ -122,7 +123,7 @@ public class LoginController {
                     }
                 }
                 //覆盖登录时间
-                user = UserEntity.valueOf(user.getId(), user.getName(), TimeUtils.now(), user.getRegisterTime(),user.getToken());
+                user = UserEntity.valueOf(user.getId(), user.getName(), TimeUtils.now(), user.getRegisterTime(), user.getToken());
                 logger.info("[{}][{}]新得玩家登录数据[UserData:{}]", user.getId(), sid, user.toString());
                 OrmContext.getAccessor().update(user);
                 logger.info("[{}][{}]数据库刷新成功", user.getId(), sid);
@@ -170,6 +171,36 @@ public class LoginController {
         });
     }
 
+    @PacketReceiver
+    public void atGetPlayerInfoRequest(Session session, GetPlayerInfoRequest request) {
+        var token = request.getToken();
+        if (StringUtils.isBlank(token)) {
+            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_protocol_param.toString()));
+            logger.info("[{}]token传递空值，token:[{}]", session.getSid(), token);
+            return;
+        }
+        //解析token
+        var triple = TokenUtils.get(token);
+        var uid = triple.getLeft();
+        var sid = session.getSid();
+
+        logger.info("c[{}][{}]玩家信息[token:{}]", uid, sid, token);
+
+        UserEntity userEntity = OrmContext.getAccessor().load(uid, UserEntity.class);
+        var player = UserModelDict.load(uid);
+        // 设置session
+        player.sid = sid;
+        player.session = session;
+        session.putAttribute(AttributeType.UID, uid);
+        if (userEntity == null) {
+            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_user_orm_no_uid.toString()));
+            logger.info("[{}][{}]玩家信息不存在与数据库有中，token:[{}]", uid, sid, token);
+            return;
+        }
+
+        NetContext.getRouter().send(session, LoginResponse.valueOf(token, userEntity.getName(), userEntity.id()));
+    }
+
 
     @PacketReceiver
     private void LogoutRequest(Session session, LogoutRequest request) {
@@ -177,6 +208,9 @@ public class LoginController {
         //拿到uid
         var uid = (long) session.getAttribute(AttributeType.UID);
         var sid = session.getSid();
-//        EventBus.execute(HashUtils.fnvHash())
+        //线程执行
+        EventBus.execute(HashUtils.fnvHash(sid), () -> {
+
+        });
     }
 }

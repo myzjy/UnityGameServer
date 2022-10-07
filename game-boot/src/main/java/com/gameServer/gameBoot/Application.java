@@ -1,5 +1,9 @@
 package com.gameServer.gameBoot;
 
+import com.zfoo.event.model.event.AppStartEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
@@ -16,6 +20,7 @@ import org.springframework.boot.autoconfigure.jdbc.JndiDataSourceAutoConfigurati
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author Administrator
@@ -45,4 +50,12 @@ import org.springframework.context.annotation.ImportResource;
         RedisRepositoriesAutoConfiguration.class})
 @ImportResource(locations = {"app.xml"})
 public class Application {
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
+
+    public static void main(String[] args) {
+        var context = SpringApplication.run(Application.class, args);
+        context.registerShutdownHook();
+        context.publishEvent(new AppStartEvent(context));
+        logger.info("Start Web Application!");
+    }
 }

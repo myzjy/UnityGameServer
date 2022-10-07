@@ -57,6 +57,9 @@ public class UserEntity implements IEntity<Long> {
 
         return entity;
     }
+    /**
+     * @param 
+     * */
     public static UserEntity valueOf(long id, String name, long lastLoginTime, long registerTime,String token) {
         var entity = new UserEntity();
 

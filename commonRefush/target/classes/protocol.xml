@@ -17,7 +17,12 @@
         <protocol id="24" location="com.zfoo.net.core.gateway.model.GatewaySynchronizeSidAsk"/>
     </module>
     <module id="2" name="gameserver" minId="1000" maxId="9999">
-        <protocol id="1000" location="com.unitygameServer.serverGame.commonRefush.protocol.login.LoginRequest"/>
-        <protocol id="1001" location="com.unitygameServer.serverGame.commonRefush.protocol.login.LoginResponse"/>
+        <protocol id="1000" location="com.gameServer.commonRefush.protocol.login.LoginRequest"/>
+        <protocol id="1001" location="com.gameServer.commonRefush.protocol.login.LoginResponse"/>
+        <protocol id="1002" location="com.gameServer.commonRefush.protocol.login.LogoutRequest"/>
+        <protocol id="1003" location="com.gameServer.commonRefush.protocol.login.LogoutResponse"/>
     </module>
+<!--    <module id="3" name="gameBoot" minId="101" maxId="200">-->
+
+<!--    </module>-->
 </protocols>

@@ -1,0 +1,19 @@
+#路径
+server:
+  address: 127.0.0.1
+  port: 443
+  servlet:
+    context-path: /
+
+# 自定义属性
+web:
+  path: /usr/local/static
+
+spring:
+  application:
+    name: zgame-admin
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
