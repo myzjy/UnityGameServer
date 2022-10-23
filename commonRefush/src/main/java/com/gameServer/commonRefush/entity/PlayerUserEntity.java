@@ -3,7 +3,6 @@ package com.gameServer.commonRefush.entity;
 import com.zfoo.net.session.model.Session;
 import com.zfoo.orm.model.anno.EntityCache;
 import com.zfoo.orm.model.anno.Id;
-import com.zfoo.orm.model.anno.Persister;
 import com.zfoo.orm.model.entity.IEntity;
 
 /**
@@ -11,14 +10,14 @@ import com.zfoo.orm.model.entity.IEntity;
  * @version 0.1
  * @since 2022-7-15 23:45
  */
-@EntityCache(cacheStrategy = "tenThousand", persister = @Persister("time30s"))
-public class UserEntity implements IEntity<Long> {
+@EntityCache
+public class PlayerUserEntity implements IEntity<Long> {
     // 记录会话信息
     public transient long sid = 1;
     public transient Session session = null;
     /**
      * 相当于uid
-     * */
+     */
     @Id
     private long id;
 
@@ -37,7 +36,6 @@ public class UserEntity implements IEntity<Long> {
      * 注册时间
      */
     private long registerTime;
-    private String message;
 
     /**
      * 玩家数据结构
@@ -47,8 +45,8 @@ public class UserEntity implements IEntity<Long> {
      * @param lastLoginTime 上次登录时间
      * @param registerTime  注册时间
      */
-    public static UserEntity valueOf(long id, String name, long lastLoginTime, long registerTime) {
-        var entity = new UserEntity();
+    public static PlayerUserEntity valueOf(long id, String name, long lastLoginTime, long registerTime) {
+        var entity = new PlayerUserEntity();
 
         entity.id = id;
         entity.name = name;
@@ -57,19 +55,21 @@ public class UserEntity implements IEntity<Long> {
 
         return entity;
     }
+
     /**
-     * @param 
-     * */
-    public static UserEntity valueOf(long id, String name, long lastLoginTime, long registerTime,String token) {
-        var entity = new UserEntity();
+     * @param
+     */
+    public static PlayerUserEntity valueOf(long id, String name, long lastLoginTime, long registerTime, String token) {
+        var entity = new PlayerUserEntity();
 
         entity.id = id;
         entity.name = name;
         entity.lastLoginTime = lastLoginTime;
         entity.registerTime = registerTime;
-        entity.Token=token;
+        entity.Token = token;
         return entity;
     }
+
     @Override
     public Long id() {
         return id;
@@ -137,16 +137,7 @@ public class UserEntity implements IEntity<Long> {
         Token = token;
     }
 
-    public String getMessage() {
-        return message;
-    }
 
-    /**
-     * 设置消息
-     */
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
     @Override
     public String toString() {
@@ -159,7 +150,6 @@ public class UserEntity implements IEntity<Long> {
                 ", name='" + name + '\'' +
                 ", lastLoginTime=" + lastLoginTime +
                 ", registerTime=" + registerTime +
-                ", message='" + message + '\'' +
                 '}';
     }
 }

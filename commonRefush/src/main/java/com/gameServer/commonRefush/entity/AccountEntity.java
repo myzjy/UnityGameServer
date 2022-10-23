@@ -11,7 +11,7 @@ import com.zfoo.orm.model.entity.IEntity;
  * @autor zjy
  * @since 2022/7/23 9:40 AM
  */
-@EntityCache(cacheStrategy = "tenThousand", persister = @Persister("time30s"))
+@EntityCache
 public class AccountEntity implements IEntity<String> {
     /**
      * 为account
@@ -28,10 +28,10 @@ public class AccountEntity implements IEntity<String> {
     @Index(ascending = true, unique = true)
     private long uid;
 
-    public static AccountEntity valueOf(String id,String account, String password, long uid) {
+    public static AccountEntity valueOf(String id, String account, String password, long uid) {
         var entity = new AccountEntity();
         entity.id = id;
-        entity.account=account;
+        entity.account = account;
         entity.password = password;
         entity.uid = uid;
         return entity;

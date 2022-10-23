@@ -48,7 +48,7 @@
                 fold-protocol="${net.fold.protocol}">
 
     </net:config>
-    <orm:config id="mongodbConfig" entity-package="com.unitygameServer.serverGame.commonRefush.**.entity">
+    <orm:config id="mongodbConfig" entity-package="com.gameServer.commonRefush.**.entity">
 
         <!-- 数据库相关配置 -->
         <orm:host database="${mongodb.database}" user="${mongodb.user}" password="${mongodb.password}">
@@ -57,12 +57,15 @@
 
         <!-- 缓存策略 -->
         <orm:caches>
-            <orm:cache strategy="ten" size="10" expire-millisecond="600000"/>
-            <orm:cache strategy="tenThousand" size="10000" expire-millisecond="600000"/>
+            <orm:cache strategy="default" size="6000" expire-millisecond="600000"/>
+            <orm:cache strategy="hundred" size="100" expire-millisecond="600000"/>
+            <orm:cache strategy="thousand" size="1000" expire-millisecond="600000"/>
+            <orm:cache strategy="threeThousand" size="3000" expire-millisecond="600000"/>
         </orm:caches>
 
         <!-- 持久化策略 -->
         <orm:persisters>
+            <orm:persister strategy="default" type="time" config="600000"/>
             <orm:persister strategy="cron30s" type="cron" config="0/30 * * * * ?"/>
             <orm:persister strategy="time30s" type="time" config="30000"/>
         </orm:persisters>

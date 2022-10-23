@@ -3,11 +3,10 @@ package com.gameServer.singleServer.DataController;
 import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.constant.TankDeployEnum;
 import com.gameServer.commonRefush.entity.AccountEntity;
-import com.gameServer.commonRefush.entity.UserEntity;
+import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest;
 import com.gameServer.commonRefush.protocol.login.LoginRequest;
 import com.gameServer.commonRefush.protocol.login.LoginResponse;
-import com.gameServer.commonRefush.protocol.login.LogoutRequest;
 import com.gameServer.commonRefush.util.TokenUtils;
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
@@ -16,16 +15,18 @@ import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.model.AttributeType;
 import com.zfoo.net.session.model.Session;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.orm.cache.IEntityCaches;
 import com.zfoo.orm.model.anno.EntityCachesInjection;
-import com.zfoo.orm.model.cache.IEntityCaches;
 import com.zfoo.orm.util.MongoIdUtils;
 import com.zfoo.protocol.util.StringUtils;
 import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.util.math.HashUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -40,11 +41,12 @@ public class LoginController {
     //log文件
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
+
     /**
      * 用户数据
      */
     @EntityCachesInjection
-    private IEntityCaches<Long, UserEntity> UserModelDict;
+    private IEntityCaches<Long, PlayerUserEntity> UserModelDict;
     @Value("${spring.profiles.active}")
     private TankDeployEnum deployEnum;
 
@@ -71,39 +73,41 @@ public class LoginController {
             logger.info("[{}玩家登录]登录时间{}", account, TimeUtils.dateFormatForDayTimeString(TimeUtils.now()));
             if (accountUser == null) {
                 //没找到 生成新的uid uid只会在创建角色了会出现
-                var newUID = MongoIdUtils.getIncrementIdFromMongoDefault(UserEntity.class) + 10000000;
-                var user = OrmContext.getAccessor().load(newUID, UserEntity.class);
+                var newUID = MongoIdUtils.getIncrementIdFromMongoDefault(PlayerUserEntity.class) + 10000000;
+                var user = OrmContext.getAccessor().load(newUID, PlayerUserEntity.class);
                 //判断当前UID能不能找到对应
                 if (user == null) {
                     logger.error("[time:{}],[UID{}]数据库中找不到,开始创建新的玩家数据", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), newUID);
                     //名字先不取
                     accountUser = AccountEntity.valueOf(account, account, password, newUID);
                     logger.info("[time:{}],创建的玩家数据：[{}]", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), accountUser.toString());
-                } else {
-                    logger.error("[time:{}],[UID{}]数据库中存在,重新创建玩家数据", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), newUID);
 
-                    newUID += 1;
-                    user = OrmContext.getAccessor().load(newUID, UserEntity.class);
-                    //保证uid不能在数据库中存在
-                    while (user != null) {
-                        newUID += 1;
-                        user = OrmContext.getAccessor().load(newUID, UserEntity.class);
-                    }
+                    //插入数据库
+                    OrmContext.getAccessor().insert(accountUser);
+                    logger.info("[time:{}],创建的玩家数据：[{}]成功", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), accountUser.toString());
                 }
 
 
-                //插入数据库
-                OrmContext.getAccessor().insert(accountUser);
                 var token = TokenUtils.set(newUID);
-                UserEntity userEntity = UserEntity.valueOf(newUID, "", TimeUtils.now(), TimeUtils.now(), token);
+                PlayerUserEntity userEntity = PlayerUserEntity.valueOf(newUID, "", TimeUtils.now(), TimeUtils.now(), token);
                 userEntity.setToken(TokenUtils.set(newUID));
+                logger.info("[time:{}],[Token:{}]", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), userEntity.getToken());
+
                 OrmContext.getAccessor().insert(userEntity);
 
             }
             {
 
                 //通过UID获取
-                var user = OrmContext.getAccessor().load(accountUser.getUid(), UserEntity.class);
+                var user = OrmContext.getAccessor().load(accountUser.getUid(), PlayerUserEntity.class);
+                if (user == null) {
+                    //流程卡住
+                    var token = TokenUtils.set(accountUser.getUid());
+                    PlayerUserEntity userEntity = PlayerUserEntity.valueOf(accountUser.getUid(), "", TimeUtils.now(), TimeUtils.now(), token);
+                    userEntity.setToken(TokenUtils.set(accountUser.getUid()));
+                    logger.info("[time:{}][UID:{}],[Token:{}]", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()),userEntity.getId(), userEntity.getToken());
+                    OrmContext.getAccessor().insert(userEntity);
+                }
                 assert user != null;
                 if (user.getToken() == null) {
                     var token = TokenUtils.set(user.getId());
@@ -118,12 +122,11 @@ public class LoginController {
                         //代表过时的token
                         var token = TokenUtils.set(user.getId());
                         logger.info("[{}]重新设置Token:[{}]", user.getId(), token);
-
                         user.setToken(token);
                     }
                 }
                 //覆盖登录时间
-                user = UserEntity.valueOf(user.getId(), user.getName(), TimeUtils.now(), user.getRegisterTime(), user.getToken());
+                user = PlayerUserEntity.valueOf(user.getId(), user.getName(), TimeUtils.now(), user.getRegisterTime(), user.getToken());
                 logger.info("[{}][{}]新得玩家登录数据[UserData:{}]", user.getId(), sid, user.toString());
                 OrmContext.getAccessor().update(user);
                 logger.info("[{}][{}]数据库刷新成功", user.getId(), sid);
@@ -166,8 +169,6 @@ public class LoginController {
             }
             //返回数据
             NetContext.getRouter().send(session, LoginResponse.valueOf(player.getToken(), player.getName(), player.id()));
-
-//                session
         });
     }
 
@@ -186,7 +187,7 @@ public class LoginController {
 
         logger.info("c[{}][{}]玩家信息[token:{}]", uid, sid, token);
 
-        UserEntity userEntity = OrmContext.getAccessor().load(uid, UserEntity.class);
+        PlayerUserEntity userEntity = OrmContext.getAccessor().load(uid, PlayerUserEntity.class);
         var player = UserModelDict.load(uid);
         // 设置session
         player.sid = sid;
@@ -202,15 +203,15 @@ public class LoginController {
     }
 
 
-    @PacketReceiver
-    private void LogoutRequest(Session session, LogoutRequest request) {
-
-        //拿到uid
-        var uid = (long) session.getAttribute(AttributeType.UID);
-        var sid = session.getSid();
-        //线程执行
-        EventBus.execute(HashUtils.fnvHash(sid), () -> {
-
-        });
-    }
+//    @PacketReceiver
+//    public void LogoutRequest(Session session, LogoutRequest request) {
+//
+//        //拿到uid
+//        var uid = (long) session.getAttribute(AttributeType.UID);
+//        var sid = session.getSid();
+//        //线程执行
+//        EventBus.execute(HashUtils.fnvHash(sid), () -> {
+//
+//        });
+//    }
 }

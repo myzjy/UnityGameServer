@@ -21,6 +21,7 @@
         <protocol id="1001" location="com.gameServer.commonRefush.protocol.login.LoginResponse"/>
         <protocol id="1002" location="com.gameServer.commonRefush.protocol.login.LogoutRequest"/>
         <protocol id="1003" location="com.gameServer.commonRefush.protocol.login.LogoutResponse"/>
+        <protocol id="1004" location="com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest"/>
     </module>
 <!--    <module id="3" name="gameBoot" minId="101" maxId="200">-->
 
