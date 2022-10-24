@@ -9,5 +9,28 @@ import com.zfoo.protocol.IPacket;
  */
 public class LogoutResponse implements IPacket {
     public static final transient short PROTOCOL_ID = 1003;
+    private long uid;
 
+    private long sid;
+
+    @Override
+    public short protocolId() {
+        return PROTOCOL_ID;
+    }
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
+
+    public long getSid() {
+        return sid;
+    }
+
+    public void setSid(long sid) {
+        this.sid = sid;
+    }
 }

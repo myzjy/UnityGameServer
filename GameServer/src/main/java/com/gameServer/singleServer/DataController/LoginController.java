@@ -7,10 +7,13 @@ import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest;
 import com.gameServer.commonRefush.protocol.login.LoginRequest;
 import com.gameServer.commonRefush.protocol.login.LoginResponse;
+import com.gameServer.commonRefush.protocol.login.LogoutRequest;
 import com.gameServer.commonRefush.util.TokenUtils;
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
+import com.zfoo.net.packet.common.Ping;
+import com.zfoo.net.packet.common.Pong;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.model.AttributeType;
 import com.zfoo.net.session.model.Session;
@@ -105,7 +108,7 @@ public class LoginController {
                     var token = TokenUtils.set(accountUser.getUid());
                     PlayerUserEntity userEntity = PlayerUserEntity.valueOf(accountUser.getUid(), "", TimeUtils.now(), TimeUtils.now(), token);
                     userEntity.setToken(TokenUtils.set(accountUser.getUid()));
-                    logger.info("[time:{}][UID:{}],[Token:{}]", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()),userEntity.getId(), userEntity.getToken());
+                    logger.info("[time:{}][UID:{}],[Token:{}]", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), userEntity.getId(), userEntity.getToken());
                     OrmContext.getAccessor().insert(userEntity);
                 }
                 assert user != null;
@@ -203,15 +206,21 @@ public class LoginController {
     }
 
 
-//    @PacketReceiver
-//    public void LogoutRequest(Session session, LogoutRequest request) {
-//
-//        //拿到uid
-//        var uid = (long) session.getAttribute(AttributeType.UID);
-//        var sid = session.getSid();
-//        //线程执行
-//        EventBus.execute(HashUtils.fnvHash(sid), () -> {
-//
-//        });
-//    }
+    @PacketReceiver
+    public void atLogoutRequest(Session session, LogoutRequest request) {
+        //拿到uid
+        var uid = (long) session.getAttribute(AttributeType.UID);
+        var sid = session.getSid();
+        logger.info("[{}][{}]玩家退出游戏", uid, sid);
+
+        var player = UserModelDict.load(uid);
+        player.sid = 0;
+        player.session = null;
+        UserModelDict.update(player);
+    }
+
+    @PacketReceiver
+    public void atPing(Session session, Ping request) {
+        NetContext.getRouter().send(session, Pong.valueOf(TimeUtils.now()));
+    }
 }
