@@ -42,7 +42,7 @@
 <!--        <storage:scan package="${storage.excel.scan}"/>-->
 <!--        <storage:resource location="${storage.excel.location}"/>-->
 <!--    </storage:storage>-->
-    <net:config id="tankCache" protocol-location="protocol.xml"
+    <net:config id="mmoCache" protocol-location="protocol.xml"
                 csharp-protocol="${net.generate.cs.protocol}"
                 javascript-protocol="${net.generate.js.protocol}"
                 fold-protocol="${net.fold.protocol}">

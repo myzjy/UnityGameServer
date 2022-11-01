@@ -23,7 +23,18 @@
         <protocol id="1003" location="com.gameServer.commonRefush.protocol.login.LogoutResponse"/>
         <protocol id="1004" location="com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest"/>
     </module>
-<!--    <module id="3" name="gameBoot" minId="101" maxId="200">-->
+    <module id="3" name="common" minId="100" maxId="200">
+        <protocol id="100" location="com.zfoo.net.packet.common.Message"/>
+        <protocol id="101" location="com.zfoo.net.packet.common.Error"/>
+        <protocol id="102" location="com.zfoo.net.packet.common.Heartbeat"/>
+        <protocol id="103" location="com.zfoo.net.packet.common.Ping"/>
+        <protocol id="104" location="com.zfoo.net.packet.common.Pong"/>
 
-<!--    </module>-->
+        <protocol id="111" location="com.zfoo.net.packet.common.PairLong"/>
+        <protocol id="112" location="com.zfoo.net.packet.common.PairString"/>
+        <protocol id="113" location="com.zfoo.net.packet.common.PairLS"/>
+        <protocol id="114" location="com.zfoo.net.packet.common.TripleLong"/>
+        <protocol id="115" location="com.zfoo.net.packet.common.TripleString"/>
+        <protocol id="116" location="com.zfoo.net.packet.common.TripleLSS"/>
+    </module>
 </protocols>

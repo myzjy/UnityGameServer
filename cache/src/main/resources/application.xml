@@ -30,7 +30,7 @@
     http://www.zfoo.com/schema/scheduler-1.0.xsd">
     <!--    区分开发还是正式的标志-->
     <context:property-placeholder location="classpath:deploy-${spring.profiles.active}.properties"/>
-    <context:component-scan base-package="com.unitygameServer.serverGame.cache"/>
+    <context:component-scan base-package="com.gameServer.cache"/>
 
     <event:event id="eventBus"/>
 
@@ -39,7 +39,7 @@
 <!--        <storage:scan package="${storage.excel.scan}"/>-->
 <!--        <storage:resource location="${storage.excel.location}"/>-->
 <!--    </storage:storage>-->
-    <net:config id="tankCache" protocol-location="protocol.xml">
+    <net:config id="mmoCache" protocol-location="protocol.xml">
 
         <net:registry center="${registry.center}" user="${registry.user}" password="${registry.password}">
             <net:address name="${registry.address.name}" url="${registry.address.url}"/>
@@ -47,6 +47,7 @@
 
         <net:providers task-dispatch="consistent-hash">
             <net:provider protocol-module="gameserver" provider="gameserverProvider"/>
+            <net:provider protocol-module="common" provider="gameserverProvider"/>
         </net:providers>
 
     </net:config>

@@ -18,7 +18,7 @@
 
     <context:component-scan base-package="com.gameServer.singleServer.client"/>
 
-    <net:config id="tankCache" protocol-location="protocol.xml" csharp-protocol="${net.generate.cs.protocol}"
+    <net:config id="mmoCache" protocol-location="protocol.xml" csharp-protocol="${net.generate.cs.protocol}"
                 fold-protocol="${net.fold.protocol}">
     </net:config>
 
