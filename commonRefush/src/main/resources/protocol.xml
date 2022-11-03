@@ -22,6 +22,9 @@
         <protocol id="1002" location="com.gameServer.commonRefush.protocol.login.LogoutRequest"/>
         <protocol id="1003" location="com.gameServer.commonRefush.protocol.login.LogoutResponse"/>
         <protocol id="1004" location="com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest"/>
+        <protocol id="1005" location="com.gameServer.commonRefush.protocol.register.RegisterRequest"/>
+        <protocol id="1006" location="com.gameServer.commonRefush.protocol.register.RegisterResponse"/>
+
     </module>
     <module id="3" name="common" minId="100" maxId="200">
         <protocol id="100" location="com.zfoo.net.packet.common.Message"/>

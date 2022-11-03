@@ -7,36 +7,36 @@ using ZJYFrameWork.Spring.Utils;
 namespace ZJYFrameWork.Net.CsProtocol
 {
     
-    public class LogoutRequest : IPacket
+    public class RegisterResponse : IPacket
     {
-        
+        public bool mRegister;
 
-        public static LogoutRequest ValueOf()
+        public static RegisterResponse ValueOf(bool mRegister)
         {
-            var packet = new LogoutRequest();
-            
+            var packet = new RegisterResponse();
+            packet.mRegister = mRegister;
             return packet;
         }
 
 
         public short ProtocolId()
         {
-            return 1002;
+            return 1006;
         }
     }
 
 
-    public class LogoutRequestRegistration : IProtocolRegistration
+    public class RegisterResponseRegistration : IProtocolRegistration
     {
         public short ProtocolId()
         {
-            return 1002;
+            return 1006;
         }
 
         public void Write(ByteBuffer buffer, IPacket packet)
         {
 
-            LogoutRequest message = (LogoutRequest) packet;
+            RegisterResponse message = (RegisterResponse) packet;
             var _message = new ServerMessageWrite(message.ProtocolId(), message);
             var json = JsonConvert.SerializeObject(_message);
             buffer.WriteString(json);
@@ -49,7 +49,7 @@ namespace ZJYFrameWork.Net.CsProtocol
             var dict = JsonConvert.DeserializeObject<Dictionary<object, object>>(json);
             dict.TryGetValue("packet", out var packetJson);
 
-             packet = JsonConvert.DeserializeObject<LogoutRequest>(packetJson.ToString());
+            buffer.WriteBool(message.mRegister); packet = JsonConvert.DeserializeObject<RegisterResponse>(packetJson.ToString());
 
             return packet;
         }

@@ -7,36 +7,40 @@ using ZJYFrameWork.Spring.Utils;
 namespace ZJYFrameWork.Net.CsProtocol
 {
     
-    public class LogoutRequest : IPacket
+    public class RegisterRequest : IPacket
     {
-        
+        public string account;
+        public string password;
+        public string affirmPassword;
 
-        public static LogoutRequest ValueOf()
+        public static RegisterRequest ValueOf(string account, string affirmPassword, string password)
         {
-            var packet = new LogoutRequest();
-            
+            var packet = new RegisterRequest();
+            packet.account = account;
+            packet.affirmPassword = affirmPassword;
+            packet.password = password;
             return packet;
         }
 
 
         public short ProtocolId()
         {
-            return 1002;
+            return 1005;
         }
     }
 
 
-    public class LogoutRequestRegistration : IProtocolRegistration
+    public class RegisterRequestRegistration : IProtocolRegistration
     {
         public short ProtocolId()
         {
-            return 1002;
+            return 1005;
         }
 
         public void Write(ByteBuffer buffer, IPacket packet)
         {
 
-            LogoutRequest message = (LogoutRequest) packet;
+            RegisterRequest message = (RegisterRequest) packet;
             var _message = new ServerMessageWrite(message.ProtocolId(), message);
             var json = JsonConvert.SerializeObject(_message);
             buffer.WriteString(json);
@@ -49,7 +53,9 @@ namespace ZJYFrameWork.Net.CsProtocol
             var dict = JsonConvert.DeserializeObject<Dictionary<object, object>>(json);
             dict.TryGetValue("packet", out var packetJson);
 
-             packet = JsonConvert.DeserializeObject<LogoutRequest>(packetJson.ToString());
+            buffer.WriteString(message.account);
+            buffer.WriteString(message.affirmPassword);
+            buffer.WriteString(message.password); packet = JsonConvert.DeserializeObject<RegisterRequest>(packetJson.ToString());
 
             return packet;
         }

@@ -8,6 +8,7 @@ package com.gameServer.commonRefush.constant;
 public enum I18nEnum {
 
     error_0("错误"),
+    errro_account_not_blank("账号为空"),
     error_account_not_exit("账号不存在"),
     error_account_password("账号或密码错误"),
     error_protocol_param("协议参数错误，请联系客服，我们会尽快解决"),

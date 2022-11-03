@@ -52,9 +52,10 @@ namespace ZJYFrameWork.Net.CsProtocol
             var json = StringUtils.BytesToString(buffer.ToBytes());
             var dict = JsonConvert.DeserializeObject<Dictionary<object, object>>(json);
             dict.TryGetValue("packet", out var packetJson);
-            var packet = JsonConvert.DeserializeObject<buffer.WriteString(message.token);
+
+            buffer.WriteString(message.token);
             buffer.WriteLong(message.uid);
-            buffer.WriteString(message.userName);>(packetJson.ToString());
+            buffer.WriteString(message.userName); packet = JsonConvert.DeserializeObject<LoginResponse>(packetJson.ToString());
 
             return packet;
         }
