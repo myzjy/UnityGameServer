@@ -20,16 +20,13 @@ import com.zfoo.net.session.model.Session;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.orm.cache.IEntityCaches;
 import com.zfoo.orm.model.anno.EntityCachesInjection;
-import com.zfoo.orm.util.MongoIdUtils;
 import com.zfoo.protocol.util.StringUtils;
 import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.util.math.HashUtils;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 
 /**
@@ -64,7 +61,7 @@ public class LoginController {
         if (StringUtils.isBlank(account)) {
             //传递过来的账号不对
             //信息传递给客户端
-            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
+            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_password.toString()));
             return;
         }
 
@@ -75,43 +72,17 @@ public class LoginController {
             //log
             logger.info("[{}玩家登录]登录时间{}", account, TimeUtils.dateFormatForDayTimeString(TimeUtils.now()));
             if (accountUser == null) {
-                //没找到 生成新的uid uid只会在创建角色了会出现
-                var newUID = MongoIdUtils.getIncrementIdFromMongoDefault(PlayerUserEntity.class) + 10000000;
-                var user = OrmContext.getAccessor().load(newUID, PlayerUserEntity.class);
-                //判断当前UID能不能找到对应
-                if (user == null) {
-                    logger.error("[time:{}],[UID{}]数据库中找不到,开始创建新的玩家数据", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), newUID);
-                    //名字先不取
-                    accountUser = AccountEntity.valueOf(account, account, password, newUID);
-                    logger.info("[time:{}],创建的玩家数据：[{}]", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), accountUser.toString());
-
-                    //插入数据库
-                    OrmContext.getAccessor().insert(accountUser);
-                    logger.info("[time:{}],创建的玩家数据：[{}]成功", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), accountUser.toString());
-                }
-
-
-                var token = TokenUtils.set(newUID);
-                PlayerUserEntity userEntity = PlayerUserEntity.valueOf(newUID, "", TimeUtils.now(), TimeUtils.now(), token);
-                userEntity.setToken(TokenUtils.set(newUID));
-                logger.info("[time:{}],[Token:{}]", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), userEntity.getToken());
-
-                OrmContext.getAccessor().insert(userEntity);
-
+                NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
+                return;
             }
             {
-
                 //通过UID获取
                 var user = OrmContext.getAccessor().load(accountUser.getUid(), PlayerUserEntity.class);
                 if (user == null) {
-                    //流程卡住
-                    var token = TokenUtils.set(accountUser.getUid());
-                    PlayerUserEntity userEntity = PlayerUserEntity.valueOf(accountUser.getUid(), "", TimeUtils.now(), TimeUtils.now(), token);
-                    userEntity.setToken(TokenUtils.set(accountUser.getUid()));
-                    logger.info("[time:{}][UID:{}],[Token:{}]", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), userEntity.getId(), userEntity.getToken());
-                    OrmContext.getAccessor().insert(userEntity);
+                    //必须保证账号存在
+                    NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
+                    return;
                 }
-                assert user != null;
                 if (user.getToken() == null) {
                     var token = TokenUtils.set(user.getId());
                     logger.info("[{}][{}]", user.getId(), token);

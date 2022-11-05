@@ -13,6 +13,10 @@ public enum I18nEnum {
     error_account_password("账号或密码错误"),
     error_protocol_param("协议参数错误，请联系客服，我们会尽快解决"),
     error_user_orm_no_uid("token错误，请联系客服，我们会尽快解决"),
+    error_account_password_not_affirm("两次密码不一致"),
+    error_account_already_exists("账号已存在"),
+    error_password_length("密码长度不符合要求"),
+    error_password_not_have_null("密码包含空格，请重新设置"),
     ;
     private String message;
 
