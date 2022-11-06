@@ -1,4 +1,4 @@
-package com.gameServer.singleServer.DataController;
+package com.gameServer.singleServer.login.controller;
 
 import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.constant.TankDeployEnum;
@@ -72,6 +72,8 @@ public class LoginController {
             //log
             logger.info("[{}玩家登录]登录时间{}", account, TimeUtils.dateFormatForDayTimeString(TimeUtils.now()));
             if (accountUser == null) {
+                logger.error("[{}玩家登录]登录时间{}[error:{}]", account, TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), I18nEnum.error_account_not_exit.getMessage());
+
                 NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
                 return;
             }

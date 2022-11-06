@@ -18,6 +18,7 @@ import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * 注册接口
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
  * @version 1.0
  * @since 2022/11/3 23:29
  */
+@Component
 public class RegisterController {
 
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
@@ -38,16 +40,18 @@ public class RegisterController {
         var password = request.getPassword();
         var affirmPassword = request.getAffirmPassword();
         if (StringUtils.isBlank(account)) {
+            logger.error("[time:{}][{}]请输入账号", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), account);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_blank.toString()));
             return;
         }
         if (!password.equals(affirmPassword)) {
+            logger.error("[time:{}][{}]密码和账号不一样", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), account);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_password_not_affirm.toString()));
             return;
         }
         var accountUser = OrmContext.getAccessor().load(account, AccountEntity.class);
         if (accountUser != null) {
-            logger.info("[time:{}][{}]玩家账号,在数据库中存在，请重新输入", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), account);
+            logger.error("[time:{}][{}]玩家账号,在数据库中存在，请重新输入", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), account);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_already_exists.toString()));
             return;
         }
@@ -55,14 +59,15 @@ public class RegisterController {
         if (password.length() >= 8 && password.length() <= 16) {
             //这个地方可能是显示问题
             if (password.contains("")) {
+                logger.error("[time:{}][{}]玩家，密码包含空字符，请重新输入", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), account);
                 NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_password_not_have_null.toString()));
                 return;
             }
         } else {
+            logger.error("[time:{}][{}]玩家，密码长度不符合要求", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), account);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_password_length.toString()));
             return;
         }
-//        var accountUser = OrmContext.getAccessor().load(account, AccountEntity.class);
 
         //创建账号 往数据库里保存
         //没找到 生成新的uid uid只会在创建角色了会出现

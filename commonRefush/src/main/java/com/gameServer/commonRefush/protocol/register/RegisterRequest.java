@@ -1,6 +1,5 @@
 package com.gameServer.commonRefush.protocol.register;
 
-import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.protocol.IPacket;
 
 /**
@@ -8,7 +7,7 @@ import com.zfoo.protocol.IPacket;
  * @version 1.0
  * @since 2022/11/3 23:34
  */
-public class RegisterRequest implements IPacket, IGatewayLoadBalancer {
+public class RegisterRequest implements IPacket {
     public static final transient short PROTOCOL_ID = 1005;
 
     @Override
@@ -68,8 +67,4 @@ public class RegisterRequest implements IPacket, IGatewayLoadBalancer {
         return packet;
     }
 
-    @Override
-    public Object loadBalancerConsistentHashObject() {
-        return account;
-    }
 }
