@@ -6,4 +6,8 @@ package com.gameServer.singleServer.login.service;
  * @since 2022/11/5 22:44
  */
 public class LoginService implements ILoginService {
+    @Override
+    public void AtLoginService() {
+
+    }
 }
