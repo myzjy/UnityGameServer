@@ -1,4 +1,4 @@
-package com.gameServer.singleServer.DataController;
+package com.gameServer.singleServer.register.controller;
 
 import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.constant.TankDeployEnum;
@@ -94,7 +94,7 @@ public class RegisterController {
         logger.info("[time:{}],[Token:{}]", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), userEntity.getToken());
         //插入数据了，就代表注册成功了
         OrmContext.getAccessor().insert(userEntity);
-        NetContext.getRouter().send(session, RegisterResponse.valueOf(true));
+        NetContext.getRouter().send(session, RegisterResponse.valueOf(true, "ok"));
 
     }
 

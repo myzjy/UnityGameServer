@@ -161,7 +161,7 @@ public class LoginController {
         var uid = triple.getLeft();
         var sid = session.getSid();
 
-        logger.info("c[{}][{}]玩家信息[token:{}]", uid, sid, token);
+        logger.info("[{}][{}]玩家信息[token:{}]", uid, sid, token);
 
         PlayerUserEntity userEntity = OrmContext.getAccessor().load(uid, PlayerUserEntity.class);
         var player = UserModelDict.load(uid);

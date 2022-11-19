@@ -10,8 +10,7 @@ import com.zfoo.event.model.event.IEvent;
 public class LoginEvent implements IEvent {
 
     public static LoginEvent valueOf() {
-        var entity = new LoginEvent();
-        return entity;
+        return new LoginEvent();
     }
 
 

@@ -21,12 +21,18 @@ public class RegisterResponse implements IPacket {
      * 是否注册成功
      */
     private boolean mRegister;
-
-    public static RegisterResponse valueOf(boolean mRegister) {
+    /**
+     * 注册时，没有注册成功时，错误消息
+     */
+    private String error;
+    
+    public static RegisterResponse valueOf(boolean mRegister, String message) {
         var register = new RegisterResponse();
         register.mRegister = mRegister;
+        register.setError(message);
         return register;
     }
+
 
     public boolean getMRegister() {
         return mRegister;
@@ -34,5 +40,13 @@ public class RegisterResponse implements IPacket {
 
     public void setMRegister(boolean mRegister) {
         this.mRegister = mRegister;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 }
