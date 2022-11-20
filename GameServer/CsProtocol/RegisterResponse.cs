@@ -10,10 +10,12 @@ namespace ZJYFrameWork.Net.CsProtocol
     public class RegisterResponse : IPacket
     {
         public bool mRegister;
+        public string error;
 
-        public static RegisterResponse ValueOf(bool mRegister)
+        public static RegisterResponse ValueOf(string error, bool mRegister)
         {
             var packet = new RegisterResponse();
+            packet.error = error;
             packet.mRegister = mRegister;
             return packet;
         }
@@ -49,6 +51,7 @@ namespace ZJYFrameWork.Net.CsProtocol
             var dict = JsonConvert.DeserializeObject<Dictionary<object, object>>(json);
             dict.TryGetValue("packet", out var packetJson);
 
+            buffer.WriteString(message.error);
             buffer.WriteBool(message.mRegister); packet = JsonConvert.DeserializeObject<RegisterResponse>(packetJson.ToString());
 
             return packet;
