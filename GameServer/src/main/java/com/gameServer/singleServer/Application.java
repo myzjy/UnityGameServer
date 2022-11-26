@@ -1,7 +1,7 @@
 package com.gameServer.singleServer;
 
 import com.zfoo.event.model.event.AppStartEvent;
-import com.zfoo.net.core.websocket.WebsocketServer;
+import com.zfoo.net.core.json.JsonWebsocketServer;
 import com.zfoo.util.net.HostAndPort;
 import com.zfoo.util.net.NetUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -24,10 +24,8 @@ public class Application {
         var context = new ClassPathXmlApplicationContext("application.xml");
         context.registerShutdownHook();
         context.publishEvent(new AppStartEvent(context));
-
-
         //webSocket服务器
-        var websocketServer = new WebsocketServer(HostAndPort.valueOf(NetUtils.getLocalhostStr(), WEBSOCKET_SERVER_PORT));
+        var websocketServer = new JsonWebsocketServer(HostAndPort.valueOf(NetUtils.getLocalhostStr(), WEBSOCKET_SERVER_PORT));
         websocketServer.start();
     }
 }

@@ -7,7 +7,7 @@ package com.gameServer.commonRefush.constant;
  */
 public enum TankDeployEnum {
     dev,
-
+    pro,
     ;
 
     public static void InitDefaultEnv() {

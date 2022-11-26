@@ -2,14 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>UnityGameServer</artifactId>
-        <groupId>org.example</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
+    <!--    <artifactId>commonRefush</artifactId>-->
+    <groupId>com.gameServer</groupId>
     <artifactId>commonRefush</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
     <properties>
         <!-- 本项目的其它module版本号 -->
         <zfoo.boot.version>3.0</zfoo.boot.version>
@@ -73,51 +74,132 @@
         <maven-shade-plugin.version>3.4.0</maven-shade-plugin.version>
         <versions-maven-plugin.version>2.12.0</versions-maven-plugin.version>
 
-        <project.build.sourceEncoding>${file.encoding}</project.build.sourceEncoding>
-        <maven.compiler.encoding>${file.encoding}</maven.compiler.encoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>5.3.4</version>
-            <scope>compile</scope>
+            <groupId>com.zfoo</groupId>
+            <artifactId>event</artifactId>
+            <version>${zfoo.event.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.zfoo</groupId>
-            <artifactId>orm</artifactId>
-            <version>3.0</version>
-            <scope>compile</scope>
+            <artifactId>hotswap</artifactId>
+            <version>${zfoo.hotswap.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.zfoo</groupId>
             <artifactId>net</artifactId>
-            <version>3.0</version>
+            <version>${zfoo.net.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-            <version>2.4.3</version>
-            <scope>compile</scope>
+            <groupId>com.zfoo</groupId>
+            <artifactId>scheduler</artifactId>
+            <version>${zfoo.scheduler.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>commonRefush</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+
         <dependency>
             <groupId>com.zfoo</groupId>
             <artifactId>storage</artifactId>
-            <version>3.0</version>
-            <scope>compile</scope>
+            <version>${zfoo.storage.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>orm</artifactId>
+            <version>${zfoo.orm.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>util</artifactId>
+            <version>${zfoo.util.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+            <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
 
+        <plugins>
+            <!-- 清理插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${maven-clean-plugin.version}</version>
+            </plugin>
+
+            <!-- 编译插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${file.encoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <!-- resource资源管理插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <encoding>${file.encoding}</encoding>
+                            <outputDirectory>${project.build.directory}/resource</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources/</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <!-- 测试插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <forkMode>once</forkMode>
+                    <threadCount>10</threadCount>
+                    <argLine>-Dfile.encoding=${file.encoding}</argLine>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -4,7 +4,7 @@ import com.gameServer.commonRefush.constant.TankDeployEnum;
 import com.zfoo.event.model.event.AppStartEvent;
 import com.zfoo.net.core.json.JsonWebsocketServer;
 import com.zfoo.util.ThreadUtils;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * @author Administrator

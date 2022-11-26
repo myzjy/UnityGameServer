@@ -8,23 +8,23 @@
         <outputRelativeToContentRoot value="true" />
         <module name="cache" />
         <module name="commonRefush" />
-        <module name="monitor" />
         <module name="hotswap" />
+        <module name="monitor" />
         <module name="orm" />
         <module name="storage" />
         <module name="game-boot" />
         <module name="scheduler" />
         <module name="protocol" />
         <module name="util" />
-        <module name="event" />
-        <module name="net" />
-        <module name="boot" />
-        <module name="gameNet" />
         <module name="GameServer" />
+        <module name="net" />
+        <module name="event" />
+        <module name="boot" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="common" target="11" />
+      <module name="gameNet" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

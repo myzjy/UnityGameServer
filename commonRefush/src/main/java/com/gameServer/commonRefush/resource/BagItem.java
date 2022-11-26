@@ -1,7 +1,6 @@
 package com.gameServer.commonRefush.resource;
 
 import com.zfoo.storage.model.anno.Id;
-import com.zfoo.storage.model.anno.Resource;
 
 /**
  * 道具类
@@ -10,7 +9,7 @@ import com.zfoo.storage.model.anno.Resource;
  * @version 1.0
  * @since 2022/11/19 21:21
  */
-@Resource
+//@Resource
 public class BagItem {
     @Id
     private int _id;

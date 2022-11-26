@@ -5,7 +5,7 @@ import com.gameServer.singleServer.Application;
 import com.zfoo.net.core.tcp.TcpClient;
 import com.zfoo.util.net.HostAndPort;
 import com.zfoo.util.net.NetUtils;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**

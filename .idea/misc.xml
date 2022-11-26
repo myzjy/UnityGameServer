@@ -5,9 +5,9 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/../zfoo/pom.xml" />
-        <option value="$PROJECT_DIR$/gameNet/pom.xml" />
         <option value="$PROJECT_DIR$/GameServer/pom.xml" />
+        <option value="$PROJECT_DIR$/zfoo/pom.xml" />
+        <option value="$PROJECT_DIR$/commonRefush/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
