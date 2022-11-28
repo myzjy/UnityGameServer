@@ -15,7 +15,7 @@ public class Application {
     /*
      * TCP
      * */
-    public static final int WEBSOCKET_SERVER_PORT = 5000;
+    public static final int WEBSOCKET_SERVER_PORT = 15000;
     //    public static final int WEBSOCKET_SERVER_PORT=5000;
     public static final HostAndPort GATEWAY_HOST_AND_PORT = HostAndPort.valueOf(NetUtils.getLocalhostStr(), WEBSOCKET_SERVER_PORT);
 

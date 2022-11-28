@@ -59,6 +59,7 @@ public class LoginController {
         var account = StringUtils.trim(request.getAccount());
         var password = request.getPassword();
         if (StringUtils.isBlank(account)) {
+            logger.error("[{}] 账号为空", session.getSid());
             //传递过来的账号不对
             //信息传递给客户端
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_password.toString()));
