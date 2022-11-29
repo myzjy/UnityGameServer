@@ -1,7 +1,6 @@
 package com.gameServer.singleServer.register.controller;
 
 import com.gameServer.commonRefush.constant.I18nEnum;
-import com.gameServer.commonRefush.constant.TankDeployEnum;
 import com.gameServer.commonRefush.entity.AccountEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.protocol.register.RegisterRequest;
@@ -17,7 +16,6 @@ import com.zfoo.protocol.util.StringUtils;
 import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -31,8 +29,8 @@ import org.springframework.stereotype.Component;
 public class RegisterController {
 
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
-    @Value("${spring.profiles.active}")
-    private TankDeployEnum deployEnum;
+//    @Value("${spring.profiles.active}")
+//    private TankDeployEnum deployEnum;
 
     @PacketReceiver
     public void atRegisterRequest(Session session, RegisterRequest request) {
@@ -58,7 +56,7 @@ public class RegisterController {
         //密码长度是否符合要求
         if (password.length() >= 8 && password.length() <= 16) {
             //这个地方可能是显示问题
-            if (password.contains("")) {
+            if (password.contains(" ")) {
                 logger.error("[time:{}][{}]玩家，密码包含空字符，请重新输入", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), account);
                 NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_password_not_have_null.toString()));
                 return;
@@ -78,11 +76,11 @@ public class RegisterController {
             logger.error("[time:{}],[UID{}]数据库中找不到,开始创建新的玩家数据", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), newUID);
             //名字先不取
             accountUser = AccountEntity.valueOf(account, account, password, newUID);
-            logger.info("[time:{}],创建的玩家数据：[{}]", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), accountUser.toString());
+            logger.info("[time:{}],创建的玩家数据：[{}]", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), accountUser);
 
             //插入数据库
             OrmContext.getAccessor().insert(accountUser);
-            logger.info("[time:{}],创建的玩家数据：[{}]成功", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), accountUser.toString());
+            logger.info("[time:{}],创建的玩家数据：[{}]成功", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), accountUser);
         }
 
 
