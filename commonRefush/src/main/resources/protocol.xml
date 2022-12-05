@@ -24,6 +24,8 @@
         <protocol id="1004" location="com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest"/>
         <protocol id="1005" location="com.gameServer.commonRefush.protocol.register.RegisterRequest"/>
         <protocol id="1006" location="com.gameServer.commonRefush.protocol.register.RegisterResponse"/>
+        <protocol id="1007" location="com.gameServer.commonRefush.protocol.bag.AllBagItemRequest"/>
+        <protocol id="1008" location="com.gameServer.commonRefush.protocol.bag.AllBagItemResponse"/>
 
     </module>
     <module id="3" name="common" minId="100" maxId="200">
