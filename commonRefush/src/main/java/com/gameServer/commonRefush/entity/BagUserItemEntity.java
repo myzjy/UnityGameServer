@@ -28,7 +28,6 @@ public class BagUserItemEntity implements IEntity<Integer> {
      * @
      */
     private long masterUserId;
-
     /**
      * 道具的数量
      *
@@ -36,6 +35,67 @@ public class BagUserItemEntity implements IEntity<Integer> {
      * @version 1.0
      */
     private int nowItemNum;
+    /**
+     * 道具id
+     *
+     * @author zjy
+     * @version 1.0
+     */
+    private int itemId;
+
+    public static BagUserItemEntity ValueOf(int _id, int itemId, int masterUserId, int nowItemNum) {
+        BagUserItemEntity bagUserItem = new BagUserItemEntity();
+        return bagUserItem;
+    }
+
+    /**
+     * @return 返回当前道具所属玩家
+     * @author zjy
+     * @version 1.0
+     */
+    public long getMasterUserId() {
+        return masterUserId;
+    }
+
+    /**
+     * 设置当前背包道具所属玩家
+     *
+     * @param masterUserId 赋值玩家id
+     * @author zjy
+     * @version 1.0
+     */
+    public void setMasterUserId(long masterUserId) {
+        this.masterUserId = masterUserId;
+    }
+
+    /**
+     * @return 返回当前背包道具数量
+     * @author zjy
+     * @version 1.0
+     */
+    public int getNowItemNum() {
+        return nowItemNum;
+    }
+
+    /**
+     * 设置当前背包道具数量
+     *
+     * @param nowItemNum 数量
+     * @author zjy
+     * @version 1.0
+     */
+    public void setNowItemNum(int nowItemNum) {
+        this.nowItemNum = nowItemNum;
+    }
+
+    /**
+     * @return 返回当前背包道具 id
+     * @author zjy
+     * @version 1.0
+     */
+    public int getItemId() {
+        return itemId;
+    }
 
 
     @Override
@@ -58,10 +118,36 @@ public class BagUserItemEntity implements IEntity<Integer> {
         return IEntity.super.empty();
     }
 
+    /**
+     * 设置当前背包道具id
+     *
+     * @param itemId 数量
+     * @author zjy
+     * @version 1.0
+     */
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
+    }
+
+    /**
+     * 目前来说返回类型先设定成int
+     * 数据长度后续不够在换其他类型
+     *
+     * @return 返回当前背包道具 唯一id
+     * @author zjy
+     * @version 1.0
+     */
     public int get_id() {
         return _id;
     }
 
+    /**
+     * 设置当前背包道具id
+     *
+     * @param _id 唯一id
+     * @author zjy
+     * @version 1.0
+     */
     public void set_id(int _id) {
         this._id = _id;
     }
