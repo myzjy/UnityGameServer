@@ -17,6 +17,8 @@ public class BagItemEntity implements IEntity<Integer> {
     private int minNum;
     private int type;
     private String _name;
+    private long uid;
+
 
     public static BagItemEntity valueOf(BagItem item) {
         BagItemEntity value = new BagItemEntity();
@@ -26,6 +28,7 @@ public class BagItemEntity implements IEntity<Integer> {
         value.setType(item.getType());
         value.setMaxNum(item.getMaxNum());
         value.setMinNum(item.getMinNum());
+//        value.setUid();
         return value;
     }
 
@@ -82,4 +85,11 @@ public class BagItemEntity implements IEntity<Integer> {
         return this._id;
     }
 
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
 }
