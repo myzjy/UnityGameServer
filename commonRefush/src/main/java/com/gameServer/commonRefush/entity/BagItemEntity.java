@@ -1,6 +1,5 @@
 package com.gameServer.commonRefush.entity;
 
-import com.gameServer.commonRefush.resource.BagItem;
 import com.zfoo.orm.model.entity.IEntity;
 import com.zfoo.storage.model.anno.Id;
 
@@ -19,18 +18,6 @@ public class BagItemEntity implements IEntity<Integer> {
     private String _name;
     private long uid;
 
-
-    public static BagItemEntity valueOf(BagItem item) {
-        BagItemEntity value = new BagItemEntity();
-        value.set_id(item.get_id());
-        value.set_introduce(item.get_introduce());
-        value.set_name(item.get_name());
-        value.setType(item.getType());
-        value.setMaxNum(item.getMaxNum());
-        value.setMinNum(item.getMinNum());
-//        value.setUid();
-        return value;
-    }
 
     public int get_id() {
         return _id;

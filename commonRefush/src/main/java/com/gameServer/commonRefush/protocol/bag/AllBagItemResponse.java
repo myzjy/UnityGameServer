@@ -10,6 +10,6 @@ import com.zfoo.protocol.IPacket;
  * @since 2022/12/5 22:27
  */
 public class AllBagItemResponse implements IPacket {
-    public static final transient short PROTOCOL_ID = 1007;
+    public static final transient short PROTOCOL_ID = 1008;
 
 }

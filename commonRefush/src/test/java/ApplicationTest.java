@@ -16,6 +16,6 @@ public class ApplicationTest {
     @Test
     public void ApplyDataMain() {
         BagTest _bag = new BagTest();
-        _bag.BagTest();
+//        _bag.BagTest();
     }
 }

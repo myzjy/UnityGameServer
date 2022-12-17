@@ -24,6 +24,7 @@ public class Application {
         var context = new ClassPathXmlApplicationContext("application.xml");
         context.registerShutdownHook();
         context.publishEvent(new AppStartEvent(context));
+
         //webSocket服务器
         var websocketServer = new JsonWebsocketServer(HostAndPort.valueOf(NetUtils.getLocalhostStr(), WEBSOCKET_SERVER_PORT));
         websocketServer.start();
