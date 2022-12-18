@@ -1,6 +1,9 @@
 package com.gameServer.commonRefush.protocol.serverConfig;
 
+import com.gameServer.commonRefush.entity.BagItemEntity;
 import com.zfoo.protocol.IPacket;
+
+import java.util.List;
 
 /**
  * 获取基础配置表
@@ -11,9 +14,20 @@ import com.zfoo.protocol.IPacket;
  */
 public class ServerConfigResponse implements IPacket {
     public static final transient short PROTOCOL_ID = 1010;
+    /**
+     * 背包基础类list
+     */
+    public List<BagItemEntity> bagItemEntityList;
 
     @Override
     public short protocolId() {
         return PROTOCOL_ID;
     }
+
+    public static ServerConfigResponse ValueOf(List<BagItemEntity> bagItemEntityList) {
+        ServerConfigResponse value = new ServerConfigResponse();
+        value.bagItemEntityList = bagItemEntityList;
+        return value;
+    }
+
 }
