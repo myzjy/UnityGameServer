@@ -89,15 +89,17 @@ public class LoginController {
                     NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
                     return;
                 }
+                session.setUid(user.getId());
                 if (user.getToken() == null) {
                     var token = TokenUtils.set(user.getId());
-                    logger.info("[{}][{}]", user.getId(), token);
-
+                    logger.info("[当前 uid:{}][新token：{}]", user.getId(), token);
                     user.setToken(token);
                 } else {
                     var tokenTriple = TokenUtils.get(user.getToken());
                     var expirationTimeLong = tokenTriple.getRight();
                     var nowLong = TimeUtils.now();
+                    logger.info("当前token：{},[当前uid：{}],[当前sid：{}]", tokenTriple, session.getUid(), session.getSid());
+                    logger.info("[expirationTimeLong:{}],[nowLog:{}][当前token是否过期：{}]", TimeUtils.timeToString(expirationTimeLong), TimeUtils.timeToString(nowLong), nowLong > expirationTimeLong);
                     if (nowLong > expirationTimeLong) {
                         //代表过时的token
                         var token = TokenUtils.set(user.getId());

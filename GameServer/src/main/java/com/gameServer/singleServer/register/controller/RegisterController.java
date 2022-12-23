@@ -29,8 +29,6 @@ import org.springframework.stereotype.Component;
 public class RegisterController {
 
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
-//    @Value("${spring.profiles.active}")
-//    private TankDeployEnum deployEnum;
 
     @PacketReceiver
     public void atRegisterRequest(Session session, RegisterRequest request) {
@@ -70,6 +68,7 @@ public class RegisterController {
         //创建账号 往数据库里保存
         //没找到 生成新的uid uid只会在创建角色了会出现
         var newUID = MongoIdUtils.getIncrementIdFromMongoDefault(PlayerUserEntity.class) + 10000000;
+        logger.info("[UID:{}],[{sid:{}}]", newUID, session.getSid());
         var user = OrmContext.getAccessor().load(newUID, PlayerUserEntity.class);
         //判断当前UID能不能找到对应
         if (user == null) {
@@ -82,7 +81,7 @@ public class RegisterController {
             OrmContext.getAccessor().insert(accountUser);
             logger.info("[time:{}],创建的玩家数据：[{}]成功", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), accountUser);
         }
-
+        session.setUid(newUID);
 
         var token = TokenUtils.set(newUID);
         //用户名字我们先以玩家加uid 赋一个初始值
