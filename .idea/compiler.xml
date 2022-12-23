@@ -6,8 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="gameBoot" />
         <module name="cache" />
         <module name="commonRefush" />
+        <module name="singleServer" />
         <module name="hotswap" />
         <module name="monitor" />
         <module name="orm" />
@@ -17,9 +19,10 @@
         <module name="protocol" />
         <module name="util" />
         <module name="GameServer" />
-        <module name="net" />
-        <module name="event" />
+        <module name="game-room" />
         <module name="boot" />
+        <module name="event" />
+        <module name="net" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
