@@ -1,6 +1,6 @@
 package com.gameServer.commonRefush.entity;
 
-import com.zfoo.net.session.model.Session;
+import com.zfoo.net.session.Session;
 import com.zfoo.orm.model.anno.EntityCache;
 import com.zfoo.orm.model.anno.Id;
 import com.zfoo.orm.model.entity.IEntity;

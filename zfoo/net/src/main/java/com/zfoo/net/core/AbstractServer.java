@@ -24,7 +24,6 @@ import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
-import io.netty.util.concurrent.EventExecutorGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,14 +31,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author jaysunxiao
+ * @author godotg
  * @version 3.0
  */
-public abstract class AbstractServer implements IServer {
+public abstract class AbstractServer<C extends Channel> extends ChannelInitializer<C> implements IServer {
     private static final Logger logger = LoggerFactory.getLogger(AbstractServer.class);
 
     // 所有的服务器都可以在这个列表中取到
-    protected static final List<AbstractServer> allServers = new ArrayList<>(1);
+    protected static final List<AbstractServer<? extends Channel>> allServers = new ArrayList<>(1);
 
     protected String hostAddress;
     protected int port;
@@ -60,14 +59,12 @@ public abstract class AbstractServer implements IServer {
         this.port = host.getPort();
     }
 
-    public abstract ChannelInitializer<? extends Channel> channelChannelInitializer();
-
     @Override
     public void start() {
-        doStart(channelChannelInitializer());
+        doStart();
     }
 
-    protected synchronized void doStart(ChannelInitializer<? extends Channel> channelChannelInitializer) {
+    protected synchronized void doStart() {
         var cpuNum = Runtime.getRuntime().availableProcessors();
         // 一条线程持有一个端口对应的selector，如果我们启动不仅仅是一个服务器端口的话，为了更好的性能需要修改对应的bossGroup数量
         bossGroup = Epoll.isAvailable()
@@ -84,7 +81,7 @@ public abstract class AbstractServer implements IServer {
                 .option(ChannelOption.SO_REUSEADDR, true)
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, new WriteBufferWaterMark(16 * IOUtils.BYTES_PER_KB, 16 * IOUtils.BYTES_PER_MB))
-                .childHandler(channelChannelInitializer);
+                .childHandler(this);
         // 绑定端口，同步等待成功
         // channelFuture = bootstrap.bind(hostAddress, port).sync();
         // 等待服务端监听端口关闭
@@ -122,21 +119,6 @@ public abstract class AbstractServer implements IServer {
                 logger.warn(e.getMessage(), e);
             }
         }
-    }
-
-    public synchronized static void shutdownEventLoopGracefully(EventExecutorGroup executor) {
-        if (executor == null) {
-            return;
-        }
-        try {
-            if (!executor.isTerminated()) {
-                executor.shutdownGracefully();
-            }
-        } catch (Exception e) {
-            logger.error("EventLoop Thread pool [{}] is failed to shutdown! ", executor, e);
-            return;
-        }
-        logger.info("EventLoop Thread pool [{}] shutdown gracefully.", executor);
     }
 
     public synchronized static void shutdownAllServers() {

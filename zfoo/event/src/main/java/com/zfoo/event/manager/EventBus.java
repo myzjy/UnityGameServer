@@ -30,7 +30,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -42,21 +45,98 @@ public abstract class EventBus {
     private static final Logger logger = LoggerFactory.getLogger(EventBus.class);
 
     /**
-     * 线程池的大小. event的线程池比较大
+     * EN: The size of the thread pool. Event's thread pool is often used to do time-consuming operations, so set it a little bigger
+     * CN: 线程池的大小. event的线程池经常用来做一些耗时的操作，所以要设置大一点
      */
     public static final int EXECUTORS_SIZE = Runtime.getRuntime().availableProcessors() * 2;
 
     private static final ExecutorService[] executors = new ExecutorService[EXECUTORS_SIZE];
 
     private static final CopyOnWriteHashMapLongObject<ExecutorService> threadMap = new CopyOnWriteHashMapLongObject<>(EXECUTORS_SIZE);
-
-    private static final Map<Class<? extends IEvent>, List<IEventReceiver>> receiverMap = new HashMap<>();
+    /**
+     * Synchronous event mapping, synchronize observers
+     */
+    private static final Map<Class<? extends IEvent>, List<IEventReceiver>> receiverMapSync = new HashMap<>();
+    /**
+     * Asynchronous event mapping, asynchronous observer
+     */
+    private static final Map<Class<? extends IEvent>, List<IEventReceiver>> receiverMapAsync = new HashMap<>();
 
     static {
         for (int i = 0; i < executors.length; i++) {
             var namedThreadFactory = new EventThreadFactory(i);
             var executor = Executors.newSingleThreadExecutor(namedThreadFactory);
             executors[i] = executor;
+        }
+    }
+
+    /**
+     * Publish the event
+     */
+    public static void submit(IEvent event) {
+        syncSubmit(event);
+        asyncSubmit(event);
+    }
+
+    /**
+     * EN: Synchronously publish an event that runs in the current thread (only receiverMapSync process the event)
+     * CN: 同步抛出一个事件，会在当前线程中运行(只有同步观察者会处理事件)
+     */
+    public static void syncSubmit(IEvent event) {
+        var list = receiverMapSync.get(event.getClass());
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
+        doSubmit(event, list);
+    }
+
+    /**
+     * EN: Asynchronously publish an event, and the event is not processed in the current thread (only receiverMapAsync process the event)
+     * CN: 异步抛出一个事件，事件不在同一个线程中处理(只有异步观察者会处理事件)
+     */
+    public static void asyncSubmit(IEvent event) {
+        var list = receiverMapAsync.get(event.getClass());
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
+
+        executors[Math.abs(event.threadId() % EXECUTORS_SIZE)].execute(() -> doSubmit(event, list));
+    }
+
+    /**
+     * Use the event thread specified by the hashcode to execute the task
+     */
+    public static void execute(int hashcode, Runnable runnable) {
+        executors[Math.abs(hashcode % EXECUTORS_SIZE)].execute(SafeRunnable.valueOf(runnable));
+    }
+
+    public static void asyncExecute(Runnable runnable) {
+        execute(RandomUtils.randomInt(), runnable);
+    }
+
+    /**
+     * The observer executes the method call
+     */
+    private static void doSubmit(IEvent event, List<IEventReceiver> receiverList) {
+        for (var receiver : receiverList) {
+            try {
+                receiver.invoke(event);
+            } catch (Exception e) {
+                logger.error("eventBus unknown exception", e);
+            } catch (Throwable t) {
+                logger.error("eventBus unknown error", t);
+            }
+        }
+    }
+
+    /**
+     * Register the event and its counterpart observer
+     */
+    public static void registerEventReceiver(Class<? extends IEvent> eventType, IEventReceiver receiver, boolean asyncFlag) {
+        if (asyncFlag) {
+            receiverMapAsync.computeIfAbsent(eventType, it -> new LinkedList<>()).add(receiver);
+        } else {
+            receiverMapSync.computeIfAbsent(eventType, it -> new LinkedList<>()).add(receiver);
         }
     }
 
@@ -73,7 +153,7 @@ public abstract class EventBus {
         @Override
         public Thread newThread(Runnable runnable) {
             var threadName = StringUtils.format("event-p{}-t{}", poolNumber + 1, threadNumber.getAndIncrement());
-            var thread = new FastThreadLocalThread(group, runnable, threadName, 0);
+            var thread = new FastThreadLocalThread(group, runnable, threadName);
             thread.setDaemon(false);
             thread.setPriority(Thread.NORM_PRIORITY);
             thread.setUncaughtExceptionHandler((t, e) -> logger.error(t.toString(), e));
@@ -82,73 +162,6 @@ public abstract class EventBus {
             threadMap.put(thread.getId(), executor);
             return thread;
         }
-    }
-
-    /**
-     * 同步抛出一个事件，会在当前线程中运行
-     *
-     * @param event 需要抛出的事件
-     */
-    public static void syncSubmit(IEvent event) {
-        var list = receiverMap.get(event.getClass());
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
-        doSubmit(event, list);
-    }
-
-
-    /**
-     * 异步抛出一个事件，事件不在同一个线程中处理
-     *
-     * @param event 需要抛出的事件
-     */
-    public static void asyncSubmit(IEvent event) {
-        var list = receiverMap.get(event.getClass());
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
-
-        executors[Math.abs(event.threadId() % EXECUTORS_SIZE)].execute(() -> doSubmit(event, list));
-    }
-
-    public static void asyncExecute(Runnable runnable) {
-        execute(RandomUtils.randomInt(), runnable);
-    }
-
-    /**
-     * 用指定线程执行
-     *
-     * @param hashcode
-     * @return
-     */
-    public static void execute(int hashcode, Runnable runnable) {
-        executors[Math.abs(hashcode % EXECUTORS_SIZE)].execute(SafeRunnable.valueOf(runnable));
-    }
-
-    /**
-     * 执行方法调用
-     *
-     * @param event        事件
-     * @param receiverList 所有的观察者
-     */
-    private static void doSubmit(IEvent event, List<IEventReceiver> receiverList) {
-        for (var receiver : receiverList) {
-            try {
-                receiver.invoke(event);
-            } catch (Exception e) {
-                logger.error("eventBus未知exception异常", e);
-            } catch (Throwable t) {
-                logger.error("eventBus未知error异常", t);
-            }
-        }
-    }
-
-    /**
-     * 注册事件及其对应观察者
-     */
-    public static void registerEventReceiver(Class<? extends IEvent> eventType, IEventReceiver receiver) {
-        receiverMap.computeIfAbsent(eventType, it -> new LinkedList<>()).add(receiver);
     }
 
     public static Executor threadExecutor(long currentThreadId) {

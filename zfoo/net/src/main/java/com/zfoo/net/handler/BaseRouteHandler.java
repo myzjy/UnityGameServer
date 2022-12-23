@@ -14,8 +14,8 @@
 package com.zfoo.net.handler;
 
 import com.zfoo.net.NetContext;
-import com.zfoo.net.packet.model.DecodedPacketInfo;
-import com.zfoo.net.session.model.Session;
+import com.zfoo.net.packet.DecodedPacketInfo;
+import com.zfoo.net.session.Session;
 import com.zfoo.net.util.SessionUtils;
 import com.zfoo.protocol.util.StringUtils;
 import io.netty.channel.Channel;
@@ -27,15 +27,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author jaysunxiao
+ * @author godotg
  * @version 3.0
  */
 @ChannelHandler.Sharable
-public class BaseRouteHandler extends ChannelInboundHandlerAdapter {
+public abstract class BaseRouteHandler extends ChannelInboundHandlerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseRouteHandler.class);
 
     public static final AttributeKey<Session> SESSION_KEY = AttributeKey.valueOf("session");
+
 
     public static Session initChannel(Channel channel) {
         var sessionAttr = channel.attr(SESSION_KEY);
@@ -43,10 +44,11 @@ public class BaseRouteHandler extends ChannelInboundHandlerAdapter {
         var setSuccessful = sessionAttr.compareAndSet(null, session);
         if (!setSuccessful) {
             channel.close();
-            throw new RuntimeException(StringUtils.format("无法设置[channel:{}]的session", channel));
+            throw new RuntimeException(StringUtils.format("The properties of the session[channel:{}] cannot be set", channel));
         }
         return session;
     }
+
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {

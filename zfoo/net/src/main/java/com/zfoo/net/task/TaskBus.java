@@ -15,9 +15,6 @@ package com.zfoo.net.task;
 
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
-import com.zfoo.net.task.dispatcher.AbstractTaskDispatch;
-import com.zfoo.net.task.dispatcher.ITaskDispatch;
-import com.zfoo.net.task.model.PacketReceiverTask;
 import com.zfoo.protocol.collection.concurrent.CopyOnWriteHashMapLongObject;
 import com.zfoo.protocol.util.AssertionUtils;
 import com.zfoo.protocol.util.StringUtils;
@@ -29,8 +26,10 @@ import io.netty.util.concurrent.FastThreadLocalThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -46,9 +45,6 @@ public final class TaskBus {
     // 线程池的大小，也可以通过provider thread配置指定
     public static final int EXECUTOR_SIZE;
 
-    private static final ITaskDispatch taskDispatch;
-
-
     /**
      * 使用不同的线程池，让线程池之间实现隔离，互不影响
      */
@@ -58,11 +54,7 @@ public final class TaskBus {
         var localConfig = NetContext.getConfigManager().getLocalConfig();
         var providerConfig = localConfig.getProvider();
 
-        taskDispatch = AbstractTaskDispatch.valueOf(providerConfig == null ? "consistent-hash" : providerConfig.getTaskDispatch());
-
-        EXECUTOR_SIZE = (providerConfig == null || StringUtils.isBlank(providerConfig.getThread()))
-                ? (Runtime.getRuntime().availableProcessors() + 1)
-                : Integer.parseInt(providerConfig.getThread());
+        EXECUTOR_SIZE = (providerConfig == null || StringUtils.isBlank(providerConfig.getThread())) ? (Runtime.getRuntime().availableProcessors() + 1) : Integer.parseInt(providerConfig.getThread());
 
         executors = new ExecutorService[EXECUTOR_SIZE];
         for (int i = 0; i < executors.length; i++) {
@@ -74,59 +66,63 @@ public final class TaskBus {
 
     private static final CopyOnWriteHashMapLongObject<ExecutorService> threadMap = new CopyOnWriteHashMapLongObject<>(EXECUTOR_SIZE);
 
-    public static class TaskThreadFactory implements ThreadFactory {
-        private final int poolNumber;
-        private final AtomicInteger threadNumber = new AtomicInteger(1);
-        private final ThreadGroup group;
-
-        public TaskThreadFactory(int poolNumber) {
-            this.group = ThreadUtils.currentThreadGroup();
-            this.poolNumber = poolNumber;
-        }
-
-        @Override
-        public Thread newThread(Runnable runnable) {
-            var threadName = StringUtils.format("task-p{}-t{}", poolNumber + 1, threadNumber.getAndIncrement());
-            var thread = new FastThreadLocalThread(group, runnable, threadName, 0);
-            thread.setDaemon(false);
-            thread.setPriority(Thread.NORM_PRIORITY);
-            thread.setUncaughtExceptionHandler((t, e) -> logger.error(t.toString(), e));
-            var executor = executors[poolNumber];
-            AssertionUtils.notNull(executor);
-            threadMap.put(thread.getId(), executor);
-            return thread;
-        }
-    }
-
     /**
-     * Actor模型，最主要的就是线程模型，Actor模型保证了某个Actor所代表的任务永远不会同时在两条线程同时处理任务，这就就避免了并发。
+     * Actor模型，最主要的就是线程模型，Actor模型保证了某个Actor所代表的任务永远不会同时在两条线程同时处理任务，这就避免了并发。
      * 无论是Java，Kotlin，Scala都没有真正的协程，所以最终做到Actor模型的只能是细致的控制线程。
      * <p>
      * zfoo中通过对线程池的细粒度控制，从而实现了Actor模型。
      * 为了简单，可以把Actor可以理解为一个用户或者一个玩家。
-     * 因为同一个用户或者玩家的uid是固定的，通过uid去计算一致性hash（executorConsistentHash）永远会得到一致的结果，
-     * 从而保证同一个用户或者玩家的请求总能通过executorConsistentHash被路由到同一台服务器的同一个线程去执行，从而避免了并发，实现了无锁化。
+     * 因为同一个用户或者玩家的uid是固定的，通过uid去计算一致性hash（taskExecutorHash）永远会得到一致的结果，
+     * 从而保证同一个用户或者玩家的请求总能通过taskExecutorHash被路由到同一台服务器的同一个线程去执行，从而避免了并发，实现了无锁化。
      * <p>
-     * zfoo所代表的Actor模型，是更加精简的Actor模型，让上层调用无感知，在zfoo中可以简单的理解 actor = executorConsistentHash。
+     * zfoo所代表的Actor模型，是更加精简的Actor模型，让上层调用无感知，在zfoo中可以简单的理解 actor = taskExecutorHash。
      * <p>
      * 在zfoo这套线程模型中，保证了服务器所接收到的Packet（最终被包装成PacketReceiverTask任务），永远只会在同一条线程处理，
-     * TaskBus通过AbstractTaskDispatch去派发PacketReceiverTask任务，具体在哪个线程处理通过IAttachment的executorConsistentHash计算。
+     * TaskBus通过AbstractTaskDispatch去派发PacketReceiverTask任务，具体在哪个线程处理通过IAttachment的taskExecutorHash计算。
      * <p>
-     * IAttachment的不同，executorConsistentHash也不同：
-     * GatewayAttachment：默认是executorConsistentHash等于用户活玩家的uid，也可以通过IGatewayLoadBalancer接口指定
-     * SignalAttachment：executorConsistentHash通过IRouter和IConsumer的argument参数指定
+     * IAttachment的不同，taskExecutorHash也不同：
+     * GatewayAttachment：默认是taskExecutorHash等于用户活玩家的uid，也可以通过IGatewayLoadBalancer接口指定
+     * SignalAttachment：taskExecutorHash通过IRouter和IConsumer的argument参数指定
      */
-    public static void submit(PacketReceiverTask task) {
-        // 里面会看到是：其中一致性hash是根据附加包记录的hashId进行选择哪个线程进行业务处理
-        taskDispatch.getExecutor(executors, task).execute(task);
+    public static void dispatch(PacketReceiverTask task) {
+        var attachment = task.getAttachment();
+
+        if (attachment == null) {
+            var session = task.getSession();
+            var uid = session.getUid();
+            if (uid <= 0) {
+                execute((int) session.getSid(), task);
+            } else {
+                execute(uid, task);
+            }
+        } else {
+            execute(attachment.taskExecutorHash(), task);
+        }
     }
 
-    public static int executorIndex(int executorConsistentHash) {
-        return Math.abs(executorConsistentHash % EXECUTOR_SIZE);
+    public static int calTaskExecutorHash(int taskExecutorHash) {
+        // Other hash algorithms can be customized to make the distribution more uniform
+        return Math.abs(taskExecutorHash) % EXECUTOR_SIZE;
     }
 
-    public static void execute(int executorConsistentHash, Runnable runnable) {
-        executors[executorIndex(executorConsistentHash)].execute(SafeRunnable.valueOf(runnable));
+    public static int calTaskExecutorHash(Object argument) {
+        var hash = 0;
+        if (argument == null) {
+            hash = RandomUtils.randomInt();
+        } else if (argument instanceof Number) {
+            hash = ((Number) argument).intValue();
+        } else {
+            hash = argument.hashCode();
+        }
+        return calTaskExecutorHash(hash);
+    }
+
+    public static void execute(int taskExecutorHash, Runnable runnable) {
+        executors[calTaskExecutorHash(taskExecutorHash)].execute(SafeRunnable.valueOf(runnable));
+    }
+
+    public static void execute(Object argument, Runnable runnable) {
+        execute(calTaskExecutorHash(argument), runnable);
     }
 
     // 在task，event，scheduler线程执行的异步请求，请求成功过后依然在相同的线程执行回调任务
@@ -147,7 +143,31 @@ public final class TaskBus {
             return schedulerExecutor;
         }
 
-        return executors[executorIndex(RandomUtils.randomInt())];
+        return executors[calTaskExecutorHash(RandomUtils.randomInt())];
+    }
+
+    public static class TaskThreadFactory implements ThreadFactory {
+        private final int poolNumber;
+        private final AtomicInteger threadNumber = new AtomicInteger(1);
+        private final ThreadGroup group;
+
+        public TaskThreadFactory(int poolNumber) {
+            this.group = ThreadUtils.currentThreadGroup();
+            this.poolNumber = poolNumber;
+        }
+
+        @Override
+        public Thread newThread(Runnable runnable) {
+            var threadName = StringUtils.format("task-p{}-t{}", poolNumber + 1, threadNumber.getAndIncrement());
+            var thread = new FastThreadLocalThread(group, runnable, threadName);
+            thread.setDaemon(false);
+            thread.setPriority(Thread.NORM_PRIORITY);
+            thread.setUncaughtExceptionHandler((t, e) -> logger.error(t.toString(), e));
+            var executor = executors[poolNumber];
+            AssertionUtils.notNull(executor);
+            threadMap.put(thread.getId(), executor);
+            return thread;
+        }
     }
 
 }

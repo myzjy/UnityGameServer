@@ -16,8 +16,7 @@ import com.zfoo.net.packet.common.Error;
 import com.zfoo.net.packet.common.Ping;
 import com.zfoo.net.packet.common.Pong;
 import com.zfoo.net.router.receiver.PacketReceiver;
-import com.zfoo.net.session.model.AttributeType;
-import com.zfoo.net.session.model.Session;
+import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.orm.cache.IEntityCaches;
 import com.zfoo.orm.model.anno.EntityCachesInjection;
@@ -129,7 +128,7 @@ public class LoginController {
             var uid = accountUser.getUid();
 
             logger.info("[{}][{}]玩家登录[account:{}][password:{}]", uid, sid, account, password);
-            session.putAttribute(AttributeType.UID, accountUser.getUid());
+            session.setUid(accountUser.getUid());
             //之前插入过数据库，现在是获取
             var player = UserModelDict.load(uid);
             player.setLastLoginTime(TimeUtils.now());
@@ -138,7 +137,7 @@ public class LoginController {
             player.sid = sid;
             player.session = session;
             //消息发送？
-            session.putAttribute(AttributeType.UID, uid);
+            session.setUid(uid);
 
             //更新
             UserModelDict.update(player);
@@ -173,7 +172,7 @@ public class LoginController {
         // 设置session
         player.sid = sid;
         player.session = session;
-        session.putAttribute(AttributeType.UID, uid);
+        session.setUid(uid);
         if (userEntity == null) {
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_user_orm_no_uid.toString()));
             logger.info("[{}][{}]玩家信息不存在与数据库有中，token:[{}]", uid, sid, token);
@@ -187,7 +186,7 @@ public class LoginController {
     @PacketReceiver
     public void atLogoutRequest(Session session, LogoutRequest request) {
         //拿到uid
-        var uid = (long) session.getAttribute(AttributeType.UID);
+        var uid = session.getUid();
         var sid = session.getSid();
         logger.info("[{}][{}]玩家退出游戏", uid, sid);
 

@@ -19,39 +19,40 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 附加包对业务层透明，禁止在业务层使用
- *
- * @author jaysunxiao
+ * @author godotg
  * @version 3.0
  */
 public class SignalAttachment implements IAttachment {
 
-    public static final transient short PROTOCOL_ID = 0;
+    public static final short PROTOCOL_ID = 0;
 
     public static final AtomicInteger ATOMIC_ID = new AtomicInteger(0);
 
     /**
-     * 唯一标识一个packet， 唯一表示一个Attachment，hashcode() and equals() 也通过signalId计算
+     * EN:Unique identification of a packet, unique representation of an attachment, hashcode() and equals() equals signalId value
+     * CN:唯一标识一个packet， 唯一表示一个Attachment，hashcode() and equals() 等于signalId
      */
     private int signalId = ATOMIC_ID.incrementAndGet();
 
     /**
-     * 用来在TaskBus中计算一致性hash的参数
+     * EN:The parameter used to calculate the hash in TaskBus to determine which thread the task is executed on
+     * CN:用来在TaskBus中计算hash的参数，用来决定任务在哪一条线程执行
      */
-    private int executorConsistentHash = -1;
+    private int taskExecutorHash = -1;
 
     /**
-     * true为客户端，false为服务端
+     * true for the client, false for the server
      */
     private boolean client = true;
 
     /**
-     * 客户端发送的时间
+     * The time the client sent it
      */
     private transient long timestamp = TimeUtils.now();
 
     /**
-     * 客户端收到服务器回复的时候回调的方法
+     * EN:The method of callback when the client receives a reply from the server
+     * CN:客户端收到服务器回复的时候回调的方法
      */
     private transient CompletableFuture<IPacket> responseFuture = new CompletableFuture<>();
 
@@ -65,8 +66,8 @@ public class SignalAttachment implements IAttachment {
     }
 
     @Override
-    public int executorConsistentHash() {
-        return executorConsistentHash;
+    public int taskExecutorHash() {
+        return taskExecutorHash;
     }
 
     public long getTimestamp() {
@@ -108,12 +109,12 @@ public class SignalAttachment implements IAttachment {
         this.signalId = signalId;
     }
 
-    public int getExecutorConsistentHash() {
-        return executorConsistentHash;
+    public int getTaskExecutorHash() {
+        return taskExecutorHash;
     }
 
-    public void setExecutorConsistentHash(int executorConsistentHash) {
-        this.executorConsistentHash = executorConsistentHash;
+    public void setTaskExecutorHash(int taskExecutorHash) {
+        this.taskExecutorHash = taskExecutorHash;
     }
 
     public boolean isClient() {

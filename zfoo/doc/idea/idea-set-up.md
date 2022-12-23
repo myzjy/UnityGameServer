@@ -32,6 +32,17 @@ git config --global https.proxy https://127.0.0.1:10809
 git config --global core.autocrlf input
 ```
 
+- google translate设置
+
+```
+direct -> domain:zfoo.net
+
+新增proxy
+proxy -> 
+ranslate.googleapis.com, 
+ranslate.google.com
+```
+
 ## 3. nodejs安装
 
 - 直接默认安装
@@ -136,8 +147,7 @@ Line separator，Unix and MacOs （\n）
 
 ```
 /**
- * @author jaysunxiao
- * @version 3.0
+ * @author godotg
  */
 ```
 
@@ -162,6 +172,8 @@ See the License for the specific language governing permissions and limitations 
 
 - maven代理设置（非全局），-DproxySet=true -DproxyHost=127.0.0.1 -DproxyPort=10809
   ![Image text](../image/idea/idea-proxy-maven.jpg)
+
+- 设置自动下载源代码，将上图的sources，documentation，annotations勾上
 
 ## 6 使用Idea默认的快捷键设置
 
