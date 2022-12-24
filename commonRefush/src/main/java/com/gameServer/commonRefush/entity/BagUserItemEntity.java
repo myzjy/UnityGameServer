@@ -151,4 +151,14 @@ public class BagUserItemEntity implements IEntity<Integer> {
     public void set_id(int _id) {
         this._id = _id;
     }
+
+    @Override
+    public String toString() {
+        return "BagUserItemEntity{" +
+                "_id=" + _id +
+                ", masterUserId=" + masterUserId +
+                ", nowItemNum=" + nowItemNum +
+                ", itemId=" + itemId +
+                '}';
+    }
 }
