@@ -57,7 +57,8 @@ public class BagController {
                 bagUserItemEntities.add(i);
             });
             logger.info("[uid:{}][当前背包里面count:{}]", session.getUid(), bagUserItemEntities.size());
-            NetContext.getRouter().send(event.getSession(), new AllBagItemResponse());
+            //推送发送
+            NetContext.getRouter().send(event.getSession(), AllBagItemResponse.ValueOf(bagUserItemEntities));
         });
 
 
