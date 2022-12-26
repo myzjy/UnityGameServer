@@ -142,10 +142,16 @@ public class LoginController {
 
             //获取的玩家 uid小于0
             if (player.getId() <= 0) {
+                logger.error("[玩家当前uid:{}][sid：{}],错误值，请检查", player.getId(), session.getSid());
                 NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
                 return;
             }
-            EventBus.asyncSubmit(StartLoginBagEvent.ValueOf(session));
+            /* *
+             * 是否走完创建角色流程之后重新登录
+             * */
+            if (!StringUtils.isEmpty(player.getName())) {
+                EventBus.asyncSubmit(StartLoginBagEvent.ValueOf(session));
+            }
             //返回数据
             NetContext.getRouter().send(session, LoginResponse.valueOf(player.getToken(), player.getName(), player.id()));
         });

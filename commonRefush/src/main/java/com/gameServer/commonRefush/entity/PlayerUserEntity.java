@@ -38,6 +38,19 @@ public class PlayerUserEntity implements IEntity<Long> {
     private long registerTime;
 
     /**
+     * 金币
+     */
+    private long goldNum;
+    /**
+     * 付费钻石 一般充值才有，付费钻石转换成普通钻石
+     */
+    private long PremiumDiamondNum;
+    /**
+     * 普通钻石 由付费钻石转换成普通钻石，比例为 1:1
+     */
+    private long DiamondNum;
+
+    /**
      * 玩家数据结构
      *
      * @param id            userId
@@ -45,14 +58,17 @@ public class PlayerUserEntity implements IEntity<Long> {
      * @param lastLoginTime 上次登录时间
      * @param registerTime  注册时间
      */
-    public static PlayerUserEntity valueOf(long id, String name, long lastLoginTime, long registerTime) {
+    public static PlayerUserEntity valueOf(long id, String name, long lastLoginTime, long registerTime, String token, long goldNum, long premiumDiamondNum, long diamondNum) {
         var entity = new PlayerUserEntity();
 
         entity.id = id;
         entity.name = name;
         entity.lastLoginTime = lastLoginTime;
         entity.registerTime = registerTime;
-
+        entity.setToken(token);
+        entity.goldNum = goldNum;
+        entity.PremiumDiamondNum = premiumDiamondNum;
+        entity.DiamondNum = diamondNum;
         return entity;
     }
 
@@ -137,19 +153,32 @@ public class PlayerUserEntity implements IEntity<Long> {
         Token = token;
     }
 
+    public long getGoldNum() {
+        return goldNum;
+    }
 
+    public void setGoldNum(long goldNum) {
+        this.goldNum = goldNum;
+    }
+
+    public long getPremiumDiamondNum() {
+        return PremiumDiamondNum;
+    }
+
+    public void setPremiumDiamondNum(long premiumDiamondNum) {
+        PremiumDiamondNum = premiumDiamondNum;
+    }
+
+    public long getDiamondNum() {
+        return DiamondNum;
+    }
+
+    public void setDiamondNum(long diamondNum) {
+        DiamondNum = diamondNum;
+    }
 
     @Override
     public String toString() {
-        return "UserEntity{" +
-                "sid=" + sid +
-                ", session=" + session +
-                ", id=" + id +
-                ", vs=" + vs +
-                ", Token='" + Token + '\'' +
-                ", name='" + name + '\'' +
-                ", lastLoginTime=" + lastLoginTime +
-                ", registerTime=" + registerTime +
-                '}';
+        return "UserEntity{" + "sid=" + sid + ", session=" + session + ", id=" + id + ", vs=" + vs + ", Token='" + Token + '\'' + ", name='" + name + '\'' + ", lastLoginTime=" + lastLoginTime + ", registerTime=" + registerTime + '}';
     }
 }
