@@ -4,7 +4,6 @@ import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.constant.TankDeployEnum;
 import com.gameServer.commonRefush.entity.AccountEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
-import com.gameServer.commonRefush.event.bag.StartLoginBagEvent;
 import com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest;
 import com.gameServer.commonRefush.protocol.login.LoginRequest;
 import com.gameServer.commonRefush.protocol.login.LoginResponse;
@@ -146,12 +145,7 @@ public class LoginController {
                 NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
                 return;
             }
-            /* *
-             * 是否走完创建角色流程之后重新登录
-             * */
-            if (!StringUtils.isEmpty(player.getName())) {
-                EventBus.asyncSubmit(StartLoginBagEvent.ValueOf(session));
-            }
+//            EventBus.asyncSubmit(StartLoginBagEvent.ValueOf(session));
             //返回数据
             NetContext.getRouter().send(session, LoginResponse.valueOf(player.getToken(), player.getName(), player.id()));
         });
@@ -161,8 +155,8 @@ public class LoginController {
     public void atGetPlayerInfoRequest(Session session, GetPlayerInfoRequest request) {
         var token = request.getToken();
         if (StringUtils.isBlank(token)) {
+            logger.info("[sid:{}]token传递空值，token:[{}]", session.getSid(), token);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_protocol_param.toString()));
-            logger.info("[{}]token传递空值，token:[{}]", session.getSid(), token);
             return;
         }
         //解析token

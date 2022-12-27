@@ -1,6 +1,6 @@
 package com.gameServer.commonRefush.protocol.serverConfig;
 
-import com.gameServer.commonRefush.entity.BagItemEntity;
+import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
 import com.zfoo.protocol.IPacket;
 
 import java.util.List;
@@ -17,14 +17,14 @@ public class ServerConfigResponse implements IPacket {
     /**
      * 背包基础类list
      */
-    public List<BagItemEntity> bagItemEntityList;
+    public List<ItemBaseCsvResource> bagItemEntityList;
 
     @Override
     public short protocolId() {
         return PROTOCOL_ID;
     }
 
-    public static ServerConfigResponse ValueOf(List<BagItemEntity> bagItemEntityList) {
+    public static ServerConfigResponse ValueOf(List<ItemBaseCsvResource> bagItemEntityList) {
         ServerConfigResponse value = new ServerConfigResponse();
         value.bagItemEntityList = bagItemEntityList;
         return value;
