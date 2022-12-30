@@ -7,35 +7,41 @@ using ZJYFrameWork.Spring.Utils;
 namespace ZJYFrameWork.Net.CsProtocol
 {
     
-    public class AllBagItemResponse : IPacket
+    public class BagUserItemData : IPacket
     {
-        public List<BagUserItemData> list;
+        public int _id;
+        public long masterUserId;
+        public int nowItemNum;
+        public int itemId;
 
-        public static AllBagItemResponse ValueOf(List<BagUserItemData> list)
+        public static BagUserItemData ValueOf(int _id, int itemId, long masterUserId, int nowItemNum)
         {
-            var packet = new AllBagItemResponse();
-            packet.list = list;
+            var packet = new BagUserItemData();
+            packet._id = _id;
+            packet.itemId = itemId;
+            packet.masterUserId = masterUserId;
+            packet.nowItemNum = nowItemNum;
             return packet;
         }
 
 
         public short ProtocolId()
         {
-            return 1008;
+            return 200;
         }
     }
 
 
-    public class AllBagItemResponseRegistration : IProtocolRegistration
+    public class BagUserItemDataRegistration : IProtocolRegistration
     {
         public short ProtocolId()
         {
-            return 1008;
+            return 200;
         }
 
         public void Write(ByteBuffer buffer, IPacket packet)
         {
-            AllBagItemResponse message = (AllBagItemResponse) packet;
+            BagUserItemData message = (BagUserItemData) packet;
             var _message = new ServerMessageWrite(message.ProtocolId(), message);
             var json = JsonConvert.SerializeObject(_message);
             buffer.WriteString(json);
@@ -46,7 +52,10 @@ namespace ZJYFrameWork.Net.CsProtocol
             var json = StringUtils.BytesToString(buffer.ToBytes());
             var dict = JsonConvert.DeserializeObject<Dictionary<object, object>>(json);
             dict.TryGetValue("packet", out var packetJson);
-            var packet = JsonConvert.DeserializeObject<buffer.WritePacketList(message.list, 200);>(packetJson.ToString());
+            var packet = JsonConvert.DeserializeObject<buffer.WriteInt(message._id);
+            buffer.WriteInt(message.itemId);
+            buffer.WriteLong(message.masterUserId);
+            buffer.WriteInt(message.nowItemNum);>(packetJson.ToString());
 
             return packet;
         }

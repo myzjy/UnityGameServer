@@ -30,7 +30,7 @@
         <protocol id="1010" location="com.gameServer.commonRefush.protocol.serverConfig.ServerConfigResponse"/>
 
     </module>
-    <module id="3" name="common" minId="100" maxId="200">
+    <module id="3" name="common" minId="100" maxId="500">
         <protocol id="100" location="com.zfoo.net.packet.common.Message"/>
         <protocol id="101" location="com.zfoo.net.packet.common.Error"/>
         <protocol id="102" location="com.zfoo.net.packet.common.Heartbeat"/>
@@ -43,5 +43,8 @@
         <protocol id="114" location="com.zfoo.net.packet.common.TripleLong"/>
         <protocol id="115" location="com.zfoo.net.packet.common.TripleString"/>
         <protocol id="116" location="com.zfoo.net.packet.common.TripleLSS"/>
+        <protocol id="200" location="com.gameServer.commonRefush.protocol.bag.BagUserItemData"/>
+        <protocol id="201" location="com.gameServer.commonRefush.protocol.serverConfig.ItemBaseData"/>
+
     </module>
 </protocols>

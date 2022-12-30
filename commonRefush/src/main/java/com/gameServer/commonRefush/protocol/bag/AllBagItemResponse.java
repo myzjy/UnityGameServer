@@ -1,6 +1,5 @@
 package com.gameServer.commonRefush.protocol.bag;
 
-import com.gameServer.commonRefush.entity.BagUserItemEntity;
 import com.zfoo.protocol.IPacket;
 
 import java.util.ArrayList;
@@ -16,13 +15,26 @@ import java.util.List;
 public class AllBagItemResponse implements IPacket {
     public static final transient short PROTOCOL_ID = 1008;
 
-    public List<BagUserItemEntity> list;
+    private List<BagUserItemData> list;
 
-    public static AllBagItemResponse ValueOf(List<BagUserItemEntity> list) {
+    public static AllBagItemResponse ValueOf(List<BagUserItemData> list) {
         var value = new AllBagItemResponse();
         value.list = new ArrayList<>();
         value.list.addAll(list);
         return value;
+    }
+
+    @Override
+    public short protocolId() {
+        return PROTOCOL_ID;
+    }
+
+    public List<BagUserItemData> getList() {
+        return list;
+    }
+
+    public void setList(List<BagUserItemData> list) {
+        this.list = list;
     }
 
 }

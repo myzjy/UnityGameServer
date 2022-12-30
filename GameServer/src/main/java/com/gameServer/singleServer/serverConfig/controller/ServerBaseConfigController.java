@@ -1,5 +1,6 @@
 package com.gameServer.singleServer.serverConfig.controller;
 
+import com.gameServer.commonRefush.protocol.serverConfig.ItemBaseData;
 import com.gameServer.commonRefush.protocol.serverConfig.ServerConfigRequest;
 import com.gameServer.commonRefush.protocol.serverConfig.ServerConfigResponse;
 import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
@@ -32,9 +33,10 @@ public class ServerBaseConfigController {
     public void atServerConfigRequest(Session session, ServerConfigRequest request) {
         logger.info("[UID:{}][sid:{}]atServerConfigRequest", session.getUid(), session.getSid());
         logger.info("[UID:{}][sid:{}][itemCsvResources.count{}]", session.getUid(), session.getSid(), itemCsvResources.size());
-        List<ItemBaseCsvResource> bagUserItemEntities = new ArrayList<>();
+        List<ItemBaseData> bagUserItemEntities = new ArrayList<>();
         itemCsvResources.getData().forEach((id, item) -> {
-            bagUserItemEntities.add(item);
+
+            bagUserItemEntities.add(ItemBaseData.ValueOf(item));
         });
         NetContext.getRouter().send(session, ServerConfigResponse.ValueOf(bagUserItemEntities));
     }

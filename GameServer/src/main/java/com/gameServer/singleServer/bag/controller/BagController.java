@@ -4,6 +4,7 @@ import com.gameServer.commonRefush.entity.BagUserItemEntity;
 import com.gameServer.commonRefush.event.bag.StartLoginBagEvent;
 import com.gameServer.commonRefush.protocol.bag.AllBagItemRequest;
 import com.gameServer.commonRefush.protocol.bag.AllBagItemResponse;
+import com.gameServer.commonRefush.protocol.bag.BagUserItemData;
 import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.event.model.anno.EventReceiver;
@@ -46,7 +47,7 @@ public class BagController {
     public void onStartLoginBagEvent(StartLoginBagEvent event) {
         logger.info("onStartLoginBagEvent");
         var session = event.getSession();
-        List<BagUserItemEntity> bagUserItemEntities = new ArrayList<>();
+        List<BagUserItemData> bagUserItemEntities = new ArrayList<>();
         EventBus.asyncExecute(() -> {
             IEntityCaches<? extends Comparable<?>, BagUserItemEntity> items = OrmContext.getOrmManager().getEntityCaches(BagUserItemEntity.class);
             items.forEach((res, i) -> {
@@ -55,7 +56,8 @@ public class BagController {
                 }
                 //打出数据
                 logger.info(i.toString());
-                bagUserItemEntities.add(i);
+                BagUserItemData data = BagUserItemData.ValueOf(i);
+                bagUserItemEntities.add(data);
             });
             logger.info("[uid:{}][当前背包里面count:{}]", session.getUid(), bagUserItemEntities.size());
             //推送发送
