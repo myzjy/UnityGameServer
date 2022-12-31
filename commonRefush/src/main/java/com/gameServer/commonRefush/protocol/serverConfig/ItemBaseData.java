@@ -28,6 +28,13 @@ public class ItemBaseData implements IPacket {
 
     public static ItemBaseData ValueOf(ItemBaseCsvResource csvResource) {
         var data = new ItemBaseData();
+        data.des = csvResource.getDes();
+        data.icon = csvResource.getIcon();
+        data.id = csvResource.getId();
+        data.minNum = csvResource.getMinNum();
+        data.maxNum = csvResource.getMaxNum();
+        data.name = csvResource.getName();
+        data.type = csvResource.getType();
         return data;
     }
 
