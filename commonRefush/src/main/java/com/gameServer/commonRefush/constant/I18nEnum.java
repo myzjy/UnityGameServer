@@ -17,6 +17,7 @@ public enum I18nEnum {
     error_account_already_exists("账号已存在"),
     error_password_length("密码长度不符合要求"),
     error_password_not_have_null("密码包含空格，请重新设置"),
+    error_start_login_not_setuid("请先登录"),
     ;
     private String message;
 

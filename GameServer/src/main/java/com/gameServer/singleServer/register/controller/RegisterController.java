@@ -36,18 +36,18 @@ public class RegisterController {
         var password = request.getPassword();
         var affirmPassword = request.getAffirmPassword();
         if (StringUtils.isBlank(account)) {
-            logger.error("[time:{}][{}]请输入账号", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), account);
+            logger.error("[account:{}]请输入账号", account);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_blank.toString()));
             return;
         }
         if (!password.equals(affirmPassword)) {
-            logger.error("[time:{}][{}]密码和账号不一样", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), account);
+            logger.error("[account:{}]密码和确认密码不一致，[password:{}][affirmPassword:{}]", account, password, affirmPassword);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_password_not_affirm.toString()));
             return;
         }
         var accountUser = OrmContext.getAccessor().load(account, AccountEntity.class);
         if (accountUser != null) {
-            logger.error("[time:{}][{}]玩家账号,在数据库中存在，请重新输入", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), account);
+            logger.error("[account:{}]玩家账号,在数据库中存在，请重新输入", account);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_already_exists.toString()));
             return;
         }
@@ -55,12 +55,12 @@ public class RegisterController {
         if (password.length() >= 8 && password.length() <= 16) {
             //这个地方可能是显示问题
             if (password.contains(" ")) {
-                logger.error("[time:{}][{}]玩家，密码包含空字符，请重新输入", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), account);
+                logger.error("[account:{}]玩家，密码包含空字符，请重新输入,[password:{}]", account, password);
                 NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_password_not_have_null.toString()));
                 return;
             }
         } else {
-            logger.error("[time:{}][{}]玩家，密码长度不符合要求", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), account);
+            logger.error("[account:{}]玩家，密码长度不符合要求,[password:{}]", account, password);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_password_length.toString()));
             return;
         }
@@ -72,23 +72,23 @@ public class RegisterController {
         var user = OrmContext.getAccessor().load(newUID, PlayerUserEntity.class);
         //判断当前UID能不能找到对应
         if (user == null) {
-            logger.error("[time:{}],[UID{}]数据库中找不到,开始创建新的玩家数据", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), newUID);
+            logger.error("[UID:{}]数据库中找不到,开始创建新的玩家数据", newUID);
             //名字先不取
             accountUser = AccountEntity.valueOf(account, account, password, newUID);
-            logger.info("[time:{}],创建的玩家数据：[{}]", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), accountUser);
+            logger.info("创建的玩家数据：[accountUser:{}]", accountUser);
 
             //插入数据库
             OrmContext.getAccessor().insert(accountUser);
-            logger.info("[time:{}],创建的玩家数据：[{}]成功", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), accountUser);
+            logger.info("创建的玩家数据：[accountUser:{}]成功", accountUser);
         }
         session.setUid(newUID);
 
         var token = TokenUtils.set(newUID);
         //用户名字我们先以玩家加uid 赋一个初始值
-        String userName = StringUtils.format("玩家{}", newUID);
+        String userName = StringUtils.format("玩家UID:{}", newUID);
         PlayerUserEntity userEntity = PlayerUserEntity.valueOf(newUID, userName, TimeUtils.now(), TimeUtils.now(), token, 0, 0, 0);
         userEntity.setToken(TokenUtils.set(newUID));
-        logger.info("[time:{}],[Token:{}]", TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), userEntity.getToken());
+        logger.info("[Token:{}]", userEntity.getToken());
         //插入数据了，就代表注册成功了
         OrmContext.getAccessor().insert(userEntity);
         NetContext.getRouter().send(session, RegisterResponse.valueOf(true, "ok"));

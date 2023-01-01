@@ -17,13 +17,17 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @CrossOrigin
+@RequestMapping("/register")
 public class RegisterController {
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
-    @PostMapping(value = "/api/register")
+
+    @RequestMapping(value = "/version", method = RequestMethod.POST)
     @ResponseBody
     public BaseResponse getResVersion(HttpServletRequest request, @RequestBody RegisterDataModelRequest cm) {
-        logger.info("/api/getVersion");
+
+        logger.info("/register/version");
         logger.info(cm.platformId);
+
         return BaseResponse.valueOf(CodeEnum.OK);
     }
 }
