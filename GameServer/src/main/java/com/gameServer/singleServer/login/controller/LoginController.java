@@ -71,7 +71,7 @@ public class LoginController {
             //log
             logger.info("[{}玩家登录]登录时间{}", account, TimeUtils.dateFormatForDayTimeString(TimeUtils.now()));
             if (accountUser == null) {
-                logger.error("[{}玩家登录]登录时间{}[error:{}]", account, TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), I18nEnum.error_account_not_exit.getMessage());
+                logger.error("[account：{}，玩家登录]登录时间{}[error:{}]", account, TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), I18nEnum.error_account_not_exit.getMessage());
 
                 NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
                 return;
@@ -124,7 +124,7 @@ public class LoginController {
             }
             var uid = accountUser.getUid();
 
-            logger.info("[{}][{}]玩家登录[account:{}][password:{}]", uid, sid, account, password);
+            logger.info("[uid：{}][sid：{}]玩家登录[account:{}][password:{}]", uid, sid, account, password);
             session.setUid(accountUser.getUid());
             //之前插入过数据库，现在是获取
             var player = UserModelDict.load(uid);
