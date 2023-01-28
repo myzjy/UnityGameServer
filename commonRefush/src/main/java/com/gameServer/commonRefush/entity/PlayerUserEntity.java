@@ -72,19 +72,19 @@ public class PlayerUserEntity implements IEntity<Long> {
         return entity;
     }
 
-    /**
-     * @param
-     */
-    public static PlayerUserEntity valueOf(long id, String name, long lastLoginTime, long registerTime, String token) {
-        var entity = new PlayerUserEntity();
-
-        entity.id = id;
-        entity.name = name;
-        entity.lastLoginTime = lastLoginTime;
-        entity.registerTime = registerTime;
-        entity.Token = token;
-        return entity;
-    }
+//    /**
+//     * @param
+//     */
+//    public static PlayerUserEntity valueOf(long id, String name, long lastLoginTime, long registerTime, String token) {
+//        var entity = new PlayerUserEntity();
+//
+//        entity.id = id;
+//        entity.name = name;
+//        entity.lastLoginTime = lastLoginTime;
+//        entity.registerTime = registerTime;
+//        entity.Token = token;
+//        return entity;
+//    }
 
     @Override
     public Long id() {

@@ -103,7 +103,7 @@ public class LoginController {
                     }
                 }
                 //覆盖登录时间
-                user = PlayerUserEntity.valueOf(user.getId(), user.getName(), TimeUtils.now(), user.getRegisterTime(), user.getToken());
+                user = PlayerUserEntity.valueOf(user.getId(), user.getName(), TimeUtils.now(), user.getRegisterTime(), user.getToken(), user.getGoldNum(), user.getPremiumDiamondNum(), user.getDiamondNum());
                 logger.info("[{}][{}]新得玩家登录数据[UserData:{}]", user.getId(), sid, user.toString());
                 OrmContext.getAccessor().update(user);
                 logger.info("[{}][{}]数据库刷新成功", user.getId(), sid);
@@ -147,7 +147,7 @@ public class LoginController {
             }
 //            EventBus.asyncSubmit(StartLoginBagEvent.ValueOf(session));
             //返回数据
-            NetContext.getRouter().send(session, LoginResponse.valueOf(player.getToken(), player.getName(), player.id()));
+            NetContext.getRouter().send(session, LoginResponse.valueOf(player.getToken(), player.getName(), player.id(), player.getGoldNum(), player.getPremiumDiamondNum(), player.getDiamondNum()));
         });
     }
 
@@ -178,7 +178,7 @@ public class LoginController {
             return;
         }
 
-        NetContext.getRouter().send(session, LoginResponse.valueOf(token, userEntity.getName(), userEntity.id()));
+        NetContext.getRouter().send(session, LoginResponse.valueOf(token, userEntity.getName(), userEntity.id(), userEntity.getGoldNum(), userEntity.getPremiumDiamondNum(), userEntity.getDiamondNum()));
     }
 
 

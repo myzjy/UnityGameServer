@@ -41,15 +41,55 @@ public class LoginResponse implements IPacket {
     private String userName;
 
     /**
+     * 金币
+     */
+    private long goldNum;
+    /**
+     * 付费钻石 一般充值才有，付费钻石转换成普通钻石
+     */
+    private long PremiumDiamondNum;
+    /**
+     * 普通钻石 由付费钻石转换成普通钻石，比例为 1:1
+     */
+    private long DiamondNum;
+
+    /**
      * 拿到token之后返回出去
-     * */
-    public static LoginResponse valueOf(String token,String userName,long uid) {
+     */
+    public static LoginResponse valueOf(String token, String userName, long uid, long goldNum, long premiumDiamondNum, long diamondNum) {
         var paket = new LoginResponse();
-        paket.token=token;
+        paket.token = token;
         //可能会为，因为没有到玩家取名步骤
-        paket.userName=userName;
-        paket.uid=uid;
+        paket.userName = userName;
+        paket.uid = uid;
+        paket.setGoldNum(goldNum);
+        paket.setPremiumDiamondNum(premiumDiamondNum);
+        paket.setDiamondNum(diamondNum);
         return paket;
+    }
+
+    public long getGoldNum() {
+        return goldNum;
+    }
+
+    public void setGoldNum(long goldNum) {
+        this.goldNum = goldNum;
+    }
+
+    public long getPremiumDiamondNum() {
+        return PremiumDiamondNum;
+    }
+
+    public void setPremiumDiamondNum(long premiumDiamondNum) {
+        PremiumDiamondNum = premiumDiamondNum;
+    }
+
+    public long getDiamondNum() {
+        return DiamondNum;
+    }
+
+    public void setDiamondNum(long diamondNum) {
+        DiamondNum = diamondNum;
     }
 
 
