@@ -12,6 +12,16 @@ import com.zfoo.protocol.IPacket;
 public class AllBagItemRequest implements IPacket {
     public static final transient short PROTOCOL_ID = 1007;
 
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     @Override
     public short protocolId() {
         return PROTOCOL_ID;
