@@ -12,7 +12,6 @@ import com.zfoo.net.NetContext;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
-import com.zfoo.orm.cache.IEntityCaches;
 import com.zfoo.storage.model.anno.ResInjection;
 import com.zfoo.storage.model.vo.Storage;
 import org.slf4j.Logger;
@@ -51,14 +50,16 @@ public class BagController {
         var type = event.getType();
         List<BagUserItemData> bagUserItemEntities = new ArrayList<>();
         EventBus.asyncExecute(() -> {
-            IEntityCaches<? extends Comparable<?>, BagUserItemEntity> items = OrmContext.getOrmManager().getEntityCaches(BagUserItemEntity.class);
-            items.forEach((res, i) -> {
-                if (i.getMasterUserId() != session.getUid()) {
-                    return;
-                }
+//            IEntityCaches<? extends Comparable<?>, BagUserItemEntity> items = OrmContext.getOrmManager().getEntityCaches(BagUserItemEntity.class);
+            //获取到对应玩家道具
+            List<BagUserItemEntity> items = OrmContext.getQuery(BagUserItemEntity.class).eq("masterUserId", session.getUid()).queryAll();
+            items.forEach((res) -> {
                 //打出数据
-                logger.info(i.toString());
-                BagUserItemData data = BagUserItemData.ValueOf(i);
+                logger.info(res.toString());
+                BagUserItemData data = BagUserItemData.ValueOf(res);
+                //查找 对应的 道具
+                var item = itemCsvResources.get(data.getItemId());
+                data.setQuality(item.getQuality());
                 bagUserItemEntities.add(data);
             });
             logger.info("[uid:{}][当前背包里面count:{}]", session.getUid(), bagUserItemEntities.size());

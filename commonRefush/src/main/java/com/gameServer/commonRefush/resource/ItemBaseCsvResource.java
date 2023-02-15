@@ -28,6 +28,16 @@ public class ItemBaseCsvResource {
     private int type;
     private String des;
 
+    private int quality;
+
+    public int getQuality() {
+        return quality;
+    }
+
+    public void setQuality(int quality) {
+        this.quality = quality;
+    }
+
     public int getId() {
         return id;
     }
