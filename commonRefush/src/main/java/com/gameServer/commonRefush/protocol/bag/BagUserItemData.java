@@ -42,14 +42,48 @@ public class BagUserItemData implements IPacket {
      */
     private int itemId;
 
-    public static BagUserItemData ValueOf(int _id, int itemId, int masterUserId, int nowItemNum) {
+
+    /**
+     * 道具 装备 品质
+     *
+     * @author zjy
+     * @version 1.0
+     */
+    private int quality;
+    /**
+     * 是否为新
+     *
+     * @author zjy
+     * @version 1.0
+     */
+    private boolean isNew;
+
+    public static BagUserItemData ValueOf(int _id, int itemId, long masterUserId, int nowItemNum, boolean isNew) {
         BagUserItemData bagUserItem = new BagUserItemData();
+        bagUserItem.set_id(_id);
+        bagUserItem.setMasterUserId(masterUserId);
+        bagUserItem.setItemId(itemId);
+        bagUserItem.setNowItemNum(nowItemNum);
+        bagUserItem.setNew(isNew);
         return bagUserItem;
     }
 
     public static BagUserItemData ValueOf(BagUserItemEntity _entity) {
         BagUserItemData bagUserItem = new BagUserItemData();
+        bagUserItem.set_id(_entity.get_id());
+        bagUserItem.setItemId(_entity.getItemId());
+        bagUserItem.setMasterUserId(_entity.getMasterUserId());
+        bagUserItem.setNowItemNum(_entity.getNowItemNum());
+        bagUserItem.setNew(_entity.isNew());
         return bagUserItem;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
     }
 
     @Override
@@ -144,5 +178,11 @@ public class BagUserItemData implements IPacket {
         this._id = _id;
     }
 
+    public int getQuality() {
+        return quality;
+    }
 
+    public void setQuality(int quality) {
+        this.quality = quality;
+    }
 }

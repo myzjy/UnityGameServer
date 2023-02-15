@@ -47,6 +47,8 @@ public class BagController {
     public void onStartLoginBagEvent(StartLoginBagEvent event) {
         logger.info("onStartLoginBagEvent");
         var session = event.getSession();
+        //根据type去区分
+        var type = event.getType();
         List<BagUserItemData> bagUserItemEntities = new ArrayList<>();
         EventBus.asyncExecute(() -> {
             IEntityCaches<? extends Comparable<?>, BagUserItemEntity> items = OrmContext.getOrmManager().getEntityCaches(BagUserItemEntity.class);

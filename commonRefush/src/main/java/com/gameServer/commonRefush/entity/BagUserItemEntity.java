@@ -43,8 +43,19 @@ public class BagUserItemEntity implements IEntity<Integer> {
      */
     private int itemId;
 
-    public static BagUserItemEntity ValueOf(int _id, int itemId, int masterUserId, int nowItemNum) {
+
+    /**
+     * 当前道具是否
+     */
+    private boolean isNew;
+
+    public static BagUserItemEntity ValueOf(int _id, int itemId, int masterUserId, int nowItemNum, boolean isNew) {
         BagUserItemEntity bagUserItem = new BagUserItemEntity();
+        bagUserItem.set_id(_id);
+        bagUserItem.setItemId(itemId);
+        bagUserItem.setNowItemNum(nowItemNum);
+        bagUserItem.setMasterUserId(masterUserId);
+        bagUserItem.setNew(isNew);
         return bagUserItem;
     }
 
@@ -152,6 +163,29 @@ public class BagUserItemEntity implements IEntity<Integer> {
         this._id = _id;
     }
 
+    /**
+     * 返回道具是是最新获取，
+     * 是否最新被点击过
+     *
+     * @return 返回布尔值
+     * @author zjy
+     * @version 1.0
+     */
+    public boolean isNew() {
+        return isNew;
+    }
+
+    /**
+     * 对道具进行设置
+     *
+     * @param aNew 是否最新
+     * @author zjy
+     * @version 1.0
+     */
+    public void setNew(boolean aNew) {
+        isNew = aNew;
+    }
+
     @Override
     public String toString() {
         return "BagUserItemEntity{" +
@@ -159,6 +193,7 @@ public class BagUserItemEntity implements IEntity<Integer> {
                 ", masterUserId=" + masterUserId +
                 ", nowItemNum=" + nowItemNum +
                 ", itemId=" + itemId +
+                ", isNew=" + isNew +
                 '}';
     }
 }
