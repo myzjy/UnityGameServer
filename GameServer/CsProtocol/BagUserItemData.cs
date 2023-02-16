@@ -13,14 +13,18 @@ namespace ZJYFrameWork.Net.CsProtocol
         public long masterUserId;
         public int nowItemNum;
         public int itemId;
+        public int quality;
+        public bool itemNew;
 
-        public static BagUserItemData ValueOf(int _id, int itemId, long masterUserId, int nowItemNum)
+        public static BagUserItemData ValueOf(int _id, int itemId, bool itemNew, long masterUserId, int nowItemNum, int quality)
         {
             var packet = new BagUserItemData();
             packet._id = _id;
             packet.itemId = itemId;
+            packet.itemNew = itemNew;
             packet.masterUserId = masterUserId;
             packet.nowItemNum = nowItemNum;
+            packet.quality = quality;
             return packet;
         }
 
@@ -54,8 +58,10 @@ namespace ZJYFrameWork.Net.CsProtocol
             dict.TryGetValue("packet", out var packetJson);
             var packet = JsonConvert.DeserializeObject<buffer.WriteInt(message._id);
             buffer.WriteInt(message.itemId);
+            buffer.WriteBool(message.itemNew);
             buffer.WriteLong(message.masterUserId);
-            buffer.WriteInt(message.nowItemNum);>(packetJson.ToString());
+            buffer.WriteInt(message.nowItemNum);
+            buffer.WriteInt(message.quality);>(packetJson.ToString());
 
             return packet;
         }

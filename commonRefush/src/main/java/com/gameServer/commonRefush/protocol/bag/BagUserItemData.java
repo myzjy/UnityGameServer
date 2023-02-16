@@ -50,13 +50,14 @@ public class BagUserItemData implements IPacket {
      * @version 1.0
      */
     private int quality;
+
     /**
      * 是否为新
      *
      * @author zjy
      * @version 1.0
      */
-    private boolean isNew;
+    private boolean itemNew;
 
     public static BagUserItemData ValueOf(int _id, int itemId, long masterUserId, int nowItemNum, boolean isNew) {
         BagUserItemData bagUserItem = new BagUserItemData();
@@ -64,7 +65,7 @@ public class BagUserItemData implements IPacket {
         bagUserItem.setMasterUserId(masterUserId);
         bagUserItem.setItemId(itemId);
         bagUserItem.setNowItemNum(nowItemNum);
-        bagUserItem.setNew(isNew);
+        bagUserItem.setItemNew(isNew);
         return bagUserItem;
     }
 
@@ -74,17 +75,18 @@ public class BagUserItemData implements IPacket {
         bagUserItem.setItemId(_entity.getItemId());
         bagUserItem.setMasterUserId(_entity.getMasterUserId());
         bagUserItem.setNowItemNum(_entity.getNowItemNum());
-        bagUserItem.setNew(_entity.isNew());
+        bagUserItem.setItemNew(_entity.isNew());
         return bagUserItem;
     }
 
-    public boolean isNew() {
-        return isNew;
+    public boolean isItemNew() {
+        return itemNew;
     }
 
-    public void setNew(boolean aNew) {
-        isNew = aNew;
+    public void setItemNew(boolean itemNew) {
+        this.itemNew = itemNew;
     }
+
 
     @Override
     public short protocolId() {

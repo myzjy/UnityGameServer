@@ -29,6 +29,8 @@
         <protocol id="1009" location="com.gameServer.commonRefush.protocol.serverConfig.ServerConfigRequest"/>
         <protocol id="1010" location="com.gameServer.commonRefush.protocol.serverConfig.ServerConfigResponse"/>
         <protocol id="1011" location="com.gameServer.commonRefush.protocol.bag.UseBagItemRequest"/>
+        <protocol id="1012" location="com.gameServer.commonRefush.protocol.login.GetPlayerInfoResponse"/>
+        <protocol id="1013" location="com.gameServer.commonRefush.protocol.login.LoginTapToStartRequest"/>
 
     </module>
     <module id="3" name="common" minId="100" maxId="500">

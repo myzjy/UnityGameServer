@@ -34,9 +34,6 @@ public class ItemBaseCsvResource {
         return quality;
     }
 
-    public void setQuality(int quality) {
-        this.quality = quality;
-    }
 
     public int getId() {
         return id;

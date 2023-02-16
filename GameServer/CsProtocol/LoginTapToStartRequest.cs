@@ -7,35 +7,35 @@ using ZJYFrameWork.Spring.Utils;
 namespace ZJYFrameWork.Net.CsProtocol
 {
     
-    public class AllBagItemRequest : IPacket
+    public class LoginTapToStartRequest : IPacket
     {
-        public int type;
+        
 
-        public static AllBagItemRequest ValueOf(int type)
+        public static LoginTapToStartRequest ValueOf()
         {
-            var packet = new AllBagItemRequest();
-            packet.type = type;
+            var packet = new LoginTapToStartRequest();
+            
             return packet;
         }
 
 
         public short ProtocolId()
         {
-            return 1007;
+            return 1013;
         }
     }
 
 
-    public class AllBagItemRequestRegistration : IProtocolRegistration
+    public class LoginTapToStartRequestRegistration : IProtocolRegistration
     {
         public short ProtocolId()
         {
-            return 1007;
+            return 1013;
         }
 
         public void Write(ByteBuffer buffer, IPacket packet)
         {
-            AllBagItemRequest message = (AllBagItemRequest) packet;
+            LoginTapToStartRequest message = (LoginTapToStartRequest) packet;
             var _message = new ServerMessageWrite(message.ProtocolId(), message);
             var json = JsonConvert.SerializeObject(_message);
             buffer.WriteString(json);
@@ -46,7 +46,7 @@ namespace ZJYFrameWork.Net.CsProtocol
             var json = StringUtils.BytesToString(buffer.ToBytes());
             var dict = JsonConvert.DeserializeObject<Dictionary<object, object>>(json);
             dict.TryGetValue("packet", out var packetJson);
-            var packet = JsonConvert.DeserializeObject<buffer.WriteInt(message.type);>(packetJson.ToString());
+            var packet = JsonConvert.DeserializeObject<>(packetJson.ToString());
 
             return packet;
         }

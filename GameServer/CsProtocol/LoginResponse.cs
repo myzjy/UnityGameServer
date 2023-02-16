@@ -12,10 +12,16 @@ namespace ZJYFrameWork.Net.CsProtocol
         public string token;
         public long uid;
         public string userName;
+        public long goldNum;
+        public long PremiumDiamondNum;
+        public long DiamondNum;
 
-        public static LoginResponse ValueOf(string token, long uid, string userName)
+        public static LoginResponse ValueOf(long DiamondNum, long PremiumDiamondNum, long goldNum, string token, long uid, string userName)
         {
             var packet = new LoginResponse();
+            packet.DiamondNum = DiamondNum;
+            packet.PremiumDiamondNum = PremiumDiamondNum;
+            packet.goldNum = goldNum;
             packet.token = token;
             packet.uid = uid;
             packet.userName = userName;
@@ -50,7 +56,10 @@ namespace ZJYFrameWork.Net.CsProtocol
             var json = StringUtils.BytesToString(buffer.ToBytes());
             var dict = JsonConvert.DeserializeObject<Dictionary<object, object>>(json);
             dict.TryGetValue("packet", out var packetJson);
-            var packet = JsonConvert.DeserializeObject<buffer.WriteString(message.token);
+            var packet = JsonConvert.DeserializeObject<buffer.WriteLong(message.DiamondNum);
+            buffer.WriteLong(message.PremiumDiamondNum);
+            buffer.WriteLong(message.goldNum);
+            buffer.WriteString(message.token);
             buffer.WriteLong(message.uid);
             buffer.WriteString(message.userName);>(packetJson.ToString());
 
