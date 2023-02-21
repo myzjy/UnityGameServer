@@ -5,6 +5,8 @@ import com.zfoo.orm.model.anno.Id;
 import com.zfoo.orm.model.anno.Index;
 import com.zfoo.orm.model.entity.IEntity;
 
+import java.util.Date;
+
 /**
  * @author zjy
  * @version 1.0
@@ -12,23 +14,13 @@ import com.zfoo.orm.model.entity.IEntity;
  */
 @EntityCache
 public class AccessGameTimeEntity implements IEntity<Integer> {
-    /**
-     * @version 1.0
-     * @author zjy
-     */
     @Id
     private int id;
 
 
     @Index(ascending = true, unique = true)
     private int timeID;
-    /**
-     * 服务器关闭或者开启时间
-     *
-     * @version 1.0
-     * @author zjy
-     */
-    private String time;
+    private Date time;
 
     @Override
     public Integer id() {
@@ -43,17 +35,23 @@ public class AccessGameTimeEntity implements IEntity<Integer> {
         this.id = id;
     }
 
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
     /***
      * 设置服务器开始或者关闭时间 ，用于判断 或者显示
      */
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
+    /**
+     * 服务器关闭或者开启时间
+     *
+     * @author zjy
+     * @since 2023/2/17 23:59
+     */
     public int getTimeID() {
         return timeID;
     }
