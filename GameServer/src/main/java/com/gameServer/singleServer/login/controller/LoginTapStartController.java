@@ -39,6 +39,17 @@ public class LoginTapStartController {
         logger.info("=============================================");
         logger.info(TimeUtils.dateToString(Objects.requireNonNull(timeEntityList).getTime()));
         logger.info("=============================================");
-        NetContext.getRouter().send(session, LoginTapToStartResponse.ValueOf("", true));
+        var nowTimeEntity = timeEntityList.getTime().getTime();
+        if (TimeUtils.now() < nowTimeEntity) {
+            logger.info("=============================================");
+            logger.info("[服务器开启] 可以开始链接登录");
+            logger.info("=============================================");
+            NetContext.getRouter().send(session, LoginTapToStartResponse.ValueOf("", true));
+        } else {
+            logger.info("=============================================");
+            logger.info("[关闭服务器时间{}] ", TimeUtils.dateToString(Objects.requireNonNull(timeEntityList).getTime()));
+            logger.info("=============================================");
+            NetContext.getRouter().send(session, LoginTapToStartResponse.ValueOf("服务器已关闭", false));
+        }
     }
 }
