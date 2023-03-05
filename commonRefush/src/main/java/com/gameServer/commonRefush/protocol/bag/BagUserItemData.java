@@ -96,7 +96,6 @@ public class BagUserItemData implements IPacket {
     /**
      * @return 返回当前道具所属玩家
      * @author zjy
-     * @version 1.0
      */
     public long getMasterUserId() {
         return masterUserId;
@@ -107,7 +106,6 @@ public class BagUserItemData implements IPacket {
      *
      * @param masterUserId 赋值玩家id
      * @author zjy
-     * @version 1.0
      */
     public void setMasterUserId(long masterUserId) {
         this.masterUserId = masterUserId;

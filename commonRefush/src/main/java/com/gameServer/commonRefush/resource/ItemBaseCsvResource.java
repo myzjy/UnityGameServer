@@ -26,6 +26,16 @@ public class ItemBaseCsvResource {
     private int minNum;
     private int maxNum;
     private int type;
+    /**
+     * 介绍 id 集合
+     * <p>
+     * 例如:
+     * <blockquote><pre>
+     *     101;102;
+     * </pre></blockquote><p>
+     *     以分号切割
+     * <p/>
+     */
     private String des;
 
     private int quality;
