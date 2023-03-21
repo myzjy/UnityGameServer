@@ -39,7 +39,7 @@ public class BagController {
 
     @PacketReceiver
     public void atAllBagItemRequest(Session session, AllBagItemRequest request) {
-        EventBus.asyncSubmit(StartLoginBagEvent.ValueOf(session, request.getType()));
+        EventBus.post(StartLoginBagEvent.ValueOf(session, request.getType()));
     }
 
     @EventReceiver
