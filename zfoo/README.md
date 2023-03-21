@@ -57,12 +57,13 @@ Perfect work development process, complete online solution
 
 - [cocos-fivechess](https://github.com/zfoo-project/fivechess) five chess，use cocos as client
 
+
 Ⅳ. Install and use⭐
 ------------
 
 #### 1. Environmental Requirements and Installation
 
-**JDK 11+**，**OpenJDK** or **Oracle JDK** ，maven install to local repository
+**JDK 11 or 17**，**OpenJDK** or **Oracle JDK** ，maven install to local repository
 
 ```
 If you do not have JDK 11+ installed, the quick installation method is to download directly 

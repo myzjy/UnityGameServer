@@ -15,6 +15,7 @@ package com.zfoo.storage.interpreter;
 import com.zfoo.protocol.exception.RunException;
 import com.zfoo.protocol.util.ReflectionUtils;
 import com.zfoo.protocol.util.StringUtils;
+import com.zfoo.storage.model.anno.ExcelFieldName;
 import com.zfoo.storage.model.anno.Id;
 import com.zfoo.storage.model.resource.ResourceData;
 import com.zfoo.storage.model.resource.ResourceEnum;
@@ -61,12 +62,12 @@ public class ResourceInterpreter {
         } else if (resourceEnum == ResourceEnum.CSV) {
             resource = CsvReader.readResourceDataFromCSV(inputStream, clazz.getSimpleName());
         } else {
-            throw new RunException("不支持文件[{}]的配置类型[{}]", clazz.getSimpleName(), suffix);
+            throw new RunException("Configuration type [{}] of file [{}] is not supported", suffix, clazz.getSimpleName());
         }
 
         var result = new ArrayList<T>();
         //获取所有字段
-        var cellFieldMap = getFieldMap(resource, clazz);
+        var cellFieldMap = getCellFieldMap(resource, clazz);
         var fieldInfos = getFieldInfos(cellFieldMap, clazz);
 
         var iterator = resource.getRows().iterator();
@@ -93,26 +94,33 @@ public class ResourceInterpreter {
             ReflectionUtils.makeAccessible(field);
             ReflectionUtils.setField(field, instance, value);
         } catch (Exception e) {
-            throw new RunException(e, "无法将Excel资源[class:{}]中的[content:{}]转换为属性[field:{}]", instance.getClass().getSimpleName(), content, field.getName());
+            throw new RunException("Unable to convert [content:{}] to property [field:{}] in Excel resource [class:{}]", content, field.getName(), instance.getClass().getSimpleName(), e);
         }
     }
 
+    // 优先使用ExcelFieldName注解表示的值当作列名
+    private static String getExcelFieldName(Field field) {
+        return field.isAnnotationPresent(ExcelFieldName.class) ? field.getAnnotation(ExcelFieldName.class).value() : field.getName();
+    }
+
     // 只读取代码里写的字段
-    private static Collection<FieldInfo> getFieldInfos(Map<String, Integer> fieldMap, Class<?> clazz) {
+    private static Collection<FieldInfo> getFieldInfos(Map<String, Integer> cellFieldMap, Class<?> clazz) {
         var fieldList = ReflectionUtils.notStaticAndTransientFields(clazz);
+        // 检测field的合法性，field必须可以在excel中找到对应的列，有找不到的列在启动时候就发现
         for (var field : fieldList) {
-            if (!fieldMap.containsKey(field.getName())) {
-                throw new RunException("资源类[class:{}]的声明属性[filed:{}]无法获取，请检查配置表的格式", clazz, field.getName());
+            var fieldName = getExcelFieldName(field);
+            if (!cellFieldMap.containsKey(fieldName)) {
+                throw new RunException("The declaration attribute [filed:{}] of the resource class [class:{}] cannot be obtained, please check the format of the configuration table", fieldName, clazz);
             }
 
             if (field.isAnnotationPresent(Id.class)) {
-                var cellIndex = fieldMap.get(field.getName());
+                var cellIndex = cellFieldMap.get(fieldName);
                 if (cellIndex != 0) {
-                    throw new RunException("资源类[class:{}]的主键[Id:{}]必须放在Excel配置表的第一列，请检查配置表的格式", clazz, field.getName());
+                    throw new RunException("The primary key [Id:{}] of the resource class [class:{}] must be placed in the first column of the Excel configuration table, please check the format of the configuration table", fieldName, clazz);
                 }
             }
         }
-        return fieldList.stream().map(it -> new FieldInfo(fieldMap.get(it.getName()), it)).collect(Collectors.toList());
+        return fieldList.stream().map(it -> new FieldInfo(cellFieldMap.get(getExcelFieldName(it)), it)).collect(Collectors.toList());
     }
 
     private static class FieldInfo {
@@ -125,10 +133,10 @@ public class ResourceInterpreter {
         }
     }
 
-    public static Map<String, Integer> getFieldMap(ResourceData resource, Class<?> clazz) {
+    public static Map<String, Integer> getCellFieldMap(ResourceData resource, Class<?> clazz) {
         var header = resource.getHeaders();
         if (header == null) {
-            throw new RunException("无法获取资源[class:{}]的Excel文件的属性控制列", clazz.getSimpleName());
+            throw new RunException("Failed to get attribute control column from excel file of resource [class:{}]", clazz.getSimpleName());
         }
 
         var cellFieldMap = new HashMap<String, Integer>();
@@ -142,9 +150,9 @@ public class ResourceInterpreter {
             if (StringUtils.isEmpty(name)) {
                 continue;
             }
-            var previousValue = cellFieldMap.put(name, i);
+            var previousValue = cellFieldMap.put(name, cell.getIndex());
             if (Objects.nonNull(previousValue)) {
-                throw new RunException("资源[class:{}]的Excel文件出现重复的属性控制列[field:{}]", clazz.getSimpleName(), name);
+                throw new RunException("There are duplicate attribute control columns [field:{}] in the Excel file of the resource [class:{}]", name, clazz.getSimpleName());
             }
         }
         return cellFieldMap;

@@ -32,6 +32,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.ClassMetadata;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.io.FileNotFoundException;
@@ -142,11 +143,8 @@ public class StorageManager implements IStorageManager {
     @Override
     public void inject() {
         var applicationContext = StorageContext.getApplicationContext();
-        var beanNames = applicationContext.getBeanDefinitionNames();
-
-        for (var beanName : beanNames) {
-            var bean = applicationContext.getBean(beanName);
-
+        var componentBeans = applicationContext.getBeansWithAnnotation(Component.class);
+        for (var bean : componentBeans.values()) {
             ReflectionUtils.filterFieldsInClass(bean.getClass(), field -> field.isAnnotationPresent(ResInjection.class), field -> {
                 Type type = field.getGenericType();
 
@@ -252,14 +250,23 @@ public class StorageManager implements IStorageManager {
     private Resource scanResourceFile(Class<?> clazz) {
         var resourcePatternResolver = new PathMatchingResourcePatternResolver();
         var metadataReaderFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
-
+        String fileName;
+        if (clazz.getAnnotation(com.zfoo.storage.model.anno.Resource.class).value().equals("")
+                && clazz.getAnnotation(com.zfoo.storage.model.anno.Resource.class).alias().equals("")) {
+            fileName = clazz.getSimpleName();
+        } else {
+            if (clazz.getAnnotation(com.zfoo.storage.model.anno.Resource.class).value().equals(""))
+                fileName = clazz.getAnnotation(com.zfoo.storage.model.anno.Resource.class).alias();
+            else
+                fileName = clazz.getAnnotation(com.zfoo.storage.model.anno.Resource.class).value();
+        }
         try {
             // 一个class类只能匹配一个资源文件，如果匹配多个则会有歧义
             var resourceSet = new HashSet<Resource>();
             var resourceLocations = StringUtils.tokenize(storageConfig.getResourceLocation(), ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
             for (var resourceLocation : resourceLocations) {
                 var resources = new ArrayList<Resource>();
-                var packageSearchPath = StringUtils.format("{}/**/{}.*", resourceLocation, clazz.getSimpleName());
+                var packageSearchPath = StringUtils.format("{}/**/{}.*", resourceLocation, fileName);
                 packageSearchPath = packageSearchPath.replaceAll("//", "/");
                 try {
                     Arrays.stream(resourcePatternResolver.getResources(packageSearchPath)).filter(it -> ResourceEnum.containsResourceEnum(FileUtils.fileExtName(it.getFilename()))).forEach(it -> resources.add(it));
@@ -269,7 +276,7 @@ public class StorageManager implements IStorageManager {
 
                 // 通配符无法匹配根目录，所以如果找不到，再从根目录查找一遍
                 if (resources.isEmpty()) {
-                    packageSearchPath = StringUtils.format("{}/{}.*", resourceLocation, clazz.getSimpleName());
+                    packageSearchPath = StringUtils.format("{}/{}.*", resourceLocation, fileName);
                     packageSearchPath = packageSearchPath.replaceAll("//", "/");
                     Arrays.stream(resourcePatternResolver.getResources(packageSearchPath)).filter(it -> ResourceEnum.containsResourceEnum(FileUtils.fileExtName(it.getFilename()))).forEach(it -> resources.add(it));
                 }
@@ -277,7 +284,7 @@ public class StorageManager implements IStorageManager {
             }
 
             if (CollectionUtils.isEmpty(resourceSet)) {
-                throw new FileNotFoundException(clazz.getSimpleName());
+                throw new FileNotFoundException(fileName);
             }
             if (resourceSet.size() > 1) {
                 var resourceNames = resourceSet.stream().map(it -> it.getFilename()).collect(Collectors.joining(StringUtils.COMMA));

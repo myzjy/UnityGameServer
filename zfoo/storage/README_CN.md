@@ -20,7 +20,7 @@
 ![Image text](../doc/image/storage/storage02.png)
 
 - 解析过后有两种使用方式
-    1. 通过注解
+  1. 通过注解
   ```
    @Component
    public class StudentManager {

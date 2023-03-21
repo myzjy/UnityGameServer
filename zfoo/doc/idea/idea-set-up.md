@@ -33,7 +33,6 @@ git config --global core.autocrlf input
 ```
 
 - google translate设置
-
 ```
 direct -> domain:zfoo.net
 
@@ -63,9 +62,16 @@ ranslate.google.com
 
 ## 4. mongodb
 
+### mongo 4.0
+
 1. 直接安装MongoDB，用custom自定义安装目录，一般用默认的安装目录即可，不要勾选mongoDB compass
 2. 将C:\Program Files\MongoDB\Server\4.2\bin配置到环境变量中，便于全局使用
 3. mongo -version # 查看安装的版本
+
+### mongo 6.0
+
+1. 直接安装MongoDB，用custom自定义安装目录，一般用默认的安装目录即可，不要勾选mongoDB compass
+2. 直接安装MongoSh，将安装目录定位到MongoDB的bin目录
 
 ## 5. idea，mongodb，postman
 
@@ -189,11 +195,19 @@ replace，设置为alt+f
 
 ### 4.2 服务器插件安装
 
+- translate插件
+
+```
+快捷键设置
+Show Translation Dialog，设置为ctrl + shift + x
+Translate，设置为ctrl + x
+```
+
 - Cyan Light Theme主题插件，个人习惯
 - zoolytic，zookeeper客户端管理插件，推荐下载
-- vue.js，vue语法识别，推荐下载
-- jclasslib，字节码查看工具，推荐下载
 - Maven Helper，maven依赖查看工具，推荐下载
+- jclasslib，字节码查看工具，推荐下载
+- vue，vue语法识别，推荐下载
 
 - Alibaba Java Coding Guidelines
 - Alibaba Cloud tool

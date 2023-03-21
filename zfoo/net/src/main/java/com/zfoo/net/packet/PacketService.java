@@ -28,6 +28,7 @@ import com.zfoo.protocol.xml.XmlProtocols;
 import io.netty.buffer.ByteBuf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
@@ -39,10 +40,13 @@ import java.util.function.Predicate;
  */
 public class PacketService implements IPacketService {
 
+    private static final Logger logger = LoggerFactory.getLogger(PacketService.class);
+
     /**
      * 包体的头部的长度，一个int字节长度
      */
     public static final int PACKET_HEAD_LENGTH = 4;
+
     /**
      * 网络包的约定规则如下：
      * 1. 客户端的请求约定以Request结尾，服务器的响应约定以Response结尾
@@ -52,11 +56,15 @@ public class PacketService implements IPacketService {
      */
     public static final String NET_REQUEST_SUFFIX = "Request";
     public static final String NET_RESPONSE_SUFFIX = "Response";
+
     public static final String NET_ASK_SUFFIX = "Ask";
     public static final String NET_ANSWER_SUFFIX = "Answer";
+
     public static final String NET_NOTICE_SUFFIX = "Notice";
+
+
     public static final String NET_COMMON_MODULE = "common";
-    private static final Logger logger = LoggerFactory.getLogger(PacketService.class);
+
     private final Predicate<IProtocolRegistration> netGenerateProtocolFilter = registration
             -> ProtocolManager.moduleByModuleId(registration.module()).getName().matches(NET_COMMON_MODULE)
             || registration.protocolConstructor().getDeclaringClass().getSimpleName().endsWith(NET_REQUEST_SUFFIX)
@@ -117,9 +125,8 @@ public class PacketService implements IPacketService {
         }
 
         // 注册协议接收器
-        var beanNames = applicationContext.getBeanDefinitionNames();
-        for (var beanName : beanNames) {
-            var bean = applicationContext.getBean(beanName);
+        var componentBeans = applicationContext.getBeansWithAnnotation(Component.class);
+        for (var bean : componentBeans.values()) {
             PacketBus.registerPacketReceiverDefinition(bean);
         }
     }

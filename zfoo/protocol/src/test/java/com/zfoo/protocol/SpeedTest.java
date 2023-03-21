@@ -180,50 +180,7 @@ public class SpeedTest {
             System.err.println("JDK17 运行kryo会报错，等kryo修复bug");
         }
     }
-
-    @Ignore
-    @Test
-    public void protobufTest() {
-        try {
-            var buffer = new byte[1024 * 8];
-            var length = 0;
-
-            // 序列化和反序列化简单对象
-            long startTime = System.currentTimeMillis();
-            for (int i = 0; i < benchmark; i++) {
-                var codedOutputStream = CodedOutputStream.newInstance(buffer);
-                protobufSimpleObject.writeTo(codedOutputStream);
-                length = codedOutputStream.getTotalBytesWritten();
-                var codeInput = CodedInputStream.newInstance(buffer, 0, length);
-                var mess = ProtobufObject.ProtobufSimpleObject.parseFrom(codeInput);
-            }
-            System.out.println(StringUtils.format("[protobuf] [简单对象] [thread:{}] [size:{}] [time:{}]", Thread.currentThread().getName(), length, System.currentTimeMillis() - startTime));
-
-            // 序列化和反序列化常规对象
-            startTime = System.currentTimeMillis();
-            for (int i = 0; i < benchmark; i++) {
-                var codedOutputStream = CodedOutputStream.newInstance(buffer);
-                protobufNormalObject.writeTo(codedOutputStream);
-                length = codedOutputStream.getTotalBytesWritten();
-                var codeInput = CodedInputStream.newInstance(buffer, 0, length);
-                var mess = ProtobufObject.ProtobufSimpleObject.parseFrom(codeInput);
-            }
-            System.out.println(StringUtils.format("[protobuf] [常规对象] [thread:{}] [size:{}] [time:{}]", Thread.currentThread().getName(), length, System.currentTimeMillis() - startTime));
-
-            // 序列化和反序列化复杂对象
-            startTime = System.currentTimeMillis();
-            for (int i = 0; i < benchmark; i++) {
-                var codedOutputStream = CodedOutputStream.newInstance(buffer);
-                protobufComplexObject.writeTo(codedOutputStream);
-                length = codedOutputStream.getTotalBytesWritten();
-                var codeInput = CodedInputStream.newInstance(buffer, 0, length);
-                var mess = ProtobufObject.ProtobufSimpleObject.parseFrom(codeInput);
-            }
-            System.out.println(StringUtils.format("[protobuf] [复杂对象] [thread:{}] [size:{}] [time:{}]", Thread.currentThread().getName(), length, System.currentTimeMillis() - startTime));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+    public static final List<List<Integer>> listListWithInteger = new ArrayList<>(List.of(listWithInteger, listWithInteger, listWithInteger));
 
     @Ignore
     @Test
@@ -263,7 +220,9 @@ public class SpeedTest {
         }
         countdown.await();
     }
+    public static final List<List<List<Integer>>> listListListWithInteger = new ArrayList<>(List.of(listListWithInteger, listListWithInteger, listListWithInteger));
     public static final ExecutorService[] executors = new ExecutorService[threadNum];
+
     // kryo协议注册
     public static final ThreadLocal<Kryo> kryos = new ThreadLocal<>() {
         @Override
@@ -301,6 +260,8 @@ public class SpeedTest {
             return kryo;
         }
     };
+    public static final Map<List<List<ObjectA>>, List<List<List<Integer>>>> mapWithListList = new HashMap<>(Map.of(new ArrayList<>(List.of(listWithObject, listWithObject, listWithObject)), listListListWithInteger));
+
     // -------------------------------------------以下为测试用例---------------------------------------------------------------
     // 简单类型
     public static final byte byteValue = 99;
@@ -312,6 +273,7 @@ public class SpeedTest {
     public static final char charValue = 'c';
     public static final String charValueString = "c";
     public static final String stringValue = "hello";
+
     // 数组类型
     public static final boolean[] booleanArray = new boolean[]{true, false, true, false, true};
     public static final byte[] byteArray = new byte[]{Byte.MIN_VALUE, -99, 0, 99, Byte.MAX_VALUE};
@@ -324,46 +286,23 @@ public class SpeedTest {
     public static final double[] doubleArray = new double[]{Double.MIN_VALUE, -99999999.9F, -99.9D, 0D, 99.9D, 99999999.9F, Double.MAX_VALUE};
     public static final char[] charArray = new char[]{'a', 'b', 'c', 'd', 'e'};
     public static final String[] stringArray = new String[]{"a", "b", "c", "d", "e"};
+
     public static final ObjectA objectA = new ObjectA();
     public static final ObjectB objectB = new ObjectB();
     public static final Map<Integer, String> mapWithInteger = new HashMap<>(Map.of(Integer.MIN_VALUE, "a", -99, "b", 0, "c", 99, "d", Integer.MAX_VALUE, "e"));
     public static final List<Integer> listWithInteger = new ArrayList<>(ArrayUtils.toList(intArray));
-    public static final List<List<Integer>> listListWithInteger = new ArrayList<>(List.of(listWithInteger, listWithInteger, listWithInteger));
-    public static final List<List<List<Integer>>> listListListWithInteger = new ArrayList<>(List.of(listListWithInteger, listListWithInteger, listListWithInteger));
-    public static final Map<ObjectA, List<Integer>> mapWithList = new HashMap<>(Map.of(objectA, listWithInteger));
     public static final List<Integer> listWithInteger1 = new ArrayList<>(ArrayUtils.toList(intArray1));
     public static final List<Integer> listWithInteger2 = new ArrayList<>(ArrayUtils.toList(intArray2));
-    public static final Set<Set<List<Integer>>> setSetListWithInteger = new HashSet<>(Set.of(new HashSet<>(Set.of(listWithInteger)), new HashSet<>(Set.of(listWithInteger1)), new HashSet<>(Set.of(listWithInteger2))));
     public static final List<ObjectA> listWithObject = new ArrayList<>(List.of(objectA, objectA, objectA));
     public static final List<List<ObjectA>> listListWithObject = new ArrayList<>(List.of(listWithObject, listWithObject, listWithObject));
-    public static final Map<List<List<ObjectA>>, List<List<List<Integer>>>> mapWithListList = new HashMap<>(Map.of(new ArrayList<>(List.of(listWithObject, listWithObject, listWithObject)), listListListWithInteger));
+    public static final Set<Set<List<Integer>>> setSetListWithInteger = new HashSet<>(Set.of(new HashSet<>(Set.of(listWithInteger)), new HashSet<>(Set.of(listWithInteger1)), new HashSet<>(Set.of(listWithInteger2))));
+    public static final Map<ObjectA, List<Integer>> mapWithList = new HashMap<>(Map.of(objectA, listWithInteger));
     public static final List<String> listWithString = new ArrayList<>(ArrayUtils.toList(stringArray));
     public static final Set<Integer> setWithInteger = new HashSet<>(ArrayUtils.toList(intArray));
+    public static int benchmark = 10_0000;
     public static final Set<Set<ObjectA>> setSetWithObject = new HashSet<>(Set.of(new HashSet<>(Set.of(objectA))));
     public static final Set<String> setWithString = new HashSet<>(ArrayUtils.toList(stringArray));
     public static final Map<Integer, ObjectA> mapWithObject = new HashMap<>(Map.of(1, objectA, 2, objectA, 3, objectA));
-    public static final List<Map<Integer, String>> listMap = new ArrayList<>(List.of(mapWithInteger, mapWithInteger, mapWithInteger));
-    public static final Set<Map<Integer, String>> setMapWithInteger = new HashSet<>(Set.of(mapWithInteger));
-    public static final Map<List<Map<Integer, String>>, Set<Map<Integer, String>>> mapListSet = new HashMap<>(Map.of(listMap, setMapWithInteger));
-    public static final Byte[] byteBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(byteArray), Byte.class);
-    public static final Short[] shortBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(shortArray), Short.class);
-    public static final Integer[] integerArray = ArrayUtils.listToArray(ArrayUtils.toList(intArray), Integer.class);
-    public static final Long[] longBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(longArray), Long.class);
-    public static final List<Long> listWithLong = ArrayUtils.toList(longArray);
-    public static final Float[] floatBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(floatArray), Float.class);
-    public static final List<Float> listWithFloat = ArrayUtils.toList(floatArray);
-    public static final Double[] doubleBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(doubleArray), Double.class);
-    public static final List<Double> listWithDouble = ArrayUtils.toList(doubleArray);
-    public static final Boolean[] booleanBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(booleanArray), Boolean.class);
-    public static final List<Boolean> listWithBoolean = ArrayUtils.toList(booleanArray);
-    public static final Character[] charBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(charArray), Character.class);
-    public static final ComplexObject complexObject = new ComplexObject();
-    public static final NormalObject normalObject = new NormalObject();
-    public static final SimpleObject simpleObject = new SimpleObject();
-    public static int benchmark = 10_0000;
-    public static ProtobufObject.ProtobufComplexObject protobufComplexObject = null;
-    public static ProtobufObject.ProtobufNormalObject protobufNormalObject = null;
-    public static ProtobufObject.ProtobufSimpleObject protobufSimpleObject = null;
 
     static {
         var op = GenerateOperation.NO_OPERATION;
@@ -387,6 +326,71 @@ public class SpeedTest {
             executors[i] = Executors.newSingleThreadExecutor();
         }
     }
+
+    @Ignore
+    @Test
+    public void protobufTest() {
+        try {
+            var buffer = new byte[1024 * 8];
+            var length = 0;
+
+            // 序列化和反序列化简单对象
+            long startTime = System.currentTimeMillis();
+            for (int i = 0; i < benchmark; i++) {
+                var codedOutputStream = CodedOutputStream.newInstance(buffer);
+                protobufSimpleObject.writeTo(codedOutputStream);
+                length = codedOutputStream.getTotalBytesWritten();
+                var codeInput = CodedInputStream.newInstance(buffer, 0, length);
+                var mess = ProtobufObject.ProtobufSimpleObject.parseFrom(codeInput);
+            }
+            System.out.println(StringUtils.format("[protobuf] [简单对象] [thread:{}] [size:{}] [time:{}]", Thread.currentThread().getName(), length, System.currentTimeMillis() - startTime));
+
+            // 序列化和反序列化常规对象
+            startTime = System.currentTimeMillis();
+            for (int i = 0; i < benchmark; i++) {
+                var codedOutputStream = CodedOutputStream.newInstance(buffer);
+                protobufNormalObject.writeTo(codedOutputStream);
+                length = codedOutputStream.getTotalBytesWritten();
+                var codeInput = CodedInputStream.newInstance(buffer, 0, length);
+                var mess = ProtobufObject.ProtobufNormalObject.parseFrom(codeInput);
+            }
+            System.out.println(StringUtils.format("[protobuf] [常规对象] [thread:{}] [size:{}] [time:{}]", Thread.currentThread().getName(), length, System.currentTimeMillis() - startTime));
+
+            // 序列化和反序列化复杂对象
+            startTime = System.currentTimeMillis();
+            for (int i = 0; i < benchmark; i++) {
+                var codedOutputStream = CodedOutputStream.newInstance(buffer);
+                protobufComplexObject.writeTo(codedOutputStream);
+                length = codedOutputStream.getTotalBytesWritten();
+                var codeInput = CodedInputStream.newInstance(buffer, 0, length);
+                var mess = ProtobufObject.ProtobufComplexObject.parseFrom(codeInput);
+            }
+            System.out.println(StringUtils.format("[protobuf] [复杂对象] [thread:{}] [size:{}] [time:{}]", Thread.currentThread().getName(), length, System.currentTimeMillis() - startTime));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static final List<Map<Integer, String>> listMap = new ArrayList<>(List.of(mapWithInteger, mapWithInteger, mapWithInteger));
+    public static final Set<Map<Integer, String>> setMapWithInteger = new HashSet<>(Set.of(mapWithInteger));
+    public static final Map<List<Map<Integer, String>>, Set<Map<Integer, String>>> mapListSet = new HashMap<>(Map.of(listMap, setMapWithInteger));
+    public static final Byte[] byteBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(byteArray), Byte.class);
+    public static final Short[] shortBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(shortArray), Short.class);
+    public static final Integer[] integerArray = ArrayUtils.listToArray(ArrayUtils.toList(intArray), Integer.class);
+    public static final Long[] longBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(longArray), Long.class);
+    public static final List<Long> listWithLong = ArrayUtils.toList(longArray);
+    public static final Float[] floatBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(floatArray), Float.class);
+    public static final List<Float> listWithFloat = ArrayUtils.toList(floatArray);
+    public static final Double[] doubleBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(doubleArray), Double.class);
+    public static final List<Double> listWithDouble = ArrayUtils.toList(doubleArray);
+    public static final Boolean[] booleanBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(booleanArray), Boolean.class);
+    public static final List<Boolean> listWithBoolean = ArrayUtils.toList(booleanArray);
+    public static final Character[] charBoxArray = ArrayUtils.listToArray(ArrayUtils.toList(charArray), Character.class);
+    public static final ComplexObject complexObject = new ComplexObject();
+    public static final NormalObject normalObject = new NormalObject();
+    public static final SimpleObject simpleObject = new SimpleObject();
+    public static ProtobufObject.ProtobufComplexObject protobufComplexObject = null;
+    public static ProtobufObject.ProtobufNormalObject protobufNormalObject = null;
+    public static ProtobufObject.ProtobufSimpleObject protobufSimpleObject = null;
 
     static {
         objectA.setA(Integer.MAX_VALUE);

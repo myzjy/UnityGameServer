@@ -22,7 +22,7 @@ English | [简体中文](./README_CN.md)
 ![Image text](../doc/image/storage/storage02.png)
 
 - After parsing, there are two ways to use it
-    1. By annotation
+  1. By annotation
   ```
    @Component
    public class StudentManager {

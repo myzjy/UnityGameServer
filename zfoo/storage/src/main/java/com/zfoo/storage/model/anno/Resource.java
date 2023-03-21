@@ -13,10 +13,14 @@
 
 package com.zfoo.storage.model.anno;
 
+import org.springframework.core.annotation.AliasFor;
+
 import java.lang.annotation.*;
 
 /**
  * 资源注解
+ * 可以指定对应的资源文件名（只指定文件名，不需要文件后缀）
+ * 如果不指定资源文件名，则默认通过扫描路径获取与类名相同的文件资源
  *
  * @author godotg
  * @version 4.0
@@ -25,4 +29,10 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface Resource {
+    @AliasFor("alias")
+    String value() default "";
+
+
+    @AliasFor("value")
+    String alias() default "";
 }

@@ -14,7 +14,6 @@
 package com.zfoo.event.schema;
 
 import com.zfoo.event.manager.EventBus;
-import com.zfoo.event.model.anno.AsyncExecute;
 import com.zfoo.event.model.anno.EventReceiver;
 import com.zfoo.event.model.event.IEvent;
 import com.zfoo.event.model.vo.EnhanceUtils;
@@ -49,7 +48,7 @@ public class EventRegisterProcessor implements BeanPostProcessor {
         }
 
         if (!ReflectionUtils.isPojoClass(clazz)) {
-            logger.warn("事件注册类[{}]不是POJO类，父类的事件接收不会被扫描到", clazz);
+            logger.warn("The message registration class [{}] is not a POJO class, and the parent class will not be scanned", clazz);
         }
 
         try {
@@ -80,13 +79,12 @@ public class EventRegisterProcessor implements BeanPostProcessor {
                             , bean.getClass().getName(), methodName, eventName, expectedMethodName));
                 }
 
-                var receiverDefinition = new EventReceiverDefinition(bean, method, eventClazz);
+                var bus = method.getDeclaredAnnotation(EventReceiver.class).value();
+                var receiverDefinition = new EventReceiverDefinition(bean, method, bus, eventClazz);
                 var enhanceReceiverDefinition = EnhanceUtils.createEventReceiver(receiverDefinition);
 
-                //异步执行标志，false表示同步执行，true表示异步执行
-                var asyncFlag = method.isAnnotationPresent(AsyncExecute.class);
                 // key:class类型 value:观察者 注册Event的receiverMap中
-                EventBus.registerEventReceiver(eventClazz, enhanceReceiverDefinition, asyncFlag);
+                EventBus.registerEventReceiver(eventClazz, enhanceReceiverDefinition);
             }
         } catch (Throwable t) {
             throw new RuntimeException(t);

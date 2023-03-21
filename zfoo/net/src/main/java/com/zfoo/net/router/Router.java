@@ -126,7 +126,7 @@ public class Router implements IRouter {
                                     return;
                                 }
                                 session.setUid(uid);
-                                EventBus.submit(AuthUidToGatewayEvent.valueOf(gatewaySession.getSid(), uid));
+                                EventBus.post(AuthUidToGatewayEvent.valueOf(gatewaySession.getSid(), uid));
 
                                 NetContext.getRouter().send(session, AuthUidToGatewayConfirm.valueOf(uid), new GatewayAttachment(gatewaySession, null));
                                 return;
@@ -205,12 +205,12 @@ public class Router implements IRouter {
                 throw new ErrorResponseException((Error) responsePacket);
             }
             if (answerClass != null && answerClass != responsePacket.getClass()) {
-                throw new UnexpectedProtocolException(StringUtils.format("client expect protocol:[{}], but found protocol:[{}]", answerClass, responsePacket.getClass().getName()));
+                throw new UnexpectedProtocolException("client expect protocol:[{}], but found protocol:[{}]", answerClass, responsePacket.getClass().getName());
             }
 
             return new SyncAnswer<>((T) responsePacket, clientSignalAttachment);
         } catch (TimeoutException e) {
-            throw new NetTimeOutException(StringUtils.format("syncAsk timeout exception, ask:[{}], attachment:[{}]", JsonUtils.object2String(packet), JsonUtils.object2String(clientSignalAttachment)));
+            throw new NetTimeOutException("syncAsk timeout exception, ask:[{}], attachment:[{}]", JsonUtils.object2String(packet), JsonUtils.object2String(clientSignalAttachment));
         } finally {
             SignalBridge.removeSignalAttachment(clientSignalAttachment);
         }
@@ -240,7 +240,7 @@ public class Router implements IRouter {
                     // 因此超时的情况，返回的是null
                     .completeOnTimeout(null, DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS).thenApply(answer -> {
                         if (answer == null) {
-                            throw new NetTimeOutException(StringUtils.format("async ask [{}] timeout exception", packet.getClass().getSimpleName()));
+                            throw new NetTimeOutException("async ask [{}] timeout exception", packet.getClass().getSimpleName());
                         }
 
                         if (answer.protocolId() == Error.errorProtocolId()) {
@@ -276,7 +276,7 @@ public class Router implements IRouter {
                             asyncAnswer.setFuturePacket((T) answer);
                             asyncAnswer.consume();
                         } catch (Throwable throwable1) {
-                            logger.error("异步回调方法[ask:{}][answer:{}]错误", packet.getClass().getSimpleName(), answer.getClass().getSimpleName(), throwable1);
+                            logger.error("Asynchronous callback method [ask:{}][answer:{}] error", packet.getClass().getSimpleName(), answer.getClass().getSimpleName(), throwable1);
                         } finally {
                             if (serverSignalAttachment != null) {
                                 serverReceiveSignalAttachmentThreadLocal.set(null);
@@ -318,11 +318,11 @@ public class Router implements IRouter {
                 }
             }
 
-            // 调用PacketReceiver,进行真正的业务处理,这个submit只是根据packet找到protocolId，然后进行反射调用
+            // 调用PacketReceiver,进行真正的业务处理,这个submit只是根据packet找到protocolId，然后调用对应的消息处理方法
             // 这个在哪个线程处理取决于：这个上层的PacketReceiverTask被丢到了哪个线程中
             PacketBus.route(session, packet, attachment);
         } catch (Exception e) {
-            EventBus.submit(ServerExceptionEvent.valueOf(session, packet, attachment, e));
+            EventBus.post(ServerExceptionEvent.valueOf(session, packet, attachment, e));
             logger.error(StringUtils.format("e[uid:{}][sid:{}] unknown exception", session.getUid(), session.getSid(), e.getMessage()), e);
         } catch (Throwable t) {
             logger.error(StringUtils.format("e[uid:{}][sid:{}] unknown error", session.getUid(), session.getSid(), t.getMessage()), t);

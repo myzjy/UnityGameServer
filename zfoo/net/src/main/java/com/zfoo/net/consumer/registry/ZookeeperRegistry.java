@@ -80,6 +80,93 @@ public class ZookeeperRegistry implements IRegistry {
     private static final ExecutorService executor = Executors.newSingleThreadExecutor(new ConfigThreadFactory());
 
     /**
+     * consumer需要消费的provider集合
+     */
+    private final Set<RegisterVO> providerHashConsumerSet = new ConcurrentHashSet<>();
+    /**
+     * addListener中的cache全部会被添加到这个集合中，这个集合不包括providerCuratorCache
+     */
+    private final List<CuratorCache> listenerList = new ConcurrentArrayList<>();
+    private CuratorFramework curator;
+    /**
+     * provider的监听
+     */
+    private CuratorCache providerCuratorCache;
+
+    /**
+     * 这个方法简单说就是分3大步骤：
+     * 如果配置中配置的有自己是服务提供者，那么自己作为服务提供者先启动 // 此时尚未注册到zk中
+     * 再启动zk // 干2件事：1.自己是服务提供者，将会注册到zk上 2.自己是服务消费者，会尝试创建TcpClient连接所有的自己要连接的provider
+     * 监听服务提供者节点的变更 // 自己作为消费者，服务提供者的变更会影响到自己
+     * <p>
+     * 总结：这个注册中心模块最终的结果我认为是，影响到了
+     * ClientSessionMap  // 自己作为消费者去连接服务提供者连上后，存的session
+     * ServerSessionMap  // 自己作为服务器角色，很多客户端连接自己，连上来后，保存到这
+     */
+    @Override
+    public void start() {
+        var registryConfig = NetContext.getConfigManager().getLocalConfig().getRegistry();
+        if (Objects.isNull(registryConfig)) {
+            logger.info("Stand alone startup");
+            return;
+        }
+
+        // 先启动本地服务提供者（服务提供者仅仅是一个TcpServer）
+        startProvider();
+
+        // 再启动curator框架 1.如果自己是服务提供者，将会注册自己到zk上 2.如果是服务消费者，会创建连接到自己关心的服务提供者上
+        startCurator();
+
+        // 检测服务提供者的增加或者减少。因为自己作为消费者的话，会影响到自己
+        startProviderCache();
+    }
+
+    private void startProvider() {
+        // 这个ProviderConfig包含了这个进程服务提供者信息
+        var providerConfig = NetContext.getConfigManager().getLocalConfig().getProvider();
+
+        // 这句意思是：提供了注册中心的配置(zk)，但是却没有服务提供者
+        if (Objects.isNull(providerConfig)) {
+            logger.info("Distributed startup with no providers");
+            return;
+        }
+
+        // 服务提供者也仅仅是一个TcpServer
+        // 这里可以看出并没有指定接口，是找一个可用的端口
+        var providerServer = new TcpServer(providerConfig.localHostAndPortOrDefault());
+        providerServer.start();
+    }
+
+    /**
+     * 遍历zk中的provider信息，从而找到所有自己关心的Provider，从而去连接他们
+     * 注意：自己作为Provider那自己启动下就行了比较简单。 但是作为Consumer，那么会尝试连接所有已经注册到zk上来的服务器信息
+     *
+     * @throws Exception
+     */
+    private void initConsumerCache() throws Exception {
+        // tankHome | 192.168.3.2:12400 | provider:[3-tankHome-tankHomeProvider] | consumer:[4-tankCache-consistent-hash-tankCacheProvider]
+        var localRegisterVO = NetContext.getConfigManager().getLocalConfig().toLocalRegisterVO();
+        // 初始化providerCacheSet
+        // 遍历provider下注册的所有节点
+        var remoteProviderSet = curator.getChildren().forPath(PROVIDER_ROOT_PATH).stream()
+                .filter(it -> StringUtils.isNotBlank(it) && !"null".equals(it))
+                .map(it -> RegisterVO.parseString(it))
+                .filter(it -> Objects.nonNull(it))
+                // 检查是否这个节点是自己关心的节点
+                .filter(it -> RegisterVO.providerHasConsumer(it, localRegisterVO))
+                .collect(Collectors.toSet());
+
+        providerHashConsumerSet.clear();
+
+        // 将自己关心的节点存起来，接下来，将会开启TcpClient去连接这些Provider，连接上后，将会把这个session保存到ClientSessionMap中
+        providerHashConsumerSet.addAll(remoteProviderSet);
+
+        // 初始化consumer，providerCacheSet改变会导致消费者改变
+        // 如果自己没有连接上远程消费者，则会一直尝试连接
+        checkConsumer();
+    }
+
+    /**
      * 启动curator框架，并且在zk客户端连接上zk服务器时：保证创建好/zfoo /provider /consumer 3个“持久化”节点
      */
     private void startCurator() {
@@ -139,65 +226,6 @@ public class ZookeeperRegistry implements IRegistry {
         } catch (Throwable t) {
             throw new RuntimeException("Start zookeeper exception", t);
         }
-    }
-
-
-    private CuratorFramework curator;
-    /**
-     * provider的监听
-     */
-    private CuratorCache providerCuratorCache;
-    /**
-     * consumer需要消费的provider集合
-     */
-    private final Set<RegisterVO> providerHashConsumerSet = new ConcurrentHashSet<>();
-    /**
-     * addListener中的cache全部会被添加到这个集合中，这个集合不包括providerCuratorCache
-     */
-    private final List<CuratorCache> listenerList = new ConcurrentArrayList<>();
-
-    /**
-     * 这个方法简单说就是分3大步骤：
-     * 如果配置中配置的有自己是服务提供者，那么自己作为服务提供者先启动 // 此时尚未注册到zk中
-     * 再启动zk // 干2件事：1.自己是服务提供者，将会注册到zk上 2.自己是服务消费者，会尝试创建TcpClient连接所有的自己要连接的provider
-     * 监听服务提供者节点的变更 // 自己作为消费者，服务提供者的变更会影响到自己
-     * <p>
-     * 总结：这个注册中心模块最终的结果我认为是，影响到了
-     * ClientSessionMap  // 自己作为消费者去连接服务提供者连上后，存的session
-     * ServerSessionMap  // 自己作为服务器角色，很多客户端连接自己，连上来后，保存到这
-     */
-    @Override
-    public void start() {
-        var registryConfig = NetContext.getConfigManager().getLocalConfig().getRegistry();
-        if (Objects.isNull(registryConfig)) {
-            logger.info("Stand alone startup");
-            return;
-        }
-
-        // 先启动本地服务提供者（服务提供者仅仅是一个TcpServer）
-        startProvider();
-
-        // 再启动curator框架 1.如果自己是服务提供者，将会注册自己到zk上 2.如果是服务消费者，会创建连接到自己关心的服务提供者上
-        startCurator();
-
-        // 检测服务提供者的增加或者减少。因为自己作为消费者的话，会影响到自己
-        startProviderCache();
-    }
-
-    private void startProvider() {
-        // 这个ProviderConfig包含了这个进程服务提供者信息
-        var providerConfig = NetContext.getConfigManager().getLocalConfig().getProvider();
-
-        // 这句意思是：提供了注册中心的配置(zk)，但是却没有服务提供者
-        if (Objects.isNull(providerConfig)) {
-            logger.info("Distributed startup with no providers");
-            return;
-        }
-
-        // 服务提供者也仅仅是一个TcpServer
-        // 这里可以看出并没有指定接口，是找一个可用的端口
-        var providerServer = new TcpServer(providerConfig.localHostAndPortOrDefault());
-        providerServer.start();
     }
 
     /**
@@ -377,6 +405,22 @@ public class ZookeeperRegistry implements IRegistry {
     }
 
     /**
+     * 不管是节点增删，都会调用，因为：有可能自己作为消费者，服务提供者增加了也可能减少了，都要检测下
+     */
+    @Override
+    public void checkConsumer() {
+        if (curator == null) {
+            return;
+        }
+
+        if (curator.getState() == CuratorFrameworkState.STOPPED) {
+            return;
+        }
+
+        executor.execute(() -> doCheckConsumer());
+    }
+
+    /**
      * 检查下自己作为消费者，需要连接到的Provider是否全部连接上了，没连接上，就会创建TcpClient进行连接
      */
     private void doCheckConsumer() {
@@ -423,7 +467,7 @@ public class ZookeeperRegistry implements IRegistry {
             } else {
                 // 连接上了服务提供者
                 session.setConsumerAttribute(providerCache);
-                EventBus.submit(ConsumerStartEvent.valueOf(providerCache, session));
+                EventBus.post(ConsumerStartEvent.valueOf(providerCache, session));
 
                 try {
                     var localRegisterVO = NetContext.getConfigManager().getLocalConfig().toLocalRegisterVO();
@@ -447,51 +491,6 @@ public class ZookeeperRegistry implements IRegistry {
         if (recheckFlag) {
             SchedulerBus.schedule(() -> checkConsumer(), RETRY_SECONDS, TimeUnit.SECONDS);
         }
-    }
-
-    /**
-     * 遍历zk中的provider信息，从而找到所有自己关心的Provider，从而去连接他们
-     * 注意：自己作为Provider那自己启动下就行了比较简单。 但是作为Consumer，那么会尝试连接所有已经注册到zk上来的服务器信息
-     *
-     * @throws Exception
-     */
-    private void initConsumerCache() throws Exception {
-        // tankHome | 192.168.3.2:12400 | provider:[3-tankHome-tankHomeProvider] | consumer:[4-tankCache-consistent-hash-tankCacheProvider]
-        var localRegisterVO = NetContext.getConfigManager().getLocalConfig().toLocalRegisterVO();
-        // 初始化providerCacheSet
-        // 遍历provider下注册的所有节点
-        var remoteProviderSet = curator.getChildren().forPath(PROVIDER_ROOT_PATH).stream()
-                .filter(it -> StringUtils.isNotBlank(it) && !"null".equals(it))
-                .map(it -> RegisterVO.parseString(it))
-                .filter(it -> Objects.nonNull(it))
-                // 检查是否这个节点是自己关心的节点
-                .filter(it -> RegisterVO.providerHasConsumer(it, localRegisterVO))
-                .collect(Collectors.toSet());
-
-        providerHashConsumerSet.clear();
-
-        // 将自己关心的节点存起来，接下来，将会开启TcpClient去连接这些Provider，连接上后，将会把这个session保存到ClientSessionMap中
-        providerHashConsumerSet.addAll(remoteProviderSet);
-
-        // 初始化consumer，providerCacheSet改变会导致消费者改变
-        // 如果自己没有连接上远程消费者，则会一直尝试连接
-        checkConsumer();
-    }
-
-    /**
-     * 不管是节点增删，都会调用，因为：有可能自己作为消费者，服务提供者增加了也可能减少了，都要检测下
-     */
-    @Override
-    public void checkConsumer() {
-        if (curator == null) {
-            return;
-        }
-
-        if (curator.getState() == CuratorFrameworkState.STOPPED) {
-            return;
-        }
-
-        executor.execute(() -> doCheckConsumer());
     }
 
     /**
@@ -585,28 +584,6 @@ public class ZookeeperRegistry implements IRegistry {
         }
     }
 
-    /**
-     * 查询所有服务信息(提供者+消费者信息)
-     *
-     * @return
-     */
-    @Override
-    public Set<RegisterVO> remoteProviderRegisterSet() {
-        try {
-            var remoteProviderSet = curator.getChildren().forPath(PROVIDER_ROOT_PATH).stream()
-                    .filter(it -> StringUtils.isNotBlank(it) && !"null".equals(it))
-                    .map(it -> RegisterVO.parseString(it))
-                    .filter(it -> Objects.nonNull(it))
-                    .collect(Collectors.toSet());
-            return remoteProviderSet;
-        } catch (Exception e) {
-            logger.error("unknown exception", e);
-        } catch (Throwable t) {
-            logger.error("unknown error", t);
-        }
-        return Collections.emptySet();
-    }
-
     private static class ConfigThreadFactory implements ThreadFactory {
         private static final AtomicInteger poolNumber = new AtomicInteger(1);
         private final ThreadGroup group;
@@ -627,6 +604,28 @@ public class ZookeeperRegistry implements IRegistry {
             t.setUncaughtExceptionHandler((thread, e) -> logger.error(thread.toString(), e));
             return t;
         }
+    }
+
+    /**
+     * 查询所有服务信息(提供者+消费者信息)
+     *
+     * @return
+     */
+    @Override
+    public Set<RegisterVO> remoteProviderRegisterSet() {
+        try {
+            var remoteProviderSet = curator.getChildren().forPath(PROVIDER_ROOT_PATH).stream()
+                    .filter(it -> StringUtils.isNotBlank(it) && !"null".equals(it))
+                    .map(it -> RegisterVO.parseString(it))
+                    .filter(it -> Objects.nonNull(it))
+                    .collect(Collectors.toSet());
+            return remoteProviderSet;
+        } catch (Exception e) {
+            logger.error("unknown exception", e);
+        } catch (Throwable t) {
+            logger.error("unknown error", t);
+        }
+        return Collections.emptySet();
     }
 
     /**

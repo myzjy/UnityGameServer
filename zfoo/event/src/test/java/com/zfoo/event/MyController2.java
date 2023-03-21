@@ -13,7 +13,7 @@
 
 package com.zfoo.event;
 
-import com.zfoo.event.model.anno.AsyncExecute;
+import com.zfoo.event.model.anno.Bus;
 import com.zfoo.event.model.anno.EventReceiver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +30,10 @@ public class MyController2 {
 
     /**
      * 同一个事件可以被重复注册和接受
-     * <p>
+     *
      * 异步事件会被不会立刻执行，注意日志打印的线程号
      */
-    @AsyncExecute
-    @EventReceiver
+    @EventReceiver(Bus.AsyncThread)
     public void onMyNoticeEvent(MyNoticeEvent event) {
         logger.info("方法2异步执行事件：" + event.getMessage());
     }
