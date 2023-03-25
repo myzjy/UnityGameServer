@@ -32,6 +32,10 @@ public class PlayerUserEntity implements IEntity<Long> {
      * 上次登录时间
      */
     private long lastLoginTime;
+    /*
+     * 退出游戏时间
+     * */
+    private long endLoginOutTime;
     /**
      * 注册时间
      */
@@ -58,7 +62,11 @@ public class PlayerUserEntity implements IEntity<Long> {
      * @param lastLoginTime 上次登录时间
      * @param registerTime  注册时间
      */
-    public static PlayerUserEntity valueOf(long id, String name, long lastLoginTime, long registerTime, String token, long goldNum, long premiumDiamondNum, long diamondNum) {
+    public static PlayerUserEntity valueOf(
+            long id,
+            String name,
+            long lastLoginTime,
+            long registerTime, String token, long goldNum, long premiumDiamondNum, long diamondNum, long endLoginOutTime) {
         var entity = new PlayerUserEntity();
 
         entity.id = id;
@@ -69,6 +77,7 @@ public class PlayerUserEntity implements IEntity<Long> {
         entity.goldNum = goldNum;
         entity.PremiumDiamondNum = premiumDiamondNum;
         entity.DiamondNum = diamondNum;
+        entity.endLoginOutTime = endLoginOutTime;
         return entity;
     }
 
@@ -177,8 +186,12 @@ public class PlayerUserEntity implements IEntity<Long> {
         DiamondNum = diamondNum;
     }
 
-    @Override
-    public String toString() {
-        return "UserEntity{" + "sid=" + sid + ", session=" + session + ", id=" + id + ", vs=" + vs + ", Token='" + Token + '\'' + ", name='" + name + '\'' + ", lastLoginTime=" + lastLoginTime + ", registerTime=" + registerTime + '}';
+    public long getEndLoginOutTime() {
+        return endLoginOutTime;
     }
+
+    public void setEndLoginOutTime(long endLoginOutTime) {
+        this.endLoginOutTime = endLoginOutTime;
+    }
+
 }

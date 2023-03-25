@@ -103,7 +103,8 @@ public class LoginController {
                     }
                 }
                 //覆盖登录时间
-                user = PlayerUserEntity.valueOf(user.getId(), user.getName(), TimeUtils.now(), user.getRegisterTime(), user.getToken(), user.getGoldNum(), user.getPremiumDiamondNum(), user.getDiamondNum());
+                user = PlayerUserEntity.valueOf(user.getId(), user.getName(), TimeUtils.now(), user.getRegisterTime(),
+                        user.getToken(), user.getGoldNum(), user.getPremiumDiamondNum(), user.getDiamondNum(), user.getEndLoginOutTime());
                 logger.info("[{}][{}]新得玩家登录数据[UserData:{}]", user.getId(), sid, user.toString());
                 OrmContext.getAccessor().update(user);
                 logger.info("[{}][{}]数据库刷新成功", user.getId(), sid);
@@ -192,6 +193,10 @@ public class LoginController {
         var player = UserModelDict.load(uid);
         player.sid = 0;
         player.session = null;
+        logger.info("[退出游戏] 开始更新玩家退出游戏时间");
+        player.setEndLoginOutTime(TimeUtils.now());
+        OrmContext.getAccessor().update(player);
+        logger.info("[退出游戏] 结束更新玩家退出游戏时间");
         UserModelDict.update(player);
     }
 

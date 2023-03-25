@@ -1,5 +1,6 @@
 package com.gameServer.gameBoot.model.register;
 
+
 /**
  * @author Administrator
  * @version 1.0
