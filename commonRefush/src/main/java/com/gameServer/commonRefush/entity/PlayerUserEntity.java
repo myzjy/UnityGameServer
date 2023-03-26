@@ -53,6 +53,26 @@ public class PlayerUserEntity implements IEntity<Long> {
      * 普通钻石 由付费钻石转换成普通钻石，比例为 1:1
      */
     private long DiamondNum;
+    /**
+     * 玩家等级
+     */
+    private int playerLv;
+
+    /**
+     * 玩家当前等级 当前经验
+     */
+    private int nowExp;
+
+    /**
+     * 玩家当前等级的最大经验
+     */
+    private int nowLvMaxExp;
+
+    /**
+     * 当前体力
+     */
+    private int nowPhysicalPowerNum;
+
 
     /**
      * 玩家数据结构
@@ -61,12 +81,15 @@ public class PlayerUserEntity implements IEntity<Long> {
      * @param name          userName
      * @param lastLoginTime 上次登录时间
      * @param registerTime  注册时间
+     * @param token         玩家token
      */
     public static PlayerUserEntity valueOf(
             long id,
             String name,
             long lastLoginTime,
-            long registerTime, String token, long goldNum, long premiumDiamondNum, long diamondNum, long endLoginOutTime) {
+            long registerTime,
+            String token, long goldNum, long premiumDiamondNum, long diamondNum, long endLoginOutTime,
+            int nowExp, int nowPhysicalPowerNum, int nowLvMaxExp, int playerLv) {
         var entity = new PlayerUserEntity();
 
         entity.id = id;
@@ -78,22 +101,12 @@ public class PlayerUserEntity implements IEntity<Long> {
         entity.PremiumDiamondNum = premiumDiamondNum;
         entity.DiamondNum = diamondNum;
         entity.endLoginOutTime = endLoginOutTime;
+        entity.nowExp = nowExp;
+        entity.nowPhysicalPowerNum = nowPhysicalPowerNum;
+        entity.nowLvMaxExp = nowLvMaxExp;
+        entity.playerLv = playerLv;
         return entity;
     }
-
-//    /**
-//     * @param
-//     */
-//    public static PlayerUserEntity valueOf(long id, String name, long lastLoginTime, long registerTime, String token) {
-//        var entity = new PlayerUserEntity();
-//
-//        entity.id = id;
-//        entity.name = name;
-//        entity.lastLoginTime = lastLoginTime;
-//        entity.registerTime = registerTime;
-//        entity.Token = token;
-//        return entity;
-//    }
 
     @Override
     public Long id() {
@@ -194,4 +207,45 @@ public class PlayerUserEntity implements IEntity<Long> {
         this.endLoginOutTime = endLoginOutTime;
     }
 
+    public int getPlayerLv() {
+        return playerLv;
+    }
+
+    public void setPlayerLv(int playerLv) {
+        this.playerLv = playerLv;
+    }
+
+    public int getNowExp() {
+        return nowExp;
+    }
+
+    public void setNowExp(int nowExp) {
+        this.nowExp = nowExp;
+    }
+
+    public int getNowLvMaxExp() {
+        return nowLvMaxExp;
+    }
+
+    public void setNowLvMaxExp(int nowLvMaxExp) {
+        this.nowLvMaxExp = nowLvMaxExp;
+    }
+
+    /**
+     * 返回当前体力
+     *
+     * @return 返回当前体力
+     */
+    public int getNowPhysicalPowerNum() {
+        return nowPhysicalPowerNum;
+    }
+
+    /**
+     * 设置体力
+     *
+     * @param nowPhysicalPowerNum 体力
+     */
+    public void setNowPhysicalPowerNum(int nowPhysicalPowerNum) {
+        this.nowPhysicalPowerNum = nowPhysicalPowerNum;
+    }
 }

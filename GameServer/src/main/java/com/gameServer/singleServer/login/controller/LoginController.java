@@ -104,7 +104,8 @@ public class LoginController {
                 }
                 //覆盖登录时间
                 user = PlayerUserEntity.valueOf(user.getId(), user.getName(), TimeUtils.now(), user.getRegisterTime(),
-                        user.getToken(), user.getGoldNum(), user.getPremiumDiamondNum(), user.getDiamondNum(), user.getEndLoginOutTime());
+                        user.getToken(), user.getGoldNum(), user.getPremiumDiamondNum(), user.getDiamondNum(), user.getEndLoginOutTime(),
+                        user.getNowExp(), user.getNowPhysicalPowerNum(), user.getNowLvMaxExp(), user.getPlayerLv());
                 logger.info("[{}][{}]新得玩家登录数据[UserData:{}]", user.getId(), sid, user.toString());
                 OrmContext.getAccessor().update(user);
                 logger.info("[{}][{}]数据库刷新成功", user.getId(), sid);
