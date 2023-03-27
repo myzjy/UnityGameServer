@@ -7,4 +7,6 @@ package com.gameServer.singleServer.login.service;
  */
 public interface ILoginService {
     void AtLoginService();
+
+//    void
 }
