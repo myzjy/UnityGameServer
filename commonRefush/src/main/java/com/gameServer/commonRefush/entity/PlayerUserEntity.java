@@ -1,8 +1,10 @@
 package com.gameServer.commonRefush.entity;
 
 import com.zfoo.net.session.Session;
+import com.zfoo.orm.model.anno.Cache;
 import com.zfoo.orm.model.anno.EntityCache;
 import com.zfoo.orm.model.anno.Id;
+import com.zfoo.orm.model.anno.Persister;
 import com.zfoo.orm.model.entity.IEntity;
 
 /**
@@ -10,7 +12,7 @@ import com.zfoo.orm.model.entity.IEntity;
  * @version 0.1
  * @since 2022-7-15 23:45
  */
-@EntityCache
+@EntityCache(cache = @Cache("tenThousand"), persister = @Persister("time30s"))
 public class PlayerUserEntity implements IEntity<Long> {
     // 记录会话信息
     public transient long sid = 1;
@@ -73,6 +75,7 @@ public class PlayerUserEntity implements IEntity<Long> {
      */
     private int nowPhysicalPowerNum;
 
+//    private long
 
     /**
      * 玩家数据结构

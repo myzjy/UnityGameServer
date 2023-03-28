@@ -4,6 +4,8 @@ import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.constant.TankDeployEnum;
 import com.gameServer.commonRefush.entity.AccountEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
+import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer;
+import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk;
 import com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest;
 import com.gameServer.commonRefush.protocol.login.LoginRequest;
 import com.gameServer.commonRefush.protocol.login.LoginResponse;
@@ -65,17 +67,39 @@ public class LoginController {
         }
 
         var sid = session.getSid();
-        EventBus.execute(HashUtils.fnvHash(account), () -> {
-            //数据库拿去
+        {
             var accountUser = OrmContext.getAccessor().load(account, AccountEntity.class);
-            //log
-            logger.info("[{}玩家登录]登录时间{}", account, TimeUtils.dateFormatForDayTimeString(TimeUtils.now()));
             if (accountUser == null) {
                 logger.error("[account：{}，玩家登录]登录时间{}[error:{}]", account, TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), I18nEnum.error_account_not_exit.getMessage());
 
                 NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
                 return;
             }
+            //验证密码
+            if (StringUtils.isNotBlank(accountUser.getPassword()) && !accountUser.getPassword().trim().equals(password.trim())) {
+                if (accountUser.getUid() > 0) {
+                    logger.info("[password:{}]账号或密码错误", password);
+                } else {
+                    logger.info("[uid:{}][password:{}]账号或密码错误", accountUser.getUid(), password);
+                }
+                logger.error("[UID:{}],Error{}", accountUser.getUid(), I18nEnum.error_account_password.toString());
+                //给客户端服务器
+                NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_password.toString()));
+                return;
+            }
+        }
+        EventBus.execute(HashUtils.fnvHash(account), () -> {
+            //数据库拿去
+            AccountEntity accountUser;
+            accountUser = OrmContext.getAccessor().load(account, AccountEntity.class);
+            if (accountUser == null) {
+                logger.error("[account：{}，玩家登录]登录时间{}[error:{}]", account, TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), I18nEnum.error_account_not_exit.getMessage());
+
+                NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
+                return;
+            }
+            //log
+            logger.info("[{}玩家登录]登录时间{}", accountUser.getAccount(), TimeUtils.dateFormatForDayTimeString(TimeUtils.now()));
             {
                 //通过UID获取
                 var user = OrmContext.getAccessor().load(accountUser.getUid(), PlayerUserEntity.class);
@@ -85,6 +109,23 @@ public class LoginController {
                     return;
                 }
                 session.setUid(user.getId());
+                NetContext.getConsumer().asyncAsk(RefreshLoginPhysicalPowerNumAsk.ValueOf(user.getId()), RefreshLoginPhysicalPowerNumAnswer.class, user.getId())
+                        .whenComplete(userData -> {
+                            if (userData.getError() != null) {
+                                NetContext.getRouter().send(session, userData.getError());
+                                return;
+                            }
+
+                            var userCache = userData.getPlayerUserEntity();
+                            if (userCache.getToken() == null) {
+                                logger.info("[当前 uid:{}] 开始获取token", userCache.getId());
+                                //没有Token,获取token
+                                var token = TokenUtils.set(userCache.getId());
+                                logger.info("[当前 uid:{}][新token：{}]", userCache.getId(), token);
+                                userCache.setToken(token);
+                            }
+
+                        });
                 if (user.getToken() == null) {
                     var token = TokenUtils.set(user.getId());
                     logger.info("[当前 uid:{}][新token：{}]", user.getId(), token);
@@ -110,20 +151,7 @@ public class LoginController {
                 OrmContext.getAccessor().update(user);
                 logger.info("[{}][{}]数据库刷新成功", user.getId(), sid);
             }
-            if (deployEnum == TankDeployEnum.dev) {
-                //验证密码
-                if (StringUtils.isNotBlank(accountUser.getPassword()) && !accountUser.getPassword().trim().equals(password.trim())) {
-                    if (accountUser.getUid() > 0) {
-                        logger.info("[password:{}]账号或密码错误", password);
-                    } else {
-                        logger.info("[uid:{}][password:{}]账号或密码错误", accountUser.getUid(), password);
-                    }
-                    logger.error("[UID:{}],Error{}", accountUser.getUid(), I18nEnum.error_account_password.toString());
-                    //给客户端服务器
-                    NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_password.toString()));
-                    return;
-                }
-            }
+
             var uid = accountUser.getUid();
 
             logger.info("[uid：{}][sid：{}]玩家登录[account:{}][password:{}]", uid, sid, account, password);
