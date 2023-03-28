@@ -180,7 +180,7 @@ public class SpeedTest {
             System.err.println("JDK17 运行kryo会报错，等kryo修复bug");
         }
     }
-    public static final List<List<Integer>> listListWithInteger = new ArrayList<>(List.of(listWithInteger, listWithInteger, listWithInteger));
+
 
     @Ignore
     @Test
@@ -220,7 +220,6 @@ public class SpeedTest {
         }
         countdown.await();
     }
-    public static final List<List<List<Integer>>> listListListWithInteger = new ArrayList<>(List.of(listListWithInteger, listListWithInteger, listListWithInteger));
     public static final ExecutorService[] executors = new ExecutorService[threadNum];
 
     // kryo协议注册
@@ -260,7 +259,6 @@ public class SpeedTest {
             return kryo;
         }
     };
-    public static final Map<List<List<ObjectA>>, List<List<List<Integer>>>> mapWithListList = new HashMap<>(Map.of(new ArrayList<>(List.of(listWithObject, listWithObject, listWithObject)), listListListWithInteger));
 
     // -------------------------------------------以下为测试用例---------------------------------------------------------------
     // 简单类型
@@ -303,6 +301,9 @@ public class SpeedTest {
     public static final Set<Set<ObjectA>> setSetWithObject = new HashSet<>(Set.of(new HashSet<>(Set.of(objectA))));
     public static final Set<String> setWithString = new HashSet<>(ArrayUtils.toList(stringArray));
     public static final Map<Integer, ObjectA> mapWithObject = new HashMap<>(Map.of(1, objectA, 2, objectA, 3, objectA));
+    public static final List<List<Integer>> listListWithInteger = new ArrayList<>(List.of(listWithInteger, listWithInteger, listWithInteger));
+    public static final List<List<List<Integer>>> listListListWithInteger = new ArrayList<>(List.of(listListWithInteger, listListWithInteger, listListWithInteger));
+    public static final Map<List<List<ObjectA>>, List<List<List<Integer>>>> mapWithListList = new HashMap<>(Map.of(new ArrayList<>(List.of(listWithObject, listWithObject, listWithObject)), listListListWithInteger));
 
     static {
         var op = GenerateOperation.NO_OPERATION;
