@@ -6,7 +6,6 @@ import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPo
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
-import com.zfoo.net.packet.common.Message;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.cache.IEntityCaches;
@@ -16,17 +15,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * user 相关
- * 例如登录时的 计算体力rpc请求会在这个地方
- *
  * @author zjy
  * @version 1.0
- * @since 2023/3/29 00 12
+ * @since 2023/3/29 00 46
  */
 @Component
-public class LoginController {
+public class UserLoginController {
     //log文件
-    private static final Logger logger = LoggerFactory.getLogger(com.gameServer.singleServer.login.controller.LoginController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserLoginController.class);
 
 
     /**

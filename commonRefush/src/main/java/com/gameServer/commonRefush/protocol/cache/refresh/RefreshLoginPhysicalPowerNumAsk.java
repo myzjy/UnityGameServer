@@ -15,11 +15,6 @@ import com.zfoo.protocol.registration.anno.Protocol;
 @Protocol(id = 1015)
 public class RefreshLoginPhysicalPowerNumAsk implements IPacket {
     private long userId;
-    /**
-     * 玩家在数据库上面相关信息
-     */
-    private PlayerUserEntity userEntity;
-
     public static RefreshLoginPhysicalPowerNumAsk ValueOf(long userId) {
         RefreshLoginPhysicalPowerNumAsk value = new RefreshLoginPhysicalPowerNumAsk();
         value.setUserId(userId);

@@ -12,7 +12,7 @@ import com.zfoo.orm.model.entity.IEntity;
  * @version 0.1
  * @since 2022-7-15 23:45
  */
-@EntityCache(cache = @Cache("tenThousand"), persister = @Persister("time30s"))
+@EntityCache(persister = @Persister("time30s"))
 public class PlayerUserEntity implements IEntity<Long> {
     // 记录会话信息
     public transient long sid = 1;
