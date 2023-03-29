@@ -15,6 +15,6 @@
 // * @version 1.0
 // * @since 2023/3/29 00 30
 // */
-//@EntityCache(cache = @Cache("tenThousand"), persister = @Persister("time30s"))
+//@EntityCache(persister = @Persister("time30s"))
 //public class PhysicalPowerEntity {
 //}
