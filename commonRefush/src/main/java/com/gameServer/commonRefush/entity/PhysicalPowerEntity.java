@@ -42,6 +42,12 @@ public class PhysicalPowerEntity implements IEntity<Long> {
      */
     private int maximumStrength;
 
+
+    /**
+     * 我恢复到最大体力的结束时间
+     */
+    private long maxResidueEndTime;
+
     /**
      * 创建值
      *
@@ -50,12 +56,14 @@ public class PhysicalPowerEntity implements IEntity<Long> {
      * @param nowPhysicalPowerNum 当前体力 这个地方是需要同步PlayUser 表中的体力值，哪里一概不进行增加，只用同步
      * @param maximumStrength     最大体力 用于限制 这个值会随着 等级增长
      * @param residueTime         一点体力增长剩余时间
+     * @param maxResidueEndTime   恢复满体力的结束时间
      */
     public static PhysicalPowerEntity ValueOf(int id,
                                               long residueEndTime,
                                               int nowPhysicalPowerNum,
                                               int residueTime,
-                                              int maximumStrength) {
+                                              int maximumStrength,
+                                              long maxResidueEndTime) {
         var data = new PhysicalPowerEntity();
         data.setId(id);
         data.setResidueEndTime(residueEndTime);
@@ -115,7 +123,28 @@ public class PhysicalPowerEntity implements IEntity<Long> {
         return id;
     }
 
+    /**
+     * 设置id
+     */
     public void setId(long id) {
         this.id = id;
+    }
+
+    /**
+     * 返回体力满 结束时间
+     *
+     * @return 返回结束时间
+     */
+    public long getMaxResidueEndTime() {
+        return maxResidueEndTime;
+    }
+
+    /**
+     * 进行设置恢复最大体力的结束时见，只会在我体力满的时候、消耗体力了才会进行赋值
+     *
+     * @param maxResidueEndTime 结束时间
+     */
+    public void setMaxResidueEndTime(long maxResidueEndTime) {
+        this.maxResidueEndTime = maxResidueEndTime;
     }
 }

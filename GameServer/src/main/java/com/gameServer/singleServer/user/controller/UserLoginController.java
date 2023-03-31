@@ -55,7 +55,11 @@ public class UserLoginController {
             //体力满了
             NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(userEntity));
         }
-
+        /* *
+         * 开始计算 会恢复多少体力
+         *  根据时间
+         * */
+        long lastTime=data.getMaxResidueEndTime();
 
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
         NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(userEntity));
