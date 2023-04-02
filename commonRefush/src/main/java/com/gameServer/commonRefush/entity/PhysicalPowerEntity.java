@@ -31,6 +31,7 @@ public class PhysicalPowerEntity implements IEntity<Long> {
     private int nowPhysicalPowerNum;
     /**
      * 一点体力增长剩余时间
+     * <p> 注意这里不是时间戳赋值</p>
      */
     private int residueTime;
     /**
@@ -70,6 +71,7 @@ public class PhysicalPowerEntity implements IEntity<Long> {
         data.setNowPhysicalPowerNum(nowPhysicalPowerNum);
         data.setMaximumStrength(maximumStrength);
         data.setResidueTime(residueTime);
+        data.setMaxResidueEndTime(maxResidueEndTime);
         return data;
     }
 
@@ -95,18 +97,36 @@ public class PhysicalPowerEntity implements IEntity<Long> {
         this.maximumStrength = maximumStrength;
     }
 
+    /**
+     * @return 返回剩余恢复1点体力时间 这里不是时间戳
+     * */
     public int getResidueTime() {
         return residueTime;
     }
 
+    /**
+     * 设置剩余时间
+     *
+     * @param residueTime 设置剩余时间
+     */
     public void setResidueTime(int residueTime) {
         this.residueTime = residueTime;
     }
 
+    /**
+     * 返回当前体力值
+     *
+     * @return 返回当前体力值
+     */
     public int getNowPhysicalPowerNum() {
         return nowPhysicalPowerNum;
     }
 
+    /**
+     * 设置体力值
+     *
+     * @param nowPhysicalPowerNum 需要进行设置的体力值
+     */
     public void setNowPhysicalPowerNum(int nowPhysicalPowerNum) {
         this.nowPhysicalPowerNum = nowPhysicalPowerNum;
     }
@@ -119,6 +139,11 @@ public class PhysicalPowerEntity implements IEntity<Long> {
         this.vs = vs;
     }
 
+    /**
+     * 返回id
+     *
+     * @return 返回🆔
+     */
     public long getId() {
         return id;
     }

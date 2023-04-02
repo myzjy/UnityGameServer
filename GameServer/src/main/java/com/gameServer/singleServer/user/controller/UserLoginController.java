@@ -48,6 +48,13 @@ public class UserLoginController {
             NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_login_process_not.toString())));
             return;
         }
+        //第一次创建账号 体力恢复满
+        if (userEntity.getLastLoginTime() < 1) {
+            //这里就不用 error 提示了
+            logger.warn("[uid:{}],当前玩家为第一次创建，体力不需要恢复直接满格", userId);
+//            data.setNowPhysicalPowerNum();
+        }
+
         //当前体力
         var nowPhysicalPower = data.getNowPhysicalPowerNum();
         if (nowPhysicalPower >= data.getMaximumStrength()) {
@@ -57,9 +64,9 @@ public class UserLoginController {
         }
         /* *
          * 开始计算 会恢复多少体力
-         *  根据时间
+         *  根据时间 这里先用时间戳 去计算间隔多长时间了
          * */
-        long lastTime=data.getMaxResidueEndTime();
+        long lastTime = data.getMaxResidueEndTime();
 
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
         NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(userEntity));
