@@ -34,6 +34,19 @@ public class PhysicalPowerEntity implements IEntity<Long> {
      * <p> 注意这里不是时间戳赋值</p>
      */
     private int residueTime;
+
+    public long getResidueNowTime() {
+        return residueNowTime;
+    }
+
+    public void setResidueNowTime(long residueNowTime) {
+        this.residueNowTime = residueNowTime;
+    }
+
+    /**
+     * 当前体力实时时间
+     */
+    private long residueNowTime;
     /**
      * 一点体力增长结束时间
      */
@@ -99,7 +112,7 @@ public class PhysicalPowerEntity implements IEntity<Long> {
 
     /**
      * @return 返回剩余恢复1点体力时间 这里不是时间戳
-     * */
+     */
     public int getResidueTime() {
         return residueTime;
     }

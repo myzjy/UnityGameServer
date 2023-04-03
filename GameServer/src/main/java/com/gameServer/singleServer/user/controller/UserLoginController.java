@@ -11,6 +11,7 @@ import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.cache.IEntityCaches;
 import com.zfoo.orm.model.anno.EntityCachesInjection;
+import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -62,11 +63,35 @@ public class UserLoginController {
             //体力满了
             NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(userEntity));
         }
+        var lastLogin=userEntity.getLastLoginTime();
+
+
+
         /* *
          * 开始计算 会恢复多少体力
          *  根据时间 这里先用时间戳 去计算间隔多长时间了
          * */
         long lastTime = data.getMaxResidueEndTime();
+        //当前时间
+        var nowTime = TimeUtils.now();
+        /* *
+         * 相差的时间
+         * */
+        var differenceTime = nowTime - lastTime;
+        //这里剩余 毫秒
+        var differenceMiTime = differenceTime % 1000;
+        //相差时间 从毫秒换算成秒
+        var differenceToSeconds = differenceTime / 1000;
+        //恢复时间
+        var differenceNum = differenceToSeconds % 300;
+        //1点体力恢复 时间为 1点 5分钟 300秒 此时 多少点
+        int surplusNum = (int) (differenceToSeconds / 300);
+        data.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum() + surplusNum);
+        if (data.getNowPhysicalPowerNum() >= data.getMaximumStrength()) {
+            //
+//            data.setNowPhysicalPowerNum(data.);
+        }
+
 
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
         NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(userEntity));
