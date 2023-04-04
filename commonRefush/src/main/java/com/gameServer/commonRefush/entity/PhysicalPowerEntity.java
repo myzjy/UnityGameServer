@@ -35,16 +35,8 @@ public class PhysicalPowerEntity implements IEntity<Long> {
      */
     private int residueTime;
 
-    public long getResidueNowTime() {
-        return residueNowTime;
-    }
-
-    public void setResidueNowTime(long residueNowTime) {
-        this.residueNowTime = residueNowTime;
-    }
-
     /**
-     * 当前体力实时时间
+     * 当前体力实时时间 会跟着剩余时间一起变化
      */
     private long residueNowTime;
     /**
@@ -185,4 +177,19 @@ public class PhysicalPowerEntity implements IEntity<Long> {
     public void setMaxResidueEndTime(long maxResidueEndTime) {
         this.maxResidueEndTime = maxResidueEndTime;
     }
+
+    /**
+     * @return 返回当前体力实时恢复时间
+     */
+    public long getResidueNowTime() {
+        return residueNowTime;
+    }
+
+    /**
+     * @param residueNowTime 当前体力恢复实时计算 时间戳
+     */
+    public void setResidueNowTime(long residueNowTime) {
+        this.residueNowTime = residueNowTime;
+    }
+
 }

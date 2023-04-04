@@ -63,34 +63,46 @@ public class UserLoginController {
             //体力满了
             NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(userEntity));
         }
-        var lastLogin=userEntity.getLastLoginTime();
-
-
-
-        /* *
-         * 开始计算 会恢复多少体力
-         *  根据时间 这里先用时间戳 去计算间隔多长时间了
-         * */
-        long lastTime = data.getMaxResidueEndTime();
-        //当前时间
-        var nowTime = TimeUtils.now();
-        /* *
-         * 相差的时间
-         * */
-        var differenceTime = nowTime - lastTime;
-        //这里剩余 毫秒
-        var differenceMiTime = differenceTime % 1000;
-        //相差时间 从毫秒换算成秒
-        var differenceToSeconds = differenceTime / 1000;
-        //恢复时间
-        var differenceNum = differenceToSeconds % 300;
-        //1点体力恢复 时间为 1点 5分钟 300秒 此时 多少点
-        int surplusNum = (int) (differenceToSeconds / 300);
-        data.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum() + surplusNum);
-        if (data.getNowPhysicalPowerNum() >= data.getMaximumStrength()) {
-            //
-//            data.setNowPhysicalPowerNum(data.);
+        //相差的时间 精确到毫秒级别
+        var differenceLastTime = TimeUtils.now() - data.getResidueNowTime();
+        //剩余毫秒级别
+        var differenceTime = differenceLastTime % 1000;
+        //相差秒数
+        var differenceToTime = differenceLastTime / 1000;
+        if(differenceToTime>0){
+            //代表 离线了1s以上
+            //我离线时间是否超过我1点体力恢复时间
+            if(data.getResidueTime()>differenceToTime){
+                //没有超过
+            }
+            else{
+                //超过了
+            }
         }
+//        /* *
+//         * 开始计算 会恢复多少体力
+//         *  根据时间 这里先用时间戳 去计算间隔多长时间了
+//         * */
+//        long lastTime = data.getMaxResidueEndTime();
+//        //当前时间
+//        var nowTime = TimeUtils.now();
+//        /* *
+//         * 相差的时间
+//         * */
+//        var differenceTime = nowTime - lastTime;
+//        //这里剩余 毫秒
+//        var differenceMiTime = differenceTime % 1000;
+//        //相差时间 从毫秒换算成秒
+//        var ç = differenceTime / 1000;
+//        //恢复时间
+//        var differenceNum = differenceToSeconds % 300;
+//        //1点体力恢复 时间为 1点 5分钟 300秒 此时 多少点
+//        int surplusNum = (int) (differenceToSeconds / 300);
+//        data.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum() + surplusNum);
+//        if (data.getNowPhysicalPowerNum() >= data.getMaximumStrength()) {
+//            //
+////            data.setNowPhysicalPowerNum(data.);
+//        }
 
 
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
