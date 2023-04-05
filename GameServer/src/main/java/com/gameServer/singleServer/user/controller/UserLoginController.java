@@ -35,6 +35,9 @@ public class UserLoginController {
     @EntityCachesInjection
     private IEntityCaches<Long, PhysicalPowerEntity> physicalPowerEntityIEntityCaches;
 
+    /**
+     * 体力 rpc 登陆
+     */
     @PacketReceiver
     public void atRefreshLoginPhysicalPowerNumAsk(Session session, RefreshLoginPhysicalPowerNumAsk numAsk) {
         var userId = numAsk.getUserId();
@@ -69,41 +72,47 @@ public class UserLoginController {
         var differenceTime = differenceLastTime % 1000;
         //相差秒数
         var differenceToTime = differenceLastTime / 1000;
-        if(differenceToTime>0){
+        if (differenceToTime > 0) {
             //代表 离线了1s以上
             //我离线时间是否超过我1点体力恢复时间
-            if(data.getResidueTime()>differenceToTime){
+            if (data.getResidueTime() > differenceToTime) {
                 //没有超过
-            }
-            else{
+                data.setResidueTime(data.getResidueTime() - (int) differenceTime);
+            } else {
+                //因为这里的时间需要减
+                var setMaximusResidue = (data.getMaximusResidueEndTime() - (int) differenceTime);
+                setMaximusResidue = Math.max(setMaximusResidue, 0);
+                data.setMaximusResidueEndTime(setMaximusResidue);
                 //超过了
+                var differenceNum = (int) differenceTime - data.getResidueTime();
+                //离线时间超过当前 1点体力恢复时间，并切剩余时间大于1点体力恢复时间
+                if (differenceNum > 300) {
+                    //可以恢复多少点离线体力
+                    var num = differenceNum / 300;
+
+                    data.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum() + num);
+                    data.setResidueNowTime(TimeUtils.now());
+                    //增加的体力是否大于 当前最大体力了
+                    if (data.getNowPhysicalPowerNum() >= data.getMaximumStrength()) {
+                        data.setNowPhysicalPowerNum(data.getMaximumStrength());
+                        //恢复时间统一归零
+                        data.setResidueTime(0);
+                        data.setMaximusResidueEndTime(0);
+                        data.setMaxResidueEndTime(0);
+                    }
+
+                } else {
+                    //加一点体力
+                    data.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum() + 1);
+                    data.setResidueTime(differenceNum);
+                    data.setResidueNowTime(TimeUtils.now());
+                }
             }
         }
-//        /* *
-//         * 开始计算 会恢复多少体力
-//         *  根据时间 这里先用时间戳 去计算间隔多长时间了
-//         * */
-//        long lastTime = data.getMaxResidueEndTime();
-//        //当前时间
-//        var nowTime = TimeUtils.now();
-//        /* *
-//         * 相差的时间
-//         * */
-//        var differenceTime = nowTime - lastTime;
-//        //这里剩余 毫秒
-//        var differenceMiTime = differenceTime % 1000;
-//        //相差时间 从毫秒换算成秒
-//        var ç = differenceTime / 1000;
-//        //恢复时间
-//        var differenceNum = differenceToSeconds % 300;
-//        //1点体力恢复 时间为 1点 5分钟 300秒 此时 多少点
-//        int surplusNum = (int) (differenceToSeconds / 300);
-//        data.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum() + surplusNum);
-//        if (data.getNowPhysicalPowerNum() >= data.getMaximumStrength()) {
-//            //
-////            data.setNowPhysicalPowerNum(data.);
-//        }
-
+        userEntity.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum());
+        UserModelDict.update(userEntity);
+        //更新数据库
+        physicalPowerEntityIEntityCaches.update(data);
 
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
         NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(userEntity));

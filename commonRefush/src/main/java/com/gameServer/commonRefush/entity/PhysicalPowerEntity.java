@@ -47,10 +47,14 @@ public class PhysicalPowerEntity implements IEntity<Long> {
      * 最大体力 用于限制 这个值会随着 等级增长
      */
     private int maximumStrength;
-
-
     /**
      * 我恢复到最大体力的结束时间
+     * <p>这里不是时间戳<p/>
+     */
+    private int maximusResidueEndTime;
+
+    /**
+     * 我恢复到最大体力的结束时间 此为时间戳
      */
     private long maxResidueEndTime;
 
@@ -191,5 +195,14 @@ public class PhysicalPowerEntity implements IEntity<Long> {
     public void setResidueNowTime(long residueNowTime) {
         this.residueNowTime = residueNowTime;
     }
+
+    public int getMaximusResidueEndTime() {
+        return maximusResidueEndTime;
+    }
+
+    public void setMaximusResidueEndTime(int maximusResidueEndTime) {
+        this.maximusResidueEndTime = maximusResidueEndTime;
+    }
+
 
 }
