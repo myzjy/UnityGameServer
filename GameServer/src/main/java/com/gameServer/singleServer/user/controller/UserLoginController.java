@@ -5,6 +5,7 @@ import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk;
+import com.gameServer.commonRefush.resource.ConfigResource;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
 import com.zfoo.net.router.receiver.PacketReceiver;
@@ -12,6 +13,8 @@ import com.zfoo.net.session.Session;
 import com.zfoo.orm.cache.IEntityCaches;
 import com.zfoo.orm.model.anno.EntityCachesInjection;
 import com.zfoo.scheduler.util.TimeUtils;
+import com.zfoo.storage.model.anno.ResInjection;
+import com.zfoo.storage.model.vo.Storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -25,7 +28,8 @@ import org.springframework.stereotype.Component;
 public class UserLoginController {
     //log文件
     private static final Logger logger = LoggerFactory.getLogger(UserLoginController.class);
-
+    @ResInjection
+    private Storage<Integer, ConfigResource> configResourceStorage;
 
     /**
      * 用户数据

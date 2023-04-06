@@ -86,7 +86,9 @@ public class RegisterController {
         var token = TokenUtils.set(newUID);
         //用户名字我们先以玩家加uid 赋一个初始值
         String userName = StringUtils.format("玩家UID:{}", newUID);
-        PlayerUserEntity userEntity = PlayerUserEntity.valueOf(newUID, userName, TimeUtils.now(), TimeUtils.now(), token, 0, 0, 0, 0, 0, 0, 0, 0);
+        PlayerUserEntity userEntity = PlayerUserEntity.valueOf(newUID, userName, TimeUtils.now(), TimeUtils.now(),
+                token, 0, 0, 0, 0,
+                0, 0, 0, 0);
         userEntity.setToken(TokenUtils.set(newUID));
         logger.info("[Token:{}]", userEntity.getToken());
         //插入数据了，就代表注册成功了
