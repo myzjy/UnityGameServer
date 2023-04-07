@@ -34,6 +34,8 @@
         <protocol id="1014" location="com.gameServer.commonRefush.protocol.login.LoginTapToStartResponse"/>
         <protocol id="1015"
                   location="com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk"/>
+        <protocol id="1016"
+                  location="com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer"/>
 
     </module>
     <module id="3" name="common" minId="100" maxId="500">

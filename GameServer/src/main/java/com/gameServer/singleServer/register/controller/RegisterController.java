@@ -3,6 +3,8 @@ package com.gameServer.singleServer.register.controller;
 import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.entity.AccountEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
+import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnswer;
+import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk;
 import com.gameServer.commonRefush.protocol.register.RegisterRequest;
 import com.gameServer.commonRefush.protocol.register.RegisterResponse;
 import com.gameServer.commonRefush.util.TokenUtils;
@@ -48,7 +50,7 @@ public class RegisterController {
         var accountUser = OrmContext.getAccessor().load(account, AccountEntity.class);
         if (accountUser != null) {
             logger.error("[account:{}]玩家账号,在数据库中存在，请重新输入", account);
-            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_already_exists.toString()));
+            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_already_exists.getMessage()));
             return;
         }
         //密码长度是否符合要求
@@ -56,12 +58,12 @@ public class RegisterController {
             //这个地方可能是显示问题
             if (password.contains(" ")) {
                 logger.error("[account:{}]玩家，密码包含空字符，请重新输入,[password:{}]", account, password);
-                NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_password_not_have_null.toString()));
+                NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_password_not_have_null.getMessage()));
                 return;
             }
         } else {
             logger.error("[account:{}]玩家，密码长度不符合要求,[password:{}]", account, password);
-            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_password_length.toString()));
+            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_password_length.getMessage()));
             return;
         }
 
@@ -89,11 +91,18 @@ public class RegisterController {
         PlayerUserEntity userEntity = PlayerUserEntity.valueOf(newUID, userName, TimeUtils.now(), TimeUtils.now(),
                 token, 0, 0, 0, 0,
                 0, 0, 0, 0);
+
         userEntity.setToken(TokenUtils.set(newUID));
         logger.info("[Token:{}]", userEntity.getToken());
         //插入数据了，就代表注册成功了
         OrmContext.getAccessor().insert(userEntity);
-        NetContext.getRouter().send(session, RegisterResponse.valueOf(true, "ok"));
+        //必须保证万无一失 rpc请求
+        NetContext.getConsumer().asyncAsk(CreatePhysicalPowerAsk.ValueOf(userEntity.getPlayerLv(), userEntity.getId()), CreatePhysicalPowerAnswer.class, userEntity.getId())
+                .whenComplete(res -> {
+                    logger.info("[uid:{}] 玩家体力数据创建成功", userEntity.getId());
+                    NetContext.getRouter().send(session, RegisterResponse.valueOf(true, "ok"));
+                });
+
 
     }
 

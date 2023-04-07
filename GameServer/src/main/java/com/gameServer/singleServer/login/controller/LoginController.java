@@ -124,25 +124,27 @@ public class LoginController {
                                 logger.info("[当前 uid:{}][新token：{}]", userCache.getId(), token);
                                 userCache.setToken(token);
                             }
+                            OrmContext.getAccessor().update(userCache);
 
                         });
-                if (user.getToken() == null) {
+                user = OrmContext.getAccessor().load(accountUser.getUid(), PlayerUserEntity.class);
+//                if (user.getToken() == null) {
+//                    var token = TokenUtils.set(user.getId());
+//                    logger.info("[当前 uid:{}][新token：{}]", user.getId(), token);
+//                    user.setToken(token);
+//                } else {
+                var tokenTriple = TokenUtils.get(user.getToken());
+                var expirationTimeLong = tokenTriple.getRight();
+                var nowLong = TimeUtils.now();
+                logger.info("当前token：{},[当前uid：{}],[当前sid：{}]", tokenTriple, session.getUid(), session.getSid());
+                logger.info("[expirationTimeLong:{}],[nowLog:{}][当前token是否过期：{}]", TimeUtils.timeToString(expirationTimeLong), TimeUtils.timeToString(nowLong), nowLong > expirationTimeLong);
+                if (nowLong > expirationTimeLong) {
+                    //代表过时的token
                     var token = TokenUtils.set(user.getId());
-                    logger.info("[当前 uid:{}][新token：{}]", user.getId(), token);
+                    logger.info("[{}]重新设置Token:[{}]", user.getId(), token);
                     user.setToken(token);
-                } else {
-                    var tokenTriple = TokenUtils.get(user.getToken());
-                    var expirationTimeLong = tokenTriple.getRight();
-                    var nowLong = TimeUtils.now();
-                    logger.info("当前token：{},[当前uid：{}],[当前sid：{}]", tokenTriple, session.getUid(), session.getSid());
-                    logger.info("[expirationTimeLong:{}],[nowLog:{}][当前token是否过期：{}]", TimeUtils.timeToString(expirationTimeLong), TimeUtils.timeToString(nowLong), nowLong > expirationTimeLong);
-                    if (nowLong > expirationTimeLong) {
-                        //代表过时的token
-                        var token = TokenUtils.set(user.getId());
-                        logger.info("[{}]重新设置Token:[{}]", user.getId(), token);
-                        user.setToken(token);
-                    }
                 }
+//                }
                 //覆盖登录时间
                 user = PlayerUserEntity.valueOf(user.getId(), user.getName(), TimeUtils.now(), user.getRegisterTime(),
                         user.getToken(), user.getGoldNum(), user.getPremiumDiamondNum(), user.getDiamondNum(), user.getEndLoginOutTime(),

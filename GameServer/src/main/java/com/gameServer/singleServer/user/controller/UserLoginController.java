@@ -3,6 +3,8 @@ package com.gameServer.singleServer.user.controller;
 import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
+import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnswer;
+import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk;
 import com.gameServer.commonRefush.resource.ConfigResource;
@@ -10,6 +12,7 @@ import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
+import com.zfoo.orm.OrmContext;
 import com.zfoo.orm.cache.IEntityCaches;
 import com.zfoo.orm.model.anno.EntityCachesInjection;
 import com.zfoo.scheduler.util.TimeUtils;
@@ -120,5 +123,24 @@ public class UserLoginController {
 
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
         NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(userEntity));
+    }
+
+    @PacketReceiver
+    public void atCreatePhysicalPowerAsk(Session session, CreatePhysicalPowerAsk ask) {
+        var physicalData = physicalPowerEntityIEntityCaches.load(ask.getUid());
+        var userData = UserModelDict.load(ask.getUid());
+        var config = configResourceStorage.get(userData.getPlayerLv());
+        if (physicalData == null) {
+            //数据库中没有 需要创建
+            var createPhysical = PhysicalPowerEntity.ValueOf(ask.getUid(), 0, config.getMaxPhysical(), 0, config.getMaxPhysical(), 0);
+            OrmContext.getAccessor().insert(createPhysical);
+            logger.info("[UserLoginController] 体力数据创建成功 插入数据库成功");
+        }
+        //缓存读取
+        physicalData = physicalPowerEntityIEntityCaches.load(ask.getUid());
+        userData.setNowPhysicalPowerNum(physicalData.getNowPhysicalPowerNum());
+        UserModelDict.update(userData);
+        NetContext.getRouter().send(session,new CreatePhysicalPowerAnswer());
+
     }
 }

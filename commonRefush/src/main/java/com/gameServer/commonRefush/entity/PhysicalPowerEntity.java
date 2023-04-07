@@ -68,7 +68,7 @@ public class PhysicalPowerEntity implements IEntity<Long> {
      * @param residueTime         一点体力增长剩余时间
      * @param maxResidueEndTime   恢复满体力的结束时间
      */
-    public static PhysicalPowerEntity ValueOf(int id,
+    public static PhysicalPowerEntity ValueOf(long id,
                                               long residueEndTime,
                                               int nowPhysicalPowerNum,
                                               int residueTime,
