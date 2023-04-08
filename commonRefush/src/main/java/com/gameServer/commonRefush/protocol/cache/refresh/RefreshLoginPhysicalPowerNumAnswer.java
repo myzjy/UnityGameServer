@@ -12,12 +12,12 @@ import com.zfoo.protocol.registration.anno.Protocol;
  * @version 1.0
  * @since 2023/3/28 17 25
  */
-@Protocol(id = 1016)
+//@Protocol(id = 1016)
 public class RefreshLoginPhysicalPowerNumAnswer implements IPacket {
-//    private PlayerUserEntity playerUserEntity;
-    private Error error;
+    //    private PlayerUserEntity playerUserEntity;
+    public static final transient short PROTOCOL_ID = 1016;
 
-//    public static RefreshLoginPhysicalPowerNumAnswer ValueOf(PlayerUserEntity Entity) {
+    //    public static RefreshLoginPhysicalPowerNumAnswer ValueOf(PlayerUserEntity Entity) {
 //        RefreshLoginPhysicalPowerNumAnswer data = new RefreshLoginPhysicalPowerNumAnswer();
 //        data.setPlayerUserEntity(Entity);
 //        return data;
@@ -26,6 +26,13 @@ public class RefreshLoginPhysicalPowerNumAnswer implements IPacket {
         RefreshLoginPhysicalPowerNumAnswer data = new RefreshLoginPhysicalPowerNumAnswer();
 //        data.setPlayerUserEntity(Entity);
         return data;
+    }
+
+    private Error error;
+
+    @Override
+    public short protocolId() {
+        return PROTOCOL_ID;
     }
     public static RefreshLoginPhysicalPowerNumAnswer ValueOf(Error error) {
         RefreshLoginPhysicalPowerNumAnswer data = new RefreshLoginPhysicalPowerNumAnswer();

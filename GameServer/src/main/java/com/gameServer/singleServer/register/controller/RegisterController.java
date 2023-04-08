@@ -1,10 +1,15 @@
 package com.gameServer.singleServer.register.controller;
 
+import com.ctc.wstx.shaded.msv_core.driver.textui.Debug;
 import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.entity.AccountEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
+import com.gameServer.commonRefush.protocol.cache.LogAnswer;
+import com.gameServer.commonRefush.protocol.cache.LogAsk;
 import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnswer;
 import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk;
+import com.gameServer.commonRefush.protocol.login.LogRequest;
+import com.gameServer.commonRefush.protocol.login.LogResponse;
 import com.gameServer.commonRefush.protocol.register.RegisterRequest;
 import com.gameServer.commonRefush.protocol.register.RegisterResponse;
 import com.gameServer.commonRefush.util.TokenUtils;
@@ -33,7 +38,7 @@ public class RegisterController {
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
     @PacketReceiver
-    public void atRegisterRequest(Session session, RegisterRequest request) {
+    public void atRegisterRequest(Session session, RegisterRequest request) throws Exception {
         var account = StringUtils.trim(request.getAccount());
         var password = request.getPassword();
         var affirmPassword = request.getAffirmPassword();
@@ -90,20 +95,41 @@ public class RegisterController {
         String userName = StringUtils.format("玩家UID:{}", newUID);
         PlayerUserEntity userEntity = PlayerUserEntity.valueOf(newUID, userName, TimeUtils.now(), TimeUtils.now(),
                 token, 0, 0, 0, 0,
-                0, 0, 0, 0);
+                0, 0, 0, 1);
 
         userEntity.setToken(TokenUtils.set(newUID));
         logger.info("[Token:{}]", userEntity.getToken());
         //插入数据了，就代表注册成功了
         OrmContext.getAccessor().insert(userEntity);
+        logger.info("[{}]", session.getSid());
+        var serverSession = NetContext.getSessionManager().getServerSession(1);
+        logger.info("{}", serverSession);
         //必须保证万无一失 rpc请求
-        NetContext.getConsumer().asyncAsk(CreatePhysicalPowerAsk.ValueOf(userEntity.getPlayerLv(), userEntity.getId()), CreatePhysicalPowerAnswer.class, userEntity.getId())
-                .whenComplete(res -> {
-                    logger.info("[uid:{}] 玩家体力数据创建成功", userEntity.getId());
-                    NetContext.getRouter().send(session, RegisterResponse.valueOf(true, "ok"));
+        var pa = NetContext.getRouter()
+                .syncAsk(serverSession,
+                        CreatePhysicalPowerAsk.ValueOf(userEntity.getPlayerLv(), userEntity.getId()),
+                        CreatePhysicalPowerAnswer.class, serverSession).packet();
+        logger.info("[uid:{}] 玩家体力数据创建成功", userEntity.getId());
+        NetContext.getRouter().send(session, RegisterResponse.valueOf(true, "ok"));
+
+
+    }
+
+    @PacketReceiver
+    public void atLogAsk(Session session, LogAsk ask) {
+        logger.info("[{}]", ask);
+        NetContext.getRouter().send(session, new LogAnswer());
+    }
+
+    @PacketReceiver
+    public void atLogRequest(Session session, LogRequest request) {
+        var serverSession = NetContext.getSessionManager().getServerSession(1);
+        logger.info("{}", serverSession);
+        NetContext.getRouter().
+                asyncAsk(serverSession, new LogAsk(), LogAnswer.class, null).whenComplete(res -> {
+                    logger.info("回到");
+                    NetContext.getRouter().send(session, new LogResponse());
                 });
-
-
     }
 
 }

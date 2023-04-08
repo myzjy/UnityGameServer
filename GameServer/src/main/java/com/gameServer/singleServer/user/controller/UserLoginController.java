@@ -129,20 +129,22 @@ public class UserLoginController {
 
     @PacketReceiver
     public void atCreatePhysicalPowerAsk(Session session, CreatePhysicalPowerAsk ask) {
+        logger.info("处理");
         var physicalData = physicalPowerEntityIEntityCaches.load(ask.getUid());
+        logger.info("是否有{}", physicalData);
         var userData = UserModelDict.load(ask.getUid());
         var config = configResourceStorage.get(userData.getPlayerLv());
-        if (physicalData == null) {
-            //数据库中没有 需要创建
-            var createPhysical = PhysicalPowerEntity.ValueOf(ask.getUid(), 0, config.getMaxPhysical(), 0, config.getMaxPhysical(), 0);
-            OrmContext.getAccessor().insert(createPhysical);
-            logger.info("[UserLoginController] 体力数据创建成功 插入数据库成功");
-        }
+
+        //数据库中没有 需要创建
+        var createPhysical = PhysicalPowerEntity.ValueOf(ask.getUid(), 0, config.getMaxPhysical(), 0, config.getMaxPhysical(), 0);
+        OrmContext.getAccessor().insert(createPhysical);
+        logger.info("[UserLoginController] 体力数据创建成功 插入数据库成功");
+
         //缓存读取
         physicalData = physicalPowerEntityIEntityCaches.load(ask.getUid());
         userData.setNowPhysicalPowerNum(physicalData.getNowPhysicalPowerNum());
         UserModelDict.update(userData);
-        NetContext.getRouter().send(session,new CreatePhysicalPowerAnswer());
+        NetContext.getRouter().send(session, new CreatePhysicalPowerAnswer());
 
     }
 }

@@ -12,9 +12,17 @@ import com.zfoo.protocol.registration.anno.Protocol;
  * @version 1.0
  * @since 2023/3/28 23:34
  */
-@Protocol(id = 1015)
+//@Protocol(id = 1015)
 public class RefreshLoginPhysicalPowerNumAsk implements IPacket {
+    public static final transient short PROTOCOL_ID = 1015;
+
+    @Override
+    public short protocolId() {
+        return PROTOCOL_ID;
+    }
+
     private long userId;
+
     public static RefreshLoginPhysicalPowerNumAsk ValueOf(long userId) {
         RefreshLoginPhysicalPowerNumAsk value = new RefreshLoginPhysicalPowerNumAsk();
         value.setUserId(userId);

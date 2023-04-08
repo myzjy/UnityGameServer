@@ -109,7 +109,7 @@ public class LoginController {
                     return;
                 }
                 session.setUid(user.getId());
-                NetContext.getConsumer().asyncAsk(RefreshLoginPhysicalPowerNumAsk.ValueOf(user.getId()), RefreshLoginPhysicalPowerNumAnswer.class, user.getId())
+                NetContext.getRouter().asyncAsk(session, RefreshLoginPhysicalPowerNumAsk.ValueOf(user.getId()), RefreshLoginPhysicalPowerNumAnswer.class, user.getId())
                         .whenComplete(userData -> {
                             if (userData.getError() != null) {
                                 NetContext.getRouter().send(session, userData.getError());

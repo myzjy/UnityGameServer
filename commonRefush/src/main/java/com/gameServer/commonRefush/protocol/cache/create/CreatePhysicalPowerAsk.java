@@ -10,8 +10,14 @@ import com.zfoo.protocol.registration.anno.Protocol;
  * @version 1.0
  * @since 2023/4/7 16 44
  */
-@Protocol(id = 1017)
+//@Protocol(id = 1017)
 public class CreatePhysicalPowerAsk implements IPacket {
+    public static final transient short PROTOCOL_ID = 1017;
+
+    @Override
+    public short protocolId() {
+        return PROTOCOL_ID;
+    }
 
     /**
      * 等级
