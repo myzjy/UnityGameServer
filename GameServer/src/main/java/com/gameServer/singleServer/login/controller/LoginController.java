@@ -116,7 +116,7 @@ public class LoginController {
                                 return;
                             }
 
-                            var userCache = userData.getPlayerUserEntity();
+                            var userCache = OrmContext.getAccessor().load(accountUser.getUid(), PlayerUserEntity.class);
                             if (userCache.getToken() == null) {
                                 logger.info("[当前 uid:{}] 开始获取token", userCache.getId());
                                 //没有Token,获取token

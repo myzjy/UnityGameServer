@@ -36,7 +36,8 @@
                   location="com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk"/>
         <protocol id="1016"
                   location="com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer"/>
-
+        <protocol id="1017" location="com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk"/>
+        <protocol id="1018" location="com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnswer"/>
     </module>
     <module id="3" name="common" minId="100" maxId="500">
         <protocol id="100" location="com.zfoo.net.packet.common.Message"/>

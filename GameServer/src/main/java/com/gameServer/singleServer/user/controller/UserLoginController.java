@@ -71,7 +71,7 @@ public class UserLoginController {
         if (nowPhysicalPower >= data.getMaximumStrength()) {
             logger.info("[uid:{}]体力已满[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
             //体力满了
-            NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(userEntity));
+            NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf());
         }
         //相差的时间 精确到毫秒级别
         var differenceLastTime = TimeUtils.now() - data.getResidueNowTime();
@@ -118,11 +118,13 @@ public class UserLoginController {
         }
         userEntity.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum());
         UserModelDict.update(userEntity);
+        OrmContext.getAccessor().update(userEntity);
         //更新数据库
         physicalPowerEntityIEntityCaches.update(data);
+        OrmContext.getAccessor().update(data);
 
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
-        NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(userEntity));
+        NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf());
     }
 
     @PacketReceiver

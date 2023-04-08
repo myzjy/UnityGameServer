@@ -12,6 +12,9 @@ import com.zfoo.protocol.registration.anno.Protocol;
  */
 @Protocol(id = 1018)
 public class CreatePhysicalPowerAnswer implements IPacket {
-
+    public static CreatePhysicalPowerAnswer ValueOf(){
+        var data=new CreatePhysicalPowerAnswer();
+        return data;
+    }
 
 }
