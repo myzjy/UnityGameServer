@@ -1,5 +1,7 @@
 package com.gameServer.commonRefush.protocol.cache;
 
+import com.zfoo.net.router.attachment.AttachmentType;
+import com.zfoo.net.router.attachment.IAttachment;
 import com.zfoo.protocol.IPacket;
 
 /**
@@ -14,4 +16,5 @@ public class LogAsk implements IPacket {
     public short protocolId() {
         return PROTOCOL_ID;
     }
+
 }

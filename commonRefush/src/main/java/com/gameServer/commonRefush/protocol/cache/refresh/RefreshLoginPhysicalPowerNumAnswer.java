@@ -2,6 +2,8 @@ package com.gameServer.commonRefush.protocol.cache.refresh;
 
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.zfoo.net.packet.common.Error;
+import com.zfoo.net.router.attachment.AttachmentType;
+import com.zfoo.net.router.attachment.IAttachment;
 import com.zfoo.protocol.IPacket;
 import com.zfoo.protocol.registration.anno.Protocol;
 
@@ -58,4 +60,5 @@ public class RefreshLoginPhysicalPowerNumAnswer implements IPacket {
     public void setError(Error error) {
         this.error = error;
     }
+
 }

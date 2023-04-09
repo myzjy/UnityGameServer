@@ -1,5 +1,7 @@
 package com.gameServer.commonRefush.protocol.cache.create;
 
+import com.zfoo.net.router.attachment.AttachmentType;
+import com.zfoo.net.router.attachment.IAttachment;
 import com.zfoo.protocol.IPacket;
 import com.zfoo.protocol.registration.anno.Protocol;
 

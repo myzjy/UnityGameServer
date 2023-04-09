@@ -13,6 +13,7 @@ import com.gameServer.commonRefush.protocol.login.LogResponse;
 import com.gameServer.commonRefush.protocol.register.RegisterRequest;
 import com.gameServer.commonRefush.protocol.register.RegisterResponse;
 import com.gameServer.commonRefush.util.TokenUtils;
+import com.gameServer.commonRefush.util.UserPreUtils;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
 import com.zfoo.net.router.receiver.PacketReceiver;
@@ -101,9 +102,7 @@ public class RegisterController {
         logger.info("[Token:{}]", userEntity.getToken());
         //插入数据了，就代表注册成功了
         OrmContext.getAccessor().insert(userEntity);
-        logger.info("[{}]", session.getSid());
-        var serverSession = NetContext.getSessionManager().getServerSession(1);
-        logger.info("{}", serverSession);
+        var serverSession = NetContext.getSessionManager().getServerSession(UserPreUtils.get_serverClientSession().getSid());
         //必须保证万无一失 rpc请求
         var pa = NetContext.getRouter()
                 .syncAsk(serverSession,

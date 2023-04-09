@@ -40,8 +40,8 @@
         <protocol id="1018" location="com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnswer"/>
         <protocol id="1019" location="com.gameServer.commonRefush.protocol.login.LogRequest"/>
         <protocol id="1020" location="com.gameServer.commonRefush.protocol.login.LogResponse"/>
-        <protocol id="1021" location="com.gameServer.commonRefush.protocol.cache.LogAsk"/>
-        <protocol id="1022" location="com.gameServer.commonRefush.protocol.cache.LogAnswer"/>
+        <protocol id="1021" location="com.gameServer.commonRefush.protocol.cache.LogAsk" enhance="false"/>
+        <protocol id="1022" location="com.gameServer.commonRefush.protocol.cache.LogAnswer" enhance="false"/>
     </module>
     <module id="3" name="common" minId="100" maxId="500">
         <protocol id="100" location="com.zfoo.net.packet.common.Message"/>
