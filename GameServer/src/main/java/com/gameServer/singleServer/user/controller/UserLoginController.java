@@ -139,7 +139,8 @@ public class UserLoginController {
         var createPhysical = PhysicalPowerEntity.ValueOf(ask.getUid(), 0, config.getMaxPhysical(), 0, config.getMaxPhysical(), 0);
         OrmContext.getAccessor().insert(createPhysical);
         logger.info("[UserLoginController] 体力数据创建成功 插入数据库成功");
-
+        //设置最大体力
+        userData.setNowLvMaxExp(config.getMaxExp());
         //缓存读取
         physicalData = physicalPowerEntityIEntityCaches.load(ask.getUid());
         userData.setNowPhysicalPowerNum(physicalData.getNowPhysicalPowerNum());

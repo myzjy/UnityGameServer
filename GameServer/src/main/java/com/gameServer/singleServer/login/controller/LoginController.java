@@ -117,6 +117,7 @@ public class LoginController {
                             }
 
                             var userCache = OrmContext.getAccessor().load(accountUser.getUid(), PlayerUserEntity.class);
+                            //以防测试期间出现问题
                             if (userCache.getToken() == null) {
                                 logger.info("[当前 uid:{}] 开始获取token", userCache.getId());
                                 //没有Token,获取token
@@ -128,11 +129,8 @@ public class LoginController {
 
                         });
                 user = OrmContext.getAccessor().load(accountUser.getUid(), PlayerUserEntity.class);
-//                if (user.getToken() == null) {
-//                    var token = TokenUtils.set(user.getId());
-//                    logger.info("[当前 uid:{}][新token：{}]", user.getId(), token);
-//                    user.setToken(token);
-//                } else {
+
+                //防止token 过时
                 var tokenTriple = TokenUtils.get(user.getToken());
                 var expirationTimeLong = tokenTriple.getRight();
                 var nowLong = TimeUtils.now();
@@ -144,7 +142,6 @@ public class LoginController {
                     logger.info("[{}]重新设置Token:[{}]", user.getId(), token);
                     user.setToken(token);
                 }
-//                }
                 //覆盖登录时间
                 user = PlayerUserEntity.valueOf(user.getId(), user.getName(), TimeUtils.now(), user.getRegisterTime(),
                         user.getToken(), user.getGoldNum(), user.getPremiumDiamondNum(), user.getDiamondNum(), user.getEndLoginOutTime(),
