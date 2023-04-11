@@ -1,14 +1,20 @@
 package com.gameServer.singleServer;
 
 import com.gameServer.commonRefush.constant.TankDeployEnum;
+import com.gameServer.commonRefush.entity.AccessGameTimeEntity;
 import com.gameServer.commonRefush.protocol.login.LogRequest;
+import com.gameServer.commonRefush.resource.AccesGameTimeResource;
 import com.zfoo.event.model.event.AppStartEvent;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.config.model.NetConfig;
 import com.zfoo.net.core.json.JsonWebsocketClient;
 import com.zfoo.net.core.json.JsonWebsocketServer;
+import com.zfoo.orm.OrmContext;
+import com.zfoo.storage.model.anno.ResInjection;
+import com.zfoo.storage.model.vo.Storage;
 import com.zfoo.util.ThreadUtils;
 import io.netty.handler.codec.http.websocketx.WebSocketClientProtocolConfig;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
@@ -18,6 +24,7 @@ import org.springframework.stereotype.Component;
  * @version 1.0
  * @since 2022/8/14 22:44
  */
+//@Ignore
 @Component
 public class ApplicationTest {
 
@@ -70,5 +77,11 @@ public class ApplicationTest {
         websocketServer.start();
         ThreadUtils.sleep(Long.MAX_VALUE);
     }
+        @Test
+    public void StartTcpApplication2() {
+        var context = new ClassPathXmlApplicationContext("application.xml");
+        context.registerShutdownHook();
+        context.publishEvent(new AppStartEvent(context));
 
+    }
 }

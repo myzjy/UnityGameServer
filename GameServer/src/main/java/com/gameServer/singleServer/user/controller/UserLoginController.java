@@ -96,11 +96,14 @@ public class UserLoginController {
                 if (differenceNum > 300) {
                     //可以恢复多少点离线体力
                     var num = differenceNum / 300;
+                    logger.info("[uid:{}] 玩家体力恢复，增加了{},增加之前体力值：{}，增加之后体力值：{}",
+                            userEntity.getId(), num, data.getNowPhysicalPowerNum(), (data.getNowPhysicalPowerNum() + num));
 
                     data.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum() + num);
                     data.setResidueNowTime(TimeUtils.now());
                     //增加的体力是否大于 当前最大体力了
                     if (data.getNowPhysicalPowerNum() >= data.getMaximumStrength()) {
+                        logger.info("[uid:{}] 玩家体力恢复满了，增加了{}", userEntity.getId(), num);
                         data.setNowPhysicalPowerNum(data.getMaximumStrength());
                         //恢复时间统一归零
                         data.setResidueTime(0);
@@ -109,6 +112,8 @@ public class UserLoginController {
                     }
 
                 } else {
+                    logger.info("[uid:{}] 玩家增加之前体力：{},玩家体力增加了1点,增加之后：{}",
+                            userEntity.getId(), data.getNowPhysicalPowerNum(), data.getNowPhysicalPowerNum() + 1);
                     //加一点体力
                     data.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum() + 1);
                     data.setResidueTime(differenceNum);

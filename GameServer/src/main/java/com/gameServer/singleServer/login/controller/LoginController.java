@@ -10,6 +10,8 @@ import com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest;
 import com.gameServer.commonRefush.protocol.login.LoginRequest;
 import com.gameServer.commonRefush.protocol.login.LoginResponse;
 import com.gameServer.commonRefush.protocol.login.LogoutRequest;
+import com.gameServer.commonRefush.resource.AccesGameTimeResource;
+import com.gameServer.commonRefush.resource.ConfigResource;
 import com.gameServer.commonRefush.util.TokenUtils;
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
@@ -23,6 +25,8 @@ import com.zfoo.orm.cache.IEntityCaches;
 import com.zfoo.orm.model.anno.EntityCachesInjection;
 import com.zfoo.protocol.util.StringUtils;
 import com.zfoo.scheduler.util.TimeUtils;
+import com.zfoo.storage.model.anno.ResInjection;
+import com.zfoo.storage.model.vo.Storage;
 import com.zfoo.util.math.HashUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +45,8 @@ import org.springframework.stereotype.Component;
 public class LoginController {
     //log文件
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-
+    @ResInjection
+    private Storage<Integer, AccesGameTimeResource> accesGameTimeResourceStorage;
 
     /**
      * 用户数据
