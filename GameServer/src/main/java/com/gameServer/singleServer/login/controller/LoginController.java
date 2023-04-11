@@ -45,8 +45,7 @@ import org.springframework.stereotype.Component;
 public class LoginController {
     //log文件
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-    @ResInjection
-    private Storage<Integer, AccesGameTimeResource> accesGameTimeResourceStorage;
+
 
     /**
      * 用户数据

@@ -2,8 +2,11 @@ package com.gameServer.singleServer;
 
 import com.gameServer.commonRefush.constant.TankDeployEnum;
 import com.gameServer.commonRefush.entity.AccessGameTimeEntity;
+import com.gameServer.commonRefush.event.bag.StartLoginBagEvent;
+import com.gameServer.commonRefush.event.create.CreateOrmAccesTimeEvent;
 import com.gameServer.commonRefush.protocol.login.LogRequest;
 import com.gameServer.commonRefush.resource.AccesGameTimeResource;
+import com.zfoo.event.manager.EventBus;
 import com.zfoo.event.model.event.AppStartEvent;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.config.model.NetConfig;
@@ -82,6 +85,7 @@ public class ApplicationTest {
         var context = new ClassPathXmlApplicationContext("application.xml");
         context.registerShutdownHook();
         context.publishEvent(new AppStartEvent(context));
+            EventBus.post(new CreateOrmAccesTimeEvent());
 
     }
 }

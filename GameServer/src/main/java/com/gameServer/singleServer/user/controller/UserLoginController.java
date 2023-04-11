@@ -1,13 +1,17 @@
 package com.gameServer.singleServer.user.controller;
 
 import com.gameServer.commonRefush.constant.I18nEnum;
+import com.gameServer.commonRefush.entity.AccessGameTimeEntity;
 import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
+import com.gameServer.commonRefush.event.create.CreateOrmAccesTimeEvent;
 import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnswer;
 import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk;
+import com.gameServer.commonRefush.resource.AccesGameTimeResource;
 import com.gameServer.commonRefush.resource.ConfigResource;
+import com.zfoo.event.model.anno.EventReceiver;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
 import com.zfoo.net.router.receiver.PacketReceiver;
@@ -33,7 +37,8 @@ public class UserLoginController {
     private static final Logger logger = LoggerFactory.getLogger(UserLoginController.class);
     @ResInjection
     private Storage<Integer, ConfigResource> configResourceStorage;
-
+    @ResInjection
+    private Storage<Integer, AccesGameTimeResource> accesGameTimeResourceStorage;
     /**
      * 用户数据
      */
@@ -152,5 +157,31 @@ public class UserLoginController {
         UserModelDict.update(userData);
         NetContext.getRouter().send(session, new CreatePhysicalPowerAnswer());
 
+    }
+
+    @EventReceiver
+    public void onCreateOrmAccesTimeEvent(CreateOrmAccesTimeEvent event) {
+        if (accesGameTimeResourceStorage == null) {
+            logger.error("未配置服务器开始时间");
+            return;
+        }
+        var dict = accesGameTimeResourceStorage.getAll();
+        for (var item : dict) {
+            var entity = OrmContext.getAccessor().load(item.getTimeID(), AccessGameTimeEntity.class);
+            if (entity==null) {
+                //数据库没有相关配置
+                entity=new AccessGameTimeEntity();
+                entity.setTimeID(item.getTimeID());
+                entity.setTime(item.getTime());
+                entity.setId(item.getTimeID());
+                OrmContext.getAccessor().insert(entity);
+            } else {
+                entity=new AccessGameTimeEntity();
+                entity.setTimeID(item.getTimeID());
+                entity.setTime(item.getTime());
+                entity.setId(item.getTimeID());
+                OrmContext.getAccessor().update(entity);
+            }
+        }
     }
 }
