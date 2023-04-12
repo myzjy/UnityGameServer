@@ -20,7 +20,7 @@ public class AccessGameTimeEntity implements IEntity<Integer> {
 
     @Index(ascending = true, unique = true)
     private int timeID;
-    private Date time;
+    private long time;
 
     @Override
     public Integer id() {
@@ -35,14 +35,14 @@ public class AccessGameTimeEntity implements IEntity<Integer> {
         this.id = id;
     }
 
-    public Date getTime() {
+    public long getTime() {
         return time;
     }
 
     /***
      * 设置服务器开始或者关闭时间 ，用于判断 或者显示
      */
-    public void setTime(Date time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

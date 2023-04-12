@@ -80,12 +80,13 @@ public class ApplicationTest {
         websocketServer.start();
         ThreadUtils.sleep(Long.MAX_VALUE);
     }
-        @Test
+
+    @Test
     public void StartTcpApplication2() {
         var context = new ClassPathXmlApplicationContext("application.xml");
         context.registerShutdownHook();
         context.publishEvent(new AppStartEvent(context));
-            EventBus.post(new CreateOrmAccesTimeEvent());
+        EventBus.post(new CreateOrmAccesTimeEvent());
 
     }
 }

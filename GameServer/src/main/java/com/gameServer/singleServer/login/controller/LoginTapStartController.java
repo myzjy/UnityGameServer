@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
 import java.util.Objects;
 
 /**
@@ -31,19 +32,21 @@ public class LoginTapStartController {
     private TankDeployEnum deployEnum;
 
     @PacketReceiver
-    public void atLoginTapToStartRequest(Session session, LoginTapToStartRequest request) {
+    public void atLoginTapToStartRequest(Session session, LoginTapToStartRequest request) throws ParseException {
         logger.info("=============================================");
         logger.info("[当前服务器调用时间{}] [调用协议：{}]", TimeUtils.simpleDateString(), request.protocolId());
         logger.info("=============================================");
         //读取到服务器
         var timeEntityList = OrmContext.getAccessor().load(1, AccessGameTimeEntity.class);
-        logger.info(TimeUtils.dateToString(Objects.requireNonNull(timeEntityList).getTime()));
-        var nowTimeEntity = timeEntityList.getTime().getTime();
+        var dateTime = TimeUtils.timeToString(Objects.requireNonNull(timeEntityList).getTime());
+        var time = TimeUtils.dayStringToDate(dateTime);
+        logger.info(dateTime);
+        var nowTimeEntity = timeEntityList.getTime();
         if (TimeUtils.now() < nowTimeEntity) {
             logger.info("[服务器开启] 可以开始链接登录");
             NetContext.getRouter().send(session, LoginTapToStartResponse.ValueOf("", true));
         } else {
-            logger.info("[关闭服务器时间{}] ", TimeUtils.dateToString(Objects.requireNonNull(timeEntityList).getTime()));
+            logger.info("[关闭服务器时间{}] ", dateTime);
             NetContext.getRouter().send(session, LoginTapToStartResponse.ValueOf("服务器已关闭", false));
         }
     }

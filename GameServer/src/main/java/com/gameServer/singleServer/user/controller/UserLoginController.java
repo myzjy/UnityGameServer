@@ -26,6 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 /**
  * @author zjy
  * @version 1.0
@@ -172,6 +174,8 @@ public class UserLoginController {
                 //数据库没有相关配置
                 entity=new AccessGameTimeEntity();
                 entity.setTimeID(item.getTimeID());
+                var dateTime = TimeUtils.timeToString( item.getTime());
+                logger.info("{}",dateTime);
                 entity.setTime(item.getTime());
                 entity.setId(item.getTimeID());
                 OrmContext.getAccessor().insert(entity);
@@ -180,6 +184,8 @@ public class UserLoginController {
                 entity.setTimeID(item.getTimeID());
                 entity.setTime(item.getTime());
                 entity.setId(item.getTimeID());
+                var dateTime = TimeUtils.timeToString( item.getTime());
+                logger.info("{}",dateTime);
                 OrmContext.getAccessor().update(entity);
             }
         }

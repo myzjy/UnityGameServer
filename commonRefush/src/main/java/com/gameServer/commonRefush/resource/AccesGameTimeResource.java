@@ -22,10 +22,10 @@ public class AccesGameTimeResource {
     }
 
 
-    public Date getTime() {
+    public long getTime() {
         return time;
     }
 
     /***/
-    private Date time;
+    private long time;
 }
