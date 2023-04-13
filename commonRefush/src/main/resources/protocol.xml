@@ -42,6 +42,9 @@
         <protocol id="1020" location="com.gameServer.commonRefush.protocol.login.LogResponse"/>
         <protocol id="1021" location="com.gameServer.commonRefush.protocol.cache.LogAsk" enhance="false"/>
         <protocol id="1022" location="com.gameServer.commonRefush.protocol.cache.LogAnswer" enhance="false"/>
+        <protocol id="1023" location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerRequest"/>
+
+
     </module>
     <module id="3" name="common" minId="100" maxId="500">
         <protocol id="100" location="com.zfoo.net.packet.common.Message"/>

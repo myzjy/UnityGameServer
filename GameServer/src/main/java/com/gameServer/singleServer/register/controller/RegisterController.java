@@ -99,10 +99,18 @@ public class RegisterController {
                 0, 0, 0, 1);
 
         userEntity.setToken(TokenUtils.set(newUID));
+        session.setUid(newUID);
         logger.info("[Token:{}]", userEntity.getToken());
         //插入数据了，就代表注册成功了
         OrmContext.getAccessor().insert(userEntity);
-        var serverSession = NetContext.getSessionManager().getServerSession(UserPreUtils.get_serverClientSession().getSid());
+        NetContext.getSessionManager().forEachServerSession(re->{
+            if(re.getConsumerAttribute()!=null){
+                //
+                logger.info("{}",re);
+            }
+        });
+        //需保证第一个链接服务器的必须是服务器内客户端
+        var serverSession = NetContext.getSessionManager().getServerSession(1);
         //必须保证万无一失 rpc请求
         var pa = NetContext.getRouter()
                 .syncAsk(serverSession,
@@ -117,6 +125,7 @@ public class RegisterController {
     @PacketReceiver
     public void atLogAsk(Session session, LogAsk ask) {
         logger.info("[{}]", ask);
+        logger.info("{}",session);
         NetContext.getRouter().send(session, new LogAnswer());
     }
 

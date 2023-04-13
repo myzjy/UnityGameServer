@@ -4,8 +4,12 @@ import com.gameServer.commonRefush.constant.TankDeployEnum;
 import com.gameServer.commonRefush.entity.AccessGameTimeEntity;
 import com.gameServer.commonRefush.event.bag.StartLoginBagEvent;
 import com.gameServer.commonRefush.event.create.CreateOrmAccesTimeEvent;
+import com.gameServer.commonRefush.protocol.cache.LogAnswer;
+import com.gameServer.commonRefush.protocol.cache.LogAsk;
 import com.gameServer.commonRefush.protocol.login.LogRequest;
+import com.gameServer.commonRefush.protocol.login.LogResponse;
 import com.gameServer.commonRefush.resource.AccesGameTimeResource;
+import com.gameServer.commonRefush.util.UserPreUtils;
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.event.model.event.AppStartEvent;
 import com.zfoo.net.NetContext;
@@ -65,7 +69,10 @@ public class ApplicationTest {
                 .build();
         //webSocket服务器
         var websocketServer = new JsonWebsocketClient(Application.GATEWAY_HOST_AND_PORT, webSocketClientProtocolConfig);
-        websocketServer.start();
+        var session = websocketServer.start();
+
+        //NetContext.getRouter().send(session, new LogRequest());
+
         ThreadUtils.sleep(Long.MAX_VALUE);
     }
 

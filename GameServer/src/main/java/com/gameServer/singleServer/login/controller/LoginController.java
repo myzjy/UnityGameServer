@@ -180,7 +180,9 @@ public class LoginController {
             }
 //            EventBus.asyncSubmit(StartLoginBagEvent.ValueOf(session));
             //返回数据
-            NetContext.getRouter().send(session, LoginResponse.valueOf(player.getToken(), player.getName(), player.id(), player.getGoldNum(), player.getPremiumDiamondNum(), player.getDiamondNum()));
+            NetContext.getRouter().send(session,
+                    LoginResponse.valueOf(player.getToken(), player.getName(),
+                            player.id(), player.getGoldNum(), player.getPremiumDiamondNum(), player.getDiamondNum()));
         });
     }
 
