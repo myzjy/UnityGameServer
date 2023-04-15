@@ -46,7 +46,7 @@ public class LoginTapStartController {
         //读取到服务器
         var timeEntityList = OrmContext.getAccessor().load(1, AccessGameTimeEntity.class);
         var dateTime = TimeUtils.timeToString(Objects.requireNonNull(timeEntityList).getTime());
-        var time = TimeUtils.dayStringToDate(dateTime);
+        //var time = TimeUtils.dayStringToDate(dateTime);
         logger.info(dateTime);
         var nowTimeEntity = timeEntityList.getTime();
         if (TimeUtils.now() < nowTimeEntity) {
