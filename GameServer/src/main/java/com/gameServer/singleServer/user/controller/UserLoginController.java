@@ -11,6 +11,7 @@ import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPo
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk;
 import com.gameServer.commonRefush.resource.AccesGameTimeResource;
 import com.gameServer.commonRefush.resource.ConfigResource;
+import com.gameServer.singleServer.PhysicalPower.service.IPhysicalPowerService;
 import com.zfoo.event.model.anno.EventReceiver;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
@@ -24,6 +25,7 @@ import com.zfoo.storage.model.anno.ResInjection;
 import com.zfoo.storage.model.vo.Storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -35,6 +37,8 @@ import java.util.Objects;
  */
 @Component
 public class UserLoginController {
+    @Autowired
+    IPhysicalPowerService iPhysicalPowerService;
     //log文件
     private static final Logger logger = LoggerFactory.getLogger(UserLoginController.class);
     @ResInjection
@@ -170,22 +174,22 @@ public class UserLoginController {
         var dict = accesGameTimeResourceStorage.getAll();
         for (var item : dict) {
             var entity = OrmContext.getAccessor().load(item.getTimeID(), AccessGameTimeEntity.class);
-            if (entity==null) {
+            if (entity == null) {
                 //数据库没有相关配置
-                entity=new AccessGameTimeEntity();
+                entity = new AccessGameTimeEntity();
                 entity.setTimeID(item.getTimeID());
-                var dateTime = TimeUtils.timeToString( item.getTime());
-                logger.info("{}",dateTime);
+                var dateTime = TimeUtils.timeToString(item.getTime());
+                logger.info("{}", dateTime);
                 entity.setTime(item.getTime());
                 entity.setId(item.getTimeID());
                 OrmContext.getAccessor().insert(entity);
             } else {
-                entity=new AccessGameTimeEntity();
+                entity = new AccessGameTimeEntity();
                 entity.setTimeID(item.getTimeID());
                 entity.setTime(item.getTime());
                 entity.setId(item.getTimeID());
-                var dateTime = TimeUtils.timeToString( item.getTime());
-                logger.info("{}",dateTime);
+                var dateTime = TimeUtils.timeToString(item.getTime());
+                logger.info("{}", dateTime);
                 OrmContext.getAccessor().update(entity);
             }
         }

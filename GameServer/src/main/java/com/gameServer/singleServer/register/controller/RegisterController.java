@@ -103,12 +103,6 @@ public class RegisterController {
         logger.info("[Token:{}]", userEntity.getToken());
         //插入数据了，就代表注册成功了
         OrmContext.getAccessor().insert(userEntity);
-//        NetContext.getSessionManager().forEachServerSession(re->{
-//            if(re.getConsumerAttribute()!=null){
-//                //
-//                logger.info("{}",re);
-//            }
-//        });
         //需保证第一个链接服务器的必须是服务器内客户端
         var serverSession = NetContext.getSessionManager().getServerSession(1);
         //必须保证万无一失 rpc请求
