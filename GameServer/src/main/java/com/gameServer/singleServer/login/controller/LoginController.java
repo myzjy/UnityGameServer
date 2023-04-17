@@ -60,6 +60,7 @@ public class LoginController {
      */
     @PacketReceiver
     public void atLoginRequest(Session session, LoginRequest request) {
+        logger.info("[ip:{}] 调用登陆，还并未被赋值uid", session.getChannel().remoteAddress().toString());
         var account = StringUtils.trim(request.getAccount());
         var password = request.getPassword();
         if (StringUtils.isBlank(account)) {
@@ -121,6 +122,11 @@ public class LoginController {
                             }
 
                             var userCache = OrmContext.getAccessor().load(accountUser.getUid(), PlayerUserEntity.class);
+                            if (userCache == null) {
+                                logger.error("[提供 uid：{}] 数据库不存在相关人物，请注意！！！！！！！", session.getUid());
+                                NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_uid_process_not.toString()));
+                                return;
+                            }
                             //以防测试期间出现问题
                             if (userCache.getToken() == null) {
                                 logger.info("[当前 uid:{}] 开始获取token", userCache.getId());
@@ -133,7 +139,11 @@ public class LoginController {
 
                         });
                 user = OrmContext.getAccessor().load(accountUser.getUid(), PlayerUserEntity.class);
-
+                if (user == null) {
+                    logger.error("[提供 uid：{}] 数据库不存在相关人物，请注意！！！！！！！", session.getUid());
+                    NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_uid_process_not.toString()));
+                    return;
+                }
                 //防止token 过时
                 var tokenTriple = TokenUtils.get(user.getToken());
                 var expirationTimeLong = tokenTriple.getRight();

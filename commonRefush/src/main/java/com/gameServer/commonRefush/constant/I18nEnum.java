@@ -19,6 +19,7 @@ public enum I18nEnum {
     error_password_not_have_null("密码包含空格，请重新设置"),
     error_start_login_not_setuid("请先登录"),
     error_login_process_not("登录流程内部错误，请联系客服"),
+    error_uid_process_not("UID 错误，请联系客服"),
     ;
     private String message;
 

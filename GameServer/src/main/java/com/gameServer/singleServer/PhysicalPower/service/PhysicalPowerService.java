@@ -17,4 +17,9 @@ public class PhysicalPowerService implements IPhysicalPowerService {
         return data;
     }
 
+    @Override
+    public void UpdatePhysicalPowerEntityOrm(PhysicalPowerEntity entity) {
+        OrmContext.getAccessor().update(entity);
+    }
+
 }
