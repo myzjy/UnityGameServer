@@ -2,7 +2,6 @@ package com.gameServer.singleServer.PhysicalPower.controller;
 
 import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUsePropsRequest;
 import com.gameServer.singleServer.PhysicalPower.service.IPhysicalPowerService;
-import com.gameServer.singleServer.bag.controller.BagController;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import org.slf4j.Logger;
