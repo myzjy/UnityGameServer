@@ -14,9 +14,84 @@
         <module>cache</module>
         <module>game-boot</module>
         <module>game-room</module>
+        <module>home</module>
     </modules>
     <packaging>pom</packaging>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.gameServer</groupId>
+            <artifactId>commonRefush</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>event</artifactId>
+            <version>${zfoo.event.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>hotswap</artifactId>
+            <version>${zfoo.hotswap.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>net</artifactId>
+            <version>${zfoo.net.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>scheduler</artifactId>
+            <version>${zfoo.scheduler.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>storage</artifactId>
+            <version>${zfoo.storage.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>orm</artifactId>
+            <version>${zfoo.orm.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>util</artifactId>
+            <version>${zfoo.util.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+    </dependencies>
+
+
     <properties>
+        <skipTests>true</skipTests>
+        <!-- 本项目的其它module版本号 -->
+        <zfoo.boot.version>3.0</zfoo.boot.version>
+        <zfoo.event.version>3.0</zfoo.event.version>
+        <zfoo.hotswap.version>3.0</zfoo.hotswap.version>
+        <zfoo.monitor.version>3.0</zfoo.monitor.version>
+        <zfoo.net.version>3.0</zfoo.net.version>
+        <zfoo.scheduler.version>3.0</zfoo.scheduler.version>
+        <zfoo.storage.version>3.0</zfoo.storage.version>
+        <zfoo.orm.version>3.0</zfoo.orm.version>
+        <zfoo.protocol.version>3.0</zfoo.protocol.version>
+        <zfoo.util.version>3.0</zfoo.util.version>
         <!-- 核心spring框架 -->
         <spring.version>5.3.4</spring.version>
         <spring.boot.version>2.4.3</spring.boot.version>
