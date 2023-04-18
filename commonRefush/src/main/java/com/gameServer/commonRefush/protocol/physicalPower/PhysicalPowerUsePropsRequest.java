@@ -1,5 +1,6 @@
 package com.gameServer.commonRefush.protocol.physicalPower;
 
+import com.zfoo.protocol.IPacket;
 import com.zfoo.protocol.registration.anno.Protocol;
 
 /**
@@ -10,7 +11,7 @@ import com.zfoo.protocol.registration.anno.Protocol;
  * @since 2023/4/14 12 00
  */
 @Protocol(id = 1025)
-public class PhysicalPowerUsePropsRequest {
+public class PhysicalPowerUsePropsRequest implements IPacket {
 
     /**
      * 使用体力 会被扣除

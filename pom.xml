@@ -15,6 +15,7 @@
         <module>game-boot</module>
         <module>game-room</module>
         <module>home</module>
+        <module>gateway</module>
     </modules>
     <packaging>pom</packaging>
 

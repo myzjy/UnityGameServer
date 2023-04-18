@@ -1,5 +1,6 @@
 package com.gameServer.commonRefush.protocol.physicalPower;
 
+import com.zfoo.protocol.IPacket;
 import com.zfoo.protocol.registration.anno.Protocol;
 
 /**
@@ -10,7 +11,7 @@ import com.zfoo.protocol.registration.anno.Protocol;
  * @since 2023/4/15 23 55
  */
 @Protocol(id = 1026)
-public class PhysicalPowerUserPropsResponse {
+public class PhysicalPowerUserPropsResponse implements IPacket {
     /**
      * 返回 使用体力 所扣除 当前体力
      */

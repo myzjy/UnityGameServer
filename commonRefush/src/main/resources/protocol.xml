@@ -67,4 +67,7 @@
         <protocol id="201" location="com.gameServer.commonRefush.protocol.serverConfig.ItemBaseData"/>
 
     </module>
+<!--    <module id="4" name="gameHome" minId="501" maxId="999">-->
+
+<!--    </module>-->
 </protocols>
