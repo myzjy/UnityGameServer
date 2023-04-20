@@ -43,14 +43,12 @@ public class LoginTapStartController {
         var nowTimeEntity = timeEntityList.getTime();
         if (TimeUtils.now() < nowTimeEntity) {
             logger.info("[服务器开启] 可以开始链接登录");
-            NetContext.getRouter().send(session, LoginTapToStartResponse.ValueOf("服务器正在开启阶段", true),gatewayAttachment);
+            NetContext.getRouter().send(session, LoginTapToStartResponse.ValueOf("服务器正在开启阶段", true), gatewayAttachment);
         } else {
             logger.info("[关闭服务器时间{}] ", dateTime);
-            NetContext.getRouter().send(session, LoginTapToStartResponse.ValueOf("服务器已关闭", false),gatewayAttachment);
+            NetContext.getRouter().send(session, LoginTapToStartResponse.ValueOf("服务器已关闭", false), gatewayAttachment);
         }
     }
-
-
 
 
 }

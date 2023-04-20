@@ -134,8 +134,10 @@ public class UserLoginController {
         }
         userEntity.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum());
         UserModelDict.update(userEntity);
+        logger.info("[玩家：{}] 更新 PlayerUser 缓存 ", userEntity.getId());
         OrmContext.getAccessor().update(userEntity);
-        //更新数据库
+        logger.info("[玩家：{}] 更新 PlayerUser 缓存 数据库", userEntity.getId());
+        //更新 缓存 数据库
         physicalPowerEntityIEntityCaches.update(data);
         OrmContext.getAccessor().update(data);
 
@@ -145,7 +147,6 @@ public class UserLoginController {
 
     @PacketReceiver
     public void atCreatePhysicalPowerAsk(Session session, CreatePhysicalPowerAsk ask) {
-        logger.info("处理");
         var physicalData = physicalPowerEntityIEntityCaches.load(ask.getUid());
         logger.info("是否有{}", physicalData);
         var userData = UserModelDict.load(ask.getUid());
@@ -161,6 +162,7 @@ public class UserLoginController {
         physicalData = physicalPowerEntityIEntityCaches.load(ask.getUid());
         userData.setNowPhysicalPowerNum(physicalData.getNowPhysicalPowerNum());
         UserModelDict.update(userData);
+        logger.info("[玩家{}]更新玩家数据库 ",userData.getId());
         NetContext.getRouter().send(session, new CreatePhysicalPowerAnswer());
 
     }
