@@ -11,7 +11,63 @@
     <artifactId>home</artifactId>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.gameServer</groupId>
+            <artifactId>commonRefush</artifactId>
+            <version>1.0</version>
+        </dependency>
 
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>event</artifactId>
+            <version>${zfoo.event.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>hotswap</artifactId>
+            <version>${zfoo.hotswap.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>net</artifactId>
+            <version>${zfoo.net.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>scheduler</artifactId>
+            <version>${zfoo.scheduler.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>storage</artifactId>
+            <version>${zfoo.storage.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>orm</artifactId>
+            <version>${zfoo.orm.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>util</artifactId>
+            <version>${zfoo.util.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     <properties>
         <skipTests>true</skipTests>
         <!-- 本项目的其它module版本号 -->
