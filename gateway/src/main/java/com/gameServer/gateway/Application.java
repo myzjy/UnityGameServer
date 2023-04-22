@@ -2,6 +2,7 @@ package com.gameServer.gateway;
 
 import com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest;
 import com.gameServer.commonRefush.protocol.login.LoginRequest;
+import com.gameServer.commonRefush.protocol.login.LoginTapToStartRequest;
 import com.zfoo.net.core.gateway.JsonWebsocketGatewayServer;
 import com.zfoo.net.core.json.JsonWebsocketServer;
 import com.zfoo.net.session.Session;
@@ -36,7 +37,6 @@ public class Application {
                 return true;
             }
         }
-
         if (packet.protocolId() == GetPlayerInfoRequest.getProtocolId()) {
             logger.info("[session:{}发送了GetPlayerInfo[{}]", session, packet);
             return false;
@@ -50,11 +50,12 @@ public class Application {
         logger.error("[session:{}发送了错误的包，因为没有登录或者是非法包[packet:{}]]", session, JsonUtils.object2String(packet));
         return true;
     };
+
     public static void main(String[] args) {
         var context = new ClassPathXmlApplicationContext("application.xml");
         context.registerShutdownHook();
         //webSocket服务器
-        var websocketServer = new JsonWebsocketGatewayServer(HostAndPort.valueOf(NetUtils.getLocalhostStr(), WEBSOCKET_SERVER_PORT),packetFilter);
+        var websocketServer = new JsonWebsocketGatewayServer(HostAndPort.valueOf(NetUtils.getLocalhostStr(), WEBSOCKET_SERVER_PORT), packetFilter);
         websocketServer.start();
     }
 }

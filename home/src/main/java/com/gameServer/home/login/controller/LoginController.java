@@ -227,7 +227,7 @@ public class LoginController {
             logger.info("[{}][{}]玩家信息不存在与数据库有中，token:[{}]", uid, sid, token);
             return;
         }
-
+        logger.info("返回玩家 [uid:{}]  基础信息", userEntity.getId());
         NetContext.getRouter().send(session,
                 LoginResponse.valueOf(token, userEntity.getName(), userEntity.id(),
                         userEntity.getGoldNum(), userEntity.getPremiumDiamondNum(), userEntity.getDiamondNum()),

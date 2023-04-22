@@ -10,6 +10,7 @@ import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.scheduler.util.TimeUtils;
+import com.zfoo.storage.model.anno.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +32,7 @@ public class LoginTapStartController {
     private TankDeployEnum deployEnum;
 
     @PacketReceiver
-    public void atLoginTapToStartRequest(Session session, LoginTapToStartRequest request, GatewayAttachment gatewayAttachment) throws ParseException {
+    public void atLoginTapToStartRequest(Session session,  LoginTapToStartRequest request, GatewayAttachment gatewayAttachment) throws ParseException {
         logger.info("=============================================");
         logger.info("[当前服务器调用时间{}] [调用协议：{}]", TimeUtils.simpleDateString(), request.protocolId());
         logger.info("=============================================");
