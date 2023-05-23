@@ -1,6 +1,6 @@
-//package com.gameServer.singleServer.DataController;
+//package com.gameServer.home.DataController.controller;
 //
-//import com.gameServer.singleServer.model.UserModel;
+//import com.gameServer.home.model.UserModel;
 //
 //import org.springframework.stereotype.Component;
 //import org.w3c.dom.events.Event;
@@ -16,13 +16,7 @@
 // */
 //@Component
 //public class UserController {
-//    /**
-//     * 用户数据
-//     */
-//    public Dictionary<Integer, UserModel> UserModelDict = new Hashtable<>();
 //
-//    public void  atDataBasicInformation(){
 //
-//    }
 //
 //}
