@@ -1,5 +1,6 @@
 package com.gameServer.commonRefush.protocol.login;
 
+import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.protocol.IPacket;
 import com.zfoo.protocol.registration.anno.Protocol;
 
@@ -11,7 +12,7 @@ import com.zfoo.protocol.registration.anno.Protocol;
  * @since 2023/2/11 1:09
  */
 @Protocol(id = 1013)
-public class LoginTapToStartRequest implements IPacket {
+public class LoginTapToStartRequest implements IPacket, IGatewayLoadBalancer {
 
     public static LoginTapToStartRequest valueOf() {
         var Request = new LoginTapToStartRequest();
@@ -19,4 +20,8 @@ public class LoginTapToStartRequest implements IPacket {
         return Request;
     }
 
+    @Override
+    public Object loadBalancerConsistentHashObject() {
+        return null;
+    }
 }

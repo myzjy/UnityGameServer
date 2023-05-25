@@ -2,13 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>com.gameServer</groupId>
-        <artifactId>UnityGameServer</artifactId>
-        <version>1.0</version>
-    </parent>
+    <!--    <parent>-->
+    <!--        <groupId>com.gameServer</groupId>-->
+    <!--        <artifactId>UnityGameServer</artifactId>-->
+    <!--        <version>1.0</version>-->
+    <!--    </parent>-->
 
     <artifactId>home</artifactId>
+    <groupId>com.gameServer</groupId>
+    <version>1.0</version>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
     <dependencies>
@@ -215,7 +217,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.gameServer.singleServer.Application</mainClass>
+                                    <mainClass>com.gameServer.home.Application</mainClass>
                                 </transformer>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">

@@ -1,5 +1,6 @@
 package com.gameServer.gateway;
 
+import com.gameServer.commonRefush.constant.TankDeployEnum;
 import com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest;
 import com.gameServer.commonRefush.protocol.login.LoginRequest;
 import com.gameServer.commonRefush.protocol.login.LoginTapToStartRequest;
@@ -22,6 +23,10 @@ import java.util.function.BiFunction;
  * @since 2023/4/19 17 18
  */
 public class Application {
+//    static {
+//        TankDeployEnum.InitDefaultEnv();
+//    }
+
     /*
      * TCP
      * */
