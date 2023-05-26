@@ -1,7 +1,7 @@
 package com.gameServer.home.DataController.service;
 
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
-import com.gameServer.home.model.UserModel;
+//import com.gameServer.home.model.UserModel;
 
 /**
  * @author zjy

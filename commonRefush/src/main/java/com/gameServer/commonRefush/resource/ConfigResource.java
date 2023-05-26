@@ -9,7 +9,7 @@ import com.zfoo.storage.model.anno.Resource;
  * @version 1.0
  * @since 2023/4/6 23 40
  */
-@Resource
+@Resource(alias="ConfigResource")
 public class ConfigResource {
     @Id
     @Index

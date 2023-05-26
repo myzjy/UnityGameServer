@@ -11,7 +11,7 @@ import java.util.Date;
  * @version 1.0
  * @since 2023/4/11 15 10
  */
-@Resource
+@Resource(alias="AccesGameTimeResource")
 public class AccesGameTimeResource {
     @Id
     @Index

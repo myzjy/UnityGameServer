@@ -41,6 +41,7 @@ http://www.zfoo.com/schema/storage
         <storage:scan package="${storage.excel.scan}"/>
         <storage:resource location="${storage.excel.location}"/>
     </storage:storage>
+
     <net:config id="gameserver" protocol-location="protocol.xml"
                         csharp-protocol="${net.generate.cs.protocol}"
 

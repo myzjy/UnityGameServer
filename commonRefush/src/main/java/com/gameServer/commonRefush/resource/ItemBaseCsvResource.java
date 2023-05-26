@@ -8,7 +8,7 @@ import com.zfoo.storage.model.anno.Resource;
 /**
  * 道具表相关
  */
-@Resource
+@Resource(alias="ItemBaseCsvResource")
 public class ItemBaseCsvResource {
 
 

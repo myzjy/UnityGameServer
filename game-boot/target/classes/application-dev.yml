@@ -1,7 +1,7 @@
 #路径
 server:
   address: 127.0.0.1
-  port: 443
+  port: 8080
   servlet:
     context-path: /
 
