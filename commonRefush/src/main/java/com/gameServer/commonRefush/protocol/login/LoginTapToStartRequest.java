@@ -26,7 +26,7 @@ public class LoginTapToStartRequest implements IPacket, IGatewayLoadBalancer {
 
     @Override
     public Object loadBalancerConsistentHashObject() {
-        return null;
+        return clientName;
     }
     public String getClientName() {
         return clientName;
