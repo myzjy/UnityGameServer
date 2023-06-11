@@ -52,8 +52,7 @@ public class Application {
             logger.error("[session:{}发送了错误的包，因为没有登录或者是非法包[packet:{}]]", session, JsonUtils.object2String(packet));
             return true;
         }
-
-//        logger.error("[session:{}发送了错误的包，因为没有登录或者是非法包[packet:{}]]", session, JsonUtils.object2String(packet));
+      
         return false;
     };
 

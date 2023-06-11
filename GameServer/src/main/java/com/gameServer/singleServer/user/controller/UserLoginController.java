@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -180,13 +181,13 @@ public class UserLoginController {
                 entity.setTimeID(item.getTimeID());
                 var dateTime = TimeUtils.timeToString(item.getTime());
                 logger.info("{}", dateTime);
-                entity.setTime(item.getTime());
+                entity.setTime(new Date(item.getTime()));
                 entity.setId(item.getTimeID());
                 OrmContext.getAccessor().insert(entity);
             } else {
                 entity = new AccessGameTimeEntity();
                 entity.setTimeID(item.getTimeID());
-                entity.setTime(item.getTime());
+                entity.setTime(new Date(item.getTime()));
                 entity.setId(item.getTimeID());
                 var dateTime = TimeUtils.timeToString(item.getTime());
                 logger.info("{}", dateTime);

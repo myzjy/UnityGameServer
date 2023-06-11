@@ -36,10 +36,10 @@ public class LoginTapStartController {
         logger.info("=============================================");
         //读取到服务器
         var timeEntityList = OrmContext.getAccessor().load(1, AccessGameTimeEntity.class);
-        var dateTime = TimeUtils.timeToString(Objects.requireNonNull(timeEntityList).getTime());
+        var dateTime = TimeUtils.timeToString(Objects.requireNonNull(timeEntityList).getTime().getTime());
         //var time = TimeUtils.dayStringToDate(dateTime);
         logger.info(dateTime);
-        var nowTimeEntity = timeEntityList.getTime();
+        var nowTimeEntity = timeEntityList.getTime().getTime();
         if (TimeUtils.now() < nowTimeEntity) {
             logger.info("[服务器开启] 可以开始链接登录");
             NetContext.getRouter().send(session, LoginTapToStartResponse.ValueOf("服务器正在开启阶段", true));
