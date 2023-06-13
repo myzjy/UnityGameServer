@@ -48,9 +48,9 @@
         <protocol id="1026"
                   location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUserPropsResponse"/>
         <protocol id="1027"
-                  location="com.gameServer.commonRefush.protocol.riqueza.RefresqueARiquezaRequest"/>
+                  location="com.gameServer.commonRefush.protocol.riqueza.RefreshingResourcesMainRequest"/>
         <protocol id="1028"
-                  location="com.gameServer.commonRefush.protocol.riqueza.RefresqueARiquezaResponse"/>
+                  location="com.gameServer.commonRefush.protocol.riqueza.RefreshingResourcesMainResponse"/>
     </module>
     <module id="3" name="common" minId="100" maxId="500">
         <protocol id="100" location="com.zfoo.net.packet.common.Message"/>

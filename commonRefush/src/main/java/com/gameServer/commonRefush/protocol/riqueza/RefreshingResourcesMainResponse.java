@@ -1,6 +1,5 @@
 package com.gameServer.commonRefush.protocol.riqueza;
 
-import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.protocol.IPacket;
 import com.zfoo.protocol.registration.anno.Protocol;
 
@@ -13,7 +12,7 @@ import com.zfoo.protocol.registration.anno.Protocol;
  * @since 2023/5/7 23 59
  */
 @Protocol(id = 1028)
-public class RefresqueARiquezaResponse implements IPacket {
+public class RefreshingResourcesMainResponse implements IPacket {
 
 
     /**
@@ -53,8 +52,8 @@ public class RefresqueARiquezaResponse implements IPacket {
         DiamondNum = diamondNum;
     }
 
-    public static RefresqueARiquezaResponse ValueOf(long goldNum, long premiumDiamondNum, long diamondNum) {
-        var data = new RefresqueARiquezaResponse();
+    public static RefreshingResourcesMainResponse ValueOf(long goldNum, long premiumDiamondNum, long diamondNum) {
+        var data = new RefreshingResourcesMainResponse();
         data.setGoldNum(goldNum);
         data.setPremiumDiamondNum(premiumDiamondNum);
         data.setDiamondNum(diamondNum);

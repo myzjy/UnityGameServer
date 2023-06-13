@@ -37,13 +37,13 @@
 <!--    <scheduler:scheduler id="schedulerManager"/>-->
     <net:config id="gameserver" protocol-location="protocol.xml">
 
-        <net:registry center="${registry.center}" user="${registry.user}" password="${registry.password}">
-            <net:address name="${registry.address.name}" url="${registry.address.url}"/>
-        </net:registry>
+<!--        <net:registry center="${registry.center}" user="${registry.user}" password="${registry.password}">-->
+<!--            <net:address name="${registry.address.name}" url="${registry.address.url}"/>-->
+<!--        </net:registry>-->
 
-        <net:consumers>
-            <net:consumer protocol-module="gameserver" load-balancer="consistent-hash" consumer="tankHomeProvider"/>
-        </net:consumers>
+<!--        <net:consumers>-->
+<!--            <net:consumer protocol-module="gameserver" load-balancer="consistent-hash" consumer="tankHomeProvider"/>-->
+<!--        </net:consumers>-->
     </net:config>
     <orm:config id="mongodbConfig" entity-package="com.gameServer.gameBoot.**.entity">
 

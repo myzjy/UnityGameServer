@@ -11,13 +11,13 @@ import com.zfoo.protocol.registration.anno.Protocol;
  * @since 2023/5/7 23 58
  */
 @Protocol(id = 1027)
-public class RefresqueARiquezaRequest implements IPacket, IGatewayLoadBalancer {
+public class RefreshingResourcesMainRequest implements IPacket, IGatewayLoadBalancer {
     @Override
     public Object loadBalancerConsistentHashObject() {
         return null;
     }
-    public static RefresqueARiquezaRequest ValueOf(){
-        return new RefresqueARiquezaRequest();
+    public static RefreshingResourcesMainRequest ValueOf(){
+        return new RefreshingResourcesMainRequest();
     }
 
 

@@ -2,8 +2,8 @@ package com.gameServer.home.serverConfig.controller;
 
 import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
-import com.gameServer.commonRefush.protocol.riqueza.RefresqueARiquezaRequest;
-import com.gameServer.commonRefush.protocol.riqueza.RefresqueARiquezaResponse;
+import com.gameServer.commonRefush.protocol.riqueza.RefreshingResourcesMainRequest;
+import com.gameServer.commonRefush.protocol.riqueza.RefreshingResourcesMainResponse;
 import com.gameServer.commonRefush.protocol.serverConfig.ItemBaseData;
 import com.gameServer.commonRefush.protocol.serverConfig.ServerConfigRequest;
 import com.gameServer.commonRefush.protocol.serverConfig.ServerConfigResponse;
@@ -14,7 +14,6 @@ import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
-import com.zfoo.orm.accessor.MongodbAccessor;
 import com.zfoo.storage.model.anno.ResInjection;
 import com.zfoo.storage.model.vo.Storage;
 import org.slf4j.Logger;
@@ -57,7 +56,7 @@ public class ServerBaseConfigController {
     }
 
     @PacketReceiver
-    public void atRefresqueARiquezaRequest(Session session, RefresqueARiquezaRequest request, GatewayAttachment gatewayAttachment) {
+    public void atRefreshingResourcesMainRequest(Session session, RefreshingResourcesMainRequest request, GatewayAttachment gatewayAttachment) {
         logger.info("刷新主界面上面的金币 钻石 付费钻石 调用protocol id：{}", request.protocolId());
         var user = OrmContext.getAccessor().load(session.getUid(), PlayerUserEntity.class);
         if (user == null) {
@@ -68,7 +67,7 @@ public class ServerBaseConfigController {
             return;
         }
         //查询到角色 返回 金币 钻石 付费钻石
-        var data = RefresqueARiquezaResponse.ValueOf(user.getGoldNum(), user.getPremiumDiamondNum(), user.getDiamondNum());
+        var data = RefreshingResourcesMainResponse.ValueOf(user.getGoldNum(), user.getPremiumDiamondNum(), user.getDiamondNum());
         NetContext.getRouter().send(session, data, gatewayAttachment.getSignalAttachment());
     }
 }

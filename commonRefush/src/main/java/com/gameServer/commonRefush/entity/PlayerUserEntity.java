@@ -52,7 +52,12 @@ public class PlayerUserEntity implements IEntity<Long> {
      */
     private long PremiumDiamondNum;
     /**
-     * 普通钻石 由付费钻石转换成普通钻石，比例为 1:1
+     * 普通钻石 又两部分组成
+     *
+     * <code>
+     * <p>第一部分 由付费钻石转换成普通钻石，比例为 1:1 </p>
+     * <p>第二部分 通过任务 开箱 地图 奖励 日常运维奖励 </p>
+     * </code>
      */
     private long DiamondNum;
     /**

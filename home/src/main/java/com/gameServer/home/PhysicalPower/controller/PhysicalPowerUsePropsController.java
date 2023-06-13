@@ -85,8 +85,13 @@ public class PhysicalPowerUsePropsController {
                 logger.info("[uid:{}] 获取体力 时,数据库相关不存在，创建成功", session.getUid());
 
                 //有了数据传递过去
-                NetContext.getRouter().send(session, PhysicalPowerResponse.ValueOf(createData.getNowPhysicalPowerNum(), createData.getResidueTime(),
-                        createData.getMaximumStrength(), createData.getMaximusResidueEndTime(), createData.getResidueNowTime()),gatewayAttachment);
+                NetContext.getRouter().send(session,
+                                            PhysicalPowerResponse.ValueOf(
+                                                    createData.getNowPhysicalPowerNum(),
+                                                    createData.getResidueTime(),
+                                                    createData.getMaximumStrength(),
+                                                    createData.getMaximusResidueEndTime(),
+                                                    createData.getResidueNowTime()),gatewayAttachment);
             });
         } else {
             logger.info("[uid:{}] 获取体力 完成", session.getUid());
