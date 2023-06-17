@@ -2,8 +2,10 @@ package com.gameServer.home.login.controller;
 
 import com.gameServer.commonRefush.constant.TankDeployEnum;
 import com.gameServer.commonRefush.entity.AccessGameTimeEntity;
+import com.gameServer.commonRefush.event.create.CreateOrmAccesTimeEvent;
 import com.gameServer.commonRefush.protocol.login.LoginTapToStartRequest;
 import com.gameServer.commonRefush.protocol.login.LoginTapToStartResponse;
+import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
@@ -38,6 +40,11 @@ public class LoginTapStartController {
         logger.info("=============================================");
         //读取到服务器
         var timeEntityList = OrmContext.getAccessor().load(1, AccessGameTimeEntity.class);
+        if(timeEntityList==null) {
+            EventBus.post(new CreateOrmAccesTimeEvent());
+            timeEntityList = OrmContext.getAccessor().load(1, AccessGameTimeEntity.class);
+        }
+            
         var dateTime = TimeUtils.dateToString(Objects.requireNonNull(timeEntityList).getTime());
         //var time = TimeUtils.dayStringToDate(dateTime);
         logger.info(dateTime);
