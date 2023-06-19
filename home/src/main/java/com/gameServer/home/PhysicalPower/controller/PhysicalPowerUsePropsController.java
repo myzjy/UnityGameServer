@@ -38,6 +38,10 @@ public class PhysicalPowerUsePropsController {
 
     /**
      * 使用体力的控制 客户端 回调
+     *
+     * @param session           用户
+     * @param request           使用道具的request
+     * @param gatewayAttachment 网关
      */
     @PacketReceiver
     public void atPhysicalPowerUsePropsRequest(Session session, PhysicalPowerUsePropsRequest request, GatewayAttachment gatewayAttachment) {
@@ -53,9 +57,13 @@ public class PhysicalPowerUsePropsController {
             //需要将体力相关修改
 
         }
+//        NetContext.getRouter()
 
     }
 
+    /**
+     * 获取体力接口
+     */
     @PacketReceiver
     public void atPhysicalPowerRequest(Session session, PhysicalPowerRequest request, GatewayAttachment gatewayAttachment) throws NullPointerException {
         logger.info("[uid:{}] 获取体力 atPhysicalPowerRequest", session.getUid());
@@ -66,7 +74,7 @@ public class PhysicalPowerUsePropsController {
             var user = OrmContext.getAccessor().load(session.getUid(), PlayerUserEntity.class);
             if (user == null) {
                 logger.error("数据库错误，传递错误uid 错误的[uid:{}] ", session.getUid());
-                NetContext.getRouter().send(session, Error.valueOf("数据库错误，传递错误uid"),gatewayAttachment);
+                NetContext.getRouter().send(session, Error.valueOf("数据库错误，传递错误uid"), gatewayAttachment);
                 return;
             }
             logger.error("[uid:{}] 获取体力 时,数据库相关不存在，开始创建", session.getUid());
@@ -79,25 +87,25 @@ public class PhysicalPowerUsePropsController {
                 var createData = OrmContext.getAccessor().load(session.getUid(), PhysicalPowerEntity.class);
                 if (createData == null) {
                     logger.error("[uid:{}] 获取体力 时,数据库错误，创建数据错误", session.getUid());
-                    NetContext.getRouter().send(session, Error.valueOf("数据库错误，创建数据错误，请联系客服"),gatewayAttachment);
+                    NetContext.getRouter().send(session, Error.valueOf("数据库错误，创建数据错误，请联系客服"), gatewayAttachment);
                     return;
                 }
                 logger.info("[uid:{}] 获取体力 时,数据库相关不存在，创建成功", session.getUid());
 
                 //有了数据传递过去
                 NetContext.getRouter().send(session,
-                                            PhysicalPowerResponse.ValueOf(
-                                                    createData.getNowPhysicalPowerNum(),
-                                                    createData.getResidueTime(),
-                                                    createData.getMaximumStrength(),
-                                                    createData.getMaximusResidueEndTime(),
-                                                    createData.getResidueNowTime()),gatewayAttachment);
+                        PhysicalPowerResponse.ValueOf(
+                                createData.getNowPhysicalPowerNum(),
+                                createData.getResidueTime(),
+                                createData.getMaximumStrength(),
+                                createData.getMaximusResidueEndTime(),
+                                createData.getResidueNowTime()), gatewayAttachment);
             });
         } else {
             logger.info("[uid:{}] 获取体力 完成", session.getUid());
             //有了数据传递过去
             NetContext.getRouter().send(session, PhysicalPowerResponse.ValueOf(data.getNowPhysicalPowerNum(), data.getResidueTime(),
-                    data.getMaximumStrength(), data.getMaximusResidueEndTime(), data.getResidueNowTime()),gatewayAttachment);
+                    data.getMaximumStrength(), data.getMaximusResidueEndTime(), data.getResidueNowTime()), gatewayAttachment);
         }
     }
 }
