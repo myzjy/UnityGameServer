@@ -46,9 +46,7 @@ public class LoginTapStartController {
         logger.info("=============================================");
         //读取到服务器
         var timeEntityList = accesGameTimeResourceStorage.get(1);
-
-
-        //var time = TimeUtils.dayStringToDate(dateTime);
+        
         var serverOpenDate = new Date(timeEntityList.getTime());
         var dateTime = TimeUtils.dateToString(serverOpenDate);
         logger.info(dateTime);

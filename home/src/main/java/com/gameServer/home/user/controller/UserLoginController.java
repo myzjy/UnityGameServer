@@ -43,7 +43,8 @@ public class UserLoginController {
     IPhysicalPowerService iPhysicalPowerService;
     //log文件
     private static final Logger logger = LoggerFactory.getLogger(UserLoginController.class);
-  
+
+    @Autowired
     private IUserLoginService userLoginService;
 
     /**

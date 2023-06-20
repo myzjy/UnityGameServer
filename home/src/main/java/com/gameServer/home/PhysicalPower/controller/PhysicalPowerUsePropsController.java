@@ -149,4 +149,5 @@ public class PhysicalPowerUsePropsController {
                     data.getMaximumStrength(), data.getMaximusResidueEndTime(), data.getResidueNowTime()), gatewayAttachment);
         }
     }
+
 }
