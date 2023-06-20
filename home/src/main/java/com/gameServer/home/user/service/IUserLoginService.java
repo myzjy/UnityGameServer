@@ -1,0 +1,41 @@
+package com.gameServer.home.user.service;
+
+import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
+import com.gameServer.commonRefush.entity.PlayerUserEntity;
+import com.gameServer.commonRefush.resource.AccesGameTimeResource;
+import com.gameServer.commonRefush.resource.ConfigResource;
+import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+
+/**
+ * @author zjy
+ * @version 1.0
+ * @since 2023/6/20 10 56
+ */
+@Component
+public interface IUserLoginService {
+
+    ConfigResource GetConfigResourceData(int lv);
+    
+    
+    
+    /**
+     * 获取 体力缓存 以玩家的UserID 获取某一个人
+     *
+     * @param UserID
+     * @return
+     */
+    PhysicalPowerEntity GetToUserIDPhysicalPowerEntity(long UserID);
+
+    /**
+     * 更新
+     * @param entity
+     */
+    void UpDataPhysicalPowerEntityCaches(PhysicalPowerEntity entity);
+
+    PlayerUserEntity LoadPlayerUserEntity(long UserID);
+    void UpdatePlayerUserEntity(PlayerUserEntity entity);
+    boolean IsAcesGameTimeResource();
+    Collection<AccesGameTimeResource> GetAccesTimeAll();
+}

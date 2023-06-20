@@ -7,13 +7,18 @@ import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk;
 import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerRequest;
 import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerResponse;
 import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUsePropsRequest;
+import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUserPropsResponse;
+import com.gameServer.commonRefush.resource.ConfigResource;
 import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
+import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
 import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.storage.model.anno.ResInjection;
+import com.zfoo.storage.model.vo.Storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +41,9 @@ public class PhysicalPowerUsePropsController {
     @Autowired
     private IPhysicalPowerService physicalPowerService;
 
+    @Autowired
+    private IUserLoginService userLoginService;
+
     /**
      * 使用体力的控制 客户端 回调
      *
@@ -47,18 +55,51 @@ public class PhysicalPowerUsePropsController {
     public void atPhysicalPowerUsePropsRequest(Session session, PhysicalPowerUsePropsRequest request, GatewayAttachment gatewayAttachment) {
         logger.info("[uid:{}] 调用使用体力 开始一张战斗之后就会扣除", session.getUid());
         var physicalData = physicalPowerService.FindOnePhysicalPower(session.getUid());
+        var userData = userLoginService.LoadPlayerUserEntity(session.getUid());
+        var configData = userLoginService.GetConfigResourceData(userData.getPlayerLv());
+        /**
+         * physicalReduce= 当前体力-使用的体力值
+         */
         var physicalReduce = physicalData.getNowPhysicalPowerNum() - request.getUsePropNum();
+        /**
+         * 减少体力是否大于当前体力
+         */
         if (physicalReduce >= physicalData.getMaximumStrength()) {
             logger.info("当前扣除体力值：{}，扣除完的体力，依旧满格体力，当前体力：{},扣除完体力值：{}", request.getUsePropNum(), physicalData.getNowPhysicalPowerNum(), physicalReduce);
             physicalData.setNowPhysicalPowerNum(physicalReduce);
             physicalPowerService.UpdatePhysicalPowerEntityOrm(physicalData);
+            //当前体力当好使用完
+            NetContext.getRouter().send(session, PhysicalPowerUserPropsResponse.ValueOf(
+                    physicalData.getNowPhysicalPowerNum(),
+                    physicalData.getResidueTime(),
+                    physicalData.getMaximumStrength(),
+                    physicalData.getMaximusResidueEndTime(),
+                    physicalData.getResidueNowTime()),gatewayAttachment);
         } else {
             logger.info("当前扣除体力值：{}，扣除体力,当前体力：{},扣除完体力值：{}", request.getUsePropNum(), physicalData.getNowPhysicalPowerNum(), physicalReduce);
             //需要将体力相关修改
-
+            if (physicalReduce >= 0) {
+                //使用体力恢复时间
+                var residueSum = request.getUsePropNum() * configData.getResidueTime();
+                //转换成毫秒
+                var residueSumLong = residueSum * 1000;
+                physicalData.setMaximusResidueEndTime(physicalData.getMaximusResidueEndTime() + residueSum);
+                physicalData.setMaxResidueEndTime(physicalData.getMaximusResidueEndTime() + residueSumLong);
+                //更新数据库内容
+                physicalPowerService.UpdatePhysicalPowerEntityOrm(physicalData);
+                //当前体力当好使用完
+                NetContext.getRouter().send(session, PhysicalPowerUserPropsResponse.ValueOf(
+                        physicalData.getNowPhysicalPowerNum(),
+                        physicalData.getResidueTime(),
+                        physicalData.getMaximumStrength(),
+                        physicalData.getMaximusResidueEndTime(),
+                        physicalData.getResidueNowTime()),gatewayAttachment);
+            } else if (physicalReduce < 0) {
+                //体力不够用
+                logger.error("当前扣除体力值：{},扣除完体力值：{},体力不够用", request.getUsePropNum(), physicalReduce);
+                NetContext.getRouter().send(session, Error.valueOf("体力不足"), gatewayAttachment);
+            }
         }
-//        NetContext.getRouter()
-
     }
 
     /**

@@ -12,6 +12,7 @@ import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPo
 import com.gameServer.commonRefush.resource.AccesGameTimeResource;
 import com.gameServer.commonRefush.resource.ConfigResource;
 import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
+import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.event.model.anno.EventReceiver;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
@@ -42,17 +43,8 @@ public class UserLoginController {
     IPhysicalPowerService iPhysicalPowerService;
     //log文件
     private static final Logger logger = LoggerFactory.getLogger(UserLoginController.class);
-    @ResInjection
-    private Storage<Integer, ConfigResource> configResourceStorage;
-    @ResInjection
-    private Storage<Integer, AccesGameTimeResource> accesGameTimeResourceStorage;
-    /**
-     * 用户数据
-     */
-    @EntityCachesInjection
-    private IEntityCaches<Long, PlayerUserEntity> UserModelDict;
-    @EntityCachesInjection
-    private IEntityCaches<Long, PhysicalPowerEntity> physicalPowerEntityIEntityCaches;
+  
+    private IUserLoginService userLoginService;
 
     /**
      * 体力 rpc 登陆
@@ -60,12 +52,12 @@ public class UserLoginController {
     @PacketReceiver
     public void atRefreshLoginPhysicalPowerNumAsk(Session session, RefreshLoginPhysicalPowerNumAsk numAsk) {
         var userId = numAsk.getUserId();
-        var userEntity = UserModelDict.load(userId);
+        var userEntity = userLoginService.LoadPlayerUserEntity(userId);
         if (userEntity.getId() == 0L) {
             NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_account_not_exit.toString())));
             return;
         }
-        var data = physicalPowerEntityIEntityCaches.load(numAsk.getUserId());
+        var data = userLoginService.GetToUserIDPhysicalPowerEntity(numAsk.getUserId());
         if (data == null) {
             logger.error("[uid:{}]体力缓存数据库不存在，请创建，流程有问题", numAsk.getUserId());
             NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_login_process_not.toString())));
@@ -134,12 +126,12 @@ public class UserLoginController {
             }
         }
         userEntity.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum());
-        UserModelDict.update(userEntity);
+        userLoginService.UpdatePlayerUserEntity(userEntity);
         logger.info("[玩家：{}] 更新 PlayerUser 缓存 ", userEntity.getId());
         OrmContext.getAccessor().update(userEntity);
         logger.info("[玩家：{}] 更新 PlayerUser 缓存 数据库", userEntity.getId());
         //更新 缓存 数据库
-        physicalPowerEntityIEntityCaches.update(data);
+        userLoginService.UpDataPhysicalPowerEntityCaches(data);
         OrmContext.getAccessor().update(data);
 
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
@@ -148,21 +140,26 @@ public class UserLoginController {
 
     @PacketReceiver
     public void atCreatePhysicalPowerAsk(Session session, CreatePhysicalPowerAsk ask) {
-        var physicalData = physicalPowerEntityIEntityCaches.load(ask.getUid());
+        var physicalData = userLoginService.GetToUserIDPhysicalPowerEntity(ask.getUid());
         logger.info("是否有{}", physicalData);
-        var userData = UserModelDict.load(ask.getUid());
-        var config = configResourceStorage.get(userData.getPlayerLv());
+        var userData = userLoginService.LoadPlayerUserEntity(ask.getUid());
+        var config = userLoginService.GetConfigResourceData(userData.getPlayerLv());
 
         //数据库中没有 需要创建
-        var createPhysical = PhysicalPowerEntity.ValueOf(ask.getUid(), 0, config.getMaxPhysical(), 0, config.getMaxPhysical(), 0);
+        var createPhysical = 
+                PhysicalPowerEntity.ValueOf(
+                        ask.getUid(), 
+                        0,
+                        config.getMaxPhysical(), 
+                        0, config.getMaxPhysical(), 0);
         OrmContext.getAccessor().insert(createPhysical);
         logger.info("[UserLoginController] 体力数据创建成功 插入数据库成功");
         //设置最大体力
         userData.setNowLvMaxExp(config.getMaxExp());
         //缓存读取
-        physicalData = physicalPowerEntityIEntityCaches.load(ask.getUid());
+        physicalData = userLoginService.GetToUserIDPhysicalPowerEntity(ask.getUid());
         userData.setNowPhysicalPowerNum(physicalData.getNowPhysicalPowerNum());
-        UserModelDict.update(userData);
+        userLoginService.UpdatePlayerUserEntity(userData);
         logger.info("[玩家{}]更新玩家数据库 ",userData.getId());
         NetContext.getRouter().send(session, new CreatePhysicalPowerAnswer());
 
@@ -170,11 +167,11 @@ public class UserLoginController {
 
     @EventReceiver
     public void onCreateOrmAccesTimeEvent(CreateOrmAccesTimeEvent event) {
-        if (accesGameTimeResourceStorage == null) {
+        if (userLoginService.IsAcesGameTimeResource()) {
             logger.error("未配置服务器开始时间");
             return;
         }
-        var dict = accesGameTimeResourceStorage.getAll();
+        var dict = userLoginService.GetAccesTimeAll();
         for (var item : dict) {
             var entity = OrmContext.getAccessor().load(item.getTimeID(), AccessGameTimeEntity.class);
             if (entity == null) {

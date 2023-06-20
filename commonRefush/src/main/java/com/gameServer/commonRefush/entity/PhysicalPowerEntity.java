@@ -114,7 +114,7 @@ public class PhysicalPowerEntity implements IEntity<Long> {
     }
 
     /**
-     * 设置剩余时间
+     * 设置剩余时间 1点体力剩余
      *
      * @param residueTime 设置剩余时间
      */
@@ -139,6 +139,7 @@ public class PhysicalPowerEntity implements IEntity<Long> {
     public void setNowPhysicalPowerNum(int nowPhysicalPowerNum) {
         this.nowPhysicalPowerNum = nowPhysicalPowerNum;
     }
+    
 
     public long getVs() {
         return vs;
@@ -190,6 +191,7 @@ public class PhysicalPowerEntity implements IEntity<Long> {
     }
 
     /**
+     * 
      * @param residueNowTime 当前体力恢复实时计算 时间戳
      */
     public void setResidueNowTime(long residueNowTime) {
