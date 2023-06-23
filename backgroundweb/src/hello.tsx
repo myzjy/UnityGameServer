@@ -1,18 +1,31 @@
-import React from "react";
+import { render } from "@testing-library/react";
+import { clear } from "console";
+import { type } from "os";
+import React, { Component } from "react";
 
 interface IHello {
     message?: string;
 }
 
-const Hello: React.FunctionComponent<IHello> = (res) => {
+class HelloClass export Component{
+    num = (res: IHello)={
+
+    }
+}
+
+
+consret Hello: React.FunctionComponent<IHello> = (res) => {
     let i = 1;
     const num = (res: IHello) => {
         console.log("点击了")
-        res.message="点击" + (i++)
+        console.log(res.message)
+        res.message = "点击" + (i++)
+
     }
+
     return <div>
         hello,{res.message}
-        <button onClick={() => num(res)}>点击</button>
+        <button onClick={() => num(res)}>{res.message}</button>
 
     </div>
 }

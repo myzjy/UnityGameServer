@@ -240,13 +240,13 @@
         </dependency>
         <dependency>
             <groupId>com.gameServer</groupId>
-            <artifactId>commonRefush</artifactId>
+            <artifactId>common</artifactId>
             <version>1.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.gameServer</groupId>
-            <artifactId>commonRefush</artifactId>
+            <artifactId>common</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>

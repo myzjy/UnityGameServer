@@ -9,12 +9,12 @@
     <version>1.0</version>
 
     <modules>
-        <module>GameServer</module>
-        <module>commonRefush</module>
-        <module>cache</module>
+        <module>ampieta-game-single-server</module>
+        <module>ampieta-game-java-common</module>
+        <module>ampieta-game-java-cache</module>
         <module>game-boot</module>
-        <module>home</module>
-        <module>gateway</module>
+        <module>ampieta-game-home</module>
+        <module>ampieta-game-gateway</module>
         <module>UnityGameSDK</module>
     </modules>
     <packaging>pom</packaging>
@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>com.gameServer</groupId>
-            <artifactId>commonRefush</artifactId>
+            <artifactId>common</artifactId>
             <version>1.0</version>
         </dependency>
 
