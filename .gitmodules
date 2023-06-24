@@ -1,0 +1,3 @@
+[submodule "ampieta-game-web-sever"]
+	path = ampieta-game-web-sever
+	url = https://github.com/myzjy/ampieta-game-web-sever.git
