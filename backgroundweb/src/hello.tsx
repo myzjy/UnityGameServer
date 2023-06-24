@@ -7,14 +7,8 @@ interface IHello {
     message?: string;
 }
 
-class HelloClass export Component{
-    num = (res: IHello)={
 
-    }
-}
-
-
-consret Hello: React.FunctionComponent<IHello> = (res) => {
+const Hello: React.FunctionComponent<IHello> = (res) => {
     let i = 1;
     const num = (res: IHello) => {
         console.log("点击了")

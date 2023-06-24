@@ -7,32 +7,30 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="gameBoot" />
-        <module name="cache" />
-        <module name="commonRefush" />
         <module name="singleServer" />
         <module name="hotswap" />
         <module name="monitor" />
         <module name="orm" />
         <module name="storage" />
         <module name="game-boot" />
+        <module name="home" />
         <module name="scheduler" />
         <module name="protocol" />
+        <module name="UnityGameSDK" />
         <module name="util" />
+        <module name="common" />
         <module name="GameServer" />
-        <module name="game-room" />
         <module name="boot" />
         <module name="event" />
         <module name="net" />
+        <module name="gateway" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="common" target="11" />
-      <module name="gameNet" target="11" />
+    <bytecodeTargetLevel target="11">
+      <module name="ampieta-game-java-cache" target="11" />
+      <module name="cache" target="11" />
+      <module name="com.gameServer.mmo" target="20" />
+      <module name="game-room" target="11" />
     </bytecodeTargetLevel>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="GameServer" options="" />
-    </option>
   </component>
 </project>
