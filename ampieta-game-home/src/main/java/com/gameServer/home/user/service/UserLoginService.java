@@ -71,4 +71,9 @@ public class UserLoginService implements IUserLoginService {
     public Collection<AccesGameTimeResource> GetAccesTimeAll() {
         return accesGameTimeResourceStorage.getAll();
     }
+
+    @Override
+    public IEntityCaches<Long, PlayerUserEntity> AllPlayerUserEntityCaches() {
+        return UserModelDict;
+    }
 }

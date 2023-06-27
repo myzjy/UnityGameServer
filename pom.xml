@@ -15,6 +15,7 @@
         <module>ampieta-game-home</module>
         <module>ampieta-game-gateway</module>
         <module>UnityGameSDK</module>
+        <module>ampieta-game-cloud-gateway</module>
     </modules>
     <packaging>pom</packaging>
 

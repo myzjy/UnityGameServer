@@ -4,6 +4,7 @@ import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.resource.AccesGameTimeResource;
 import com.gameServer.commonRefush.resource.ConfigResource;
+import com.zfoo.orm.cache.IEntityCaches;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -17,9 +18,8 @@ import java.util.Collection;
 public interface IUserLoginService {
 
     ConfigResource GetConfigResourceData(int lv);
-    
-    
-    
+
+
     /**
      * 获取 体力缓存 以玩家的UserID 获取某一个人
      *
@@ -30,12 +30,23 @@ public interface IUserLoginService {
 
     /**
      * 更新
+     *
      * @param entity
      */
     void UpDataPhysicalPowerEntityCaches(PhysicalPowerEntity entity);
 
     PlayerUserEntity LoadPlayerUserEntity(long UserID);
+
     void UpdatePlayerUserEntity(PlayerUserEntity entity);
+
     boolean IsAcesGameTimeResource();
+
     Collection<AccesGameTimeResource> GetAccesTimeAll();
+
+    /**
+     * 玩家数据
+     * @return
+     */
+    IEntityCaches<Long, PlayerUserEntity> AllPlayerUserEntityCaches();
+
 }

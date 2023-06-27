@@ -17,6 +17,7 @@ import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.scheduler.model.anno.Scheduler;
 import com.zfoo.storage.model.anno.ResInjection;
 import com.zfoo.storage.model.vo.Storage;
 import org.slf4j.Logger;
@@ -149,6 +150,16 @@ public class PhysicalPowerUsePropsController {
                     data.getMaximumStrength(), data.getMaximusResidueEndTime(), data.getResidueNowTime()), gatewayAttachment);
         }
     }
+
+//    /**
+//     * 每1s推送
+//     */
+//    @Scheduler(cron = "0/1 * * * * ?")
+//    public void  GamePhysicalPowerSeconds()
+//    {
+//        logger.info("每秒恢复在线玩家体力，提时任务开始执行");
+//        var dict=userLoginService.AllPlayerUserEntityCaches();
+//    }
 
     
 }
