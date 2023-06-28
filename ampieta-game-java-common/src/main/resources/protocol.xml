@@ -53,6 +53,8 @@
                   location="com.gameServer.commonRefush.protocol.riqueza.RefreshingResourcesMainResponse"/>
         <protocol id="1029"
                   location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerSecondsRequest"/>
+        <protocol id="1030"
+                  location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerSecondsResponse"/>
     </module>
     <module id="3" name="common" minId="100" maxId="500">
         <protocol id="100" location="com.zfoo.net.packet.common.Message"/>

@@ -4,10 +4,7 @@ import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnswer;
 import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk;
-import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerRequest;
-import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerResponse;
-import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUsePropsRequest;
-import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUserPropsResponse;
+import com.gameServer.commonRefush.protocol.physicalPower.*;
 import com.gameServer.commonRefush.resource.ConfigResource;
 import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
 import com.gameServer.home.user.service.IUserLoginService;
@@ -18,6 +15,7 @@ import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.scheduler.model.anno.Scheduler;
+import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.storage.model.anno.ResInjection;
 import com.zfoo.storage.model.vo.Storage;
 import org.slf4j.Logger;
@@ -75,7 +73,7 @@ public class PhysicalPowerUsePropsController {
                     physicalData.getResidueTime(),
                     physicalData.getMaximumStrength(),
                     physicalData.getMaximusResidueEndTime(),
-                    physicalData.getResidueNowTime()),gatewayAttachment);
+                    physicalData.getResidueNowTime()), gatewayAttachment);
         } else {
             logger.info("当前扣除体力值：{}，扣除体力,当前体力：{},扣除完体力值：{}", request.getUsePropNum(), physicalData.getNowPhysicalPowerNum(), physicalReduce);
             //需要将体力相关修改
@@ -94,7 +92,7 @@ public class PhysicalPowerUsePropsController {
                         physicalData.getResidueTime(),
                         physicalData.getMaximumStrength(),
                         physicalData.getMaximusResidueEndTime(),
-                        physicalData.getResidueNowTime()),gatewayAttachment);
+                        physicalData.getResidueNowTime()), gatewayAttachment);
             } else if (physicalReduce < 0) {
                 //体力不够用
                 logger.error("当前扣除体力值：{},扣除完体力值：{},体力不够用", request.getUsePropNum(), physicalReduce);
@@ -151,15 +149,27 @@ public class PhysicalPowerUsePropsController {
         }
     }
 
-//    /**
-//     * 每1s推送
-//     */
-//    @Scheduler(cron = "0/1 * * * * ?")
-//    public void  GamePhysicalPowerSeconds()
-//    {
-//        logger.info("每秒恢复在线玩家体力，提时任务开始执行");
-//        var dict=userLoginService.AllPlayerUserEntityCaches();
-//    }
+    @PacketReceiver
+    public void atPhysicalPowerSecondsResponse(Session session, PhysicalPowerSecondsRequest request, GatewayAttachment gatewayAttachment) {
+        logger.info("当前请求 PhysicalPowerSecondsRequest [{}]", request.protocolId());
 
-    
+        var nowTimeDown = request.getNowTime() - TimeUtils.now();
+        boolean isCheating = false;
+        if (nowTimeDown < 0) {
+            //小于，请求过程中 属于正常的
+            isCheating = false;
+        } else if (nowTimeDown == 0) {
+            //请求时间当好
+            isCheating = false;
+        } else if (nowTimeDown > 0) {
+            //比服务器本地时间还要多，代表有问题
+            isCheating = true;
+        }
+        if (!isCheating) {
+            
+        }
+
+    }
+
+
 }
