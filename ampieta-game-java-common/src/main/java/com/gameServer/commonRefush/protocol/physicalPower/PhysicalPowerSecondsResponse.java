@@ -1,5 +1,6 @@
 package com.gameServer.commonRefush.protocol.physicalPower;
 
+import com.zfoo.protocol.IPacket;
 import com.zfoo.protocol.registration.anno.Protocol;
 
 /**
@@ -11,7 +12,7 @@ import com.zfoo.protocol.registration.anno.Protocol;
  */
 
 @Protocol(id = 1030)
-public class PhysicalPowerSecondsResponse {
+public class PhysicalPowerSecondsResponse implements IPacket {
     /**
      * 返回 体力
      */
@@ -47,7 +48,7 @@ public class PhysicalPowerSecondsResponse {
      * @param maximusResidueEndTime 我恢复到最大体力的结束时间
      * @return 体力恢复返回
      */
-    public static PhysicalPowerSecondsResponse ValueOf(int nowPhysicalPower, int residueTime, int residueNowTime, int maximumStrength, int maximusResidueEndTime) {
+    public static PhysicalPowerSecondsResponse ValueOf(int nowPhysicalPower, int residueTime, long residueNowTime, int maximumStrength, int maximusResidueEndTime) {
         var data = new PhysicalPowerSecondsResponse();
         data.setNowPhysicalPower(nowPhysicalPower);
         data.setResidueTime(residueTime);

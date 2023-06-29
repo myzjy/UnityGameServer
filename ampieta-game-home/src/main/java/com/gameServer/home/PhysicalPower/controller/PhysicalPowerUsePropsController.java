@@ -1,11 +1,13 @@
 package com.gameServer.home.PhysicalPower.controller;
 
+import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnswer;
 import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk;
+import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer;
+import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk;
 import com.gameServer.commonRefush.protocol.physicalPower.*;
-import com.gameServer.commonRefush.resource.ConfigResource;
 import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.net.NetContext;
@@ -14,10 +16,7 @@ import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
-import com.zfoo.scheduler.model.anno.Scheduler;
 import com.zfoo.scheduler.util.TimeUtils;
-import com.zfoo.storage.model.anno.ResInjection;
-import com.zfoo.storage.model.vo.Storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,8 +164,36 @@ public class PhysicalPowerUsePropsController {
             //比服务器本地时间还要多，代表有问题
             isCheating = true;
         }
+        //玩家UID
+        var uid = session.getUid();
         if (!isCheating) {
-            
+            //正常发请求时间没有错乱，如果时间错乱需要
+            NetContext.getRouter().asyncAsk(session, RefreshLoginPhysicalPowerNumAsk.ValueOf(uid), RefreshLoginPhysicalPowerNumAnswer.class, uid)
+                    .whenComplete(userData -> {
+                        //增长体力
+                        if (userData.getError() != null) {
+                            //失败
+                            NetContext.getRouter().send(session, userData.getError());
+                            return;
+                        }
+                        //rpc 体力缓存已经刷新 返回出去
+                        var PhysicalCache = OrmContext.getAccessor().load(session.getUid(), PhysicalPowerEntity.class);
+                        if (PhysicalCache != null) {
+                            NetContext.getRouter().send(session,
+                                    PhysicalPowerSecondsResponse.ValueOf(
+                                            PhysicalCache.getNowPhysicalPowerNum(),
+                                            PhysicalCache.getResidueTime(),
+                                            PhysicalCache.getResidueNowTime(),
+                                            PhysicalCache.getMaximumStrength(),
+                                            PhysicalCache.getMaximusResidueEndTime()), gatewayAttachment);
+                        } else {
+                            NetContext.getRouter().send(session, Error.valueOf(request, I18nEnum.error_login_process_not.toString()));
+                            return;
+                        }
+                    });
+
+        } else {
+            //请求时间出现问题 需要加入黑名单
         }
 
     }

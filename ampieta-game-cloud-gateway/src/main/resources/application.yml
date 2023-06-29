@@ -1,36 +1,24 @@
 server:
   port: 8080
+  # GateWay Logging 日志
 logging:
   level:
     root: INFO
     org.springframework.web: INFO
     org.springframework.web.HttpLogging: DEBUG
     org.springframework.security: DEBUG
-    org.springframework.security.oauth2: DEBUG
     org.springframework.cloud.gateway: DEBUG
-    
-    spring:
-      autoconfigure:
-        # TODO: remove when fixed https://github.com/spring-projects/spring-security/issues/6314
-        exclude: org.springframework.boot.actuate.autoconfigure.security.reactive.ReactiveManagementWebSecurityAutoConfiguration
-      thymeleaf:
-        cache: false
-      security:
-        oauth2:
-          client:
-            registration:
-              gateway:
-                provider: uaa
-                client-id: gateway
-                client-secret: secret
-                authorization-grant-type: authorization_code
-                redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
-                scope: openid,profile,email,resource.read
-            provider:
-              uaa:
-                authorization-uri: http://localhost:8090/uaa/oauth/authorize
-                token-uri: http://uaa:8090/uaa/oauth/token
-                user-info-uri: http://uaa:8090/uaa/userinfo
-                user-name-attribute: sub
-                jwk-set-uri: http://uaa:8090/uaa/token_keys
-                
+spring:
+  application:
+    name: ampieta-game-cloud-gateway
+  #gateway的配置
+  cloud:
+    gateway:
+      #路由规则
+      routes: 
+        - id: home_route
+          uri: http://127.0.0.1:8020 #需要转发到地址
+          #断言规则 用于路由规则的匹配
+          predicates:
+            - Path=/api/**
+            # http://127.0.0.1:8080/api/getVersion
