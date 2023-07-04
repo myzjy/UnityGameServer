@@ -1,6 +1,6 @@
 import { Application, FrontendSession } from 'pinus';
 
-export default function (app: Application) {
+export default function(app: Application) {
     return new Handler(app);
 }
 
@@ -16,7 +16,12 @@ export class Handler {
      * @param  {Object}   session current session object
      */
     async entry(msg: any, session: FrontendSession) {
-        return { code: 200, msg: 'game server is ok.' };
+        let data={
+            code:500,
+            msg:"消息成功了"
+        }
+
+        return data;
     }
 
     /**

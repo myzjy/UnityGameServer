@@ -153,6 +153,7 @@ public class PhysicalPowerUsePropsController {
         logger.info("当前请求 PhysicalPowerSecondsRequest [{}]", request.protocolId());
 
         var nowTimeDown = request.getNowTime() - TimeUtils.now();
+        logger.info("UID[{}], 时间差距 {} ms",session.getUid(),nowTimeDown);
         boolean isCheating = false;
         if (nowTimeDown < 0) {
             //小于，请求过程中 属于正常的
@@ -186,6 +187,7 @@ public class PhysicalPowerUsePropsController {
                                             PhysicalCache.getResidueNowTime(),
                                             PhysicalCache.getMaximumStrength(),
                                             PhysicalCache.getMaximusResidueEndTime()), gatewayAttachment);
+                            return;
                         } else {
                             NetContext.getRouter().send(session, Error.valueOf(request, I18nEnum.error_login_process_not.toString()));
                             return;
@@ -194,6 +196,7 @@ public class PhysicalPowerUsePropsController {
 
         } else {
             //请求时间出现问题 需要加入黑名单
+            NetContext.getRouter().send(session, Error.valueOf(request,"错误时间，请注意"));
         }
 
     }
