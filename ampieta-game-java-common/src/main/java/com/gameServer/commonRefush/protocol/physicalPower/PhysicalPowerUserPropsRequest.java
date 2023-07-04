@@ -11,15 +11,15 @@ import com.zfoo.protocol.registration.anno.Protocol;
  * @since 2023/4/14 12 00
  */
 @Protocol(id = 1025)
-public class PhysicalPowerUsePropsRequest implements IPacket {
+public class PhysicalPowerUserPropsRequest implements IPacket {
 
     /**
      * 使用体力 会被扣除
      */
     private int usePropNum;
 
-    public static PhysicalPowerUsePropsRequest ValueOf() {
-        var data = new PhysicalPowerUsePropsRequest();
+    public static PhysicalPowerUserPropsRequest ValueOf() {
+        var data = new PhysicalPowerUserPropsRequest();
         return data;
     }
 

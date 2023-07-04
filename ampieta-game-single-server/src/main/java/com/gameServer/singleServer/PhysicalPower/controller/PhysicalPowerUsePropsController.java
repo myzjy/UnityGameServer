@@ -6,7 +6,7 @@ import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnsw
 import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk;
 import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerRequest;
 import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerResponse;
-import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUsePropsRequest;
+import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUserPropsRequest;
 import com.gameServer.singleServer.PhysicalPower.service.IPhysicalPowerService;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
@@ -39,7 +39,7 @@ public class PhysicalPowerUsePropsController {
      * 使用体力的控制 客户端 回调
      */
     @PacketReceiver
-    public void atPhysicalPowerUsePropsRequest(Session session, PhysicalPowerUsePropsRequest request) {
+    public void atPhysicalPowerUsePropsRequest(Session session, PhysicalPowerUserPropsRequest request) {
         logger.info("[uid:{}] 调用使用体力 开始一张战斗之后就会扣除", session.getUid());
         var physicalData = physicalPowerService.FindOnePhysicalPower(session.getUid());
         var physicalReduce = physicalData.getNowPhysicalPowerNum() - request.getUsePropNum();
