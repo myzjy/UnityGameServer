@@ -14,25 +14,25 @@ public class PhysicalPowerResponse implements IPacket {
      * 当前体力
      */
     private int nowPhysicalPower;
-        /**
-         * 一点体力增长剩余时间
-         * <p> 注意这里不是时间戳赋值</p>
-         */
-        private int residueTime;
-        /**
-         * 当前体力实时时间 会跟着剩余时间一起变化
-         */
-        private long residueNowTime;
-        /**
-         * 最大体力 用于限制 这个值会随着 等级增长
-         */
-        private int maximumStrength;
+    /**
+     * 一点体力增长剩余时间
+     * <p> 注意这里不是时间戳赋值</p>
+     */
+    private int residueTime;
+    /**
+     * 当前体力实时时间 会跟着剩余时间一起变化
+     */
+    private long residueNowTime;
+    /**
+     * 最大体力 用于限制 这个值会随着 等级增长
+     */
+    private int maximumStrength;
 
-        /**
-         * 我恢复到最大体力的结束时间
-         * <p>这里不是时间戳<p/>
-         */
-        private int maximusResidueEndTime;
+    /**
+     * 我恢复到最大体力的结束时间
+     * <p>这里不是时间戳<p/>
+     */
+    private int maximusResidueEndTime;
 
     public static PhysicalPowerResponse ValueOf(int nowPhysicalPower, int residueTime, int maximumStrength, int maximusResidueEndTime, long residueNowTime) {
         var data = new PhysicalPowerResponse();

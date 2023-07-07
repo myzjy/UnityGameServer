@@ -16,6 +16,7 @@ import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.event.model.anno.EventReceiver;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
+import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
@@ -51,17 +52,21 @@ public class UserLoginController {
      * 体力 rpc 登陆
      */
     @PacketReceiver
-    public void atRefreshLoginPhysicalPowerNumAsk(Session session, RefreshLoginPhysicalPowerNumAsk numAsk) {
+    public void atRefreshLoginPhysicalPowerNumAsk(Session session, RefreshLoginPhysicalPowerNumAsk numAsk, GatewayAttachment gatewayAttachment) {
         var userId = numAsk.getUserId();
         var userEntity = userLoginService.LoadPlayerUserEntity(userId);
         if (userEntity.getId() == 0L) {
-            NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_account_not_exit.toString())));
+            NetContext.getRouter().send(session, 
+                    RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_account_not_exit.toString())),
+                    gatewayAttachment);
             return;
         }
         var data = userLoginService.GetToUserIDPhysicalPowerEntity(numAsk.getUserId());
         if (data == null) {
             logger.error("[uid:{}]体力缓存数据库不存在，请创建，流程有问题", numAsk.getUserId());
-            NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_login_process_not.toString())));
+            NetContext.getRouter().send(session,
+                    RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_login_process_not.toString())),
+                    gatewayAttachment);
             return;
         }
         //第一次创建账号 体力恢复满
@@ -76,7 +81,9 @@ public class UserLoginController {
         if (nowPhysicalPower >= data.getMaximumStrength()) {
             logger.info("[uid:{}]体力已满[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
             //体力满了
-            NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf());
+            NetContext.getRouter().send(session, 
+                    RefreshLoginPhysicalPowerNumAnswer.ValueOf(),
+                    gatewayAttachment);
         }
         //相差的时间 精确到毫秒级别
         var differenceLastTime = TimeUtils.now() - data.getResidueNowTime();
@@ -136,11 +143,11 @@ public class UserLoginController {
         OrmContext.getAccessor().update(data);
 
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
-        NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf());
+        NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(),gatewayAttachment);
     }
 
     @PacketReceiver
-    public void atCreatePhysicalPowerAsk(Session session, CreatePhysicalPowerAsk ask) {
+    public void atCreatePhysicalPowerAsk(Session session, CreatePhysicalPowerAsk ask, GatewayAttachment gatewayAttachment) {
         var physicalData = userLoginService.GetToUserIDPhysicalPowerEntity(ask.getUid());
         logger.info("是否有{}", physicalData);
         var userData = userLoginService.LoadPlayerUserEntity(ask.getUid());
@@ -162,7 +169,7 @@ public class UserLoginController {
         userData.setNowPhysicalPowerNum(physicalData.getNowPhysicalPowerNum());
         userLoginService.UpdatePlayerUserEntity(userData);
         logger.info("[玩家{}]更新玩家数据库 ",userData.getId());
-        NetContext.getRouter().send(session, new CreatePhysicalPowerAnswer());
+        NetContext.getRouter().send(session, new CreatePhysicalPowerAnswer(),gatewayAttachment);
 
     }
 

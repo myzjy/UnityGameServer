@@ -2,7 +2,6 @@ import { render } from "@testing-library/react";
 import { clear } from "console";
 import { type } from "os";
 import React, { Component } from "react";
-
 interface IHello {
     message?: string;
 }

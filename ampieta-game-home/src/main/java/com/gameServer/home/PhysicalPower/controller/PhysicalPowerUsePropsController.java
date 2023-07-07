@@ -50,7 +50,7 @@ public class PhysicalPowerUsePropsController {
      * @param gatewayAttachment 网关
      */
     @PacketReceiver
-    public void atPhysicalPowerUsePropsRequest(Session session, PhysicalPowerUserPropsRequest request, GatewayAttachment gatewayAttachment) {
+    public void atPhysicalPowerUserPropsRequest(Session session, PhysicalPowerUserPropsRequest request, GatewayAttachment gatewayAttachment) {
         logger.info("[uid:{}] 调用使用体力 开始一张战斗之后就会扣除", session.getUid());
         var physicalData = physicalPowerService.FindOnePhysicalPower(session.getUid());
         var userData = userLoginService.LoadPlayerUserEntity(session.getUid());
@@ -149,7 +149,7 @@ public class PhysicalPowerUsePropsController {
     }
 
     @PacketReceiver
-    public void atPhysicalPowerSecondsResponse(Session session, PhysicalPowerSecondsRequest request, GatewayAttachment gatewayAttachment) {
+    public void atPhysicalPowerSecondsRequest(Session session, PhysicalPowerSecondsRequest request, GatewayAttachment gatewayAttachment) {
         logger.info("当前请求 PhysicalPowerSecondsRequest [{}]", request.protocolId());
 
         var nowTimeDown = request.getNowTime() - TimeUtils.now();

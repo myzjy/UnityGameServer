@@ -17,8 +17,8 @@ spring:
       #路由规则
       routes: 
         - id: home_route
-          uri: http://127.0.0.1:8020 #需要转发到地址
+          uri: http://127.0.0.1:8000 #需要转发到地址
           #断言规则 用于路由规则的匹配
           predicates:
             - Path=/api/**
-            # http://127.0.0.1:8080/api/getVersion
+            # http://127.0.0.1:8080/api/version
