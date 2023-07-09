@@ -76,74 +76,63 @@ public class UserLoginController {
         //剩余毫秒级别
         var differenceTime = differenceLastTime % 1000;
         //相差秒数
-        var differenceToTime = differenceLastTime / 1000;
+        var differenceToTime = (int) (differenceLastTime / 1000);
         var dateTime = TimeUtils.timeToString(data.getResidueNowTime());
 
         logger.info("[uid:{}] 体力恢复实时时间：{},更当前时间相差秒数为{}", userEntity.getId(), dateTime, differenceToTime);
         if (differenceToTime > 0) {
             //代表 离线了1s以上
             //我离线时间是否超过我1点体力恢复时间
-            if (data.getResidueTime() > differenceToTime) {
-                var reResidueTime = data.getResidueTime() - (int) differenceTime;
-                var reResidueEndTime = data.getResidueEndTime() - (int) differenceToTime;
+            if (data.getResidueTime() >= 0) {
+                var reResidueTime = data.getResidueTime() > 0 ?
+                        data.getResidueTime() - differenceTime :
+                        differenceTime;
+                var reResidueEndTime = data.getResidueEndTime() - differenceToTime;
                 logger.info("[uid:{}] 体力恢复实时时间：{},data.getResidueTime() - (int) differenceTime：{}", userEntity.getId(), dateTime, reResidueTime);
                 logger.info("[uid:{}] 体力恢复实时时间：{},data.getResidueEndTime() - (int) differenceToTime：{}", userEntity.getId(), dateTime, reResidueEndTime);
 
-                //没有超过
-                data.setResidueTime(data.getResidueTime() - (int) differenceTime);
-                data.setResidueEndTime(data.getResidueEndTime() - (int) differenceToTime);
-                data.setResidueNowTime(TimeUtils.now());
-            } else {
-                //因为这里的时间需要减
-                var setMaximusResidue = (data.getMaximusResidueEndTime() - (int) differenceTime);
-                setMaximusResidue = Math.max(setMaximusResidue, 0);
-                data.setMaximusResidueEndTime(setMaximusResidue);
-                //超过了
-                var differenceNum = (int) differenceToTime - data.getResidueTime();
-                //离线时间超过当前 1点体力恢复时间，并切剩余时间大于1点体力恢复时间
-                if (differenceNum > 300) {
-                    //可以恢复多少点离线体力
-                    var num = differenceNum / 300;
-                    logger.info("[uid:{}] 玩家体力恢复，增加了{},增加之前体力值：{}，增加之后体力值：{}",
-                            userEntity.getId(), num, data.getNowPhysicalPowerNum(), (data.getNowPhysicalPowerNum() + num));
 
-                    data.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum() + num);
-                    data.setResidueNowTime(TimeUtils.now());
-                    //增加的体力是否大于 当前最大体力了
+            } else {
+                // 数据库中存放 恢复时间为负 是错误，
+                //这里就是修复 这个错误
+                if (data.getNowPhysicalPowerNum() >= 0) {
+                    /* *
+                     * 当前体力是否大于 或者等于 最大体力
+                     * 如果是就必须给予限制
+                     */
                     if (data.getNowPhysicalPowerNum() >= data.getMaximumStrength()) {
-                        logger.info("[uid:{}] 玩家体力恢复满了，增加了{}", userEntity.getId(), num);
+                        logger.info("[uid:{}],当前体力：{}， 最大体力：{}", userEntity.getId(), data.getNowPhysicalPowerNum(), data.getMaximumStrength());
                         data.setNowPhysicalPowerNum(data.getMaximumStrength());
-                        //恢复时间统一归零
+                        logger.info("[uid:{}],限制完的当前体力：{}， 最大体力：{}", userEntity.getId(), data.getNowPhysicalPowerNum(), data.getMaximumStrength());
+                        /* *
+                         * 所有时间全部为0
+                         */
                         data.setResidueTime(0);
                         data.setMaximusResidueEndTime(0);
-                        data.setMaxResidueEndTime(0);
+                        data.setResidueEndTime(0);
+                        data.setResidueNowTime(0);
+                        logger.info("[uid:{}],时间初始化完毕", userEntity.getId());
+
+                    } else {
+                        /* *
+                         * 体力没满 但是进入这里代表 数据库中的恢复时间是错误的
+                         */
+                        var residue = (data.getMaximumStrength() - data.getNowPhysicalPowerNum()) * config.getResidueTime();
+                        logger.info("[uid:{}],还有{} 体力才能恢复满,总恢复时间为{}", userEntity.getId(), (data.getMaximumStrength() - data.getNowPhysicalPowerNum()), residue);
+                        data.setResidueNowTime(TimeUtils.now());
+                        data.setResidueTime(config.getResidueTime());
+                        data.setResidueEndTime(residue);
+                        logger.info("[uid:{}],时间设置完毕", userEntity.getId());
                     }
                 } else {
-                    logger.info("[uid:{}] 玩家增加之前体力：{},玩家体力增加了1点,增加之后：{}",
-                            userEntity.getId(), data.getNowPhysicalPowerNum(), data.getNowPhysicalPowerNum() + 1);
-                    if (data.getNowPhysicalPowerNum() + 1 >= data.getMaximumStrength()) {
-                        //加一点体力
-                        data.setNowPhysicalPowerNum(data.getMaximumStrength());
-                    } else {
-                        //加一点体力
-                        data.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum() + 1);
-                    }
-                    if (data.getResidueTime() < 1) {
-                        data.setResidueTime(0);
-                    }
-                    var residueTime = data.getResidueTime() - (int) differenceToTime;
-                    if (residueTime < 1) {
-                        //相差时间
-                        var mResidueTime = config.getResidueTime() - (int) differenceToTime - data.getResidueTime();
-                        data.setResidueTime(mResidueTime);
-                    } else {
-                        data.setResidueTime(residueTime);
-                    }
-
-                    data.setMaximusResidueEndTime(data.getMaximusResidueEndTime() - (int) differenceToTime);
-                    data.setResidueNowTime(TimeUtils.now());
+                    /* *
+                     * 当前体力小于0 一般使用体力的时候 就给予限制，出问题一般要在扣除体力的 controller 寻找问题、
+                     * 不需要在这里进行任何处理
+                     */
+                    logger.error("[uid:{}],数据库出现问题，请检查,当前玩家数据库中体力值为负", userEntity.getId());
                 }
             }
+
         }
         userEntity.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum());
         userLoginService.UpdatePlayerUserEntity(userEntity);
@@ -157,7 +146,7 @@ public class UserLoginController {
 
     @PacketReceiver
     public void atCreatePhysicalPowerAsk(Session session, CreatePhysicalPowerAsk ask) {
-        var physicalData = userLoginService.GetToUserIDPhysicalPowerEntity(ask.getUid());
+        var physicalData = OrmContext.getAccessor().load(ask.getUid(), PhysicalPowerEntity.class);
         logger.info("是否有{}", physicalData);
         var userData = userLoginService.LoadPlayerUserEntity(ask.getUid());
         var config = userLoginService.GetConfigResourceData(userData.getPlayerLv());
@@ -170,8 +159,8 @@ public class UserLoginController {
                             config.getMaxPhysical(),
                             0, config.getMaxPhysical(), 0);
             OrmContext.getAccessor().insert(createPhysical);
-
         }
+
         logger.info("[UserLoginController] 体力数据创建成功 插入数据库成功");
         //设置最大经验
         userData.setNowLvMaxExp(config.getMaxExp());
