@@ -1,5 +1,6 @@
 package com.gameServer.commonRefush.protocol.physicalPower;
 
+import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.protocol.IPacket;
 import com.zfoo.protocol.registration.anno.Protocol;
 
@@ -11,7 +12,7 @@ import com.zfoo.protocol.registration.anno.Protocol;
  * @since 2023/4/12 16 25
  */
 @Protocol(id = 1023)
-public class PhysicalPowerRequest implements IPacket {
+public class PhysicalPowerRequest implements IPacket, IGatewayLoadBalancer {
 
     /**
      * 玩家uid 传过来，可能会用到
@@ -29,5 +30,10 @@ public class PhysicalPowerRequest implements IPacket {
 
     public void setUid(long uid) {
         this.uid = uid;
+    }
+
+    @Override
+    public Object loadBalancerConsistentHashObject() {
+        return uid;
     }
 }

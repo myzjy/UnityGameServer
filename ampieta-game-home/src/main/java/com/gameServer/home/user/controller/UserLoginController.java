@@ -3,35 +3,25 @@ package com.gameServer.home.user.controller;
 import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.entity.AccessGameTimeEntity;
 import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
-import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.event.create.CreateOrmAccesTimeEvent;
 import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnswer;
 import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk;
-import com.gameServer.commonRefush.resource.AccesGameTimeResource;
-import com.gameServer.commonRefush.resource.ConfigResource;
-import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.event.model.anno.EventReceiver;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
-import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
-import com.zfoo.orm.cache.IEntityCaches;
-import com.zfoo.orm.model.anno.EntityCachesInjection;
 import com.zfoo.scheduler.util.TimeUtils;
-import com.zfoo.storage.model.anno.ResInjection;
-import com.zfoo.storage.model.vo.Storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * @author zjy
@@ -40,8 +30,6 @@ import java.util.Objects;
  */
 @Component
 public class UserLoginController {
-    @Autowired
-    IPhysicalPowerService iPhysicalPowerService;
     //log文件
     private static final Logger logger = LoggerFactory.getLogger(UserLoginController.class);
 
@@ -52,21 +40,20 @@ public class UserLoginController {
      * 体力 rpc 登陆
      */
     @PacketReceiver
-    public void atRefreshLoginPhysicalPowerNumAsk(Session session, RefreshLoginPhysicalPowerNumAsk numAsk, GatewayAttachment gatewayAttachment) {
+    public void atRefreshLoginPhysicalPowerNumAsk(Session session, RefreshLoginPhysicalPowerNumAsk numAsk) {
         var userId = numAsk.getUserId();
         var userEntity = userLoginService.LoadPlayerUserEntity(userId);
+        var config = userLoginService.GetConfigResourceData(userEntity.getPlayerLv());
         if (userEntity.getId() == 0L) {
-            NetContext.getRouter().send(session, 
-                    RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_account_not_exit.toString())),
-                    gatewayAttachment);
+            NetContext.getRouter().send(session,
+                    RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_account_not_exit.toString())));
             return;
         }
         var data = userLoginService.GetToUserIDPhysicalPowerEntity(numAsk.getUserId());
         if (data == null) {
             logger.error("[uid:{}]体力缓存数据库不存在，请创建，流程有问题", numAsk.getUserId());
             NetContext.getRouter().send(session,
-                    RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_login_process_not.toString())),
-                    gatewayAttachment);
+                    RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_login_process_not.toString())));
             return;
         }
         //第一次创建账号 体力恢复满
@@ -81,9 +68,8 @@ public class UserLoginController {
         if (nowPhysicalPower >= data.getMaximumStrength()) {
             logger.info("[uid:{}]体力已满[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
             //体力满了
-            NetContext.getRouter().send(session, 
-                    RefreshLoginPhysicalPowerNumAnswer.ValueOf(),
-                    gatewayAttachment);
+            NetContext.getRouter().send(session,
+                    RefreshLoginPhysicalPowerNumAnswer.ValueOf());
         }
         //相差的时间 精确到毫秒级别
         var differenceLastTime = TimeUtils.now() - data.getResidueNowTime();
@@ -91,19 +77,29 @@ public class UserLoginController {
         var differenceTime = differenceLastTime % 1000;
         //相差秒数
         var differenceToTime = differenceLastTime / 1000;
+        var dateTime = TimeUtils.timeToString(data.getResidueNowTime());
+
+        logger.info("[uid:{}] 体力恢复实时时间：{},更当前时间相差秒数为{}", userEntity.getId(), dateTime, differenceToTime);
         if (differenceToTime > 0) {
             //代表 离线了1s以上
             //我离线时间是否超过我1点体力恢复时间
             if (data.getResidueTime() > differenceToTime) {
+                var reResidueTime = data.getResidueTime() - (int) differenceTime;
+                var reResidueEndTime = data.getResidueEndTime() - (int) differenceToTime;
+                logger.info("[uid:{}] 体力恢复实时时间：{},data.getResidueTime() - (int) differenceTime：{}", userEntity.getId(), dateTime, reResidueTime);
+                logger.info("[uid:{}] 体力恢复实时时间：{},data.getResidueEndTime() - (int) differenceToTime：{}", userEntity.getId(), dateTime, reResidueEndTime);
+
                 //没有超过
                 data.setResidueTime(data.getResidueTime() - (int) differenceTime);
+                data.setResidueEndTime(data.getResidueEndTime() - (int) differenceToTime);
+                data.setResidueNowTime(TimeUtils.now());
             } else {
                 //因为这里的时间需要减
                 var setMaximusResidue = (data.getMaximusResidueEndTime() - (int) differenceTime);
                 setMaximusResidue = Math.max(setMaximusResidue, 0);
                 data.setMaximusResidueEndTime(setMaximusResidue);
                 //超过了
-                var differenceNum = (int) differenceTime - data.getResidueTime();
+                var differenceNum = (int) differenceToTime - data.getResidueTime();
                 //离线时间超过当前 1点体力恢复时间，并切剩余时间大于1点体力恢复时间
                 if (differenceNum > 300) {
                     //可以恢复多少点离线体力
@@ -122,54 +118,69 @@ public class UserLoginController {
                         data.setMaximusResidueEndTime(0);
                         data.setMaxResidueEndTime(0);
                     }
-
                 } else {
                     logger.info("[uid:{}] 玩家增加之前体力：{},玩家体力增加了1点,增加之后：{}",
                             userEntity.getId(), data.getNowPhysicalPowerNum(), data.getNowPhysicalPowerNum() + 1);
-                    //加一点体力
-                    data.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum() + 1);
-                    data.setResidueTime(differenceNum);
+                    if (data.getNowPhysicalPowerNum() + 1 >= data.getMaximumStrength()) {
+                        //加一点体力
+                        data.setNowPhysicalPowerNum(data.getMaximumStrength());
+                    } else {
+                        //加一点体力
+                        data.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum() + 1);
+                    }
+                    if (data.getResidueTime() < 1) {
+                        data.setResidueTime(0);
+                    }
+                    var residueTime = data.getResidueTime() - (int) differenceToTime;
+                    if (residueTime < 1) {
+                        //相差时间
+                        var mResidueTime = config.getResidueTime() - (int) differenceToTime - data.getResidueTime();
+                        data.setResidueTime(mResidueTime);
+                    } else {
+                        data.setResidueTime(residueTime);
+                    }
+
+                    data.setMaximusResidueEndTime(data.getMaximusResidueEndTime() - (int) differenceToTime);
                     data.setResidueNowTime(TimeUtils.now());
                 }
             }
         }
         userEntity.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum());
         userLoginService.UpdatePlayerUserEntity(userEntity);
-        logger.info("[玩家：{}] 更新 PlayerUser 缓存 ", userEntity.getId());
-        OrmContext.getAccessor().update(userEntity);
-        logger.info("[玩家：{}] 更新 PlayerUser 缓存 数据库", userEntity.getId());
         //更新 缓存 数据库
         userLoginService.UpDataPhysicalPowerEntityCaches(data);
         OrmContext.getAccessor().update(data);
-
+        logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库", data.getId());
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
-        NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf(),gatewayAttachment);
+        NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf());
     }
 
     @PacketReceiver
-    public void atCreatePhysicalPowerAsk(Session session, CreatePhysicalPowerAsk ask, GatewayAttachment gatewayAttachment) {
+    public void atCreatePhysicalPowerAsk(Session session, CreatePhysicalPowerAsk ask) {
         var physicalData = userLoginService.GetToUserIDPhysicalPowerEntity(ask.getUid());
         logger.info("是否有{}", physicalData);
         var userData = userLoginService.LoadPlayerUserEntity(ask.getUid());
         var config = userLoginService.GetConfigResourceData(userData.getPlayerLv());
+        if (physicalData == null) {
+            //数据库中没有 需要创建
+            var createPhysical =
+                    PhysicalPowerEntity.ValueOf(
+                            ask.getUid(),
+                            0,
+                            config.getMaxPhysical(),
+                            0, config.getMaxPhysical(), 0);
+            OrmContext.getAccessor().insert(createPhysical);
 
-        //数据库中没有 需要创建
-        var createPhysical = 
-                PhysicalPowerEntity.ValueOf(
-                        ask.getUid(), 
-                        0,
-                        config.getMaxPhysical(), 
-                        0, config.getMaxPhysical(), 0);
-        OrmContext.getAccessor().insert(createPhysical);
+        }
         logger.info("[UserLoginController] 体力数据创建成功 插入数据库成功");
-        //设置最大体力
+        //设置最大经验
         userData.setNowLvMaxExp(config.getMaxExp());
         //缓存读取
         physicalData = userLoginService.GetToUserIDPhysicalPowerEntity(ask.getUid());
         userData.setNowPhysicalPowerNum(physicalData.getNowPhysicalPowerNum());
         userLoginService.UpdatePlayerUserEntity(userData);
-        logger.info("[玩家{}]更新玩家数据库 ",userData.getId());
-        NetContext.getRouter().send(session, new CreatePhysicalPowerAnswer(),gatewayAttachment);
+        logger.info("[玩家{}]更新玩家数据库 ", userData.getId());
+        NetContext.getRouter().send(session, new CreatePhysicalPowerAnswer());
 
     }
 

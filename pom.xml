@@ -8,8 +8,7 @@
     <groupId>com.gameServer</groupId>
     <version>1.0</version>
 
-    <modules>
-        <module>ampieta-game-single-server</module>
+    <modules> 
         <module>ampieta-game-java-common</module>
         <module>game-boot</module>
         <module>ampieta-game-home</module>

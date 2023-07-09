@@ -4,10 +4,14 @@ import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.resource.AccesGameTimeResource;
 import com.gameServer.commonRefush.resource.ConfigResource;
+import com.gameServer.home.PhysicalPower.controller.PhysicalPowerUsePropsController;
+import com.zfoo.orm.OrmContext;
 import com.zfoo.orm.cache.IEntityCaches;
 import com.zfoo.orm.model.anno.EntityCachesInjection;
 import com.zfoo.storage.model.anno.ResInjection;
 import com.zfoo.storage.model.vo.Storage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -19,6 +23,7 @@ import java.util.Collection;
  */
 @Component
 public class UserLoginService implements IUserLoginService {
+    private static final Logger logger = LoggerFactory.getLogger(UserLoginService.class);
     @ResInjection
     private Storage<Integer, ConfigResource> configResourceStorage;
     @ResInjection
@@ -46,6 +51,8 @@ public class UserLoginService implements IUserLoginService {
     @Override
     public void UpDataPhysicalPowerEntityCaches(PhysicalPowerEntity entity) {
         physicalPowerEntityIEntityCaches.update(entity);
+        logger.info("[玩家：{}] 更新 PhysicalPowerEntity 缓存 ", entity.getId());
+
     }
 
     @Override
@@ -57,6 +64,9 @@ public class UserLoginService implements IUserLoginService {
     @Override
     public void UpdatePlayerUserEntity(PlayerUserEntity entity) {
         UserModelDict.update(entity);
+        logger.info("[玩家：{}] 更新 PlayerUser 缓存 ", entity.getId());
+        OrmContext.getAccessor().update(entity);
+        logger.info("[玩家：{}] 更新 PlayerUser 数据库", entity.getId());
     }
 
     @Override

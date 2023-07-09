@@ -1,5 +1,6 @@
 package com.gameServer.commonRefush.protocol.physicalPower;
 
+import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.protocol.IPacket;
 import com.zfoo.protocol.registration.anno.Protocol;
 
@@ -11,7 +12,7 @@ import com.zfoo.protocol.registration.anno.Protocol;
  * @since 2023/4/14 12 00
  */
 @Protocol(id = 1025)
-public class PhysicalPowerUserPropsRequest implements IPacket {
+public class PhysicalPowerUserPropsRequest implements IPacket, IGatewayLoadBalancer {
 
     /**
      * 使用体力 会被扣除
@@ -32,4 +33,8 @@ public class PhysicalPowerUserPropsRequest implements IPacket {
     }
 
 
+    @Override
+    public Object loadBalancerConsistentHashObject() {
+        return usePropNum;
+    }
 }

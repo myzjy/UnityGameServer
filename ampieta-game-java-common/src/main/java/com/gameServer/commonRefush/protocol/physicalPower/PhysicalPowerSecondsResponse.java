@@ -35,6 +35,7 @@ public class PhysicalPowerSecondsResponse implements IPacket {
      * <p>这里不是时间戳<p/>
      */
     private int maximusResidueEndTime;
+    
 
     public int getNowPhysicalPower() {
         return nowPhysicalPower;
@@ -48,7 +49,8 @@ public class PhysicalPowerSecondsResponse implements IPacket {
      * @param maximusResidueEndTime 我恢复到最大体力的结束时间
      * @return 体力恢复返回
      */
-    public static PhysicalPowerSecondsResponse ValueOf(int nowPhysicalPower, int residueTime, long residueNowTime, int maximumStrength, int maximusResidueEndTime) {
+    public static PhysicalPowerSecondsResponse ValueOf(
+            int nowPhysicalPower, int residueTime, long residueNowTime, int maximumStrength, int maximusResidueEndTime) {
         var data = new PhysicalPowerSecondsResponse();
         data.setNowPhysicalPower(nowPhysicalPower);
         data.setResidueTime(residueTime);

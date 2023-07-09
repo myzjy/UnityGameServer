@@ -1,5 +1,6 @@
 package com.gameServer.commonRefush.protocol.physicalPower;
 
+import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.protocol.IPacket;
 import com.zfoo.protocol.registration.anno.Protocol;
 
@@ -11,7 +12,7 @@ import com.zfoo.protocol.registration.anno.Protocol;
  * @since 2023/6/27 18 55
  */
 @Protocol(id = 1029)
-public class PhysicalPowerSecondsRequest implements IPacket {
+public class PhysicalPowerSecondsRequest implements IPacket , IGatewayLoadBalancer {
     /**
      * 当前时间
      */
@@ -28,5 +29,10 @@ public class PhysicalPowerSecondsRequest implements IPacket {
 
     public void setNowTime(long nowTime) {
         this.nowTime = nowTime;
+    }
+
+    @Override
+    public Object loadBalancerConsistentHashObject() {
+        return nowTime;
     }
 }
