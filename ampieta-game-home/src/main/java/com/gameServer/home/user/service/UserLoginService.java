@@ -45,6 +45,9 @@ public class UserLoginService implements IUserLoginService {
     @Override
     public PhysicalPowerEntity GetToUserIDPhysicalPowerEntity(long UserID) {
         var data = physicalPowerEntityIEntityCaches.load(UserID);
+        if(data==null) {
+//        OrmContext
+        }
         return data;
     }
 

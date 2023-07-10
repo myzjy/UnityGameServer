@@ -51,18 +51,33 @@ public class PhysicalPowerUsePropsController {
         var physicalData = userLoginService.GetToUserIDPhysicalPowerEntity(session.getUid());
         var userData = userLoginService.LoadPlayerUserEntity(session.getUid());
         var configData = userLoginService.GetConfigResourceData(userData.getPlayerLv());
+        if (physicalData.getNowPhysicalPowerNum() >= physicalData.getMaximumStrength()) {
+            logger.info("当前体力：{}", physicalData.getNowPhysicalPowerNum());
+            physicalData.setResidueTime(0);
+            physicalData.setMaximusResidueEndTime(0);
+            physicalData.setMaxResidueEndTime(0);
+            physicalData.setResidueEndTime(0);
+            physicalData.setResidueNowTime(0);
+            userLoginService.UpDataPhysicalPowerEntityCaches(physicalData);
+            OrmContext.getAccessor().update(physicalData);
+            logger.info("[uid:{}]当前体力：{} 满的，清空体力时间数据 完成",physicalData.getId(), physicalData.getNowPhysicalPowerNum());
+        }
         /**
          * physicalReduce= 当前体力-使用的体力值
          */
         var physicalReduce = physicalData.getNowPhysicalPowerNum() - request.getUsePropNum();
         /**
-         * 减少体力是否大于当前体力
+         * 减少体力是否大于 最大体力
          */
         if (physicalReduce >= physicalData.getMaximumStrength()) {
             logger.info("当前扣除体力值：{}，扣除完的体力，依旧满格体力，当前体力：{},扣除完体力值：{}", request.getUsePropNum(), physicalData.getNowPhysicalPowerNum(), physicalReduce);
             physicalData.setNowPhysicalPowerNum(physicalReduce);
             //满格体力
             physicalData.setResidueTime(0);
+            physicalData.setMaximusResidueEndTime(0);
+            physicalData.setMaxResidueEndTime(0);
+            physicalData.setResidueEndTime(0);
+            physicalData.setResidueNowTime(0);
             userLoginService.UpDataPhysicalPowerEntityCaches(physicalData);
             OrmContext.getAccessor().update(physicalData);
             logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库", physicalData.getId());

@@ -85,7 +85,10 @@ public class PhysicalPowerService implements IPhysicalPowerService {
                          * 还剩余多少
                          */
                         var _residueDifferenceInto = differenceResidueSub % config.getResidueTime();
-                        entity.setNowPhysicalPowerNum(entity.getNowPhysicalPowerNum() + 1 + residueDifferenceInto);
+                        var nowPhysicalPowerNum = entity.getNowPhysicalPowerNum() + 1 + residueDifferenceInto;
+                        var ifNowPhysicalPowerNum = Math.min(nowPhysicalPowerNum, entity.getMaximumStrength());
+
+                        entity.setNowPhysicalPowerNum(ifNowPhysicalPowerNum);
                         var residueDifferenceIntoTime = config.getResidueTime() - _residueDifferenceInto;
                         var residue = _residueDifferenceInto * 1_000L;
                         entity.setResidueTime(residueDifferenceIntoTime);
