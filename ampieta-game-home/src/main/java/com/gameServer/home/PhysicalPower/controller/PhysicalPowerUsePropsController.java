@@ -10,11 +10,13 @@ import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPo
 import com.gameServer.commonRefush.protocol.physicalPower.*;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.net.NetContext;
+import com.zfoo.net.handler.codec.json.JsonPacket;
 import com.zfoo.net.packet.common.Error;
 import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.protocol.util.JsonUtils;
 import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +62,7 @@ public class PhysicalPowerUsePropsController {
             physicalData.setResidueNowTime(0);
             userLoginService.UpDataPhysicalPowerEntityCaches(physicalData);
             OrmContext.getAccessor().update(physicalData);
-            logger.info("[uid:{}]当前体力：{} 满的，清空体力时间数据 完成",physicalData.getId(), physicalData.getNowPhysicalPowerNum());
+            logger.info("[uid:{}]当前体力：{} 满的，清空体力时间数据 完成", physicalData.getId(), physicalData.getNowPhysicalPowerNum());
         }
         /**
          * physicalReduce= 当前体力-使用的体力值
@@ -81,13 +83,15 @@ public class PhysicalPowerUsePropsController {
             userLoginService.UpDataPhysicalPowerEntityCaches(physicalData);
             OrmContext.getAccessor().update(physicalData);
             logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库", physicalData.getId());
-            //当前体力当好使用完
-            NetContext.getRouter().send(session, PhysicalPowerUserPropsResponse.ValueOf(
+            var response = PhysicalPowerUserPropsResponse.ValueOf(
                     physicalData.getNowPhysicalPowerNum(),
                     physicalData.getResidueTime(),
                     physicalData.getMaximumStrength(),
                     physicalData.getMaximusResidueEndTime(),
-                    physicalData.getResidueNowTime()), gatewayAttachment);
+                    physicalData.getResidueNowTime());
+            logger.info("[玩家：{}],体力满,数据：{}", physicalData.getId(), JsonUtils.object2StringTurbo(response));
+            //当前体力当好使用完
+            NetContext.getRouter().send(session, response, gatewayAttachment);
         } else {
             logger.info("当前扣除体力值：{}，扣除体力,当前体力：{},扣除完体力值：{}", request.getUsePropNum(), physicalData.getNowPhysicalPowerNum(), physicalReduce);
             //需要将体力相关修改
@@ -124,13 +128,15 @@ public class PhysicalPowerUsePropsController {
                 userLoginService.UpDataPhysicalPowerEntityCaches(physicalData);
                 OrmContext.getAccessor().update(physicalData);
                 logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库", physicalData.getId());
-                //当前体力当好使用完
-                NetContext.getRouter().send(session, PhysicalPowerUserPropsResponse.ValueOf(
+                var response = PhysicalPowerUserPropsResponse.ValueOf(
                         physicalData.getNowPhysicalPowerNum(),
                         physicalData.getResidueTime(),
                         physicalData.getMaximumStrength(),
                         physicalData.getMaximusResidueEndTime(),
-                        physicalData.getResidueNowTime()), gatewayAttachment);
+                        physicalData.getResidueNowTime());
+                //当前体力当好使用完
+                NetContext.getRouter().send(session, response, gatewayAttachment);
+                logger.info("[玩家：{}],数据：{}", physicalData.getId(), JsonUtils.object2StringTurbo(response));
             } else if (physicalReduce < 0) {
                 //体力不够用
                 logger.error("当前扣除体力值：{},扣除完体力值：{},体力不够用", request.getUsePropNum(), physicalReduce);
@@ -199,11 +205,8 @@ public class PhysicalPowerUsePropsController {
         var nowTimeDown = request.getNowTime() - TimeUtils.now();
         logger.info("UID[{}], 时间差距 {} ms", session.getUid(), nowTimeDown);
         boolean isCheating = false;
-        if (nowTimeDown / 1000 < 0) {
+        if (nowTimeDown / 1000 <= -1) {
             //小于，请求过程中 属于正常的
-            isCheating = false;
-        } else if (nowTimeDown / 1000 == 0) {
-            //请求时间当好
             isCheating = false;
         } else if (nowTimeDown / 1000 > 0) {
             //比服务器本地时间还要多，代表有问题
