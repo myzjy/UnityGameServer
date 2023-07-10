@@ -17,12 +17,7 @@ import com.zfoo.protocol.registration.anno.Protocol;
 //@Protocol(id = 1016)
 public class RefreshLoginPhysicalPowerNumAnswer implements IPacket {
     public static final transient short PROTOCOL_ID = 1016;
-
-    //    public static RefreshLoginPhysicalPowerNumAnswer ValueOf(PlayerUserEntity Entity) {
-//        RefreshLoginPhysicalPowerNumAnswer data = new RefreshLoginPhysicalPowerNumAnswer();
-//        data.setPlayerUserEntity(Entity);
-//        return data;
-//    }
+    
     public static RefreshLoginPhysicalPowerNumAnswer ValueOf() {
         RefreshLoginPhysicalPowerNumAnswer data = new RefreshLoginPhysicalPowerNumAnswer();
 //        data.setPlayerUserEntity(Entity);
