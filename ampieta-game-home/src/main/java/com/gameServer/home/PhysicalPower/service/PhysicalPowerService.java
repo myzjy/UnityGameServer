@@ -36,7 +36,16 @@ public class PhysicalPowerService implements IPhysicalPowerService {
             ConfigResource config,
             PlayerUserEntity userEntity) {
         var dateTime = TimeUtils.timeToString(entity.getResidueNowTime());
-
+        int differenceToTimeNum = 0;
+        if (differenceToTime > 0) {
+            differenceToTimeNum = differenceToTime;
+        } else {
+            if (differenceToTime < 0) {
+                differenceToTimeNum = 0;
+            } else {
+                differenceToTimeNum = 1;
+            }
+        }
         /**
          * 恢复时间还有
          */
@@ -44,23 +53,36 @@ public class PhysicalPowerService implements IPhysicalPowerService {
             /**
              * 恢复时间 - 离线时间
              */
-            var differenceResidue = entity.getResidueTime() - differenceToTime;
-            logger.info("[uid:{}] 体力恢复实时时间：{},differenceResidue:{}",
+            logger.info("[uid:{}] 没有减少 体力恢复实时时间：{},differenceResidue:{}, 判断 过后 differenceToTime:{}",
                     userEntity.getId(),
                     dateTime,
-                    differenceResidue);
-            if (differenceResidue >= 0) {
+                    entity.getResidueTime(),
+                    differenceToTime);
+
+
+            var differenceResidue = entity.getResidueTime() - differenceToTimeNum;
+            logger.info("[uid:{}] 体力恢复实时时间：{},differenceResidue:{},differenceToTimeNum:{}",
+                    userEntity.getId(),
+                    dateTime,
+                    differenceResidue,
+                    differenceToTimeNum);
+            if (differenceResidue > 0) {
                 /**
                  * 恢复时间 - 离线时间 判断 恢复时间比 离线长 或者相等
                  */
                 entity.setResidueNowTime(TimeUtils.now());
                 entity.setResidueTime(differenceResidue);
+                logger.info("[uid:{}] 设置过后 体力恢复实时时间：{},entity.getResidueTime():{},differenceToTimeNum:{}",
+                        userEntity.getId(),
+                        dateTime,
+                        entity.getResidueTime(),
+                        differenceToTimeNum);
             } else {
                 /**
                  * 恢复时间 - 离线时间 判断 
                  *  恢复时间 比 离线时间短 需要进行额外判断 
                  */
-                var differenceResidueSub = differenceToTime - entity.getResidueTime();
+                var differenceResidueSub = differenceToTimeNum - entity.getResidueTime();
                 /**
                  * 离线时间 比 一点体力恢复时间还要长
                  * 用一点体力恢复时间 除以 differenceResidueSub 判断 离线可恢复体力数量
@@ -183,6 +205,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
             }
         }
         userEntity.setNowPhysicalPowerNum(entity.getNowPhysicalPowerNum());
+        OrmContext.getAccessor().update(userEntity);
         return entity;
     }
 
@@ -191,6 +214,16 @@ public class PhysicalPowerService implements IPhysicalPowerService {
                                                               int differenceToTime,
                                                               ConfigResource config,
                                                               PlayerUserEntity userEntity) {
+        int differenceToTimeNum = 0;
+        if (differenceToTime > 0) {
+            differenceToTimeNum = differenceToTime;
+        } else {
+            if (differenceToTime < 0) {
+                differenceToTimeNum = 0;
+            } else {
+                differenceToTimeNum = 1;
+            }
+        }
         /**
          * 体力完全恢复 剩余时间
          */
@@ -198,7 +231,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
             /**
              * 恢复到最大体力 恢复时间 还有没有
              */
-            var differenceResidue = entity.getMaximusResidueEndTime() - differenceToTime;
+            var differenceResidue = entity.getMaximusResidueEndTime() - differenceToTimeNum;
             if (differenceResidue > 0) {
                 /**
                  * 最大体力 还没满

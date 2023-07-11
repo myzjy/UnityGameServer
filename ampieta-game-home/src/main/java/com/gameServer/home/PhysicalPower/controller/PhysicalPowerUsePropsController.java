@@ -133,7 +133,7 @@ public class PhysicalPowerUsePropsController {
                         physicalData.getResidueNowTime());
                 //当前体力当好使用完
                 NetContext.getRouter().send(session, response, gatewayAttachment);
-                logger.info("[玩家：{}],数据：{}", physicalData.getId(), JsonUtils.object2StringTurbo(response));
+                logger.info("[玩家：{}],数据：{}", physicalData.getId(), JsonUtils.object2String(response));
             } else if (physicalReduce < 0) {
                 //体力不够用
                 logger.error("当前扣除体力值：{},扣除完体力值：{},体力不够用", request.getUsePropNum(), physicalReduce);
@@ -200,9 +200,9 @@ public class PhysicalPowerUsePropsController {
         logger.info("当前请求 PhysicalPowerSecondsRequest [{}]", request.protocolId());
 
         var nowTimeDown = request.getNowTime() - TimeUtils.now();
-        logger.info("UID[{}], 时间差距 {} ms", session.getUid(), nowTimeDown);
+        logger.info("UID[{}], 时间差距 {} ms ,{} s", session.getUid(), nowTimeDown,nowTimeDown/1000);
         boolean isCheating = false;
-        if (nowTimeDown / 1000 <= -1) {
+        if (nowTimeDown / 1000 <= 0) {
             //小于，请求过程中 属于正常的
             isCheating = false;
         } else if (nowTimeDown / 1000 > 0) {

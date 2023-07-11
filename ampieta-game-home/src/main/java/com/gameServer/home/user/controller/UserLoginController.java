@@ -75,19 +75,17 @@ public class UserLoginController {
                     RefreshLoginPhysicalPowerNumAnswer.ValueOf());
         }
         //相差的时间 精确到毫秒级别
-        var differenceLastTime = TimeUtils.now() - data.getResidueNowTime();
-        //剩余毫秒级别
-        var differenceTime = differenceLastTime % 1000;
+        var differenceLastTime = (int) (TimeUtils.now() / 1000) - (int) (data.getResidueNowTime() / 1000);
         //相差秒数
-        var differenceToTime = (int) (differenceLastTime / 1000);
+        var differenceToTime =differenceLastTime;
         var dateTime = TimeUtils.timeToString(data.getResidueNowTime());
 
         logger.info("[uid:{}] 体力恢复实时时间：{},更当前时间相差秒数为{}", userEntity.getId(), dateTime, differenceToTime);
-        if (differenceToTime > 0) {
+        if (differenceToTime >=0) {
             /**
              * 体力完全恢复 剩余时间
              */
-            data=physicalPowerService.PhysicalPowerGetResidueEndTime(data,differenceToTime,config,userEntity);
+            data = physicalPowerService.PhysicalPowerGetResidueEndTime(data, differenceToTime, config, userEntity);
 
             data = physicalPowerService.PhysicalPowerGetResidueTime(data, differenceToTime, config, userEntity);
         }
