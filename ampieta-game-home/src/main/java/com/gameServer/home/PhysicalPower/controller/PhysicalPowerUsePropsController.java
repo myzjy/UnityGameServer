@@ -100,30 +100,27 @@ public class PhysicalPowerUsePropsController {
                 var residueSum = request.getUsePropNum() * configData.getResidueTime();
                 //转换成毫秒
                 var residueSumLong = residueSum * 1000;
+                var residueOneSumLong = configData.getResidueTime() * 1000;
                 if (physicalData.getResidueTime() < 1) {
                     //设置1点体力 恢复时间
-                    physicalData.setResidueTime(residueSum);
-                } else {
-                    physicalData.setResidueTime(physicalData.getResidueTime() + residueSum);
+                    physicalData.setResidueTime(configData.getResidueTime());
                 }
 
                 if (physicalData.getMaxResidueEndTime() < 1) {
                     physicalData.setMaxResidueEndTime(TimeUtils.now() + residueSumLong);
                 } else {
-                    physicalData.setMaxResidueEndTime(physicalData.getMaxResidueEndTime() + residueSumLong);
+                    physicalData.setMaxResidueEndTime(physicalData.getMaximusResidueEndTime() + residueSumLong);
                 }
 
                 if (physicalData.getResidueEndTime() < 1) {
                     //
-                    physicalData.setResidueEndTime(residueSum);
-                } else {
-                    var residueEndTimeNum = physicalData.getResidueEndTime() + residueSum;
-                    physicalData.setResidueEndTime(residueEndTimeNum);
+                    physicalData.setResidueEndTime(TimeUtils.now() + residueOneSumLong);
                 }
 
                 physicalData.setNowPhysicalPowerNum(physicalReduce);
-                physicalData.setMaximusResidueEndTime(physicalData.getMaximusResidueEndTime() + residueSum);
 
+                physicalData.setMaximusResidueEndTime(physicalData.getMaximusResidueEndTime() + residueSum);
+                physicalData.setResidueNowTime(TimeUtils.now());
                 //更新数据库内容
                 userLoginService.UpDataPhysicalPowerEntityCaches(physicalData);
                 OrmContext.getAccessor().update(physicalData);

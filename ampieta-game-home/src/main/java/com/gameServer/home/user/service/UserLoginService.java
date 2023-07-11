@@ -45,8 +45,12 @@ public class UserLoginService implements IUserLoginService {
     @Override
     public PhysicalPowerEntity GetToUserIDPhysicalPowerEntity(long UserID) {
         var data = physicalPowerEntityIEntityCaches.load(UserID);
-        if(data==null) {
-//        OrmContext
+        if (data == null) {
+            data = OrmContext.getAccessor().load(UserID, PhysicalPowerEntity.class);
+            /**
+             * 放入缓存
+             */
+            physicalPowerEntityIEntityCaches.update(data);
         }
         return data;
     }
@@ -61,6 +65,10 @@ public class UserLoginService implements IUserLoginService {
     @Override
     public PlayerUserEntity LoadPlayerUserEntity(long UserID) {
         var entity = UserModelDict.load(UserID);
+        if (entity==null){
+            entity = OrmContext.getAccessor().load(UserID, PlayerUserEntity.class);
+            UserModelDict.update(entity);
+        }
         return entity;
     }
 

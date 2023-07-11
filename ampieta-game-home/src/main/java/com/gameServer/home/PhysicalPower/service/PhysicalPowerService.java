@@ -87,23 +87,44 @@ public class PhysicalPowerService implements IPhysicalPowerService {
                         var _residueDifferenceInto = differenceResidueSub % config.getResidueTime();
                         var nowPhysicalPowerNum = entity.getNowPhysicalPowerNum() + 1 + residueDifferenceInto;
                         var ifNowPhysicalPowerNum = Math.min(nowPhysicalPowerNum, entity.getMaximumStrength());
+                        /**
+                         * 增加体力 和 最大体力 相减，还有多少 体力恢复
+                         */
+                        var physicalPowerNum = entity.getMaximumStrength() - nowPhysicalPowerNum;
+                        if (physicalPowerNum >= 0) {
 
+                        } else {
+                            physicalPowerNum = 0;
+                        }
                         entity.setNowPhysicalPowerNum(ifNowPhysicalPowerNum);
                         var residueDifferenceIntoTime = config.getResidueTime() - _residueDifferenceInto;
-                        var residue = _residueDifferenceInto * 1_000L;
+                        var residue = physicalPowerNum * config.getResidueTime();
+                        var residueEndTime = config.getResidueTime() * 1_000L;
+                        var residueEndLong = physicalPowerNum * config.getResidueTime() * 1000L;
                         entity.setResidueTime(residueDifferenceIntoTime);
+                        entity.setMaximusResidueEndTime(residue);
+                        entity.setMaxResidueEndTime(TimeUtils.now() + residueEndLong);
                         entity.setResidueNowTime(TimeUtils.now());
-                        entity.setResidueEndTime(TimeUtils.now() + residue);
-
+                        entity.setResidueEndTime(TimeUtils.now() + residueEndTime);
+                        logger.info("[UID:{}],当前一点体力恢复结束时间：{},完全体力恢复完：{}",
+                                entity.getId(),
+                                TimeUtils.timeToString(entity.getResidueEndTime()),
+                                TimeUtils.timeToString(entity.getMaxResidueEndTime()));
+//                        entity.setMaxResidueEndTime(TimeUtils.now()+);
                     } else {
                         var residueDifferenceIntoTime = config.getResidueTime() - differenceResidueSub;
-                        var residue = residueDifferenceIntoTime * 1_000L;
-
+                        var residueEndTime = residueDifferenceIntoTime * 1_000L;
+                        var nowTime = (entity.getMaximumStrength() - (entity.getNowPhysicalPowerNum() + 1)) * config.getResidueTime() - differenceResidueSub;
+                        entity.setMaximusResidueEndTime(nowTime);
+                        entity.setMaxResidueEndTime(nowTime * 1000L);
                         entity.setResidueTime(residueDifferenceIntoTime);
                         entity.setNowPhysicalPowerNum(entity.getNowPhysicalPowerNum() + 1);
                         entity.setResidueNowTime(TimeUtils.now());
-                        entity.setResidueEndTime(TimeUtils.now() + residue);
-
+                        entity.setResidueEndTime(TimeUtils.now() + residueEndTime);
+                        logger.info("[UID:{}],当前一点体力恢复结束时间：{},完全体力恢复完：{}",
+                                entity.getId(),
+                                TimeUtils.timeToString(entity.getResidueEndTime()),
+                                TimeUtils.timeToString(entity.getMaxResidueEndTime()));
                     }
                 }
             }
