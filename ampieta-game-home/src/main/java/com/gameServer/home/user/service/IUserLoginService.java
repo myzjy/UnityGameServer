@@ -18,6 +18,7 @@ import java.util.Collection;
 public interface IUserLoginService {
 
     ConfigResource GetConfigResourceData(int lv);
+    int ConfigResourceLength();
 
 
     /**

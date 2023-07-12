@@ -94,8 +94,7 @@ public class UserLoginController {
         //更新 缓存 数据库
         userLoginService.UpDataPhysicalPowerEntityCaches(data);
         OrmContext.getAccessor().update(data);
-        logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库", data.getId());
-        logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
+        logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}] 更新数据库", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
         NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf());
     }
 
@@ -103,10 +102,13 @@ public class UserLoginController {
     public void atCreatePhysicalPowerAsk(Session session, CreatePhysicalPowerAsk ask) {
         var physicalData = OrmContext.getAccessor().load(ask.getUid(),
                 PhysicalPowerEntity.class);
-        logger.info("是否有{}", physicalData);
         var userData = userLoginService.LoadPlayerUserEntity(ask.getUid());
         var config = userLoginService.GetConfigResourceData(userData.getPlayerLv());
+        /**
+         * 数据库中查询体力
+         */
         if (physicalData == null) {
+            logger.info("[uid:{}] 体力数据库中没有",session.getUid());
             //数据库中没有 需要创建
             var createPhysical =
                     PhysicalPowerEntity.ValueOf(ask.getUid(),

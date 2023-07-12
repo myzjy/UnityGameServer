@@ -43,6 +43,12 @@ public class UserLoginService implements IUserLoginService {
     }
 
     @Override
+    public int ConfigResourceLength() {
+        var length=configResourceStorage.size();
+        return length;
+    }
+
+    @Override
     public PhysicalPowerEntity GetToUserIDPhysicalPowerEntity(long UserID) {
         var data = physicalPowerEntityIEntityCaches.load(UserID);
         if (data == null) {

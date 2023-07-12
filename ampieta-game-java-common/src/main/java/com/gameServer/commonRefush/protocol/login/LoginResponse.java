@@ -54,9 +54,26 @@ public class LoginResponse implements IPacket {
     private long DiamondNum;
 
     /**
+     * 登记
+     */
+    private int lv;
+    /**
+     * 经验
+     */
+    private int exp;
+    /**
+     * 最大等级
+     */
+    private int maxLv;
+    /**
+     * 当前等级的最大经验值
+     */
+    private int maxExp;
+
+    /**
      * 拿到token之后返回出去
      */
-    public static LoginResponse valueOf(String token, String userName, long uid, long goldNum, long premiumDiamondNum, long diamondNum) {
+    public static LoginResponse valueOf(String token, String userName, long uid, long goldNum, long premiumDiamondNum, long diamondNum,int lv,int exp,int maxLv,int maxExp) {
         var paket = new LoginResponse();
         paket.token = token;
         //可能会为，因为没有到玩家取名步骤
@@ -65,6 +82,10 @@ public class LoginResponse implements IPacket {
         paket.setGoldNum(goldNum);
         paket.setPremiumDiamondNum(premiumDiamondNum);
         paket.setDiamondNum(diamondNum);
+        paket.setLv(lv);
+        paket.setExp(exp);
+        paket.setMaxLv(maxLv);
+        paket.setMaxExp(maxExp);
         return paket;
     }
 
@@ -96,5 +117,37 @@ public class LoginResponse implements IPacket {
     @Override
     public short protocolId() {
         return PROTOCOL_ID;
+    }
+
+    public int getMaxExp() {
+        return maxExp;
+    }
+
+    public void setMaxExp(int maxExp) {
+        this.maxExp = maxExp;
+    }
+
+    public int getMaxLv() {
+        return maxLv;
+    }
+
+    public void setMaxLv(int maxLv) {
+        this.maxLv = maxLv;
+    }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
+    }
+
+    public int getLv() {
+        return lv;
+    }
+
+    public void setLv(int lv) {
+        this.lv = lv;
     }
 }

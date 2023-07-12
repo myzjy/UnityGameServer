@@ -91,13 +91,19 @@ public class PlayerUserEntity implements IEntity<Long> {
      * @param registerTime  注册时间
      * @param token         玩家token
      */
-    public static PlayerUserEntity valueOf(
-            long id,
-            String name,
-            long lastLoginTime,
-            long registerTime,
-            String token, long goldNum, long premiumDiamondNum, long diamondNum, long endLoginOutTime,
-            int nowExp, int nowPhysicalPowerNum, int nowLvMaxExp, int playerLv) {
+    public static PlayerUserEntity valueOf(long id,
+                                           String name,
+                                           long lastLoginTime,
+                                           long registerTime,
+                                           String token,
+                                           long goldNum,
+                                           long premiumDiamondNum,
+                                           long diamondNum,
+                                           long endLoginOutTime,
+                                           int nowExp,
+                                           int nowPhysicalPowerNum,
+                                           int nowLvMaxExp,
+                                           int playerLv) {
         var entity = new PlayerUserEntity();
 
         entity.id = id;

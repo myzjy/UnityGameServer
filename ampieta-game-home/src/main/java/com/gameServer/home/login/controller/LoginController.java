@@ -13,6 +13,7 @@ import com.gameServer.commonRefush.protocol.login.LogoutRequest;
 import com.gameServer.commonRefush.resource.AccesGameTimeResource;
 import com.gameServer.commonRefush.resource.ConfigResource;
 import com.gameServer.commonRefush.util.TokenUtils;
+import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.core.gateway.model.AuthUidToGatewayCheck;
@@ -33,6 +34,7 @@ import com.zfoo.storage.model.vo.Storage;
 import com.zfoo.util.math.HashUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +51,8 @@ public class LoginController {
     //log文件
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-
+    @Autowired
+    private IUserLoginService userLoginService;
     /**
      * 用户数据
      */
@@ -120,8 +123,10 @@ public class LoginController {
             logger.error("授权[uid:{}]异常", uid);
             return;
         }
+        
         //通过UID获取
         var user = OrmContext.getAccessor().load(uid, PlayerUserEntity.class);
+        var data= userLoginService.GetConfigResourceData(user.getPlayerLv());
         if (user == null) {
             logger.error("发送过来 [uid:{}] 数据库中不存在", uid);
             //必须保证账号存在
@@ -173,31 +178,51 @@ public class LoginController {
             logger.info("[{}]重新设置Token:[{}]", user.getId(), token);
             user.setToken(token);
         }
+        user.setNowLvMaxExp(data.getMaxExp());
         //覆盖登录时间
-        user = PlayerUserEntity.valueOf(user.getId(), user.getName(), TimeUtils.now(), user.getRegisterTime(),
-                user.getToken(), user.getGoldNum(), user.getPremiumDiamondNum(), user.getDiamondNum(), user.getEndLoginOutTime(),
-                user.getNowExp(), user.getNowPhysicalPowerNum(), user.getNowLvMaxExp(), user.getPlayerLv());
+        user = PlayerUserEntity.valueOf(user.getId(),
+                user.getName(),
+                TimeUtils.now(),
+                user.getRegisterTime(),
+                user.getToken(),
+                user.getGoldNum(),
+                user.getPremiumDiamondNum(),
+                user.getDiamondNum(),
+                user.getEndLoginOutTime(),
+                user.getNowExp(),
+                user.getNowPhysicalPowerNum(),
+                user.getNowLvMaxExp(),
+                user.getPlayerLv());
 
         user.setLastLoginTime(TimeUtils.now());
         logger.info("[{}][{}]创建最新玩家登录数据 更新数据库", user.getId(), sid);
-        OrmContext.getAccessor().update(user);
         user.sid = sid;
         user.session = session;
         logger.info("[玩家{}] 更新 玩家数据缓存 赋值 session sid", uid);
-        UserModelDict.update(user);
         logger.info("[{}][{}]数据库刷新成功", user.getId(), sid);
 
         //获取的玩家 uid小于0
         if (user.getId() <= 0) {
             logger.error("[玩家当前uid:{}][sid：{}],错误值，请检查", user.getId(), session.getSid());
+            UserModelDict.update(user);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
             return;
         }
 
+        UserModelDict.update(user);
+        OrmContext.getAccessor().update(user);
         //返回数据
         NetContext.getRouter().send(session,
-                LoginResponse.valueOf(user.getToken(), user.getName(),
-                        user.id(), user.getGoldNum(), user.getPremiumDiamondNum(), user.getDiamondNum()), gatewayAttachment);
+                LoginResponse.valueOf(user.getToken(),
+                        user.getName(),
+                        user.id(),
+                        user.getGoldNum(),
+                        user.getPremiumDiamondNum(),
+                        user.getDiamondNum(),
+                        user.getPlayerLv(),
+                        user.getNowExp(),
+                        userLoginService.ConfigResourceLength(),
+                        user.getNowLvMaxExp()), gatewayAttachment);
 
     }
 
