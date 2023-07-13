@@ -146,44 +146,42 @@ public class PhysicalPowerUsePropsController {
      * 获取体力接口
      */
     @PacketReceiver
-    public void atPhysicalPowerRequest(Session session, PhysicalPowerRequest request, GatewayAttachment gatewayAttachment) throws NullPointerException {
+    public void atPhysicalPowerRequest(Session session, PhysicalPowerRequest request, GatewayAttachment gatewayAttachment) throws Exception {
         logger.info("[uid:{}] 获取体力 atPhysicalPowerRequest", session.getUid());
         //获取到服务器 数据库存放
-        var data = OrmContext.getAccessor().load(session.getUid(), PhysicalPowerEntity.class);
+        var data = userLoginService.GetToUserIDPhysicalPowerEntity(session.getUid());
         if (data == null) {
-            var user = OrmContext.getAccessor().load(session.getUid(), PlayerUserEntity.class);
+            var user = userLoginService.LoadPlayerUserEntity(session.getUid());
             if (user == null) {
                 logger.error("数据库错误，传递错误uid 错误的[uid:{}] ", session.getUid());
                 NetContext.getRouter().send(session, Error.valueOf("数据库错误，传递错误uid"), gatewayAttachment);
                 return;
             }
             logger.error("[uid:{}] 获取体力 时,数据库相关不存在，开始创建", session.getUid());
+            //体力重新创建出来了，返回出去
+            var createData = userLoginService.GetToUserIDPhysicalPowerEntity(session.getUid());
+            if (createData == null) {
+                //这种情况一般不会有的，如果有那就rpc通信去创建
+                NetContext.getConsumer().syncAsk(CreatePhysicalPowerAsk.ValueOf(user.getPlayerLv(), user.getId()),
+                        CreatePhysicalPowerAnswer.class, null).packet();
+                createData = userLoginService.GetToUserIDPhysicalPowerEntity(session.getUid());
+            }
+            if (createData == null) {
 
-            //这种情况一般不会有的，如果有那就rpc通信去创建
-            NetContext.getConsumer().asyncAsk(CreatePhysicalPowerAsk.ValueOf(user.getPlayerLv(), user.getId()),
-                    CreatePhysicalPowerAnswer.class, null).whenComplete(res -> {
-                //体力重新创建出来了，返回出去
-                var createData = OrmContext.getAccessor().load(session.getUid(), PhysicalPowerEntity.class);
-                if (createData == null) {
-                    createData = userLoginService.GetToUserIDPhysicalPowerEntity(session.getUid());
-                    if (createData != null) {
-                        OrmContext.getAccessor().insert(createData);
-                    }
-                    logger.error("[uid:{}] 获取体力 时,数据库错误，创建数据错误", session.getUid());
-                    NetContext.getRouter().send(session, Error.valueOf("数据库错误，创建数据错误，请联系客服"), gatewayAttachment);
-                    return;
-                }
-                logger.info("[uid:{}] 获取体力 时,数据库相关不存在，创建成功", session.getUid());
+                logger.error("[uid:{}] 获取体力 时,数据库错误，创建数据错误", session.getUid());
+                NetContext.getRouter().send(session, Error.valueOf("数据库错误，创建数据错误，请联系客服"), gatewayAttachment);
+                return;
+            }
+            logger.info("[uid:{}] 获取体力 时,数据库相关不存在，创建成功", session.getUid());
+            //有了数据传递过去
+            NetContext.getRouter().send(session,
+                    PhysicalPowerResponse.ValueOf(
+                            createData.getNowPhysicalPowerNum(),
+                            createData.getResidueTime(),
+                            createData.getMaximumStrength(),
+                            createData.getMaximusResidueEndTime(),
+                            createData.getResidueNowTime()), gatewayAttachment);
 
-                //有了数据传递过去
-                NetContext.getRouter().send(session,
-                        PhysicalPowerResponse.ValueOf(
-                                createData.getNowPhysicalPowerNum(),
-                                createData.getResidueTime(),
-                                createData.getMaximumStrength(),
-                                createData.getMaximusResidueEndTime(),
-                                createData.getResidueNowTime()), gatewayAttachment);
-            });
         } else {
             //这里重新计算
 
@@ -200,7 +198,7 @@ public class PhysicalPowerUsePropsController {
         logger.info("当前请求 PhysicalPowerSecondsRequest [{}]", request.protocolId());
 
         var nowTimeDown = request.getNowTime() - TimeUtils.now();
-        logger.info("UID[{}], 时间差距 {} ms ,{} s", session.getUid(), nowTimeDown,nowTimeDown/1000);
+        logger.info("UID[{}], 时间差距 {} ms ,{} s", session.getUid(), nowTimeDown, nowTimeDown / 1000);
         boolean isCheating = false;
         if (nowTimeDown / 1000 <= 0) {
             //小于，请求过程中 属于正常的

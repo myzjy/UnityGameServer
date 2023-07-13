@@ -1,7 +1,6 @@
 package com.gameServer.commonRefush.entity;
 
 import com.zfoo.net.session.Session;
-import com.zfoo.orm.model.anno.Cache;
 import com.zfoo.orm.model.anno.EntityCache;
 import com.zfoo.orm.model.anno.Id;
 import com.zfoo.orm.model.anno.Persister;
@@ -53,7 +52,6 @@ public class PlayerUserEntity implements IEntity<Long> {
     private long PremiumDiamondNum;
     /**
      * 普通钻石 又两部分组成
-     *
      * <code>
      * <p>第一部分 由付费钻石转换成普通钻石，比例为 1:1 </p>
      * <p>第二部分 通过任务 开箱 地图 奖励 日常运维奖励 </p>

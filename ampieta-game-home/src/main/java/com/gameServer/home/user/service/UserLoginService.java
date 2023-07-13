@@ -44,13 +44,17 @@ public class UserLoginService implements IUserLoginService {
 
     @Override
     public int ConfigResourceLength() {
-        var length=configResourceStorage.size();
+        var length = configResourceStorage.size();
         return length;
     }
 
     @Override
     public PhysicalPowerEntity GetToUserIDPhysicalPowerEntity(long UserID) {
         var data = physicalPowerEntityIEntityCaches.load(UserID);
+        /**
+         * 之前的缓存 中没有对应玩家数据
+         * 在数据库中拿到，存放到缓存中
+         */
         if (data == null) {
             data = OrmContext.getAccessor().load(UserID, PhysicalPowerEntity.class);
             /**
@@ -71,7 +75,7 @@ public class UserLoginService implements IUserLoginService {
     @Override
     public PlayerUserEntity LoadPlayerUserEntity(long UserID) {
         var entity = UserModelDict.load(UserID);
-        if (entity==null){
+        if (entity == null) {
             entity = OrmContext.getAccessor().load(UserID, PlayerUserEntity.class);
             UserModelDict.update(entity);
         }
