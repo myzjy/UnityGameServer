@@ -15,10 +15,11 @@
         <module name="game-boot" />
         <module name="home" />
         <module name="scheduler" />
+        <module name="ampieta-game-cloud-gateway" />
         <module name="protocol" />
         <module name="UnityGameSDK" />
-        <module name="util" />
         <module name="common" />
+        <module name="util" />
         <module name="GameServer" />
         <module name="boot" />
         <module name="event" />

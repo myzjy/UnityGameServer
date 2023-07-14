@@ -4,3 +4,6 @@
 [submodule "ampieta-game-gateway"]
 	path = ampieta-game-gateway
 	url = git@github.com:myzjy/ampieta-game-gateway.git
+[submodule "zfoo"]
+	path = zfoo
+	url = git@github.com:myzjy/zfoo.git

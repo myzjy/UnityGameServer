@@ -18,9 +18,5 @@ public class GetPlayerInfoResponse implements IPacket, IGatewayLoadBalancer {
 //        AesUtils
         return null;
     }
-
-    @Override
-    public boolean verificationUid() {
-        return IPacket.super.verificationUid();
-    }
+    
 }

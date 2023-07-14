@@ -2,7 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/laravel" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../zfoo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ampieta-game-gateway" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ampieta-game-web-sever" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/zfoo" vcs="Git" />
   </component>
 </project>

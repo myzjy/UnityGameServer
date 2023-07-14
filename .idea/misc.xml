@@ -6,10 +6,9 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/GameServer/pom.xml" />
-        <option value="$PROJECT_DIR$/zfoo/pom.xml" />
         <option value="$PROJECT_DIR$/commonRefush/pom.xml" />
-        <option value="$PROJECT_DIR$/../zfoo/pom.xml" />
         <option value="$PROJECT_DIR$/ampieta-game-java-cache/pom.xml" />
+        <option value="$PROJECT_DIR$/zfoo/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
