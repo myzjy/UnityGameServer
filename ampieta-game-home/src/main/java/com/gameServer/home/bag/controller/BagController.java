@@ -66,8 +66,6 @@ public class BagController {
             //推送发送
             NetContext.getRouter().send(event.getSession(), AllBagItemResponse.ValueOf(bagUserItemEntities));
         });
-
-
     }
 
 

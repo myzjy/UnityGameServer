@@ -164,8 +164,15 @@ public class PhysicalPowerUsePropsController {
                 //这种情况一般不会有的，如果有那就rpc通信去创建
                 NetContext.getConsumer().syncAsk(CreatePhysicalPowerAsk.ValueOf(user.getPlayerLv(), user.getId()),
                         CreatePhysicalPowerAnswer.class, null).packet();
+                /**
+                 * 上创建成功了 重新获取
+                 */
                 createData = userLoginService.GetToUserIDPhysicalPowerEntity(session.getUid());
             }
+            /**
+             * 上面rpc 通信 创建 体力失败了 没有创建成功
+             * 没有获取到对应
+             */
             if (createData == null) {
 
                 logger.error("[uid:{}] 获取体力 时,数据库错误，创建数据错误", session.getUid());
@@ -183,13 +190,14 @@ public class PhysicalPowerUsePropsController {
                             createData.getResidueNowTime()), gatewayAttachment);
 
         } else {
-            //这里重新计算
-
-
+            NetContext.getConsumer().syncAsk(RefreshLoginPhysicalPowerNumAsk.ValueOf(session.getUid()), RefreshLoginPhysicalPowerNumAnswer.class, request.getUid())
+                    .packet();
+            data = userLoginService.GetToUserIDPhysicalPowerEntity(session.getUid());
             logger.info("[uid:{}] 获取体力 完成", session.getUid());
             //有了数据传递过去
             NetContext.getRouter().send(session, PhysicalPowerResponse.ValueOf(data.getNowPhysicalPowerNum(), data.getResidueTime(),
                     data.getMaximumStrength(), data.getMaximusResidueEndTime(), data.getResidueNowTime()), gatewayAttachment);
+
         }
     }
 
