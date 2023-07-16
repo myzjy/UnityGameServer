@@ -218,9 +218,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
         if (differenceToTime > 0) {
             differenceToTimeNum = differenceToTime;
         } else {
-            if (differenceToTime < 0) {
-                differenceToTimeNum = 0;
-            } else {
+            if (differenceToTime >= 0) {
                 differenceToTimeNum = 1;
             }
         }
