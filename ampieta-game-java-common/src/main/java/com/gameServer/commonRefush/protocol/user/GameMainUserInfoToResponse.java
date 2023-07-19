@@ -1,5 +1,8 @@
 package com.gameServer.commonRefush.protocol.user;
 
+import com.zfoo.protocol.IPacket;
+import com.zfoo.protocol.registration.anno.Protocol;
+
 /**
  * 登录的时候会请求一边 相关数据，也有一定区别
  * 进入主界面之后 会请求刷新相关
@@ -9,7 +12,8 @@ package com.gameServer.commonRefush.protocol.user;
  * @version 1.0
  * @since 2023/7/14 16 21
  */
-public class GameMainUserInfoToResponse {
+@Protocol(id = 1032)
+public class GameMainUserInfoToResponse implements IPacket {
 
     /**
      * 当前经验
@@ -30,15 +34,15 @@ public class GameMainUserInfoToResponse {
     /**
      * 金币
      */
-    private int goldCoinNum;
+    private long goldCoinNum;
     /**
      * 钻石
      */
-    private int diamondsNum;
+    private long diamondsNum;
     /**
      * 付费钻石
      */
-    private int paidDiamondsNum;
+    private long paidDiamondsNum;
 
     public int getNowExp() {
         return nowExp;
@@ -72,27 +76,27 @@ public class GameMainUserInfoToResponse {
         this.maxLv = maxLv;
     }
 
-    public int getGoldCoinNum() {
+    public long getGoldCoinNum() {
         return goldCoinNum;
     }
 
-    public void setGoldCoinNum(int goldCoinNum) {
+    public void setGoldCoinNum(long goldCoinNum) {
         this.goldCoinNum = goldCoinNum;
     }
 
-    public int getDiamondsNum() {
+    public long getDiamondsNum() {
         return diamondsNum;
     }
 
-    public void setDiamondsNum(int diamondsNum) {
+    public void setDiamondsNum(long diamondsNum) {
         this.diamondsNum = diamondsNum;
     }
 
-    public int getPaidDiamondsNum() {
+    public long getPaidDiamondsNum() {
         return paidDiamondsNum;
     }
 
-    public void setPaidDiamondsNum(int paidDiamondsNum) {
+    public void setPaidDiamondsNum(long paidDiamondsNum) {
         this.paidDiamondsNum = paidDiamondsNum;
     }
 
@@ -107,7 +111,7 @@ public class GameMainUserInfoToResponse {
      * @param paidDiamondsNum 付费钻石 
      * @return 返回 GameMainUserInfoToResponse
      */
-    public static GameMainUserInfoToResponse ValueOf(int nowLv, int maxLv, int nowExp, int maxExp, int goldCoinNum, int diamondsNum, int paidDiamondsNum) {
+    public static GameMainUserInfoToResponse ValueOf(int nowLv, int maxLv, int nowExp, int maxExp, long goldCoinNum, long diamondsNum, long paidDiamondsNum) {
         GameMainUserInfoToResponse data = new GameMainUserInfoToResponse();
         data.setNowLv(nowLv);
         data.setMaxLv(maxLv);

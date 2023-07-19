@@ -8,11 +8,14 @@ import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnsw
 import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk;
+import com.gameServer.commonRefush.protocol.user.GameMainUserInfoToRequest;
+import com.gameServer.commonRefush.protocol.user.GameMainUserInfoToResponse;
 import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.event.model.anno.EventReceiver;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
+import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
@@ -77,11 +80,11 @@ public class UserLoginController {
         //相差的时间 精确到毫秒级别
         var differenceLastTime = (int) (TimeUtils.now() / 1000) - (int) (data.getResidueNowTime() / 1000);
         //相差秒数
-        var differenceToTime =differenceLastTime;
+        var differenceToTime = differenceLastTime;
         var dateTime = TimeUtils.timeToString(data.getResidueNowTime());
 
         logger.info("[uid:{}] 体力恢复实时时间：{},更当前时间相差秒数为{}", userEntity.getId(), dateTime, differenceToTime);
-        if (differenceToTime >=0) {
+        if (differenceToTime >= 0) {
             /**
              * 体力完全恢复 剩余时间
              */
@@ -108,7 +111,7 @@ public class UserLoginController {
          * 数据库中查询体力
          */
         if (physicalData == null) {
-            logger.info("[uid:{}] 体力数据库中没有",session.getUid());
+            logger.info("[uid:{}] 体力数据库中没有", session.getUid());
             //数据库中没有 需要创建
             var createPhysical =
                     PhysicalPowerEntity.ValueOf(ask.getUid(),
@@ -160,5 +163,36 @@ public class UserLoginController {
                 OrmContext.getAccessor().update(entity);
             }
         }
+    }
+
+    @PacketReceiver
+    public void atGameMainUserInfoToRequest(Session session, GameMainUserInfoToRequest request, GatewayAttachment gatewayAttachment) {
+        //发消息的
+        var uid = session.getUid();
+        var userData = userLoginService.LoadPlayerUserEntity(uid);
+        if (userData == null) {
+            NetContext.getRouter().send(session, Error.valueOf("出现错误，用户信息(id)"), gatewayAttachment);
+            return;
+        }
+        if (request.getUid() > 0) {
+            logger.info("请求玩家：{}", request.getUid());
+        }
+        // var physical = userLoginService.GetToUserIDPhysicalPowerEntity(uid);
+        //等级
+        var nowLv = userData.getPlayerLv();
+        //最大等级
+        var maxNowLv = userLoginService.ConfigResourceLength();
+        //当前经验
+        var exp = userData.getNowExp();
+        //当前等就最大经验
+        var nowLvMaxExp = userData.getNowLvMaxExp();
+        //金币
+        var goldCoinNum = userData.getGoldNum();
+        //普通钻石
+        var diamondsNum = userData.getDiamondNum();
+        //付费钻石
+        var paidDiamondsNum = userData.getPremiumDiamondNum();
+        NetContext.getRouter().send(session, GameMainUserInfoToResponse.ValueOf(nowLv, maxNowLv, exp, nowLvMaxExp, goldCoinNum, diamondsNum, paidDiamondsNum), gatewayAttachment);
+
     }
 }

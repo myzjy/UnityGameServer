@@ -45,17 +45,16 @@
         <protocol id="1022" location="com.gameServer.commonRefush.protocol.cache.LogAnswer" enhance="false"/>
         <protocol id="1023" location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerRequest"/>
         <protocol id="1024" location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerResponse"/>
-        <protocol id="1025" location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUserPropsRequest"/>
+        <protocol id="1025"
+                  location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUserPropsRequest"/>
         <protocol id="1026"
                   location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUserPropsResponse"/>
-        <protocol id="1027"
-                  location="com.gameServer.commonRefush.protocol.riqueza.RefreshingResourcesMainRequest"/>
-        <protocol id="1028"
-                  location="com.gameServer.commonRefush.protocol.riqueza.RefreshingResourcesMainResponse"/>
-        <protocol id="1029"
-                  location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerSecondsRequest"/>
-        <protocol id="1030"
-                  location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerSecondsResponse"/>
+        <protocol id="1027" location="com.gameServer.commonRefush.protocol.riqueza.RefreshingResourcesMainRequest"/>
+        <protocol id="1028" location="com.gameServer.commonRefush.protocol.riqueza.RefreshingResourcesMainResponse"/>
+        <protocol id="1029" location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerSecondsRequest"/>
+        <protocol id="1030" location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerSecondsResponse"/>
+        <protocol id="1031" location="com.gameServer.commonRefush.protocol.user.GameMainUserInfoToRequest"/>
+        <protocol id="1032" location="com.gameServer.commonRefush.protocol.user.GameMainUserInfoToResponse"/>
     </module>
     <module id="3" name="common" minId="100" maxId="500">
         <protocol id="100" location="com.zfoo.net.packet.common.Message"/>
