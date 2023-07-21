@@ -192,7 +192,11 @@ public class UserLoginController {
         var diamondsNum = userData.getDiamondNum();
         //付费钻石
         var paidDiamondsNum = userData.getPremiumDiamondNum();
-        NetContext.getRouter().send(session, GameMainUserInfoToResponse.ValueOf(nowLv, maxNowLv, exp, nowLvMaxExp, goldCoinNum, diamondsNum, paidDiamondsNum), gatewayAttachment);
+        /**
+         * 返回 GameMainUserInfo Response
+         */
+        NetContext.getRouter().send(session, GameMainUserInfoToResponse.ValueOf(nowLv,
+                maxNowLv, exp, nowLvMaxExp, goldCoinNum, diamondsNum, paidDiamondsNum), gatewayAttachment);
 
     }
 }
