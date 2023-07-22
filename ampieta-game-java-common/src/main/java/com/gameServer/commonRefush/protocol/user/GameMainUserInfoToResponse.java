@@ -111,7 +111,7 @@ public class GameMainUserInfoToResponse implements IPacket {
      * @param paidDiamondsNum 付费钻石 
      * @return 返回 GameMainUserInfoToResponse
      */
-    public static GameMainUserInfoToResponse ValuhjdeOf(int nowLv, int maxLv, int nowExp, int maxExp, long goldCoinNum, long diamondsNum, long paidDiamondsNum) {
+    public static GameMainUserInfoToResponse ValueOf(int nowLv, int maxLv, int nowExp, int maxExp, long goldCoinNum, long diamondsNum, long paidDiamondsNum) {
         GameMainUserInfoToResponse data = new GameMainUserInfoToResponse();
         data.setNowLv(nowLv);
         data.setMaxLv(maxLv);
