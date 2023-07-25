@@ -20,7 +20,13 @@ public class ItemBaseData implements IPacket {
      * 道具名字
      */
     private String name;
+    /**
+     * 道具Icon
+     */
     private String icon;
+    /**
+     * 最小数量
+     */
     private int minNum;
     private int maxNum;
     private int type;
