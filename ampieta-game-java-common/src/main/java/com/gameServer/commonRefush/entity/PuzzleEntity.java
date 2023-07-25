@@ -144,6 +144,12 @@ public class PuzzleEntity implements IEntity<Integer> {
     public Integer id() {
         return id;
     }
+
+    /**
+     * 创建 地图基础 类
+     * 设置其中内容 外部设置
+     * @return
+     */
     public static PuzzleEntity ValueOf(){
         var packet=new PuzzleEntity();
         return packet;
