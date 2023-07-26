@@ -1,7 +1,10 @@
 import com.gameServer.common.test.bagTest.BagTest;
 import com.gameServer.commonRefush.constant.TankDeployEnum;
+import com.gameServer.commonRefush.entity.PuzzleEntity;
 import com.gameServer.commonRefush.resource.ConfigResource;
 import com.gameServer.commonRefush.resource.PuzzleResource;
+import com.zfoo.orm.OrmContext;
+import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.storage.model.anno.ResInjection;
 import com.zfoo.storage.model.vo.Storage;
 import org.junit.Ignore;
@@ -24,6 +27,6 @@ public class ApplicationTest {
      */
     @Test
     public void ApplyDataMain() {
-        
+   
     }
 }

@@ -1,2 +1,4 @@
 id,puzzleName,lastPuzzleID,nextPuzzleID,puzzleRewards,androidVersion,iosVersion,pcEditorVersion
+int,string,int,int,string,string,string,string
+des,des,des,des,des,des,des,des
 110001,test关卡,0,0,1|2|3,1.0.0,1.0.0,1.0.0

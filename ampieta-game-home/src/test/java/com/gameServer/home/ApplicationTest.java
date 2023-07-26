@@ -24,8 +24,7 @@ public class ApplicationTest {
         TankDeployEnum.InitDefaultEnv();
     }
 
-    @ResInjection
-    private Storage<Integer, PuzzleResource> puzzleResourceStorage;
+
 
     @Test
     public void startApplication1() {
@@ -39,24 +38,10 @@ public class ApplicationTest {
         var context = new ClassPathXmlApplicationContext("application.xml");
         context.registerShutdownHook();
         context.publishEvent(new AppStartEvent(context));
-        var dict = puzzleResourceStorage.getAll();
-        for (var data :
-                dict) {
-            var dataEntity = OrmContext.getAccessor().load(data.getId(), PuzzleEntity.class);
-            if (dataEntity == null) {
-                var entity = PuzzleEntity.ValueOf();
-                entity.setId(data.getId());
-                entity.setPuzzleName(data.getPuzzleName());
-                entity.setPuzzleRewards(data.getPuzzleRewards());
-                entity.setLastPuzzleID(data.getLastPuzzleID());
-                entity.setNextPuzzleID(data.getNextPuzzleID());
-                entity.setAndroidVersion(dataEntity.getAndroidVersion());
-                entity.setIosVersion(entity.getIosVersion());
-                entity.setCreateAt(TimeUtils.simpleDateString());
-                entity.setUpdatedAt(TimeUtils.simpleDateString());
-                OrmContext.getAccessor().insert(entity);
-            }
-        }
+        var studentManager = context.getBean(PuzzleManager.class);
+        
+      studentManager.UpDataPuzzleOrm();
+    
 
     }
 }
