@@ -17,7 +17,8 @@ import org.springframework.stereotype.Component;
 public class PuzzleManager {
     @ResInjection
     public Storage<Integer, PuzzleResource> puzzleResourceStorage;
-    public void UpDataPuzzleOrm(){
+
+    public void UpDataPuzzleOrm() {
         var dict = puzzleResourceStorage.getAll();
         for (var data :
                 dict) {
@@ -29,10 +30,26 @@ public class PuzzleManager {
                 entity.setPuzzleRewards(data.getPuzzleRewards());
                 entity.setLastPuzzleID(data.getLastPuzzleID());
                 entity.setNextPuzzleID(data.getNextPuzzleID());
+                entity.setAndroidVersion(data.getAndroidVersion());
+                entity.setIosVersion(data.getIosVersion());
+                entity.setPcEditorVersion(data.getPcEditorVersion());
+                var update = TimeUtils.timeToString(TimeUtils.now());
+
+                entity.setCreateAt(update);
+                entity.setUpdatedAt(update);
+                OrmContext.getAccessor().insert(entity);
+            } else {
+                var entity = PuzzleEntity.ValueOf();
+                entity.setId(data.getId());
+                entity.setPuzzleName(data.getPuzzleName());
+                entity.setPuzzleRewards(data.getPuzzleRewards());
+                entity.setLastPuzzleID(data.getLastPuzzleID());
+                entity.setNextPuzzleID(data.getNextPuzzleID());
                 entity.setAndroidVersion(dataEntity.getAndroidVersion());
-                entity.setIosVersion(entity.getIosVersion());
-                entity.setCreateAt(TimeUtils.simpleDateString());
-                entity.setUpdatedAt(TimeUtils.simpleDateString());
+                entity.setIosVersion(dataEntity.getIosVersion());
+                entity.setPcEditorVersion(dataEntity.getPcEditorVersion());
+                var update = TimeUtils.timeToString(TimeUtils.now());
+                entity.setUpdatedAt(update);
                 OrmContext.getAccessor().insert(entity);
             }
         }
