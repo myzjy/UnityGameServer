@@ -30,7 +30,7 @@ public class OrmAddManager {
             var entity = OrmContext.getAccessor().load(data.getId(), ItemBoxBaseEntity.class);
             var update = TimeUtils.timeToString(TimeUtils.now());
 
-            if (entity != null && entity.empty()) {
+            if (entity != null ) {
                 var newEntity = getItemBoxBasEntity(data, update);
                 OrmContext.getAccessor().update(newEntity);
             } else {
@@ -45,7 +45,7 @@ public class OrmAddManager {
         var newEntity = ItemBoxBaseEntity.ValueOf();
         newEntity.setIcon(data.getIcon());
         newEntity.setItemId(data.getId());
-        newEntity.setResources(data.getIcon());
+        newEntity.setResources(data.getResourcePath());
         newEntity.setDes(data.getDes());
         newEntity.setName(data.getName());
         newEntity.setMaxNum(data.getMaxNum());
