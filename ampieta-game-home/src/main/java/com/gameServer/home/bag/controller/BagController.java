@@ -1,6 +1,8 @@
 package com.gameServer.home.bag.controller;
 
 import com.gameServer.commonRefush.entity.BagUserItemEntity;
+import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
+import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.event.bag.StartLoginBagEvent;
 import com.gameServer.commonRefush.protocol.bag.AllBagItemRequest;
 import com.gameServer.commonRefush.protocol.bag.AllBagItemResponse;
@@ -12,6 +14,8 @@ import com.zfoo.net.NetContext;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.orm.cache.IEntityCaches;
+import com.zfoo.orm.model.anno.EntityCachesInjection;
 import com.zfoo.storage.model.anno.ResInjection;
 import com.zfoo.storage.model.vo.Storage;
 import org.slf4j.Logger;
@@ -34,8 +38,8 @@ public class BagController {
     /**
      * 背包基础
      */
-    @ResInjection
-    public Storage<Integer, ItemBaseCsvResource> itemCsvResources;
+    @EntityCachesInjection
+    private IEntityCaches<Integer, ItemBoxBaseEntity> itemBoxBaseEntityIEntityCaches;
 
     @PacketReceiver
     public void atAllBagItemRequest(Session session, AllBagItemRequest request) {
@@ -58,7 +62,7 @@ public class BagController {
                 logger.info(res.toString());
                 BagUserItemData data = BagUserItemData.ValueOf(res);
                 //查找 对应的 道具
-                var item = itemCsvResources.get(data.getItemId());
+                var item = itemBoxBaseEntityIEntityCaches.load(data.getItemId());
                 data.setQuality(item.getQuality());
                 bagUserItemEntities.add(data);
             });
@@ -67,6 +71,7 @@ public class BagController {
             NetContext.getRouter().send(event.getSession(), AllBagItemResponse.ValueOf(bagUserItemEntities));
         });
     }
+//    public voi
 
 
 }
