@@ -41,15 +41,6 @@
 
                 fold-protocol="${net.fold.protocol}"
     >
-        <net:registry center="${registry.center}" user="${registry.user}" password="${registry.password}">
-            <net:address name="${registry.address.name}" url="${registry.address.url}"/>
-        </net:registry>
-        <net:providers>
-            <net:provider protocol-module="unityGameSdk" provider="unityGameSdkProvider"/>
-        </net:providers>
-        <net:consumers>
-            <net:consumer protocol-module="unityGameSdk" load-balancer="consistent-hash" consumer="unityGameSdkProvider"/>
-        </net:consumers>
     </net:config>
     <orm:config id="mongodbConfig" entity-package="com.gameServer.commonRefush.**.entity">
 

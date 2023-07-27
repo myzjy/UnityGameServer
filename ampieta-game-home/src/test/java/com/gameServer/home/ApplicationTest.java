@@ -31,16 +31,4 @@ public class ApplicationTest {
 
         ThreadUtils.sleep(Long.MAX_VALUE);
     }
-
-    @Test
-    public void TestEx() {
-        var context = new ClassPathXmlApplicationContext("application.xml");
-        context.registerShutdownHook();
-        context.publishEvent(new AppStartEvent(context));
-        var studentManager = context.getBean(PuzzleManager.class);
-        studentManager.UpDataPuzzleOrm();
-        var ormAddManager = context.getBean(OrmAddManager.class);
-        ormAddManager.UpdateItemBaseCsvResource();
-
-    }
 }
