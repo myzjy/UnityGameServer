@@ -50,7 +50,7 @@ public class PuzzleManager {
                 entity.setPcEditorVersion(dataEntity.getPcEditorVersion());
                 var update = TimeUtils.timeToString(TimeUtils.now());
                 entity.setUpdatedAt(update);
-                OrmContext.getAccessor().insert(entity);
+                OrmContext.getAccessor().update(entity);
             }
         }
     }

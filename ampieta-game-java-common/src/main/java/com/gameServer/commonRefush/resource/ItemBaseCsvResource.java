@@ -8,7 +8,7 @@ import com.zfoo.storage.model.anno.Resource;
 /**
  * 道具表相关
  */
-@Resource(alias="ItemBaseCsvResource")
+@Resource(alias = "ItemBaseCsvResource")
 public class ItemBaseCsvResource {
 
 
@@ -33,12 +33,16 @@ public class ItemBaseCsvResource {
      * <blockquote><pre>
      *     101;102;
      * </pre></blockquote><p>
-     *     以分号切割
+     * 以分号切割
      * <p/>
      */
     private String des;
 
     private int quality;
+    /**
+     *
+     */
+    private String resourcePath;
 
     public int getQuality() {
         return quality;
@@ -73,6 +77,10 @@ public class ItemBaseCsvResource {
 
     public String getDes() {
         return des;
+    }
+
+    public String getResourcePath() {
+        return resourcePath;
     }
 
 }

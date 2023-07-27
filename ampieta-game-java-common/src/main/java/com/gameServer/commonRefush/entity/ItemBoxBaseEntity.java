@@ -1,5 +1,8 @@
 package com.gameServer.commonRefush.entity;
 
+import com.zfoo.orm.model.anno.EntityCache;
+import com.zfoo.orm.model.anno.Id;
+import com.zfoo.orm.model.anno.Index;
 import com.zfoo.orm.model.entity.IEntity;
 
 /**
@@ -9,7 +12,12 @@ import com.zfoo.orm.model.entity.IEntity;
  * @version 1.0
  * @since 2022/11/16 23:48
  */
-public class ItemBoxBasEntity implements IEntity<Integer> {
+@EntityCache
+public class ItemBoxBaseEntity implements IEntity<Integer> {
+   
+
+    @Id
+    private int id;
     /**
      * 道具id
      */
@@ -18,14 +26,46 @@ public class ItemBoxBasEntity implements IEntity<Integer> {
      * 资源名字
      */
     private String resources;
+    private String icon;
     /**
-     * 介绍
+     * 道具名字
      */
-    private String deatiertring;
+    private String name;
+    private int minNum;
+    private int maxNum;
+    private int type;
+    /**
+     * 介绍 id 集合
+     * <p>
+     * 例如:
+     * <blockquote><pre>
+     *     101;102;
+     * </pre></blockquote><p>
+     * 以分号切割
+     * <p/>
+     */
+    private String des;
+
+    private int quality;
+    /**
+     * 创建时间
+     */
+    private String createAt;
+    /**
+     * 更新时间
+     */
+    private String updateAt;
 
     @Override
     public Integer id() {
-        return itemId;
+        return id;
+    }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 
@@ -34,6 +74,7 @@ public class ItemBoxBasEntity implements IEntity<Integer> {
     }
 
     public void setItemId(int itemId) {
+        this.id=itemId;
         this.itemId = itemId;
     }
 
@@ -44,13 +85,11 @@ public class ItemBoxBasEntity implements IEntity<Integer> {
     public void setResources(String resources) {
         this.resources = resources;
     }
-
-    public String getDeatiertring() {
-        return deatiertring;
+    public String getIcon(){
+        return icon;
     }
-
-    public void setDeatiertring(String deatiertring) {
-        this.deatiertring = deatiertring;
+    public void setIcon(String icon){
+        this.icon=icon;
     }
 
     public String getName() {
@@ -100,27 +139,7 @@ public class ItemBoxBasEntity implements IEntity<Integer> {
     public void setQuality(int quality) {
         this.quality = quality;
     }
-
-    /**
-     * 道具名字
-     */
-    private String name;
-    private int minNum;
-    private int maxNum;
-    private int type;
-    /**
-     * 介绍 id 集合
-     * <p>
-     * 例如:
-     * <blockquote><pre>
-     *     101;102;
-     * </pre></blockquote><p>
-     * 以分号切割
-     * <p/>
-     */
-    private String des;
-
-    private int quality;
+    
 
     public String getCreateAt() {
         return createAt;
@@ -137,19 +156,9 @@ public class ItemBoxBasEntity implements IEntity<Integer> {
     public void setUpdateAt(String updateAt) {
         this.updateAt = updateAt;
     }
-
-    /**
-     * 创建时间
-     */
-    private String createAt;
-    /**
-     * 更新时间
-     */
-    private String updateAt;
-
-    public static ItemBoxBasEntity ValueOf() {
-        var entity = new ItemBoxBasEntity();
     
+    public static ItemBoxBaseEntity ValueOf() {
+        return new ItemBoxBaseEntity();
     }
 
 }

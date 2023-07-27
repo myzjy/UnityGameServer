@@ -1,9 +1,10 @@
 package com.gameServer.home;
 
-import com.gameServer.commonRefush.entity.ItemBoxBasEntity;
+import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
 import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
 import com.gameServer.commonRefush.resource.PuzzleResource;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.storage.model.anno.ResInjection;
 import com.zfoo.storage.model.vo.Storage;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrmAddManager {
     @ResInjection
-    public Storage<Integer, ItemBaseCsvResource> itemBaseCsvResourceStorage;
+    private Storage<Integer, ItemBaseCsvResource> itemBaseCsvResourceStorage;
 
     /**
      * 更新 数据库中资料
@@ -26,14 +27,48 @@ public class OrmAddManager {
         for (var data :
                 dict) {
             //设置
-            var entity = OrmContext.getAccessor().load(data.getId(), ItemBoxBasEntity.class);
-            if (entity != null && entity.empty()) {
+            var entity = OrmContext.getAccessor().load(data.getId(), ItemBoxBaseEntity.class);
+            var update = TimeUtils.timeToString(TimeUtils.now());
 
+            if (entity != null && entity.empty()) {
+                var newEntity = getItemBoxBasEntity(data, update);
+                OrmContext.getAccessor().update(newEntity);
             } else {
-                var newEntity = new ItemBoxBasEntity();
-                newEntity.setItemId(data.getId());
+                var newEntity = getBoxBasEntity(data, update);
+                OrmContext.getAccessor().insert(newEntity);
             }
         }
 
+    }
+
+    private ItemBoxBaseEntity getBoxBasEntity(ItemBaseCsvResource data, String update) {
+        var newEntity = ItemBoxBaseEntity.ValueOf();
+        newEntity.setIcon(data.getIcon());
+        newEntity.setItemId(data.getId());
+        newEntity.setResources(data.getIcon());
+        newEntity.setDes(data.getDes());
+        newEntity.setName(data.getName());
+        newEntity.setMaxNum(data.getMaxNum());
+        newEntity.setMinNum(data.getMinNum());
+        newEntity.setQuality(data.getQuality());
+        newEntity.setType(data.getType());
+        newEntity.setCreateAt(update);
+        newEntity.setUpdateAt(update);
+        return newEntity;
+    }
+
+    private ItemBoxBaseEntity getItemBoxBasEntity(ItemBaseCsvResource data, String update) {
+        var newEntity = ItemBoxBaseEntity.ValueOf();
+        newEntity.setItemId(data.getId());
+        newEntity.setIcon(data.getIcon());
+        newEntity.setResources(data.getResourcePath());
+        newEntity.setDes(data.getDes());
+        newEntity.setName(data.getName());
+        newEntity.setMaxNum(data.getMaxNum());
+        newEntity.setMinNum(data.getMinNum());
+        newEntity.setQuality(data.getQuality());
+        newEntity.setType(data.getType());
+        newEntity.setUpdateAt(update);
+        return newEntity;
     }
 }

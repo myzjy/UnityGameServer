@@ -50,6 +50,14 @@ public class BagUserItemData implements IPacket {
      * @version 1.0
      */
     private int quality;
+    /**
+     * 资源路径
+     */
+    private String resourcePath;
+    /**
+     * Icon
+     */
+    private String icon;
 
     /**
      * 是否为新

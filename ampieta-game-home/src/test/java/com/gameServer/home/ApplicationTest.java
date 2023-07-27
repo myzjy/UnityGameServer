@@ -25,7 +25,6 @@ public class ApplicationTest {
     }
 
 
-
     @Test
     public void startApplication1() {
         Application.main(null);
@@ -39,9 +38,9 @@ public class ApplicationTest {
         context.registerShutdownHook();
         context.publishEvent(new AppStartEvent(context));
         var studentManager = context.getBean(PuzzleManager.class);
-        
-      studentManager.UpDataPuzzleOrm();
-    
+        studentManager.UpDataPuzzleOrm();
+        var ormAddManager = context.getBean(OrmAddManager.class);
+        ormAddManager.UpdateItemBaseCsvResource();
 
     }
 }
