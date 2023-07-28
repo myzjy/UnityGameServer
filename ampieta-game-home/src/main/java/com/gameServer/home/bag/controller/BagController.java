@@ -80,7 +80,12 @@ public class BagController {
         /* *
          * 获取到对应 数据库中配置
          */
-        var itemBase = itemBoxBaseEntityIEntityCaches.load(request.getItemId());
+        var itemBase = mBagService.loadItemBoxBaseEntity(request.getItemId());
+        switch (itemBase.getType()){
+            case 1:
+                break;
+        }
+        
     }
 
 
