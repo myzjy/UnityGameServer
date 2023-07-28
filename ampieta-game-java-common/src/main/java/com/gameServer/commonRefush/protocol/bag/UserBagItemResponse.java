@@ -7,7 +7,7 @@ import com.zfoo.protocol.registration.anno.Protocol;
 import java.util.ArrayList;
 import java.util.List;
 
-@Protocol(id = 1015)
+//@Protocol(id = 1015)
 public class UserBagItemResponse implements IPacket {
     private List<BagUserItemEntity> list = new ArrayList<>();
 

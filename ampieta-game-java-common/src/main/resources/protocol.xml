@@ -55,6 +55,8 @@
         <protocol id="1030" location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerSecondsResponse"/>
         <protocol id="1031" location="com.gameServer.commonRefush.protocol.user.GameMainUserInfoToRequest"/>
         <protocol id="1032" location="com.gameServer.commonRefush.protocol.user.GameMainUserInfoToResponse"/>
+        <protocol id="1033" location="com.gameServer.commonRefush.protocol.bag.UseTheBagItemEffectRequest"/>
+        <protocol id="1034" location="com.gameServer.commonRefush.protocol.bag.UseTheBagItemEffectResponse"/>
     </module>
     <module id="3" name="common" minId="100" maxId="500">
         <protocol id="100" location="com.zfoo.net.packet.common.Message"/>

@@ -7,10 +7,13 @@ import com.gameServer.commonRefush.event.bag.StartLoginBagEvent;
 import com.gameServer.commonRefush.protocol.bag.AllBagItemRequest;
 import com.gameServer.commonRefush.protocol.bag.AllBagItemResponse;
 import com.gameServer.commonRefush.protocol.bag.BagUserItemData;
+import com.gameServer.commonRefush.protocol.bag.UseTheBagItemEffectRequest;
 import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
+import com.gameServer.home.bag.service.IBagService;
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.event.model.anno.EventReceiver;
 import com.zfoo.net.NetContext;
+import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
@@ -20,6 +23,7 @@ import com.zfoo.storage.model.anno.ResInjection;
 import com.zfoo.storage.model.vo.Storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -35,11 +39,9 @@ import java.util.List;
 @Component
 public class BagController {
     private static final Logger logger = LoggerFactory.getLogger(BagController.class);
-    /**
-     * 背包基础
-     */
-    @EntityCachesInjection
-    private IEntityCaches<Integer, ItemBoxBaseEntity> itemBoxBaseEntityIEntityCaches;
+  
+    @Autowired
+    private IBagService mBagService;
 
     @PacketReceiver
     public void atAllBagItemRequest(Session session, AllBagItemRequest request) {
@@ -62,7 +64,7 @@ public class BagController {
                 logger.info(res.toString());
                 BagUserItemData data = BagUserItemData.ValueOf(res);
                 //查找 对应的 道具
-                var item = itemBoxBaseEntityIEntityCaches.load(data.getItemId());
+                var item = mBagService.loadItemBoxBaseEntity(data.getItemId());
                 data.setQuality(item.getQuality());
                 bagUserItemEntities.add(data);
             });
@@ -71,7 +73,15 @@ public class BagController {
             NetContext.getRouter().send(event.getSession(), AllBagItemResponse.ValueOf(bagUserItemEntities));
         });
     }
-//    public voi
+
+    @PacketReceiver
+    public void atUseTheBagItemEffectRequest(Session session, UseTheBagItemEffectRequest request, GatewayAttachment gatewayAttachment) {
+        logger.info("玩家使用背包道具相关");
+        /* *
+         * 获取到对应 数据库中配置
+         */
+        var itemBase = itemBoxBaseEntityIEntityCaches.load(request.getItemId());
+    }
 
 
 }
