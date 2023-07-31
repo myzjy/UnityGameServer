@@ -1,14 +1,12 @@
 package com.gameServer.home.bag.controller;
 
+import com.gameServer.commonRefush.constant.BagItemType;
 import com.gameServer.commonRefush.entity.BagUserItemEntity;
-import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
-import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.event.bag.StartLoginBagEvent;
 import com.gameServer.commonRefush.protocol.bag.AllBagItemRequest;
 import com.gameServer.commonRefush.protocol.bag.AllBagItemResponse;
 import com.gameServer.commonRefush.protocol.bag.BagUserItemData;
 import com.gameServer.commonRefush.protocol.bag.UseTheBagItemEffectRequest;
-import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
 import com.gameServer.home.bag.service.IBagService;
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.event.model.anno.EventReceiver;
@@ -17,10 +15,6 @@ import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
-import com.zfoo.orm.cache.IEntityCaches;
-import com.zfoo.orm.model.anno.EntityCachesInjection;
-import com.zfoo.storage.model.anno.ResInjection;
-import com.zfoo.storage.model.vo.Storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,9 +75,21 @@ public class BagController {
          * 获取到对应 数据库中配置
          */
         var itemBase = mBagService.loadItemBoxBaseEntity(request.getItemId());
+       ;
         switch (itemBase.getType()){
-            case 1:
+            case  1: {
+                //武器
+                logger.info("[UID:{}] 使用[{}] {}",session.getUid(),BagItemType.Weapons.getCodeMessage(),itemBase.getName());
+            }
                 break;
+            case 2:
+            {
+                /* *
+                 * 首饰
+                 */
+                logger.info("[UID:{}] 使用[{}] {}",session.getUid(),BagItemType.Jewelry.getCodeMessage(),itemBase.getName());
+            }
+            break;
         }
         
     }
