@@ -2,6 +2,7 @@ package com.gameServer.commonRefush.protocol.Puzzle;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.protocol.IPacket;
+import com.zfoo.protocol.registration.anno.Protocol;
 
 /**
  * 地图所有总信息
@@ -10,6 +11,7 @@ import com.zfoo.protocol.IPacket;
  * @version 1.0
  * @since 2023/7/31 23 45
  */
+@Protocol(id = 1035)
 public class PuzzleAllConfigRequest implements IPacket, IGatewayLoadBalancer {
     /**
      * 事件ID 也可以说是 活动id
