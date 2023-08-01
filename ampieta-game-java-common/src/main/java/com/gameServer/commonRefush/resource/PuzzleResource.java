@@ -45,6 +45,14 @@ public class PuzzleResource {
      * pc版本号
      */
     private String pcEditorVersion;
+    private String icon;
+    /**
+     * 资源路径
+     */
+    private String resourcePath;
+
+    public PuzzleResource() {
+    }
 
     public int getId() {
         return id;
@@ -78,5 +86,14 @@ public class PuzzleResource {
         return pcEditorVersion;
     }
 
-  
+
+    public String getIcon() {
+        return icon;
+    }
+    
+
+    public String getResourcePath() {
+        return resourcePath;
+    }
+    
 }

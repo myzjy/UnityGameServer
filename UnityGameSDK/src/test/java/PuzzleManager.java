@@ -31,6 +31,8 @@ public class PuzzleManager {
                 entity.setAndroidVersion(data.getAndroidVersion());
                 entity.setIosVersion(data.getIosVersion());
                 entity.setPcEditorVersion(data.getPcEditorVersion());
+                entity.setIcon(data.getIcon());
+                entity.setResourceStr(data.getResourcePath());
                 var update = TimeUtils.timeToString(TimeUtils.now());
 
                 entity.setCreateAt(update);
@@ -46,6 +48,8 @@ public class PuzzleManager {
                 entity.setAndroidVersion(dataEntity.getAndroidVersion());
                 entity.setIosVersion(dataEntity.getIosVersion());
                 entity.setPcEditorVersion(dataEntity.getPcEditorVersion());
+                entity.setIcon(data.getIcon());
+                entity.setResourceStr(data.getResourcePath());
                 var update = TimeUtils.timeToString(TimeUtils.now());
                 entity.setUpdatedAt(update);
                 OrmContext.getAccessor().update(entity);

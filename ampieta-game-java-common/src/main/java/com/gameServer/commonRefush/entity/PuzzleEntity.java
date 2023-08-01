@@ -131,6 +131,14 @@ public class PuzzleEntity implements IEntity<Integer> {
      */
     private String pcEditorVersion;
     /**
+     * 关卡缩略图 icon
+     */
+    private String icon;
+    /**
+     * 关卡预制体 路径
+     */
+    private String resourceStr;
+    /**
      * 创建时间
      */
     private String createAt;
@@ -153,5 +161,21 @@ public class PuzzleEntity implements IEntity<Integer> {
     public static PuzzleEntity ValueOf(){
         var packet=new PuzzleEntity();
         return packet;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getResourceStr() {
+        return resourceStr;
+    }
+
+    public void setResourceStr(String resourceStr) {
+        this.resourceStr = resourceStr;
     }
 }

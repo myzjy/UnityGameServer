@@ -4,6 +4,7 @@ import com.zfoo.storage.model.anno.Id;
 
 /**
  * 地图基础类
+ *
  * @author zjy
  * @version 1.0
  * @since 2023/7/25 16 49
@@ -30,16 +31,67 @@ public class Puzzle {
      */
     private String puzzleRewards;
     /**
-     * 安卓版本号
+     * Icon 图片资源名
      */
-    private String androidVersion;
+    private String icon;
     /**
-     * IOS 版本号
+     * 资源路径
      */
-    private String iosVersion;
-    /**
-     * pc版本号
-     */
-    private String pcEditorVersion;
-    
+    private String resourcePath;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPuzzleName() {
+        return puzzleName;
+    }
+
+    public void setPuzzleName(String puzzleName) {
+        this.puzzleName = puzzleName;
+    }
+
+    public int getLastPuzzleID() {
+        return lastPuzzleID;
+    }
+
+    public void setLastPuzzleID(int lastPuzzleID) {
+        this.lastPuzzleID = lastPuzzleID;
+    }
+
+    public int getNextPuzzleID() {
+        return nextPuzzleID;
+    }
+
+    public void setNextPuzzleID(int nextPuzzleID) {
+        this.nextPuzzleID = nextPuzzleID;
+    }
+
+    public String getPuzzleRewards() {
+        return puzzleRewards;
+    }
+
+    public void setPuzzleRewards(String puzzleRewards) {
+        this.puzzleRewards = puzzleRewards;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getResourcePath() {
+        return resourcePath;
+    }
+
+    public void setResourcePath(String resourcePath) {
+        this.resourcePath = resourcePath;
+    }
 }
