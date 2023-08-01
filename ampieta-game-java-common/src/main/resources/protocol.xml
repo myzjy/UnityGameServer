@@ -57,6 +57,8 @@
         <protocol id="1032" location="com.gameServer.commonRefush.protocol.user.GameMainUserInfoToResponse"/>
         <protocol id="1033" location="com.gameServer.commonRefush.protocol.bag.UseTheBagItemEffectRequest"/>
         <protocol id="1034" location="com.gameServer.commonRefush.protocol.bag.UseTheBagItemEffectResponse"/>
+        <protocol id="1035" location="com.gameServer.commonRefush.protocol.Puzzle.PuzzleAllConfigRequest"/>
+        <protocol id="1036" location="com.gameServer.commonRefush.protocol.Puzzle.PuzzleAllConfigResponse"/>
     </module>
     <module id="3" name="common" minId="100" maxId="500">
         <protocol id="100" location="com.zfoo.net.packet.common.Message"/>
@@ -73,6 +75,7 @@
         <protocol id="116" location="com.zfoo.net.packet.common.TripleLSS"/>
         <protocol id="200" location="com.gameServer.commonRefush.protocol.bag.BagUserItemData"/>
         <protocol id="201" location="com.gameServer.commonRefush.protocol.serverConfig.ItemBaseData"/>
+        <protocol id="202" location="com.gameServer.commonRefush.protocol.Puzzle.Puzzle"/>
 
     </module>
     <module id="4" name="unityGameSdk" minId="5000" maxId="6000">

@@ -16,5 +16,12 @@ public class  UseTheBagItemEffectResponse implements IPacket {
         packet.bagUserItemDataList=new ArrayList<>();
         return packet;
     }
-    
+
+    public List<BagUserItemData> getBagUserItemDataList() {
+        return bagUserItemDataList;
+    }
+
+    public void setBagUserItemDataList(List<BagUserItemData> bagUserItemDataList) {
+        this.bagUserItemDataList = bagUserItemDataList;
+    }
 }

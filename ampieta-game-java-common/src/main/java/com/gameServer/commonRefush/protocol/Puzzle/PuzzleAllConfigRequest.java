@@ -21,7 +21,7 @@ public class PuzzleAllConfigRequest implements IPacket, IGatewayLoadBalancer {
 
     @Override
     public Object loadBalancerConsistentHashObject() {
-        return null;
+        return eventId;
     }
     public static PuzzleAllConfigRequest ValueOf(int eventId){
         var packet=new PuzzleAllConfigRequest();

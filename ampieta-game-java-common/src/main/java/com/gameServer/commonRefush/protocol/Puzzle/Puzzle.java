@@ -1,5 +1,7 @@
 package com.gameServer.commonRefush.protocol.Puzzle;
 
+import com.zfoo.protocol.IPacket;
+import com.zfoo.protocol.registration.anno.Protocol;
 import com.zfoo.storage.model.anno.Id;
 
 /**
@@ -9,7 +11,8 @@ import com.zfoo.storage.model.anno.Id;
  * @version 1.0
  * @since 2023/7/25 16 49
  */
-public class Puzzle {
+@Protocol(id=202)
+public class Puzzle implements IPacket {
     @Id
     private int id;
     /**
