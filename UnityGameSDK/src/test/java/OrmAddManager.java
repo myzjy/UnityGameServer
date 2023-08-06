@@ -1,5 +1,6 @@
 import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
 import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
+import com.gameServer.commonRefush.resource.StageResource;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.storage.model.anno.ResInjection;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Component;
 public class OrmAddManager {
     @ResInjection
     private Storage<Integer, ItemBaseCsvResource> itemBaseCsvResourceStorage;
+    @ResInjection
+    private Storage<Integer, StageResource> stageResourceStorage;
 
     /**
      * 更新 数据库中资料
