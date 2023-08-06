@@ -5,7 +5,7 @@ import com.zfoo.protocol.registration.anno.Protocol;
 import com.zfoo.storage.model.anno.Id;
 
 /**
- * 地图基础类
+ * 地图 当前关卡内部可能的配置 比如怪物配置，怪物拥有技能配置，怪物和boss 配置攻击设置 位置 
  *
  * @author zjy
  * @version 1.0

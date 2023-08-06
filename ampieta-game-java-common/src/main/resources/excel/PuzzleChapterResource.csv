@@ -1,4 +1,4 @@
-id,chapterName,
-int,string,
-des,des
-110001,从死亡归来
+id,chapterName,minPuzzle,maxPuzzle
+int,string,int,int
+des,des,des,des
+110000,从死亡归来,110001,110030
