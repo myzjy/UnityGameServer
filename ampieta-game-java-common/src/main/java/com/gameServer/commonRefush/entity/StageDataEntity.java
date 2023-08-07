@@ -33,7 +33,14 @@ public class StageDataEntity implements IEntity<Integer> {
      * 任务ID集合
      */
     protected String missionId;
-
+    /**
+     * 创建时间
+     */
+    protected String createAt;
+    /**
+     * 更新时间
+     */
+    protected String updatedAt;
     public int getId() {
         return id;
     }
@@ -84,6 +91,25 @@ public class StageDataEntity implements IEntity<Integer> {
 
     @Override
     public Integer id() {
-        return null;
+        return id;
+    }
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+    public static  StageDataEntity ValueOf(){
+        var entity=new StageDataEntity();
+        return entity;
     }
 }

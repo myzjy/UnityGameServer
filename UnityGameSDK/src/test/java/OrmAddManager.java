@@ -1,4 +1,5 @@
 import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
+import com.gameServer.commonRefush.entity.StageDataEntity;
 import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
 import com.gameServer.commonRefush.resource.StageResource;
 import com.zfoo.orm.OrmContext;
@@ -6,6 +7,8 @@ import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.storage.model.anno.ResInjection;
 import com.zfoo.storage.model.vo.Storage;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 /**
  * @author zjy
@@ -20,6 +23,44 @@ public class OrmAddManager {
     private Storage<Integer, StageResource> stageResourceStorage;
 
     /**
+     * 插入数据 stage
+     */
+    public void UpdateStageCsvResource() {
+        var stageDict = stageResourceStorage.getAll();
+        for (var data : stageDict) {
+            var entity = OrmContext.getAccessor().load(data.getId(), StageDataEntity.class);
+            var update = TimeUtils.timeToString(TimeUtils.now());
+            if (entity != null) {
+                var updateData = StageDataEntity.ValueOf();
+                updateData.setUpdatedAt(update);
+                updateData.setId(entity.getId());
+                updateData.setOrder(entity.getOrder());
+                updateData.setMissionId(entity.getMissionId());
+                updateData.setLockMessage(entity.getLockMessage());
+                updateData.setStandbyRole(entity.getStandbyRole());
+                updateData.setPuzzleId(entity.getPuzzleId());
+                OrmContext.getAccessor().update(updateData);
+            } else {
+                /**
+                 * 数据库里面没有
+                 */
+                var createData = StageDataEntity.ValueOf();
+                createData.setCreateAt(update);
+                createData.setUpdatedAt(update);
+                createData.setId(data.getId());
+                createData.setOrder(data.getOrder());
+                createData.setMissionId(data.getMissionId());
+                createData.setLockMessage(data.getLockMessage());
+                createData.setStandbyRole(data.getStandbyRole());
+                createData.setPuzzleId(data.getPuzzleId());
+                OrmContext.getAccessor().insert(createData);
+            }
+
+        }
+
+    }
+
+    /**
      * 更新 数据库中资料
      */
     public void UpdateItemBaseCsvResource() {
@@ -30,7 +71,7 @@ public class OrmAddManager {
             var entity = OrmContext.getAccessor().load(data.getId(), ItemBoxBaseEntity.class);
             var update = TimeUtils.timeToString(TimeUtils.now());
 
-            if (entity != null ) {
+            if (entity != null) {
                 var newEntity = getItemBoxBasEntity(data, update);
                 OrmContext.getAccessor().update(newEntity);
             } else {

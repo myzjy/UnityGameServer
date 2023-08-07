@@ -34,6 +34,7 @@ public class ApplicationTest {
         studentManager.UpDataPuzzleOrm();
         var ormAddManager = context.getBean(OrmAddManager.class);
         ormAddManager.UpdateItemBaseCsvResource();
+        ormAddManager.UpdateStageCsvResource();
 
     }
 }

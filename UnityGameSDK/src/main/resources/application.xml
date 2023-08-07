@@ -37,15 +37,13 @@
         <storage:resource location="${storage.excel.location}"/>
     </storage:storage>
     <net:config id="unityGameSdk" protocol-location="protocol.xml"
-                csharp-protocol="${net.generate.cs.protocol}"
-
-                fold-protocol="${net.fold.protocol}"
     >
     </net:config>
     <orm:config id="mongodbConfig" entity-package="com.gameServer.commonRefush.**.entity">
 
         <!-- 数据库相关配置 -->
         <orm:host database="${mongodb.database}" user="${mongodb.user}" password="${mongodb.password}">
+            <orm:address name="${mongodb.address.name}" url="${mongodb.address.url}"/>
             <orm:address name="${mongodb.address.name}" url="${mongodb.address.url}"/>
         </orm:host>
 
