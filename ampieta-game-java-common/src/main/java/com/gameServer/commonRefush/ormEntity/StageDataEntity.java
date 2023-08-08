@@ -1,4 +1,4 @@
-package com.gameServer.commonRefush.entity;
+package com.gameServer.commonRefush.ormEntity;
 
 import com.zfoo.orm.model.anno.Id;
 import com.zfoo.orm.model.entity.IEntity;

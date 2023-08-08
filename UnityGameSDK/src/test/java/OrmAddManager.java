@@ -1,14 +1,14 @@
 import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
-import com.gameServer.commonRefush.entity.StageDataEntity;
+import com.gameServer.commonRefush.ormEntity.StageDataEntity;
 import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
 import com.gameServer.commonRefush.resource.StageResource;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.storage.model.anno.ResInjection;
 import com.zfoo.storage.model.vo.Storage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
 
 /**
  * @author zjy
@@ -17,6 +17,8 @@ import java.util.Objects;
  */
 @Component
 public class OrmAddManager {
+    private static final Logger logger = LoggerFactory.getLogger(OrmAddManager.class);
+    
     @ResInjection
     private Storage<Integer, ItemBaseCsvResource> itemBaseCsvResourceStorage;
     @ResInjection
@@ -27,6 +29,7 @@ public class OrmAddManager {
      */
     public void UpdateStageCsvResource() {
         var stageDict = stageResourceStorage.getAll();
+        logger.info("stageDict.count:{}",stageDict.stream().count());
         for (var data : stageDict) {
             var entity = OrmContext.getAccessor().load(data.getId(), StageDataEntity.class);
             var update = TimeUtils.timeToString(TimeUtils.now());
