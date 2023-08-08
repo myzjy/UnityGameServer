@@ -1,10 +1,12 @@
 package com.gameServer.gameBoot;
 
 import com.gameServer.commonRefush.constant.TankDeployEnum;
+import com.zfoo.event.model.event.AppStartEvent;
 import com.zfoo.protocol.util.StringUtils;
 import com.zfoo.util.ThreadUtils;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author Administrator
@@ -21,5 +23,17 @@ public class ApplicationTest {
         Application.main(StringUtils.EMPTY_ARRAY);
 
         ThreadUtils.sleep(Long.MAX_VALUE);
+    }
+    @Test
+    public void TestEx() {
+        var context = new ClassPathXmlApplicationContext("app.xml");
+        context.registerShutdownHook();
+        context.publishEvent(new AppStartEvent(context));
+        var studentManager = context.getBean(PuzzleManager.class);
+        studentManager.UpDataPuzzleOrm();
+        var ormAddManager = context.getBean(OrmAddManager.class);
+        ormAddManager.UpdateItemBaseCsvResource();
+        ormAddManager.UpdateStageCsvResource();
+
     }
 }

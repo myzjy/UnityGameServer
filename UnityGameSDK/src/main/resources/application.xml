@@ -44,7 +44,6 @@
         <!-- 数据库相关配置 -->
         <orm:host database="${mongodb.database}" user="${mongodb.user}" password="${mongodb.password}">
             <orm:address name="${mongodb.address.name}" url="${mongodb.address.url}"/>
-            <orm:address name="${mongodb.address.name}" url="${mongodb.address.url}"/>
         </orm:host>
 
         <!-- 缓存策略 -->

@@ -27,13 +27,16 @@
        http://www.zfoo.com/schema/scheduler
        http://www.zfoo.com/schema/scheduler-1.0.xsd
 
-       http://www.zfoo.com/schema/storage
-       http://www.zfoo.com/schema/storage-1.0.xs
+     http://www.zfoo.com/schema/storage
+       http://www.zfoo.com/schema/storage-1.0.xsd
 ">
     <context:property-placeholder location="classpath:deploy-${spring.profiles.active}.properties"/>
      <context:component-scan base-package="com.gameServer.gameBoot"/>
     <event:event id="eventBus"/>
-
+    <storage:storage id="resourceManager">
+        <storage:scan package="${storage.excel.scan}"/>
+        <storage:resource location="${storage.excel.location}"/>
+    </storage:storage>
 <!--    <scheduler:scheduler id="schedulerManager"/>-->
     <net:config id="gameserver" protocol-location="protocol.xml">
 
