@@ -32,7 +32,7 @@ public class Puzzle implements IPacket {
     /**
      * 关卡 奖励
      */
-    private String puzzleRewards;
+    private PuzzleRewardsData[] puzzleRewardsDatas;
     /**
      * Icon 图片资源名
      */
@@ -73,15 +73,6 @@ public class Puzzle implements IPacket {
     public void setNextPuzzleID(int nextPuzzleID) {
         this.nextPuzzleID = nextPuzzleID;
     }
-
-    public String getPuzzleRewards() {
-        return puzzleRewards;
-    }
-
-    public void setPuzzleRewards(String puzzleRewards) {
-        this.puzzleRewards = puzzleRewards;
-    }
-
     public String getIcon() {
         return icon;
     }
@@ -96,5 +87,13 @@ public class Puzzle implements IPacket {
 
     public void setResourcePath(String resourcePath) {
         this.resourcePath = resourcePath;
+    }
+
+    public PuzzleRewardsData[] getPuzzleRewardsDatas() {
+        return puzzleRewardsDatas;
+    }
+
+    public void setPuzzleRewardsDatas(PuzzleRewardsData[] puzzleRewardsDatas) {
+        this.puzzleRewardsDatas = puzzleRewardsDatas;
     }
 }
