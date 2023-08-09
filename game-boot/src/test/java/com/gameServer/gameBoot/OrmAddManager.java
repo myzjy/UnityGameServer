@@ -150,7 +150,7 @@ public class OrmAddManager {
             var update = TimeUtils.timeToString(TimeUtils.now());
 
             if (entity != null) {
-                var newEntity = getItemBoxBasEntity(data, update);
+                var newEntity = getItemBoxBasEntity(data, entity, update);
                 OrmContext.getAccessor().update(newEntity);
             } else {
                 var newEntity = getBoxBasEntity(data, update);
@@ -176,8 +176,13 @@ public class OrmAddManager {
         return newEntity;
     }
 
-    private ItemBoxBaseEntity getItemBoxBasEntity(ItemBaseCsvResource data, String update) {
+    private ItemBoxBaseEntity getItemBoxBasEntity(ItemBaseCsvResource data, ItemBoxBaseEntity entity, String update) {
         var newEntity = ItemBoxBaseEntity.ValueOf();
+        if (entity.getCreateAt() == null) {
+            newEntity.setCreateAt(update);
+        } else {
+            newEntity.setCreateAt(entity.getCreateAt());
+        }
         newEntity.setItemId(data.getId());
         newEntity.setIcon(data.getIcon());
         newEntity.setResources(data.getResourcePath());
