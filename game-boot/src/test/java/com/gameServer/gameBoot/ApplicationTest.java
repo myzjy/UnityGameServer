@@ -34,6 +34,7 @@ public class ApplicationTest {
         var ormAddManager = context.getBean(OrmAddManager.class);
         ormAddManager.UpdateItemBaseCsvResource();
         ormAddManager.UpdateStageCsvResource();
+        ormAddManager.UpdateStageMissionCsvResource();
 
     }
 }

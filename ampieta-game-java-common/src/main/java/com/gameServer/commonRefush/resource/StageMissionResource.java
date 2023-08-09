@@ -16,11 +16,31 @@ public class StageMissionResource {
      * 当前任务完成排序对比任务id
      */
     protected int order;
+    /**
+     * 对应的关卡id
+     */
     protected int puzzleId;
+    /**
+     * 标题
+     */
     protected String title;
+    /**
+     * 显示
+     */
     protected String shortText;
+    /**
+     * 错误显示消息
+     */
     protected String failedText;
+    /**
+     * 标识
+     */
     protected String outGameSuffix;
+    /**
+     * 显示信息
+     */
+    protected  String formatText;
+    
 
     public int getId() {
         return id;
@@ -54,6 +74,5 @@ public class StageMissionResource {
         return formatText;
     }
 
-    protected  String formatText;
     
 }
