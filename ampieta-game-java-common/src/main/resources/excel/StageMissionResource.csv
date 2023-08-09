@@ -1,4 +1,4 @@
-id,order,puzzleId,title
-int,int,int,string
-排列,当前任务完成排序对比任务id,关卡ID,任务标题
-1,1,110001,""
+id,order,puzzleId,title,shortText,failedText,outGameSuffix,formatText
+int,int,int,string,string,string,string,string
+排列,当前任务完成排序对比任务id,关卡ID,任务标题,显示,错误显示消息,标识,显示信息
+1,1,110001,"",杀敌,未到达数量,kill,击杀{}个敌人
