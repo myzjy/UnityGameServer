@@ -29,7 +29,7 @@ public class PuzzleRewardsData implements IPacket {
     /**
      * 奖励数量
      */
-    private int num;
+    private  int num;
 
     public static PuzzleRewardsData ValueOf(int rewardId, int rewardType, String rewardIcon, String rewardResource, int num) {
         var entity = new PuzzleRewardsData();
