@@ -1,31 +1,35 @@
 package com.gameServer.commonRefush.protocol.Puzzle;
 
+import com.zfoo.protocol.IPacket;
+import com.zfoo.protocol.registration.anno.Protocol;
+
 /**
  * @author zjy
  * @version 1.0
  * @since 2023/8/9 17 30
  */
-public class PuzzleRewardsData {
+@Protocol(id=203)
+public class PuzzleRewardsData implements IPacket {
     /**
      * 奖励的物品id
      */
-    protected int rewardId;
+    private int rewardId;
     /**
      * 奖励 type
      */
-    protected int rewardType;
+    private int rewardType;
     /**
      * 奖励icon
      */
-    protected String rewardIcon;
+    private String rewardIcon;
     /**
      * 奖励 资源
      */
-    protected String rewardResource;
+    private String rewardResource;
     /**
      * 奖励数量
      */
-    protected int num;
+    private int num;
 
     public static PuzzleRewardsData ValueOf(int rewardId, int rewardType, String rewardIcon, String rewardResource, int num) {
         var entity = new PuzzleRewardsData();

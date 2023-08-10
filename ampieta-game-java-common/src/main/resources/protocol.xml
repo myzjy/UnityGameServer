@@ -76,6 +76,7 @@
         <protocol id="200" location="com.gameServer.commonRefush.protocol.bag.BagUserItemData"/>
         <protocol id="201" location="com.gameServer.commonRefush.protocol.serverConfig.ItemBaseData"/>
         <protocol id="202" location="com.gameServer.commonRefush.protocol.Puzzle.Puzzle"/>
+        <protocol id="203" location="com.gameServer.commonRefush.protocol.Puzzle.PuzzleRewardsData"/>
 
     </module>
     <module id="4" name="unityGameSdk" minId="5000" maxId="6000">

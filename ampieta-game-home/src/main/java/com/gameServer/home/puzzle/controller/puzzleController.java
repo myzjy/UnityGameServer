@@ -1,5 +1,6 @@
 package com.gameServer.home.puzzle.controller;
 
+import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
 import com.gameServer.commonRefush.entity.PuzzleEntity;
 import com.gameServer.commonRefush.protocol.Puzzle.Puzzle;
 import com.gameServer.commonRefush.protocol.Puzzle.PuzzleAllConfigRequest;
@@ -59,14 +60,35 @@ public class puzzleController {
             List<PuzzleRewardsData> rewardsDataList = new ArrayList<>();
             var rewardStr = data.getPuzzleRewards();
             var rewardSplit = rewardStr.split(";");
-            for (var i = 0; i < rewardSplit.length; i++) {
-                var rewardValueStr = rewardSplit[i];
+         
+            for (String rewardValueStr : rewardSplit) {
                 var rewardValueStrSplit = rewardValueStr.split(":");
                 /**
-                 * 
+                 * type
                  */
                 var rewardValueStr1 = rewardValueStrSplit[0];
+                /**
+                 * 奖励的type
+                 */
+                int rewardType = Integer.parseInt(rewardValueStr1);
+                /**
+                 * 具体奖励内容
+                 */
                 var rewardValueStr2 = rewardValueStrSplit[1];
+                var rewardValues = rewardValueStr2.split("|");
+                int rewardID = Integer.parseInt(rewardValues[0]);
+                int rewardNum = Integer.parseInt(rewardValues[1]);
+
+                PuzzleRewardsData data1 = new PuzzleRewardsData();
+                var itemData = OrmContext.getAccessor().load(rewardID, ItemBoxBaseEntity.class);
+                if (itemData != null) {
+                    data1.setRewardIcon(itemData.getIcon());
+                    data1.setRewardResource(itemData.getResources());
+                    data1.setNum(rewardNum);
+                    data1.setRewardId(rewardID);
+                    data1.setRewardType(rewardType);
+                    rewardsDataList.add(data1);
+                }
             }
             puzzle.setPuzzleRewardsDatas((PuzzleRewardsData[]) rewardsDataList.toArray());
             puzzleList.add(puzzle);
