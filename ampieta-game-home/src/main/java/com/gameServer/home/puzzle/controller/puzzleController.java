@@ -6,6 +6,7 @@ import com.gameServer.commonRefush.protocol.Puzzle.Puzzle;
 import com.gameServer.commonRefush.protocol.Puzzle.PuzzleAllConfigRequest;
 import com.gameServer.commonRefush.protocol.Puzzle.PuzzleAllConfigResponse;
 import com.gameServer.commonRefush.protocol.Puzzle.PuzzleRewardsData;
+import com.gameServer.home.puzzle.service.IPuzzleService;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
@@ -13,6 +14,7 @@ import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.temporal.ValueRange;
@@ -27,15 +29,18 @@ import java.util.List;
 @Component
 public class puzzleController {
     private static final Logger logger = LoggerFactory.getLogger(puzzleController.class);
+    @Autowired
+    private IPuzzleService iPuzzleService;
 
     @PacketReceiver
     public void atPuzzleAllConfigRequest(Session session, PuzzleAllConfigRequest puzzleAllConfigRequest, GatewayAttachment gatewayAttachment) {
         //不是活动地图相关
         if (puzzleAllConfigRequest.getEventId() < 1) {
+            //获取 实时性
             var puzzleConfig = OrmContext.getQuery(PuzzleEntity.class).queryAll();
             var packet = PuzzleAllConfigResponse.ValueOf();
-            List<Puzzle> puzzleList = getPuzzleList(puzzleConfig);
-            /**
+            List<Puzzle> puzzleList = iPuzzleService.GetTheMapServiceDataList(puzzleConfig);
+            /**L
              * 设置 地图 基础属性配置
              */
             packet.setPuzzleConfigList(puzzleList);
@@ -47,52 +52,5 @@ public class puzzleController {
          */
     }
 
-    private List<Puzzle> getPuzzleList(List<PuzzleEntity> puzzleConfig) {
-        List<Puzzle> puzzleList = new ArrayList<>();
-        for (var data : puzzleConfig) {
-            Puzzle puzzle = new Puzzle();
-            puzzle.setId(data.getId());
-            puzzle.setIcon(data.getIcon());
-            puzzle.setResourcePath(data.getResourceStr());
-            puzzle.setPuzzleName(data.getPuzzleName());
-            puzzle.setLastPuzzleID(data.getLastPuzzleID());
-            puzzle.setNextPuzzleID(data.getNextPuzzleID());
-            List<PuzzleRewardsData> rewardsDataList = new ArrayList<>();
-            var rewardStr = data.getPuzzleRewards();
-            var rewardSplit = rewardStr.split(";");
-
-            for (String rewardValueStr : rewardSplit) {
-                var rewardValueStrSplit = rewardValueStr.split(":");
-                /**
-                 * type
-                 */
-                var rewardValueStr1 = rewardValueStrSplit[0];
-                /**
-                 * 奖励的type
-                 */
-                int rewardType = Integer.parseInt(rewardValueStr1);
-                /**
-                 * 具体奖励内容
-                 */
-                var rewardValueStr2 = rewardValueStrSplit[1];
-                var rewardValues = rewardValueStr2.split("|");
-                int rewardID = Integer.parseInt(rewardValues[0]);
-                int rewardNum = Integer.parseInt(rewardValues[1]);
-
-                PuzzleRewardsData data1 = new PuzzleRewardsData();
-                var itemData = OrmContext.getAccessor().load(rewardID, ItemBoxBaseEntity.class);
-                if (itemData != null) {
-                    data1.setRewardIcon(itemData.getIcon());
-                    data1.setRewardResource(itemData.getResources());
-                    data1.setNum(rewardNum);
-                    data1.setRewardId(rewardID);
-                    data1.setRewardType(rewardType);
-                    rewardsDataList.add(data1);
-                }
-            }
-            puzzle.setPuzzleRewardsDatas(rewardsDataList);
-            puzzleList.add(puzzle);
-        }
-        return puzzleList;
-    }
+    
 }

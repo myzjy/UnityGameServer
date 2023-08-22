@@ -24,7 +24,11 @@ public class PuzzleAllConfigResponse implements IPacket {
         return packet;
     }
     public void setPuzzleConfigList(List<Puzzle> list){
-        puzzleConfigList=list;
+        puzzleConfigList=new ArrayList<>();
+        if(list==null){
+            return;
+        }
+        puzzleConfigList.addAll(list);
     }
     public List<Puzzle> getPuzzleConfigList(){
         return puzzleConfigList;
