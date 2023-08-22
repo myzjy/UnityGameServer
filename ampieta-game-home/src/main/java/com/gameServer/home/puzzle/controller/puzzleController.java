@@ -37,7 +37,7 @@ public class puzzleController {
         //不是活动地图相关
         if (puzzleAllConfigRequest.getEventId() < 1) {
             //获取 实时性
-            var puzzleConfig = OrmContext.getQuery(PuzzleEntity.class).queryAll();
+            var puzzleConfig = iPuzzleService.GetOrmPuzzleEntityAllList();
             var packet = PuzzleAllConfigResponse.ValueOf();
             List<Puzzle> puzzleList = iPuzzleService.GetTheMapServiceDataList(puzzleConfig);
             /**L
@@ -52,5 +52,5 @@ public class puzzleController {
          */
     }
 
-    
+
 }

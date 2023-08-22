@@ -17,4 +17,5 @@ public interface IPuzzleService {
      * @return 地图相关 结构数据
      */
     List<Puzzle> GetTheMapServiceDataList(List<PuzzleEntity> puzzleConfig);
+    List<PuzzleEntity> GetOrmPuzzleEntityAllList();
 }

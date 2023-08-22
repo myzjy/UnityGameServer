@@ -66,4 +66,10 @@ public class PuzzleService implements IPuzzleService {
         }
         return puzzleList;
     }
+
+    @Override
+    public List<PuzzleEntity> GetOrmPuzzleEntityAllList() {
+        var puzzleConfig = OrmContext.getQuery(PuzzleEntity.class).queryAll();
+        return puzzleConfig;
+    }
 }
