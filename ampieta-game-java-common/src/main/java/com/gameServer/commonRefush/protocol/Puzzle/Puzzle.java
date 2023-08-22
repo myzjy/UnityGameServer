@@ -4,14 +4,17 @@ import com.zfoo.protocol.IPacket;
 import com.zfoo.protocol.registration.anno.Protocol;
 import com.zfoo.storage.model.anno.Id;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * 地图 当前关卡内部可能的配置 比如怪物配置，怪物拥有技能配置，怪物和boss 配置攻击设置 位置 
+ * 地图 当前关卡内部可能的配置 比如怪物配置，怪物拥有技能配置，怪物和boss 配置攻击设置 位置
  *
  * @author zjy
  * @version 1.0
  * @since 2023/7/25 16 49
  */
-@Protocol(id=202)
+@Protocol(id = 202)
 public class Puzzle implements IPacket {
     @Id
     private int id;
@@ -32,7 +35,7 @@ public class Puzzle implements IPacket {
     /**
      * 关卡 奖励
      */
-    private PuzzleRewardsData[] puzzleRewardsDatas;
+    private List<PuzzleRewardsData> puzzleRewardsDatas;
     /**
      * Icon 图片资源名
      */
@@ -73,6 +76,7 @@ public class Puzzle implements IPacket {
     public void setNextPuzzleID(int nextPuzzleID) {
         this.nextPuzzleID = nextPuzzleID;
     }
+
     public String getIcon() {
         return icon;
     }
@@ -89,11 +93,15 @@ public class Puzzle implements IPacket {
         this.resourcePath = resourcePath;
     }
 
-    public PuzzleRewardsData[] getPuzzleRewardsDatas() {
+    public List<PuzzleRewardsData> getPuzzleRewardsDatas() {
         return puzzleRewardsDatas;
     }
 
-    public void setPuzzleRewardsDatas(PuzzleRewardsData[] puzzleRewardsDatas) {
-        this.puzzleRewardsDatas = puzzleRewardsDatas;
+    public void setPuzzleRewardsDatas(List<PuzzleRewardsData> puzzleRewardsDatas) {
+        this.puzzleRewardsDatas = new ArrayList<>();
+        if (puzzleRewardsDatas == null) {
+            return;
+        }
+        this.puzzleRewardsDatas.addAll(puzzleRewardsDatas);
     }
 }

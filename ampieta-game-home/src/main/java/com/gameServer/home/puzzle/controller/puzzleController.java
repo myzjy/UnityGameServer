@@ -60,7 +60,7 @@ public class puzzleController {
             List<PuzzleRewardsData> rewardsDataList = new ArrayList<>();
             var rewardStr = data.getPuzzleRewards();
             var rewardSplit = rewardStr.split(";");
-         
+
             for (String rewardValueStr : rewardSplit) {
                 var rewardValueStrSplit = rewardValueStr.split(":");
                 /**
@@ -90,7 +90,7 @@ public class puzzleController {
                     rewardsDataList.add(data1);
                 }
             }
-            puzzle.setPuzzleRewardsDatas((PuzzleRewardsData[]) rewardsDataList.toArray());
+            puzzle.setPuzzleRewardsDatas(rewardsDataList);
             puzzleList.add(puzzle);
         }
         return puzzleList;
