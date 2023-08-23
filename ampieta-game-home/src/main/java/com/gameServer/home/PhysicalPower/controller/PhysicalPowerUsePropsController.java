@@ -81,7 +81,6 @@ public class PhysicalPowerUsePropsController {
             physicalData.setResidueEndTime(0);
             physicalData.setResidueNowTime(0);
             userLoginService.UpDataPhysicalPowerEntityCaches(physicalData);
-            OrmContext.getAccessor().update(physicalData);
             logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库", physicalData.getId());
             var response = PhysicalPowerUserPropsResponse.ValueOf(
                     physicalData.getNowPhysicalPowerNum(),
@@ -123,7 +122,6 @@ public class PhysicalPowerUsePropsController {
                 physicalData.setResidueNowTime(TimeUtils.now());
                 //更新数据库内容
                 userLoginService.UpDataPhysicalPowerEntityCaches(physicalData);
-                OrmContext.getAccessor().update(physicalData);
                 logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库", physicalData.getId());
                 var response = PhysicalPowerUserPropsResponse.ValueOf(
                         physicalData.getNowPhysicalPowerNum(),
