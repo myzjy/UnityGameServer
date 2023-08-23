@@ -1,11 +1,15 @@
 package com.gameServer.home.bag.service;
 
+import com.gameServer.commonRefush.entity.BagUserItemEntity;
 import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
+import com.zfoo.orm.OrmContext;
 import com.zfoo.orm.cache.IEntityCaches;
 import com.zfoo.orm.model.anno.EntityCachesInjection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author zjy
@@ -28,4 +32,10 @@ public class BagService implements IBagService {
         return entity;
     }
 
+    @Override
+    public List<BagUserItemEntity> FindBagMasterUserIdEntityOrm(long uid) {
+        List<BagUserItemEntity> items = OrmContext.getQuery(BagUserItemEntity.class).eq("masterUserId",uid).queryAll();
+
+        return null;
+    }
 }

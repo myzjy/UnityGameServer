@@ -4,7 +4,9 @@ import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
 import com.gameServer.commonRefush.entity.PuzzleEntity;
 import com.gameServer.commonRefush.protocol.Puzzle.Puzzle;
 import com.gameServer.commonRefush.protocol.Puzzle.PuzzleRewardsData;
+import com.gameServer.home.bag.service.IBagService;
 import com.zfoo.orm.OrmContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.List;
  */
 @Component
 public class PuzzleService implements IPuzzleService {
+    @Autowired
+    private IBagService bagService;
     @Override
     public List<Puzzle> GetTheMapServiceDataList(List<PuzzleEntity> puzzleConfig) {
         List<Puzzle> puzzleList = new ArrayList<>();
@@ -51,7 +55,7 @@ public class PuzzleService implements IPuzzleService {
                 int rewardNum = Integer.parseInt(rewardValues[1]);
 
                 PuzzleRewardsData data1 = new PuzzleRewardsData();
-                var itemData = OrmContext.getAccessor().load(rewardID, ItemBoxBaseEntity.class);
+                var itemData = bagService.loadItemBoxBaseEntity(rewardID);
                 if (itemData != null) {
                     data1.setRewardIcon(itemData.getIcon());
                     data1.setRewardResource(itemData.getResources());

@@ -91,6 +91,11 @@ public class UserLoginService implements IUserLoginService {
     }
 
     @Override
+    public void InsertPlayerUserEntity(PlayerUserEntity entity) {
+        OrmContext.getAccessor().insert(entity);
+    }
+
+    @Override
     public boolean IsAcesGameTimeResource() {
         if (accesGameTimeResourceStorage == null) {
             return true;

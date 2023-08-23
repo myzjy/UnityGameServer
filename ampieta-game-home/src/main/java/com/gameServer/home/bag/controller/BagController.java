@@ -33,7 +33,6 @@ import java.util.List;
 @Component
 public class BagController {
     private static final Logger logger = LoggerFactory.getLogger(BagController.class);
-  
     @Autowired
     private IBagService mBagService;
 
@@ -52,7 +51,7 @@ public class BagController {
         EventBus.asyncExecute(() -> {
 //            IEntityCaches<? extends Comparable<?>, BagUserItemEntity> items = OrmContext.getOrmManager().getEntityCaches(BagUserItemEntity.class);
             //获取到对应玩家道具
-            List<BagUserItemEntity> items = OrmContext.getQuery(BagUserItemEntity.class).eq("masterUserId", session.getUid()).queryAll();
+            List<BagUserItemEntity> items = mBagService.FindBagMasterUserIdEntityOrm(session.getUid());
             items.forEach((res) -> {
                 //打出数据
                 logger.info(res.toString());
@@ -75,24 +74,20 @@ public class BagController {
          * 获取到对应 数据库中配置
          */
         var itemBase = mBagService.loadItemBoxBaseEntity(request.getItemId());
-       ;
-        switch (itemBase.getType()){
-            case  1: {
+        ;
+        switch (itemBase.getType()) {
+            case 1: {
                 //武器
-                logger.info("[UID:{}] 使用[{}] {}",session.getUid(),BagItemType.Weapons.getCodeMessage(),itemBase.getName());
+                logger.info("[UID:{}] 使用[{}] {}", session.getUid(), BagItemType.Weapons.getCodeMessage(), itemBase.getName());
             }
-                break;
-            case 2:
-            {
+            break;
+            case 2: {
                 /* *
                  * 首饰
                  */
-                logger.info("[UID:{}] 使用[{}] {}",session.getUid(),BagItemType.Jewelry.getCodeMessage(),itemBase.getName());
+                logger.info("[UID:{}] 使用[{}] {}", session.getUid(), BagItemType.Jewelry.getCodeMessage(), itemBase.getName());
             }
             break;
         }
-        
     }
-
-
 }

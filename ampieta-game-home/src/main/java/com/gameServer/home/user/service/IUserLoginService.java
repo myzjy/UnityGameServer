@@ -16,10 +16,9 @@ import java.util.Collection;
  */
 @Component
 public interface IUserLoginService {
-
     ConfigResource GetConfigResourceData(int lv);
-    int ConfigResourceLength();
 
+    int ConfigResourceLength();
 
     /**
      * 获取 体力缓存 以玩家的UserID 获取某一个人
@@ -40,14 +39,20 @@ public interface IUserLoginService {
 
     void UpdatePlayerUserEntity(PlayerUserEntity entity);
 
+    /**
+     * 插入
+     * @param entity
+     */
+    void InsertPlayerUserEntity(PlayerUserEntity entity);
+
     boolean IsAcesGameTimeResource();
 
     Collection<AccesGameTimeResource> GetAccesTimeAll();
 
     /**
      * 玩家数据
+     *
      * @return
      */
     IEntityCaches<Long, PlayerUserEntity> AllPlayerUserEntityCaches();
-
 }
