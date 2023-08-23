@@ -8,6 +8,7 @@ import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk;
 import com.gameServer.commonRefush.protocol.physicalPower.*;
+import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.handler.codec.json.JsonPacket;
@@ -38,8 +39,10 @@ public class PhysicalPowerUsePropsController {
      * 体力 service
      */
     @Autowired
-    private IUserLoginService userLoginService;
+    private IPhysicalPowerService iPhysicalPowerService;
 
+    @Autowired
+    private IUserLoginService userLoginService;
     /**
      * 使用体力的控制 客户端 回调
      *
@@ -50,7 +53,7 @@ public class PhysicalPowerUsePropsController {
     @PacketReceiver
     public void atPhysicalPowerUserPropsRequest(Session session, PhysicalPowerUserPropsRequest request, GatewayAttachment gatewayAttachment) {
         logger.info("[uid:{}] 调用使用体力 开始一张战斗之后就会扣除", session.getUid());
-        var physicalData = userLoginService.GetToUserIDPhysicalPowerEntity(session.getUid());
+        var physicalData = iPhysicalPowerService.FindOnePhysicalPower(session.getUid());
         var userData = userLoginService.LoadPlayerUserEntity(session.getUid());
         var configData = userLoginService.GetConfigResourceData(userData.getPlayerLv());
         if (physicalData.getNowPhysicalPowerNum() >= physicalData.getMaximumStrength()) {
@@ -60,7 +63,7 @@ public class PhysicalPowerUsePropsController {
             physicalData.setMaxResidueEndTime(0);
             physicalData.setResidueEndTime(0);
             physicalData.setResidueNowTime(0);
-            userLoginService.UpDataPhysicalPowerEntityCaches(physicalData);
+            iPhysicalPowerService.UpdatePhysicalPowerEntityOrm(physicalData);
             OrmContext.getAccessor().update(physicalData);
             logger.info("[uid:{}]当前体力：{} 满的，清空体力时间数据 完成", physicalData.getId(), physicalData.getNowPhysicalPowerNum());
         }
@@ -80,7 +83,7 @@ public class PhysicalPowerUsePropsController {
             physicalData.setMaxResidueEndTime(0);
             physicalData.setResidueEndTime(0);
             physicalData.setResidueNowTime(0);
-            userLoginService.UpDataPhysicalPowerEntityCaches(physicalData);
+            iPhysicalPowerService.UpdatePhysicalPowerEntityOrm(physicalData);
             logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库", physicalData.getId());
             var response = PhysicalPowerUserPropsResponse.ValueOf(
                     physicalData.getNowPhysicalPowerNum(),
@@ -121,7 +124,7 @@ public class PhysicalPowerUsePropsController {
                 physicalData.setMaximusResidueEndTime(physicalData.getMaximusResidueEndTime() + residueSum);
                 physicalData.setResidueNowTime(TimeUtils.now());
                 //更新数据库内容
-                userLoginService.UpDataPhysicalPowerEntityCaches(physicalData);
+                iPhysicalPowerService.UpdatePhysicalPowerEntityOrm(physicalData);
                 logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库", physicalData.getId());
                 var response = PhysicalPowerUserPropsResponse.ValueOf(
                         physicalData.getNowPhysicalPowerNum(),
@@ -147,7 +150,7 @@ public class PhysicalPowerUsePropsController {
     public void atPhysicalPowerRequest(Session session, PhysicalPowerRequest request, GatewayAttachment gatewayAttachment) throws Exception {
         logger.info("[uid:{}] 获取体力 atPhysicalPowerRequest", session.getUid());
         //获取到服务器 数据库存放
-        var data = userLoginService.GetToUserIDPhysicalPowerEntity(session.getUid());
+        var data =  iPhysicalPowerService.FindOnePhysicalPower(session.getUid());
         if (data == null) {
             var user = userLoginService.LoadPlayerUserEntity(session.getUid());
             if (user == null) {
@@ -157,7 +160,7 @@ public class PhysicalPowerUsePropsController {
             }
             logger.error("[uid:{}] 获取体力 时,数据库相关不存在，开始创建", session.getUid());
             //体力重新创建出来了，返回出去
-            var createData = userLoginService.GetToUserIDPhysicalPowerEntity(session.getUid());
+            var createData = iPhysicalPowerService.FindOnePhysicalPower(session.getUid());
             if (createData == null) {
                 //这种情况一般不会有的，如果有那就rpc通信去创建
                 NetContext.getConsumer().syncAsk(CreatePhysicalPowerAsk.ValueOf(user.getPlayerLv(), user.getId()),
@@ -165,7 +168,7 @@ public class PhysicalPowerUsePropsController {
                 /**
                  * 上创建成功了 重新获取
                  */
-                createData = userLoginService.GetToUserIDPhysicalPowerEntity(session.getUid());
+                createData = iPhysicalPowerService.FindOnePhysicalPower(session.getUid());
             }
             /**
              * 上面rpc 通信 创建 体力失败了 没有创建成功
@@ -190,7 +193,7 @@ public class PhysicalPowerUsePropsController {
         } else {
             NetContext.getConsumer().syncAsk(RefreshLoginPhysicalPowerNumAsk.ValueOf(session.getUid()), RefreshLoginPhysicalPowerNumAnswer.class, request.getUid())
                     .packet();
-            data = userLoginService.GetToUserIDPhysicalPowerEntity(session.getUid());
+            data = iPhysicalPowerService.FindOnePhysicalPower(session.getUid());
             logger.info("[uid:{}] 获取体力 完成", session.getUid());
             //有了数据传递过去
             NetContext.getRouter().send(session, PhysicalPowerResponse.ValueOf(data.getNowPhysicalPowerNum(), data.getResidueTime(),

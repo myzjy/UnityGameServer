@@ -49,30 +49,6 @@ public class UserLoginService implements IUserLoginService {
     }
 
     @Override
-    public PhysicalPowerEntity GetToUserIDPhysicalPowerEntity(long UserID) {
-        var data = physicalPowerEntityIEntityCaches.load(UserID);
-        /**
-         * 之前的缓存 中没有对应玩家数据
-         * 在数据库中拿到，存放到缓存中
-         */
-        if (data == null) {
-            data = OrmContext.getAccessor().load(UserID, PhysicalPowerEntity.class);
-            /**
-             * 放入缓存
-             */
-            physicalPowerEntityIEntityCaches.update(data);
-        }
-        return data;
-    }
-
-    @Override
-    public void UpDataPhysicalPowerEntityCaches(PhysicalPowerEntity entity) {
-        physicalPowerEntityIEntityCaches.update(entity);
-        logger.info("[玩家：{}] 更新 PhysicalPowerEntity 缓存 ", entity.getId());
-
-    }
-
-    @Override
     public PlayerUserEntity LoadPlayerUserEntity(long UserID) {
         var entity = UserModelDict.load(UserID);
         if (entity == null) {

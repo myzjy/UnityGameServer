@@ -20,21 +20,6 @@ public interface IUserLoginService {
 
     int ConfigResourceLength();
 
-    /**
-     * 获取 体力缓存 以玩家的UserID 获取某一个人
-     *
-     * @param UserID
-     * @return
-     */
-    PhysicalPowerEntity GetToUserIDPhysicalPowerEntity(long UserID);
-
-    /**
-     * 更新
-     *
-     * @param entity
-     */
-    void UpDataPhysicalPowerEntityCaches(PhysicalPowerEntity entity);
-
     PlayerUserEntity LoadPlayerUserEntity(long UserID);
 
     void UpdatePlayerUserEntity(PlayerUserEntity entity);
