@@ -1,5 +1,6 @@
 package com.gameServer.home.user.service;
 
+import com.gameServer.commonRefush.entity.AccessGameTimeEntity;
 import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.resource.AccesGameTimeResource;
@@ -35,6 +36,7 @@ public class UserLoginService implements IUserLoginService {
     private IEntityCaches<Long, PlayerUserEntity> UserModelDict;
     @EntityCachesInjection
     private IEntityCaches<Long, PhysicalPowerEntity> physicalPowerEntityIEntityCaches;
+    private IEntityCaches<Integer, AccessGameTimeEntity> accessGameTimeEntityIEntityCaches;
 
     @Override
     public ConfigResource GetConfigResourceData(int lv) {
@@ -87,5 +89,14 @@ public class UserLoginService implements IUserLoginService {
     @Override
     public IEntityCaches<Long, PlayerUserEntity> AllPlayerUserEntityCaches() {
         return UserModelDict;
+    }
+
+    @Override
+    public AccessGameTimeEntity FindAccessGameTimeEntity(int itemId) {
+        var data = accessGameTimeEntityIEntityCaches.load(itemId);
+        if (data == null) {
+            data = OrmContext.getAccessor().load(itemId, AccessGameTimeEntity.class);
+        }
+        return data;
     }
 }

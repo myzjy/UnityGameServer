@@ -102,8 +102,7 @@ public class UserLoginController {
 
     @PacketReceiver
     public void atCreatePhysicalPowerAsk(Session session, CreatePhysicalPowerAsk ask) {
-        var physicalData = OrmContext.getAccessor().load(ask.getUid(),
-                PhysicalPowerEntity.class);
+        var physicalData = physicalPowerService.FindOnePhysicalPower(ask.getUid());
         var userData = userLoginService.LoadPlayerUserEntity(ask.getUid());
         var config = userLoginService.GetConfigResourceData(userData.getPlayerLv());
         /**
@@ -142,7 +141,7 @@ public class UserLoginController {
         }
         var dict = userLoginService.GetAccesTimeAll();
         for (var item : dict) {
-            var entity = OrmContext.getAccessor().load(item.getTimeID(), AccessGameTimeEntity.class);
+            var entity = userLoginService.FindAccessGameTimeEntity(item.getTimeID());
             if (entity == null) {
                 //数据库没有相关配置
                 entity = new AccessGameTimeEntity();

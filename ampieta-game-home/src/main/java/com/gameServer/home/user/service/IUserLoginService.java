@@ -1,5 +1,6 @@
 package com.gameServer.home.user.service;
 
+import com.gameServer.commonRefush.entity.AccessGameTimeEntity;
 import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.resource.AccesGameTimeResource;
@@ -55,4 +56,12 @@ public interface IUserLoginService {
      * @return
      */
     IEntityCaches<Long, PlayerUserEntity> AllPlayerUserEntityCaches();
+
+    /**
+     * 查找 数据库中 的数据
+     * @param itemId
+     * @return
+     */
+    AccessGameTimeEntity FindAccessGameTimeEntity(int itemId);
+
 }
