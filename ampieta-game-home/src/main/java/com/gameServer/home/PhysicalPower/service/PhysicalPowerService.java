@@ -4,6 +4,8 @@ import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.resource.ConfigResource;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.orm.cache.IEntityCaches;
+import com.zfoo.orm.model.anno.EntityCachesInjection;
 import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,16 +19,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class PhysicalPowerService implements IPhysicalPowerService {
     private static final Logger logger = LoggerFactory.getLogger(PhysicalPowerService.class);
+    @EntityCachesInjection
+    private IEntityCaches<Long, PhysicalPowerEntity> physicalPowerEntityIEntityCaches;
 
     @Override
     public PhysicalPowerEntity FindOnePhysicalPower(long uid) {
-        var data = OrmContext.getAccessor().load(uid, PhysicalPowerEntity.class);
+        var data = physicalPowerEntityIEntityCaches.load(uid);
+        /**
+         * 之前的缓存 中没有对应玩家数据
+         * 在数据库中拿到，存放到缓存中
+         */
+        if (data == null) {
+            data = OrmContext.getAccessor().load(uid, PhysicalPowerEntity.class);
+            /**
+             * 放入缓存
+             */
+            physicalPowerEntityIEntityCaches.update(data);
+        }
         return data;
     }
 
     @Override
     public void UpdatePhysicalPowerEntityOrm(PhysicalPowerEntity entity) {
         OrmContext.getAccessor().update(entity);
+        physicalPowerEntityIEntityCaches.update(entity);
+
     }
 
     @Override
@@ -54,18 +71,16 @@ public class PhysicalPowerService implements IPhysicalPowerService {
              * 恢复时间 - 离线时间
              */
             logger.info("[uid:{}] 没有减少 体力恢复实时时间：{},differenceResidue:{}, 判断 过后 differenceToTime:{}",
-                    userEntity.getId(),
-                    dateTime,
-                    entity.getResidueTime(),
-                    differenceToTime);
-
-
+                        userEntity.getId(),
+                        dateTime,
+                        entity.getResidueTime(),
+                        differenceToTime);
             var differenceResidue = entity.getResidueTime() - differenceToTimeNum;
             logger.info("[uid:{}] 体力恢复实时时间：{},differenceResidue:{},differenceToTimeNum:{}",
-                    userEntity.getId(),
-                    dateTime,
-                    differenceResidue,
-                    differenceToTimeNum);
+                        userEntity.getId(),
+                        dateTime,
+                        differenceResidue,
+                        differenceToTimeNum);
             if (differenceResidue > 0) {
                 /**
                  * 恢复时间 - 离线时间 判断 恢复时间比 离线长 或者相等
@@ -73,10 +88,10 @@ public class PhysicalPowerService implements IPhysicalPowerService {
                 entity.setResidueNowTime(TimeUtils.now());
                 entity.setResidueTime(differenceResidue);
                 logger.info("[uid:{}] 设置过后 体力恢复实时时间：{},entity.getResidueTime():{},differenceToTimeNum:{}",
-                        userEntity.getId(),
-                        dateTime,
-                        entity.getResidueTime(),
-                        differenceToTimeNum);
+                            userEntity.getId(),
+                            dateTime,
+                            entity.getResidueTime(),
+                            differenceToTimeNum);
             } else {
                 /**
                  * 恢复时间 - 离线时间 判断 
@@ -114,7 +129,6 @@ public class PhysicalPowerService implements IPhysicalPowerService {
                          */
                         var physicalPowerNum = entity.getMaximumStrength() - nowPhysicalPowerNum;
                         if (physicalPowerNum >= 0) {
-
                         } else {
                             physicalPowerNum = 0;
                         }
@@ -129,9 +143,9 @@ public class PhysicalPowerService implements IPhysicalPowerService {
                         entity.setResidueNowTime(TimeUtils.now());
                         entity.setResidueEndTime(TimeUtils.now() + residueEndTime);
                         logger.info("[UID:{}],当前一点体力恢复结束时间：{},完全体力恢复完：{}",
-                                entity.getId(),
-                                TimeUtils.timeToString(entity.getResidueEndTime()),
-                                TimeUtils.timeToString(entity.getMaxResidueEndTime()));
+                                    entity.getId(),
+                                    TimeUtils.timeToString(entity.getResidueEndTime()),
+                                    TimeUtils.timeToString(entity.getMaxResidueEndTime()));
 //                        entity.setMaxResidueEndTime(TimeUtils.now()+);
                     } else {
                         var residueDifferenceIntoTime = config.getResidueTime() - differenceResidueSub;
@@ -144,9 +158,9 @@ public class PhysicalPowerService implements IPhysicalPowerService {
                         entity.setResidueNowTime(TimeUtils.now());
                         entity.setResidueEndTime(TimeUtils.now() + residueEndTime);
                         logger.info("[UID:{}],当前一点体力恢复结束时间：{},完全体力恢复完：{}",
-                                entity.getId(),
-                                TimeUtils.timeToString(entity.getResidueEndTime()),
-                                TimeUtils.timeToString(entity.getMaxResidueEndTime()));
+                                    entity.getId(),
+                                    TimeUtils.timeToString(entity.getResidueEndTime()),
+                                    TimeUtils.timeToString(entity.getMaxResidueEndTime()));
                     }
                 }
             }
@@ -165,10 +179,10 @@ public class PhysicalPowerService implements IPhysicalPowerService {
                  */
                 if (entity.getNowPhysicalPowerNum() >= entity.getMaximumStrength()) {
                     logger.info("[uid:{}],当前体力：{}， 最大体力：{}",
-                            userEntity.getId(), entity.getNowPhysicalPowerNum(), entity.getMaximumStrength());
+                                userEntity.getId(), entity.getNowPhysicalPowerNum(), entity.getMaximumStrength());
                     entity.setNowPhysicalPowerNum(entity.getMaximumStrength());
                     logger.info("[uid:{}],限制完的当前体力：{}， 最大体力：{}",
-                            userEntity.getId(), entity.getNowPhysicalPowerNum(), entity.getMaximumStrength());
+                                userEntity.getId(), entity.getNowPhysicalPowerNum(), entity.getMaximumStrength());
                     /* *
                      * 所有时间全部为0
                      */
@@ -177,7 +191,6 @@ public class PhysicalPowerService implements IPhysicalPowerService {
                     entity.setResidueEndTime(0);
                     entity.setResidueNowTime(0);
                     logger.info("[uid:{}],时间初始化完毕", userEntity.getId());
-
                 } else {
                     /* *
                      * 体力没满 但是进入这里代表 数据库中的恢复时间是错误的 秒数
@@ -188,9 +201,9 @@ public class PhysicalPowerService implements IPhysicalPowerService {
                      */
                     var residue = config.getResidueTime() * 1_000L;
                     logger.info("[uid:{}],还有{} 体力才能恢复满,总恢复时间为{}",
-                            userEntity.getId(),
-                            (entity.getMaximumStrength() - entity.getNowPhysicalPowerNum()),
-                            residueSum);
+                                userEntity.getId(),
+                                (entity.getMaximumStrength() - entity.getNowPhysicalPowerNum()),
+                                residueSum);
                     entity.setResidueNowTime(TimeUtils.now());
                     entity.setResidueTime(config.getResidueTime());
                     entity.setResidueEndTime(TimeUtils.now() + residue);
@@ -242,9 +255,6 @@ public class PhysicalPowerService implements IPhysicalPowerService {
         } else {
             logger.error("[uid:{}] 时间错误", userEntity.getId());
         }
-
-
         return entity;
     }
-
 }

@@ -60,7 +60,7 @@ public class RegisterController {
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_password_not_affirm.toString()), gatewayAttachment);
             return;
         }
-        var accountUser = OrmContext.getAccessor().load(account, AccountEntity.class);
+        var accountUser =iRegisterService.LoadAccountEntityString(account);
         if (accountUser != null) {
             logger.error("[account:{}]玩家账号,在数据库中存在，请重新输入", account);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_already_exists.getMessage()), gatewayAttachment);

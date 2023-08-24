@@ -56,7 +56,7 @@ public class UserLoginController {
                     RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_account_not_exit.toString())));
             return;
         }
-        var data = userLoginService.GetToUserIDPhysicalPowerEntity(numAsk.getUserId());
+        var data = physicalPowerService.FindOnePhysicalPower(numAsk.getUserId());
         if (data == null) {
             logger.error("[uid:{}]体力缓存数据库不存在，请创建，流程有问题", numAsk.getUserId());
             NetContext.getRouter().send(session,
@@ -95,8 +95,7 @@ public class UserLoginController {
         userEntity.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum());
         userLoginService.UpdatePlayerUserEntity(userEntity);
         //更新 缓存 数据库
-        userLoginService.UpDataPhysicalPowerEntityCaches(data);
-        OrmContext.getAccessor().update(data);
+        physicalPowerService.UpdatePhysicalPowerEntityOrm(data);
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}] 更新数据库", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
         NetContext.getRouter().send(session, RefreshLoginPhysicalPowerNumAnswer.ValueOf());
     }
@@ -127,7 +126,7 @@ public class UserLoginController {
         //设置最大经验
         userData.setNowLvMaxExp(config.getMaxExp());
         //缓存读取
-        physicalData = userLoginService.GetToUserIDPhysicalPowerEntity(ask.getUid());
+        physicalData = physicalPowerService.FindOnePhysicalPower(ask.getUid());
         userData.setNowPhysicalPowerNum(physicalData.getNowPhysicalPowerNum());
         userLoginService.UpdatePlayerUserEntity(userData);
         logger.info("[玩家{}]更新玩家数据库 ", userData.getId());
