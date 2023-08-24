@@ -20,13 +20,6 @@ public interface IUserLoginService {
 
     int ConfigResourceLength();
 
-
-    /**
-     * 读取 先读取 数据库中的 数据 如果数据库中没有 读取缓存数据 读取到，并插入数据
-     *
-     * @param UserID 玩家 uid
-     * @return 返回查找到的玩家数据
-     */
     PlayerUserEntity LoadPlayerUserEntity(long UserID);
 
     /**
@@ -38,7 +31,6 @@ public interface IUserLoginService {
 
     /**
      * 插入
-     *
      * @param entity
      */
     void InsertPlayerUserEntity(PlayerUserEntity entity);
@@ -60,7 +52,7 @@ public interface IUserLoginService {
     /**
      * 玩家数据
      *
-     * @return 返回玩家数据 缓存集合
+     * @return
      */
     IEntityCaches<Long, PlayerUserEntity> AllPlayerUserEntityCaches();
 }

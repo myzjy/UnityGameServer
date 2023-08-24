@@ -40,7 +40,7 @@ public class puzzleController {
             var puzzleConfig = iPuzzleService.GetOrmPuzzleEntityAllList();
             var packet = PuzzleAllConfigResponse.ValueOf();
             List<Puzzle> puzzleList = iPuzzleService.GetTheMapServiceDataList(puzzleConfig);
-            /**L
+            /**
              * 设置 地图 基础属性配置
              */
             packet.setPuzzleConfigList(puzzleList);
