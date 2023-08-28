@@ -64,4 +64,16 @@ public interface IUserLoginService {
      */
     AccessGameTimeEntity FindAccessGameTimeEntity(int itemId);
 
+    /**
+     * 插入数据 保证数据完整
+     * @param entity
+     */
+    void InsertAccessGameTimeEntity(AccessGameTimeEntity entity);
+
+    /**
+     * 更新数据
+     * @param entity
+     */
+    void UpdateAccessGameTimeEntity(AccessGameTimeEntity entity);
+
 }

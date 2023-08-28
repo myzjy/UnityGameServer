@@ -150,6 +150,7 @@ public class UserLoginController {
                 logger.info("{}", dateTime);
                 entity.setTime(new Date(item.getTime()));
                 entity.setId(item.getTimeID());
+                //userLoginService.FindAccessGameTimeEntity()
                 OrmContext.getAccessor().insert(entity);
             } else {
                 entity = new AccessGameTimeEntity();

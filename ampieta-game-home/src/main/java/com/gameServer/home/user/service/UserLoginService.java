@@ -99,4 +99,12 @@ public class UserLoginService implements IUserLoginService {
         }
         return data;
     }
+
+    @Override
+    public void InsertAccessGameTimeEntity(AccessGameTimeEntity entity) {
+    }
+
+    @Override
+    public void UpdateAccessGameTimeEntity(AccessGameTimeEntity entity) {
+    }
 }
