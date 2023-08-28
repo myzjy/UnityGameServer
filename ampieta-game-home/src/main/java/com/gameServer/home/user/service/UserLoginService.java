@@ -102,9 +102,13 @@ public class UserLoginService implements IUserLoginService {
 
     @Override
     public void InsertAccessGameTimeEntity(AccessGameTimeEntity entity) {
+        OrmContext.getAccessor().insert(entity);
+        accessGameTimeEntityIEntityCaches.update(entity);
     }
 
     @Override
     public void UpdateAccessGameTimeEntity(AccessGameTimeEntity entity) {
+        OrmContext.getAccessor().update(entity);
+        accessGameTimeEntityIEntityCaches.update(entity);
     }
 }
