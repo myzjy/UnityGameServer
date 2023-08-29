@@ -19,6 +19,7 @@ import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.protocol.util.JsonUtils;
 import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +37,8 @@ import java.util.Date;
 public class UserLoginController {
     //log文件
     private static final Logger logger = LoggerFactory.getLogger(UserLoginController.class);
-
     @Autowired
     private IUserLoginService userLoginService;
-
     @Autowired
     private IPhysicalPowerService physicalPowerService;
 
@@ -53,14 +52,14 @@ public class UserLoginController {
         var config = userLoginService.GetConfigResourceData(userEntity.getPlayerLv());
         if (userEntity.getId() == 0L) {
             NetContext.getRouter().send(session,
-                    RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_account_not_exit.toString())));
+                                        RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_account_not_exit.toString())));
             return;
         }
         var data = physicalPowerService.FindOnePhysicalPower(numAsk.getUserId());
         if (data == null) {
             logger.error("[uid:{}]体力缓存数据库不存在，请创建，流程有问题", numAsk.getUserId());
             NetContext.getRouter().send(session,
-                    RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_login_process_not.toString())));
+                                        RefreshLoginPhysicalPowerNumAnswer.ValueOf(Error.valueOf(numAsk, I18nEnum.error_login_process_not.toString())));
             return;
         }
         //第一次创建账号 体力恢复满
@@ -68,28 +67,25 @@ public class UserLoginController {
             //这里就不用 error 提示了
             logger.warn("[uid:{}],当前玩家为第一次创建，体力不需要恢复直接满格", userId);
         }
-
         //当前体力
         var nowPhysicalPower = data.getNowPhysicalPowerNum();
         if (nowPhysicalPower >= data.getMaximumStrength()) {
             logger.info("[uid:{}]体力已满[当前体力：{}] [目前等级为止的最大体力：{}]", numAsk.getUserId(), nowPhysicalPower, data.getMaximumStrength());
             //体力满了
             NetContext.getRouter().send(session,
-                    RefreshLoginPhysicalPowerNumAnswer.ValueOf());
+                                        RefreshLoginPhysicalPowerNumAnswer.ValueOf());
         }
         //相差的时间 精确到毫秒级别
         var differenceLastTime = (int) (TimeUtils.now() / 1000) - (int) (data.getResidueNowTime() / 1000);
         //相差秒数
         var differenceToTime = differenceLastTime;
         var dateTime = TimeUtils.timeToString(data.getResidueNowTime());
-
         logger.info("[uid:{}] 体力恢复实时时间：{},更当前时间相差秒数为{}", userEntity.getId(), dateTime, differenceToTime);
         if (differenceToTime >= 0) {
             /**
              * 体力完全恢复 剩余时间
              */
             data = physicalPowerService.PhysicalPowerGetResidueEndTime(data, differenceToTime, config, userEntity);
-
             data = physicalPowerService.PhysicalPowerGetResidueTime(data, differenceToTime, config, userEntity);
         }
         userEntity.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum());
@@ -113,14 +109,13 @@ public class UserLoginController {
             //数据库中没有 需要创建
             var createPhysical =
                     PhysicalPowerEntity.ValueOf(ask.getUid(),
-                            0,
-                            config.getMaxPhysical(),
-                            0,
-                            config.getMaxPhysical(),
-                            0);
+                                                0,
+                                                config.getMaxPhysical(),
+                                                0,
+                                                config.getMaxPhysical(),
+                                                0);
             OrmContext.getAccessor().insert(createPhysical);
         }
-
         logger.info("[UserLoginController] 体力数据创建成功 插入数据库成功");
         //设置最大经验
         userData.setNowLvMaxExp(config.getMaxExp());
@@ -130,7 +125,6 @@ public class UserLoginController {
         userLoginService.UpdatePlayerUserEntity(userData);
         logger.info("[玩家{}]更新玩家数据库 ", userData.getId());
         NetContext.getRouter().send(session, new CreatePhysicalPowerAnswer());
-
     }
 
     @EventReceiver
@@ -146,21 +140,18 @@ public class UserLoginController {
                 //数据库没有相关配置
                 entity = new AccessGameTimeEntity();
                 entity.setTimeID(item.getTimeID());
-                var dateTime = TimeUtils.timeToString(item.getTime());
-                logger.info("{}", dateTime);
                 entity.setTime(new Date(item.getTime()));
                 entity.setId(item.getTimeID());
-                //userLoginService.FindAccessGameTimeEntity()
-                OrmContext.getAccessor().insert(entity);
+                userLoginService.InsertAccessGameTimeEntity(entity);
             } else {
                 entity = new AccessGameTimeEntity();
                 entity.setTimeID(item.getTimeID());
                 entity.setTime(new Date(item.getTime()));
                 entity.setId(item.getTimeID());
-                var dateTime = TimeUtils.timeToString(item.getTime());
-                logger.info("{}", dateTime);
-                OrmContext.getAccessor().update(entity);
+                userLoginService.UpdateAccessGameTimeEntity(entity);
             }
+            logger.info("AccesGameTimeResource:{}",JsonUtils.object2StringTurbo(entity));
+
         }
     }
 
@@ -194,8 +185,8 @@ public class UserLoginController {
         /**
          * 返回 GameMainUserInfo Response
          */
-        NetContext.getRouter().send(session, GameMainUserInfoToResponse.ValueOf(nowLv,
-                maxNowLv, exp, nowLvMaxExp, goldCoinNum, diamondsNum, paidDiamondsNum), gatewayAttachment);
-
+        var dataResponse = GameMainUserInfoToResponse.ValueOf(nowLv, maxNowLv, exp, nowLvMaxExp, goldCoinNum, diamondsNum, paidDiamondsNum);
+        logger.info("GameMainUserInfoToResponse:{}", JsonUtils.object2StringTurbo(dataResponse));
+        NetContext.getRouter().send(session, dataResponse, gatewayAttachment);
     }
 }
