@@ -8,16 +8,19 @@ import com.gameServer.commonRefush.protocol.serverConfig.ItemBaseData;
 import com.gameServer.commonRefush.protocol.serverConfig.ServerConfigRequest;
 import com.gameServer.commonRefush.protocol.serverConfig.ServerConfigResponse;
 import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
+import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.packet.common.Error;
 import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.protocol.util.JsonUtils;
 import com.zfoo.storage.model.anno.ResInjection;
 import com.zfoo.storage.model.vo.Storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -36,6 +39,8 @@ public class ServerBaseConfigController {
      */
     @ResInjection
     public Storage<Integer, ItemBaseCsvResource> itemCsvResources;
+    @Autowired
+    private IUserLoginService iUserLoginService;
 
     @PacketReceiver
     public void atServerConfigRequest(Session session, ServerConfigRequest request, GatewayAttachment gatewayAttachment) {
@@ -58,7 +63,7 @@ public class ServerBaseConfigController {
     @PacketReceiver
     public void atRefreshingResourcesMainRequest(Session session, RefreshingResourcesMainRequest request, GatewayAttachment gatewayAttachment) {
         logger.info("刷新主界面上面的金币 钻石 付费钻石 调用protocol id：{}", request.protocolId());
-        var user = OrmContext.getAccessor().load(session.getUid(), PlayerUserEntity.class);
+        var user =iUserLoginService.LoadPlayerUserEntity(session.getUid());
         if (user == null) {
             //没查询到 对应角色 报错提示
             logger.error("数据库中查询角色id：{},出现错误", session.getUid());
@@ -68,6 +73,7 @@ public class ServerBaseConfigController {
         }
         //查询到角色 返回 金币 钻石 付费钻石
         var data = RefreshingResourcesMainResponse.ValueOf(user.getGoldNum(), user.getPremiumDiamondNum(), user.getDiamondNum());
+        logger.info("RefreshingResourcesMainResponse:{}", JsonUtils.object2StringTurbo(data));
         NetContext.getRouter().send(session, data, gatewayAttachment.getSignalAttachment());
     }
 }
