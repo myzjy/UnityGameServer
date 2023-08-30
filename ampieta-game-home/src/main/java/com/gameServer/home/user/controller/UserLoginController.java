@@ -19,6 +19,7 @@ import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.protocol.util.JsonUtils;
 import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,7 +158,7 @@ public class UserLoginController {
                 entity.setId(item.getTimeID());
                 userLoginService.UpdateAccessGameTimeEntity(entity);
             }
-            logger.info("AccesGameTimeResource:{}",JsonUtils.object2StringTurbo(entity));
+            logger.info("AccesGameTimeResource:{}", JsonUtils.object2StringTurbo(entity));
 
         }
     }
