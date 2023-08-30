@@ -34,7 +34,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class PhysicalPowerUsePropsController {
     private static final Logger logger = LoggerFactory.getLogger(PhysicalPowerUsePropsController.class);
-
     /**
      * 体力 service
      */
@@ -108,20 +107,16 @@ public class PhysicalPowerUsePropsController {
                     //设置1点体力 恢复时间
                     physicalData.setResidueTime(configData.getResidueTime());
                 }
-
                 if (physicalData.getMaxResidueEndTime() < 1) {
                     physicalData.setMaxResidueEndTime(TimeUtils.now() + residueSumLong);
                 } else {
                     physicalData.setMaxResidueEndTime(physicalData.getMaximusResidueEndTime() + residueSumLong);
                 }
-
                 if (physicalData.getResidueEndTime() < 1) {
                     //
                     physicalData.setResidueEndTime(TimeUtils.now() + residueOneSumLong);
                 }
-
                 physicalData.setNowPhysicalPowerNum(physicalReduce);
-
                 physicalData.setMaximusResidueEndTime(physicalData.getMaximusResidueEndTime() + residueSum);
                 physicalData.setResidueNowTime(TimeUtils.now());
                 //更新数据库内容
@@ -166,7 +161,7 @@ public class PhysicalPowerUsePropsController {
             if (createData == null) {
                 //这种情况一般不会有的，如果有那就rpc通信去创建
                 NetContext.getConsumer().syncAsk(CreatePhysicalPowerAsk.ValueOf(user.getPlayerLv(), user.getId()),
-                        CreatePhysicalPowerAnswer.class, null).packet();
+                                                 CreatePhysicalPowerAnswer.class, null).packet();
                 /**
                  * 上创建成功了 重新获取
                  */
@@ -177,7 +172,6 @@ public class PhysicalPowerUsePropsController {
              * 没有获取到对应
              */
             if (createData == null) {
-
                 logger.error("[uid:{}] 获取体力 时,数据库错误，创建数据错误", session.getUid());
                 NetContext.getRouter().send(session, Error.valueOf("数据库错误，创建数据错误，请联系客服"), gatewayAttachment);
                 return;
@@ -185,29 +179,28 @@ public class PhysicalPowerUsePropsController {
             logger.info("[uid:{}] 获取体力 时,数据库相关不存在，创建成功", session.getUid());
             //有了数据传递过去
             NetContext.getRouter().send(session,
-                    PhysicalPowerResponse.ValueOf(
-                            createData.getNowPhysicalPowerNum(),
-                            createData.getResidueTime(),
-                            createData.getMaximumStrength(),
-                            createData.getMaximusResidueEndTime(),
-                            createData.getResidueNowTime()), gatewayAttachment);
-
+                                        PhysicalPowerResponse.ValueOf(
+                                                createData.getNowPhysicalPowerNum(),
+                                                createData.getResidueTime(),
+                                                createData.getMaximumStrength(),
+                                                createData.getMaximusResidueEndTime(),
+                                                createData.getResidueNowTime()), gatewayAttachment);
         } else {
             NetContext.getConsumer().syncAsk(RefreshLoginPhysicalPowerNumAsk.ValueOf(session.getUid()), RefreshLoginPhysicalPowerNumAnswer.class, request.getUid())
-                    .packet();
+                      .packet();
             data = physicalPowerService.FindOnePhysicalPower(session.getUid());
-            logger.info("[uid:{}] 获取体力 完成", session.getUid());
+            logger.info("[uid:{}] 获取体力 完成,PhysicalPowerEntity:{}", session.getUid(), JsonUtils.object2StringTurbo(data));
+            var response = PhysicalPowerResponse.ValueOf(data.getNowPhysicalPowerNum(), data.getResidueTime(),
+                                                         data.getMaximumStrength(), data.getMaximusResidueEndTime(), data.getResidueNowTime());
+            logger.info("PhysicalPowerResponse:{}", JsonUtils.object2StringTurbo(response));
             //有了数据传递过去
-            NetContext.getRouter().send(session, PhysicalPowerResponse.ValueOf(data.getNowPhysicalPowerNum(), data.getResidueTime(),
-                    data.getMaximumStrength(), data.getMaximusResidueEndTime(), data.getResidueNowTime()), gatewayAttachment);
-
+            NetContext.getRouter().send(session, response, gatewayAttachment);
         }
     }
 
     @PacketReceiver
     public void atPhysicalPowerSecondsRequest(Session session, PhysicalPowerSecondsRequest request, GatewayAttachment gatewayAttachment) {
         logger.info("当前请求 PhysicalPowerSecondsRequest [{}]", request.protocolId());
-
         var nowTimeDown = request.getNowTime() - TimeUtils.now();
         logger.info("UID[{}], 时间差距 {} ms ,{} s", session.getUid(), nowTimeDown, nowTimeDown / 1000);
         boolean isCheating = false;
@@ -223,36 +216,32 @@ public class PhysicalPowerUsePropsController {
         if (!isCheating) {
             //正常发请求时间没有错乱，如果时间错乱需要
             NetContext.getConsumer().asyncAsk(RefreshLoginPhysicalPowerNumAsk.ValueOf(uid), RefreshLoginPhysicalPowerNumAnswer.class, uid)
-                    .whenComplete(userData -> {
-                        //增长体力
-                        if (userData.getError() != null) {
-                            //失败
-                            NetContext.getRouter().send(session, userData.getError(), gatewayAttachment);
-                            return;
-                        }
-                        //rpc 体力缓存已经刷新 返回出去
-                        var PhysicalCache = OrmContext.getAccessor().load(session.getUid(), PhysicalPowerEntity.class);
-                        if (PhysicalCache != null) {
-                            NetContext.getRouter().send(session,
-                                    PhysicalPowerSecondsResponse.ValueOf(
-                                            PhysicalCache.getNowPhysicalPowerNum(),
-                                            PhysicalCache.getResidueTime(),
-                                            PhysicalCache.getResidueNowTime(),
-                                            PhysicalCache.getMaximumStrength(),
-                                            PhysicalCache.getMaximusResidueEndTime()), gatewayAttachment);
-                            return;
-                        } else {
-                            NetContext.getRouter().send(session, Error.valueOf(request, I18nEnum.error_login_process_not.toString()), gatewayAttachment);
-                            return;
-                        }
-                    });
-
+                      .whenComplete(userData -> {
+                          //增长体力
+                          if (userData.getError() != null) {
+                              //失败
+                              NetContext.getRouter().send(session, userData.getError(), gatewayAttachment);
+                              return;
+                          }
+                          //rpc 体力缓存已经刷新 返回出去
+                          var PhysicalCache = physicalPowerService.FindOnePhysicalPower(session.getUid());
+                          if (PhysicalCache != null) {
+                              var dataResponse = PhysicalPowerSecondsResponse.ValueOf(
+                                      PhysicalCache.getNowPhysicalPowerNum(),
+                                      PhysicalCache.getResidueTime(),
+                                      PhysicalCache.getResidueNowTime(),
+                                      PhysicalCache.getMaximumStrength(),
+                                      PhysicalCache.getMaximusResidueEndTime());
+                              logger.info("PhysicalPowerSecondsResponse:{}", JsonUtils.object2StringTurbo(dataResponse));
+                              NetContext.getRouter().send(session, dataResponse, gatewayAttachment);
+                          } else {
+                              NetContext.getRouter().send(session, Error.valueOf(request, I18nEnum.error_login_process_not.toString()), gatewayAttachment);
+                          }
+                          return;
+                      });
         } else {
             //请求时间出现问题 需要加入黑名单
             NetContext.getRouter().send(session, Error.valueOf(request, "错误时间，请注意"));
         }
-
     }
-
-
 }

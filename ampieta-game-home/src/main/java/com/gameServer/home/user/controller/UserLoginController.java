@@ -36,8 +36,10 @@ import java.util.Date;
 public class UserLoginController {
     //log文件
     private static final Logger logger = LoggerFactory.getLogger(UserLoginController.class);
+
     @Autowired
     private IUserLoginService userLoginService;
+
     @Autowired
     private IPhysicalPowerService physicalPowerService;
 
@@ -66,6 +68,7 @@ public class UserLoginController {
             //这里就不用 error 提示了
             logger.warn("[uid:{}],当前玩家为第一次创建，体力不需要恢复直接满格", userId);
         }
+
         //当前体力
         var nowPhysicalPower = data.getNowPhysicalPowerNum();
         if (nowPhysicalPower >= data.getMaximumStrength()) {
@@ -79,6 +82,7 @@ public class UserLoginController {
         //相差秒数
         var differenceToTime = differenceLastTime;
         var dateTime = TimeUtils.timeToString(data.getResidueNowTime());
+
         logger.info("[uid:{}] 体力恢复实时时间：{},更当前时间相差秒数为{}", userEntity.getId(), dateTime, differenceToTime);
         if (differenceToTime >= 0) {
             /**
@@ -117,6 +121,7 @@ public class UserLoginController {
                                                 0);
             OrmContext.getAccessor().insert(createPhysical);
         }
+
         logger.info("[UserLoginController] 体力数据创建成功 插入数据库成功");
         //设置最大经验
         userData.setNowLvMaxExp(config.getMaxExp());
@@ -125,9 +130,8 @@ public class UserLoginController {
         userData.setNowPhysicalPowerNum(physicalData.getNowPhysicalPowerNum());
         userLoginService.UpdatePlayerUserEntity(userData);
         logger.info("[玩家{}]更新玩家数据库 ", userData.getId());
-        var answer = new CreatePhysicalPowerAnswer();
-        answer.setTips("OK");
-        NetContext.getRouter().send(session, answer);
+        NetContext.getRouter().send(session, new CreatePhysicalPowerAnswer());
+
     }
 
     @EventReceiver
@@ -143,21 +147,18 @@ public class UserLoginController {
                 //数据库没有相关配置
                 entity = new AccessGameTimeEntity();
                 entity.setTimeID(item.getTimeID());
-                var dateTime = TimeUtils.timeToString(item.getTime());
-                logger.info("{}", dateTime);
                 entity.setTime(new Date(item.getTime()));
                 entity.setId(item.getTimeID());
-                //userLoginService.FindAccessGameTimeEntity()
-                OrmContext.getAccessor().insert(entity);
+                userLoginService.InsertAccessGameTimeEntity(entity);
             } else {
                 entity = new AccessGameTimeEntity();
                 entity.setTimeID(item.getTimeID());
                 entity.setTime(new Date(item.getTime()));
                 entity.setId(item.getTimeID());
-                var dateTime = TimeUtils.timeToString(item.getTime());
-                logger.info("{}", dateTime);
-                OrmContext.getAccessor().update(entity);
+                userLoginService.UpdateAccessGameTimeEntity(entity);
             }
+            logger.info("AccesGameTimeResource:{}",JsonUtils.object2StringTurbo(entity));
+
         }
     }
 
@@ -191,7 +192,8 @@ public class UserLoginController {
         /**
          * 返回 GameMainUserInfo Response
          */
-        NetContext.getRouter().send(session, GameMainUserInfoToResponse.ValueOf(nowLv,
-                                                                                maxNowLv, exp, nowLvMaxExp, goldCoinNum, diamondsNum, paidDiamondsNum), gatewayAttachment);
+        var dataResponse = GameMainUserInfoToResponse.ValueOf(nowLv, maxNowLv, exp, nowLvMaxExp, goldCoinNum, diamondsNum, paidDiamondsNum);
+        logger.info("GameMainUserInfoToResponse:{}", JsonUtils.object2StringTurbo(dataResponse));
+        NetContext.getRouter().send(session, dataResponse, gatewayAttachment);
     }
 }
