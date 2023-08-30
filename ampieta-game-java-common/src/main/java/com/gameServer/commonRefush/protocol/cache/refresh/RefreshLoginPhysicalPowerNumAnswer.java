@@ -17,35 +17,26 @@ import com.zfoo.protocol.registration.anno.Protocol;
 //@Protocol(id = 1016)
 public class RefreshLoginPhysicalPowerNumAnswer implements IPacket {
     public static final transient short PROTOCOL_ID = 1016;
-    
+
     public static RefreshLoginPhysicalPowerNumAnswer ValueOf() {
         RefreshLoginPhysicalPowerNumAnswer data = new RefreshLoginPhysicalPowerNumAnswer();
 //        data.setPlayerUserEntity(Entity);
         return data;
     }
 
+    private String tips;
     private Error error;
 
     @Override
     public short protocolId() {
         return PROTOCOL_ID;
     }
+
     public static RefreshLoginPhysicalPowerNumAnswer ValueOf(Error error) {
         RefreshLoginPhysicalPowerNumAnswer data = new RefreshLoginPhysicalPowerNumAnswer();
         data.setError(error);
         return data;
     }
-//
-//    /**
-//     * 返回出去体力计算完成缓存
-//     */
-//    public PlayerUserEntity getPlayerUserEntity() {
-//        return playerUserEntity;
-//    }
-//
-//    public void setPlayerUserEntity(PlayerUserEntity playerUserEntity) {
-//        this.playerUserEntity = playerUserEntity;
-//    }
 
     public Error getError() {
         return error;
@@ -55,4 +46,11 @@ public class RefreshLoginPhysicalPowerNumAnswer implements IPacket {
         this.error = error;
     }
 
+    public String getTips() {
+        return tips;
+    }
+
+    public void setTips(String tips) {
+        this.tips = tips;
+    }
 }

@@ -3,6 +3,7 @@ package com.gameServer.home.login.controller;
 import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.constant.TankDeployEnum;
 import com.gameServer.commonRefush.entity.AccountEntity;
+import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer;
 import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk;
@@ -10,6 +11,7 @@ import com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest;
 import com.gameServer.commonRefush.protocol.login.LoginRequest;
 import com.gameServer.commonRefush.protocol.login.LoginResponse;
 import com.gameServer.commonRefush.protocol.login.LogoutRequest;
+import com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerSecondsResponse;
 import com.gameServer.commonRefush.resource.AccesGameTimeResource;
 import com.gameServer.commonRefush.resource.ConfigResource;
 import com.gameServer.commonRefush.util.TokenUtils;
@@ -118,13 +120,14 @@ public class LoginController {
         }
         var data = userLoginService.GetConfigResourceData(user.getPlayerLv());
         session.setUid(user.getId());
-        var userData = NetContext.getConsumer().syncAsk(
-                RefreshLoginPhysicalPowerNumAsk.ValueOf(user.getId()), RefreshLoginPhysicalPowerNumAnswer.class, user.getId()).packet();
-        if (userData.getError() != null) {
-            logger.error("[uid:{}] 刷新 玩家自己体力 缓存数据库 出现错误", uid);
-            NetContext.getRouter().send(session, userData.getError());
-            return;
-        }
+        NetContext.getConsumer().asyncAsk(RefreshLoginPhysicalPowerNumAsk.ValueOf(user.getId()), RefreshLoginPhysicalPowerNumAnswer.class, user.getId())
+                  .whenComplete(userData -> {
+                      if (userData.getError() != null) {
+                          logger.error("[uid:{}] 刷新 玩家自己体力 缓存数据库 出现错误", uid);
+                          NetContext.getRouter().send(session, userData.getError());
+                          return;
+                      }
+                  });
         var userCache = userLoginService.LoadPlayerUserEntity(session.getUid());
         if (userCache == null) {
             logger.error("[提供 uid：{}] 数据库不存在相关人物，请注意！！！！！！！", session.getUid());

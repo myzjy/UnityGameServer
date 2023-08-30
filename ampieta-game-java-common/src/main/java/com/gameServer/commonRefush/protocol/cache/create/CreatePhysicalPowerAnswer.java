@@ -25,5 +25,13 @@ public class CreatePhysicalPowerAnswer implements IPacket {
     public short protocolId() {
         return PROTOCOL_ID;
     }
+    private String tips;
 
+    public String getTips() {
+        return tips;
+    }
+
+    public void setTips(String tips) {
+        this.tips = tips;
+    }
 }
