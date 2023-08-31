@@ -4,8 +4,6 @@ import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.constant.TankDeployEnum;
 import com.gameServer.commonRefush.entity.AccountEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
-import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer;
-import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk;
 import com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest;
 import com.gameServer.commonRefush.protocol.login.LoginRequest;
 import com.gameServer.commonRefush.protocol.login.LoginResponse;
@@ -13,6 +11,7 @@ import com.gameServer.commonRefush.protocol.login.LogoutRequest;
 import com.gameServer.commonRefush.resource.AccesGameTimeResource;
 import com.gameServer.commonRefush.resource.ConfigResource;
 import com.gameServer.commonRefush.util.TokenUtils;
+import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
@@ -51,6 +50,8 @@ public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     private IUserLoginService userLoginService;
+    @Autowired
+    private IPhysicalPowerService physicalPowerService;
     @Value("${spring.profiles.active}")
     private TankDeployEnum deployEnum;
 
@@ -109,28 +110,30 @@ public class LoginController {
             return;
         }
         //通过UID获取
-        var user = userLoginService.LoadPlayerUserEntity(uid);
-        if (user == null) {
-            logger.error("发送过来 [uid:{}] 数据库中不存在", uid);
+        var userCache = userLoginService.LoadPlayerUserEntity(uid);
+        if (userCache == null) {
+            logger.error("发送过来 [uid:{}] 数据库不存在相关人物，请注意！！！！！！！", uid);
             //必须保证账号存在
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()), gatewayAttachment);
             return;
         }
-        var data = userLoginService.GetConfigResourceData(user.getPlayerLv());
-        session.setUid(user.getId());
-        var userData = NetContext.getConsumer().syncAsk(
-                RefreshLoginPhysicalPowerNumAsk.ValueOf(user.getId()), RefreshLoginPhysicalPowerNumAnswer.class, user.getId()).packet();
-        if (userData.getError() != null) {
-            logger.error("[uid:{}] 刷新 玩家自己体力 缓存数据库 出现错误", uid);
-            NetContext.getRouter().send(session, userData.getError());
+        //获取的玩家 uid小于0
+        if (userCache.getId() <= 0) {
+            logger.error("[玩家当前uid:{}][sid：{}],错误值，请检查", userCache.getId(), session.getSid());
+            userLoginService.UpdatePlayerUserEntity(userCache);
+            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
             return;
         }
-        var userCache = userLoginService.LoadPlayerUserEntity(session.getUid());
-        if (userCache == null) {
-            logger.error("[提供 uid：{}] 数据库不存在相关人物，请注意！！！！！！！", session.getUid());
-            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_uid_process_not.toString()));
+        var data = userLoginService.GetConfigResourceData(userCache.getPlayerLv());
+        session.setUid(userCache.getId());
+        var powerData = physicalPowerService.FindOnePhysicalPower(session.getUid());
+        if (powerData == null) {
+            logger.error("[uid:{}] 刷新 玩家自己体力 缓存数据库 出现错误,error:{}", uid, I18nEnum.error_login_process_not.toString());
+            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_login_process_not.toString()), gatewayAttachment);
             return;
         }
+        physicalPowerService.RefreshLoginPhysicalPower(session.getUid());
+
         //以防测试期间出现问题
         if (userCache.getToken() == null) {
             logger.info("[当前 uid:{}] 开始获取token", userCache.getId());
@@ -140,65 +143,54 @@ public class LoginController {
             userCache.setToken(token);
         }
         userLoginService.UpdatePlayerUserEntity(userCache);
-        user = userLoginService.LoadPlayerUserEntity(session.getUid());
-        if (user == null) {
-            logger.error("[提供 uid：{}] 数据库不存在相关人物，请注意！！！！！！！", session.getUid());
-            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_uid_process_not.toString()), gatewayAttachment);
-            return;
-        }
+
         //防止token 过时
-        var tokenTriple = TokenUtils.get(user.getToken());
+        var tokenTriple = TokenUtils.get(userCache.getToken());
         var expirationTimeLong = tokenTriple.getRight();
         var nowLong = TimeUtils.now();
         logger.info("当前token：{},[当前uid：{}],[当前sid：{}]", tokenTriple, session.getUid(), session.getSid());
         logger.info("[expirationTimeLong:{}],[nowLog:{}][当前token是否过期：{}]", TimeUtils.timeToString(expirationTimeLong), TimeUtils.timeToString(nowLong), nowLong > expirationTimeLong);
         if (nowLong > expirationTimeLong) {
             //代表过时的token
-            var token = TokenUtils.set(user.getId());
-            logger.info("[{}]重新设置Token:[{}]", user.getId(), token);
-            user.setToken(token);
+            var token = TokenUtils.set(userCache.getId());
+            logger.info("[{}]重新设置Token:[{}]", userCache.getId(), token);
+            userCache.setToken(token);
         }
-        user.setNowLvMaxExp(data.getMaxExp());
+        userCache.setNowLvMaxExp(data.getMaxExp());
         //覆盖登录时间
-        user = PlayerUserEntity.valueOf(user.getId(),
-                                        user.getName(),
+        userCache = PlayerUserEntity.valueOf(userCache.getId(),
+                                        userCache.getName(),
                                         TimeUtils.now(),
-                                        user.getRegisterTime(),
-                                        user.getToken(),
-                                        user.getGoldNum(),
-                                        user.getPremiumDiamondNum(),
-                                        user.getDiamondNum(),
-                                        user.getEndLoginOutTime(),
-                                        user.getNowExp(),
-                                        user.getNowPhysicalPowerNum(),
-                                        user.getNowLvMaxExp(),
-                                        user.getPlayerLv());
-        user.setLastLoginTime(TimeUtils.now());
-        logger.info("[{}][{}]创建最新玩家登录数据 更新数据库", user.getId(), sid);
-        user.sid = sid;
-        user.session = session;
+                                        userCache.getRegisterTime(),
+                                        userCache.getToken(),
+                                        userCache.getGoldNum(),
+                                        userCache.getPremiumDiamondNum(),
+                                        userCache.getDiamondNum(),
+                                        userCache.getEndLoginOutTime(),
+                                        userCache.getNowExp(),
+                                        userCache.getNowPhysicalPowerNum(),
+                                        userCache.getNowLvMaxExp(),
+                                        userCache.getPlayerLv());
+        userCache.setLastLoginTime(TimeUtils.now());
+        logger.info("[{}][{}]创建最新玩家登录数据 更新数据库", userCache.getId(), sid);
+        userCache.sid = sid;
+        userCache.session = session;
         logger.info("[玩家{}] 更新 玩家数据缓存 赋值 session sid", uid);
-        logger.info("[{}][{}]数据库刷新成功", user.getId(), sid);
-        //获取的玩家 uid小于0
-        if (user.getId() <= 0) {
-            logger.error("[玩家当前uid:{}][sid：{}],错误值，请检查", user.getId(), session.getSid());
-            userLoginService.UpdatePlayerUserEntity(user);
-            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
-            return;
-        }
-        userLoginService.UpdatePlayerUserEntity(user);
+        logger.info("[{}][{}]数据库刷新成功", userCache.getId(), sid);
+
+        userLoginService.UpdatePlayerUserEntity(userCache);
         //返回数据
         NetContext.getRouter().send(session,
-                                    LoginResponse.valueOf(user.getToken(),
-                                                          user.getName(),
-                                                          user.id(),
-                                                          user.getGoldNum(),
-                                                          user.getPremiumDiamondNum(),
-                                                          user.getDiamondNum(),
-                                                          user.getPlayerLv(),
-                                                          user.getNowExp(),
+                                    LoginResponse.valueOf(userCache.getToken(),
+                                                          userCache.getName(),
+                                                          userCache.id(),
+                                                          userCache.getGoldNum(),
+                                                          userCache.getPremiumDiamondNum(),
+                                                          userCache.getDiamondNum(),
+                                                          userCache.getPlayerLv(),
+                                                          userCache.getNowExp(),
                                                           userLoginService.ConfigResourceLength(),
-                                                          user.getNowLvMaxExp()), gatewayAttachment);
+                                                          userCache.getNowLvMaxExp()), gatewayAttachment);
     }
 
     @PacketReceiver

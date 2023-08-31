@@ -1,17 +1,10 @@
 package com.gameServer.home.PhysicalPower.controller;
 
 import com.gameServer.commonRefush.constant.I18nEnum;
-import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
-import com.gameServer.commonRefush.entity.PlayerUserEntity;
-import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnswer;
-import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk;
-import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer;
-import com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk;
 import com.gameServer.commonRefush.protocol.physicalPower.*;
 import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.net.NetContext;
-import com.zfoo.net.handler.codec.json.JsonPacket;
 import com.zfoo.net.packet.common.Error;
 import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
@@ -159,9 +152,7 @@ public class PhysicalPowerUsePropsController {
             //体力重新创建出来了，返回出去
             var createData = physicalPowerService.FindOnePhysicalPower(session.getUid());
             if (createData == null) {
-                //这种情况一般不会有的，如果有那就rpc通信去创建
-                NetContext.getConsumer().syncAsk(CreatePhysicalPowerAsk.ValueOf(user.getPlayerLv(), user.getId()),
-                                                 CreatePhysicalPowerAnswer.class, null).packet();
+                physicalPowerService.CreatePhysicalPower(user.getPlayerLv(), user.getId());
                 /**
                  * 上创建成功了 重新获取
                  */
@@ -186,8 +177,7 @@ public class PhysicalPowerUsePropsController {
                                                 createData.getMaximusResidueEndTime(),
                                                 createData.getResidueNowTime()), gatewayAttachment);
         } else {
-            NetContext.getConsumer().syncAsk(RefreshLoginPhysicalPowerNumAsk.ValueOf(session.getUid()), RefreshLoginPhysicalPowerNumAnswer.class, request.getUid())
-                      .packet();
+            physicalPowerService.RefreshLoginPhysicalPower(session.getUid());
             data = physicalPowerService.FindOnePhysicalPower(session.getUid());
             logger.info("[uid:{}] 获取体力 完成,PhysicalPowerEntity:{}", session.getUid(), JsonUtils.object2StringTurbo(data));
             var response = PhysicalPowerResponse.ValueOf(data.getNowPhysicalPowerNum(), data.getResidueTime(),
@@ -212,33 +202,27 @@ public class PhysicalPowerUsePropsController {
             isCheating = true;
         }
         //玩家UID
-        var uid = session.getUid();
         if (!isCheating) {
             //正常发请求时间没有错乱，如果时间错乱需要
-            NetContext.getConsumer().asyncAsk(RefreshLoginPhysicalPowerNumAsk.ValueOf(uid), RefreshLoginPhysicalPowerNumAnswer.class, uid)
-                      .whenComplete(userData -> {
-                          //增长体力
-                          if (userData.getError() != null) {
-                              //失败
-                              NetContext.getRouter().send(session, userData.getError(), gatewayAttachment);
-                              return;
-                          }
-                          //rpc 体力缓存已经刷新 返回出去
-                          var PhysicalCache = physicalPowerService.FindOnePhysicalPower(session.getUid());
-                          if (PhysicalCache != null) {
-                              var dataResponse = PhysicalPowerSecondsResponse.ValueOf(
-                                      PhysicalCache.getNowPhysicalPowerNum(),
-                                      PhysicalCache.getResidueTime(),
-                                      PhysicalCache.getResidueNowTime(),
-                                      PhysicalCache.getMaximumStrength(),
-                                      PhysicalCache.getMaximusResidueEndTime());
-                              logger.info("PhysicalPowerSecondsResponse:{}", JsonUtils.object2StringTurbo(dataResponse));
-                              NetContext.getRouter().send(session, dataResponse, gatewayAttachment);
-                          } else {
-                              NetContext.getRouter().send(session, Error.valueOf(request, I18nEnum.error_login_process_not.toString()), gatewayAttachment);
-                          }
-                          return;
-                      });
+            var refresh = physicalPowerService.RefreshLoginPhysicalPower(session.getUid());
+            if (refresh) {
+                NetContext.getRouter().send(session, Error.valueOf("体力错误"), gatewayAttachment);
+                return;
+            }
+            //rpc 体力缓存已经刷新 返回出去
+            var PhysicalCache = physicalPowerService.FindOnePhysicalPower(session.getUid());
+            if (PhysicalCache != null) {
+                var dataResponse = PhysicalPowerSecondsResponse.ValueOf(
+                        PhysicalCache.getNowPhysicalPowerNum(),
+                        PhysicalCache.getResidueTime(),
+                        PhysicalCache.getResidueNowTime(),
+                        PhysicalCache.getMaximumStrength(),
+                        PhysicalCache.getMaximusResidueEndTime());
+                logger.info("PhysicalPowerSecondsResponse:{}", JsonUtils.object2StringTurbo(dataResponse));
+                NetContext.getRouter().send(session, dataResponse, gatewayAttachment);
+            } else {
+                NetContext.getRouter().send(session, Error.valueOf(request, I18nEnum.error_login_process_not.toString()), gatewayAttachment);
+            }
         } else {
             //请求时间出现问题 需要加入黑名单
             NetContext.getRouter().send(session, Error.valueOf(request, "错误时间，请注意"));

@@ -3,12 +3,14 @@ package com.gameServer.home.PhysicalPower.service;
 import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.resource.ConfigResource;
+import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.orm.cache.IEntityCaches;
 import com.zfoo.orm.model.anno.EntityCachesInjection;
 import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,6 +23,8 @@ public class PhysicalPowerService implements IPhysicalPowerService {
     private static final Logger logger = LoggerFactory.getLogger(PhysicalPowerService.class);
     @EntityCachesInjection
     private IEntityCaches<Long, PhysicalPowerEntity> physicalPowerEntityIEntityCaches;
+    @Autowired
+    private IUserLoginService userLoginService;
 
     @Override
     public PhysicalPowerEntity FindOnePhysicalPower(long uid) {
@@ -43,7 +47,6 @@ public class PhysicalPowerService implements IPhysicalPowerService {
     public void UpdatePhysicalPowerEntityOrm(PhysicalPowerEntity entity) {
         OrmContext.getAccessor().update(entity);
         physicalPowerEntityIEntityCaches.update(entity);
-
     }
 
     @Override
@@ -256,5 +259,69 @@ public class PhysicalPowerService implements IPhysicalPowerService {
             logger.error("[uid:{}] 时间错误", userEntity.getId());
         }
         return entity;
+    }
+
+    @Override
+    public boolean RefreshLoginPhysicalPower(long uid) {
+        var userEntity = userLoginService.LoadPlayerUserEntity(uid);
+        var data = FindOnePhysicalPower(uid);
+        var config = userLoginService.GetConfigResourceData(userEntity.getPlayerLv());
+        //第一次创建账号 体力恢复满
+        if (userEntity.getLastLoginTime() < 1) {
+            //这里就不用 error 提示了
+            logger.warn("[uid:{}],当前玩家为第一次创建，体力不需要恢复直接满格", uid);
+        }
+        var nowPhysicalPower = data.getNowPhysicalPowerNum();
+        if (nowPhysicalPower >= data.getMaximumStrength()) {
+            return true;
+        }
+        //相差的时间 精确到毫秒级别
+        var differenceLastTime = (int) (TimeUtils.now() / 1000) - (int) (data.getResidueNowTime() / 1000);
+        //相差秒数
+        var differenceToTime = differenceLastTime;
+        var dateTime = TimeUtils.timeToString(data.getResidueNowTime());
+        logger.info("[uid:{}] 体力恢复实时时间：{},更当前时间相差秒数为{}", userEntity.getId(), dateTime, differenceToTime);
+        if (differenceToTime >= 0) {
+            /**
+             * 体力完全恢复 剩余时间
+             */
+            data = PhysicalPowerGetResidueEndTime(data, differenceToTime, config, userEntity);
+            data = PhysicalPowerGetResidueTime(data, differenceToTime, config, userEntity);
+        }
+        userEntity.setNowPhysicalPowerNum(data.getNowPhysicalPowerNum());
+        userLoginService.UpdatePlayerUserEntity(userEntity);
+        //更新 缓存 数据库
+        UpdatePhysicalPowerEntityOrm(data);
+        logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}] 更新数据库", uid, nowPhysicalPower, data.getMaximumStrength());
+        return false;
+    }
+
+    @Override
+    public void CreatePhysicalPower(int lv, long uid) {
+        var physicalData = FindOnePhysicalPower(uid);
+        var userData = userLoginService.LoadPlayerUserEntity(uid);
+        var config = userLoginService.GetConfigResourceData(userData.getPlayerLv());
+        /**
+         * 数据库中查询体力
+         */
+        if (physicalData == null) {
+            logger.info("[uid:{}] 体力数据库中没有", uid);
+            //数据库中没有 需要创建
+            var createPhysical = PhysicalPowerEntity.ValueOf(uid,
+                                                             0,
+                                                             config.getMaxPhysical(),
+                                                             0,
+                                                             config.getMaxPhysical(),
+                                                             0);
+            UpdatePhysicalPowerEntityOrm(createPhysical);
+        }
+        logger.info("[UserLoginController] 体力数据创建成功 插入数据库成功");
+        //设置最大经验
+        userData.setNowLvMaxExp(config.getMaxExp());
+        //缓存读取
+        physicalData = FindOnePhysicalPower(uid);
+        userData.setNowPhysicalPowerNum(physicalData.getNowPhysicalPowerNum());
+        userLoginService.UpdatePlayerUserEntity(userData);
+        logger.info("[玩家{}]更新玩家数据库 ", userData.getId());
     }
 }

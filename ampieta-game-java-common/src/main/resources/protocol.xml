@@ -33,12 +33,7 @@
         <protocol id="1012" location="com.gameServer.commonRefush.protocol.login.GetPlayerInfoResponse"/>
         <protocol id="1013" location="com.gameServer.commonRefush.protocol.login.LoginTapToStartRequest"/>
         <protocol id="1014" location="com.gameServer.commonRefush.protocol.login.LoginTapToStartResponse"/>
-        <protocol id="1015"
-                  location="com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAsk"/>
-        <protocol id="1016"
-                  location="com.gameServer.commonRefush.protocol.cache.refresh.RefreshLoginPhysicalPowerNumAnswer"/>
-        <protocol id="1017" location="com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk"/>
-        <protocol id="1018" location="com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnswer"/>
+
         <protocol id="1019" location="com.gameServer.commonRefush.protocol.login.LogRequest"/>
         <protocol id="1020" location="com.gameServer.commonRefush.protocol.login.LogResponse"/>
         <protocol id="1021" location="com.gameServer.commonRefush.protocol.cache.LogAsk" enhance="false"/>

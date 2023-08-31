@@ -1,19 +1,16 @@
 package com.gameServer.home.register.controller;
 
-import com.ctc.wstx.shaded.msv_core.driver.textui.Debug;
 import com.gameServer.commonRefush.constant.I18nEnum;
 import com.gameServer.commonRefush.entity.AccountEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.protocol.cache.LogAnswer;
 import com.gameServer.commonRefush.protocol.cache.LogAsk;
-import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAnswer;
-import com.gameServer.commonRefush.protocol.cache.create.CreatePhysicalPowerAsk;
 import com.gameServer.commonRefush.protocol.login.LogRequest;
 import com.gameServer.commonRefush.protocol.login.LogResponse;
 import com.gameServer.commonRefush.protocol.register.RegisterRequest;
 import com.gameServer.commonRefush.protocol.register.RegisterResponse;
 import com.gameServer.commonRefush.util.TokenUtils;
-import com.gameServer.commonRefush.util.UserPreUtils;
+import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
 import com.gameServer.home.register.service.IRegisterService;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.net.NetContext;
@@ -21,7 +18,6 @@ import com.zfoo.net.packet.common.Error;
 import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
-import com.zfoo.orm.OrmContext;
 import com.zfoo.orm.util.MongoIdUtils;
 import com.zfoo.protocol.util.StringUtils;
 import com.zfoo.scheduler.util.TimeUtils;
@@ -44,6 +40,8 @@ public class RegisterController {
     private IUserLoginService iUserLoginService;
     @Autowired
     private IRegisterService iRegisterService;
+    @Autowired
+    private IPhysicalPowerService physicalPowerService;
 
     @PacketReceiver
     public void atRegisterRequest(Session session, RegisterRequest request, GatewayAttachment gatewayAttachment) throws Exception {
@@ -60,7 +58,7 @@ public class RegisterController {
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_password_not_affirm.toString()), gatewayAttachment);
             return;
         }
-        var accountUser =iRegisterService.LoadAccountEntityString(account);
+        var accountUser = iRegisterService.LoadAccountEntityString(account);
         if (accountUser != null) {
             logger.error("[account:{}]玩家账号,在数据库中存在，请重新输入", account);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_already_exists.getMessage()), gatewayAttachment);
@@ -108,9 +106,8 @@ public class RegisterController {
         iUserLoginService.InsertPlayerUserEntity(userEntity);
         //需保证第一个链接服务器的必须是服务器内客户端
         //必须保证万无一失 rpc请求
-        var pa = NetContext.getConsumer()
-                           .syncAsk(CreatePhysicalPowerAsk.ValueOf(userEntity.getPlayerLv(), userEntity.getId()),
-                                    CreatePhysicalPowerAnswer.class, null).packet();
+        physicalPowerService.CreatePhysicalPower(userEntity.getPlayerLv(), userEntity.getId());
+
         logger.info("[uid:{}] 玩家体力数据创建成功", userEntity.getId());
         NetContext.getRouter().send(session, RegisterResponse.valueOf(true, "ok"), gatewayAttachment);
     }

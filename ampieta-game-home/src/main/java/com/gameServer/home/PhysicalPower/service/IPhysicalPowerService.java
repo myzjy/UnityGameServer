@@ -21,6 +21,7 @@ public interface IPhysicalPowerService {
     void UpdatePhysicalPowerEntityOrm(PhysicalPowerEntity entity);
 
 
+
     /**
      * 剩余恢复1点体力时间 进行处理
      *
@@ -48,4 +49,17 @@ public interface IPhysicalPowerService {
                                                        int differenceToTime,
                                                        ConfigResource config,
                                                        PlayerUserEntity userEntity);
+
+    /**
+     * 刷新 体力 数据库
+     * @param uid 玩家 UID
+     */
+    boolean RefreshLoginPhysicalPower(long uid);
+
+    /**
+     * Create
+     * @param lv 玩家等级
+     * @param uid 玩家 UID
+     */
+    void CreatePhysicalPower(int lv,long uid);
 }
