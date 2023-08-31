@@ -58,7 +58,7 @@ public class UserLoginController {
                 entity.setId(item.getTimeID());
                 userLoginService.UpdateAccessGameTimeEntity(entity);
             }
-            logger.info("AccesGameTimeResource:{}", JsonUtils.object2StringTurbo(entity));
+            logger.info("AccesGameTimeResource:{}", JsonUtils.object2String(entity));
         }
     }
 
@@ -93,7 +93,7 @@ public class UserLoginController {
          * 返回 GameMainUserInfo Response
          */
         var dataResponse = GameMainUserInfoToResponse.ValueOf(nowLv, maxNowLv, exp, nowLvMaxExp, goldCoinNum, diamondsNum, paidDiamondsNum);
-        logger.info("GameMainUserInfoToResponse:{}", JsonUtils.object2StringTurbo(dataResponse));
+        logger.info("GameMainUserInfoToResponse:{}", JsonUtils.object2String(dataResponse));
         NetContext.getRouter().send(session, dataResponse, gatewayAttachment);
     }
 }

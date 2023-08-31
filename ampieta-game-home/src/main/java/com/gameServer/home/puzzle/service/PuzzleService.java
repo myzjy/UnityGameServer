@@ -69,7 +69,7 @@ public class PuzzleService implements IPuzzleService {
                 }
             }
             puzzle.setPuzzleRewardsDatas(rewardsDataList);
-            logger.info("index:{}, Puzzle:{}", puzzleList.size(), JsonUtils.object2StringTurbo(puzzle));
+            logger.info("index:{}, Puzzle:{}", puzzleList.size(), JsonUtils.object2String(puzzle));
             puzzleList.add(puzzle);
         }
         return puzzleList;

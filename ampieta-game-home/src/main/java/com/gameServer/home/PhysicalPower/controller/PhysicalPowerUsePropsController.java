@@ -84,7 +84,7 @@ public class PhysicalPowerUsePropsController {
                     physicalData.getMaximumStrength(),
                     physicalData.getMaximusResidueEndTime(),
                     physicalData.getResidueNowTime());
-            logger.info("[玩家：{}],体力满,数据：{}", physicalData.getId(), JsonUtils.object2StringTurbo(response));
+            logger.info("[玩家：{}],体力满,数据：{}", physicalData.getId(), JsonUtils.object2String(response));
             //当前体力当好使用完
             NetContext.getRouter().send(session, response, gatewayAttachment);
         } else {
@@ -179,10 +179,10 @@ public class PhysicalPowerUsePropsController {
         } else {
             physicalPowerService.RefreshLoginPhysicalPower(session.getUid());
             data = physicalPowerService.FindOnePhysicalPower(session.getUid());
-            logger.info("[uid:{}] 获取体力 完成,PhysicalPowerEntity:{}", session.getUid(), JsonUtils.object2StringTurbo(data));
+            logger.info("[uid:{}] 获取体力 完成,PhysicalPowerEntity:{}", session.getUid(), JsonUtils.object2String(data));
             var response = PhysicalPowerResponse.ValueOf(data.getNowPhysicalPowerNum(), data.getResidueTime(),
                                                          data.getMaximumStrength(), data.getMaximusResidueEndTime(), data.getResidueNowTime());
-            logger.info("PhysicalPowerResponse:{}", JsonUtils.object2StringTurbo(response));
+            logger.info("PhysicalPowerResponse:{}", JsonUtils.object2String(response));
             //有了数据传递过去
             NetContext.getRouter().send(session, response, gatewayAttachment);
         }

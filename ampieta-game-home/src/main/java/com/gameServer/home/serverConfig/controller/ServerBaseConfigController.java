@@ -73,7 +73,7 @@ public class ServerBaseConfigController {
         }
         //查询到角色 返回 金币 钻石 付费钻石
         var data = RefreshingResourcesMainResponse.ValueOf(user.getGoldNum(), user.getPremiumDiamondNum(), user.getDiamondNum());
-        logger.info("RefreshingResourcesMainResponse:{}", JsonUtils.object2StringTurbo(data));
+        logger.info("RefreshingResourcesMainResponse:{}", JsonUtils.object2String(data));
         NetContext.getRouter().send(session, data, gatewayAttachment.getSignalAttachment());
     }
 }
