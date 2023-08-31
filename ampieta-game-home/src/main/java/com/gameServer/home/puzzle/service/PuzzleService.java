@@ -6,6 +6,9 @@ import com.gameServer.commonRefush.protocol.Puzzle.Puzzle;
 import com.gameServer.commonRefush.protocol.Puzzle.PuzzleRewardsData;
 import com.gameServer.home.bag.service.IBagService;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.protocol.util.JsonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +22,10 @@ import java.util.List;
  */
 @Component
 public class PuzzleService implements IPuzzleService {
+    private final Logger logger = LoggerFactory.getLogger(PuzzleService.class);
     @Autowired
     private IBagService bagService;
+
     @Override
     public List<Puzzle> GetTheMapServiceDataList(List<PuzzleEntity> puzzleConfig) {
         List<Puzzle> puzzleList = new ArrayList<>();
@@ -35,7 +40,6 @@ public class PuzzleService implements IPuzzleService {
             List<PuzzleRewardsData> rewardsDataList = new ArrayList<>();
             var rewardStr = data.getPuzzleRewards();
             var rewardSplit = rewardStr.split(";");
-
             for (String rewardValueStr : rewardSplit) {
                 var rewardValueStrSplit = rewardValueStr.split(":");
                 /* *
@@ -53,7 +57,6 @@ public class PuzzleService implements IPuzzleService {
                 var rewardValues = rewardValueStr2.split("|");
                 int rewardID = Integer.parseInt(rewardValues[0]);
                 int rewardNum = Integer.parseInt(rewardValues[1]);
-
                 PuzzleRewardsData data1 = new PuzzleRewardsData();
                 var itemData = bagService.loadItemBoxBaseEntity(rewardID);
                 if (itemData != null) {
@@ -66,6 +69,7 @@ public class PuzzleService implements IPuzzleService {
                 }
             }
             puzzle.setPuzzleRewardsDatas(rewardsDataList);
+            logger.info("index:{}, Puzzle:{}", puzzleList.size(), JsonUtils.object2StringTurbo(puzzle));
             puzzleList.add(puzzle);
         }
         return puzzleList;

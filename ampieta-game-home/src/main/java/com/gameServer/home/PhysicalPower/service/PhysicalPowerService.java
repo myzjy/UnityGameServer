@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PhysicalPowerService implements IPhysicalPowerService {
-    private static final Logger logger = LoggerFactory.getLogger(PhysicalPowerService.class);
+    private  final Logger logger = LoggerFactory.getLogger(PhysicalPowerService.class);
     @EntityCachesInjection
     private IEntityCaches<Long, PhysicalPowerEntity> physicalPowerEntityIEntityCaches;
     @Autowired
