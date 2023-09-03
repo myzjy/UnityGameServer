@@ -12,6 +12,7 @@ import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class puzzleController {
 
     @PacketReceiver
     public void atPuzzleAllConfigRequest(Session session, PuzzleAllConfigRequest puzzleAllConfigRequest, GatewayAttachment gatewayAttachment) {
+        logger.info("=============================================");
+        logger.info("[当前服务器调用时间{}] [调用协议：{}]", TimeUtils.simpleDateString(), puzzleAllConfigRequest.protocolId());
+        logger.info("=============================================");
         //不是活动地图相关
         if (puzzleAllConfigRequest.getEventId() < 1) {
             //获取 实时性
@@ -51,6 +55,4 @@ public class puzzleController {
          * 活动 相关 请求配置器
          */
     }
-
-
 }

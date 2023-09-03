@@ -32,8 +32,6 @@ public class UserLoginController {
     private static final Logger logger = LoggerFactory.getLogger(UserLoginController.class);
     @Autowired
     private IUserLoginService userLoginService;
-    @Autowired
-    private IPhysicalPowerService physicalPowerService;
 
     @EventReceiver
     public void onCreateOrmAccesTimeEvent(CreateOrmAccesTimeEvent event) {

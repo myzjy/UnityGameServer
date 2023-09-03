@@ -45,6 +45,9 @@ public class RegisterController {
 
     @PacketReceiver
     public void atRegisterRequest(Session session, RegisterRequest request, GatewayAttachment gatewayAttachment) throws Exception {
+        logger.info("=============================================");
+        logger.info("[当前服务器调用时间{}] [调用协议：{}]", TimeUtils.simpleDateString(), request.protocolId());
+        logger.info("=============================================");
         var account = StringUtils.trim(request.getAccount());
         var password = request.getPassword();
         var affirmPassword = request.getAffirmPassword();

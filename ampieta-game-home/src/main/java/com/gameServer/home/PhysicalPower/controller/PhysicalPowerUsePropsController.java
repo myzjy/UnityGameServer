@@ -190,6 +190,9 @@ public class PhysicalPowerUsePropsController {
 
     @PacketReceiver
     public void atPhysicalPowerSecondsRequest(Session session, PhysicalPowerSecondsRequest request, GatewayAttachment gatewayAttachment) {
+        logger.info("=============================================");
+        logger.info("[当前服务器调用时间{}] [调用协议：{}]", TimeUtils.simpleDateString(), request.protocolId());
+        logger.info("=============================================");
         logger.info("当前请求 PhysicalPowerSecondsRequest [{}]", request.protocolId());
         var nowTimeDown = request.getNowTime() - TimeUtils.now();
         logger.info("UID[{}], 时间差距 {} ms ,{} s", session.getUid(), nowTimeDown, nowTimeDown / 1000);
@@ -211,6 +214,7 @@ public class PhysicalPowerUsePropsController {
             }
             //rpc 体力缓存已经刷新 返回出去
             var PhysicalCache = physicalPowerService.FindOnePhysicalPower(session.getUid());
+            logger.info("PhysicalPowerEntity:{}",JsonUtils.object2String(PhysicalCache));
             if (PhysicalCache != null) {
                 var dataResponse = PhysicalPowerSecondsResponse.ValueOf(
                         PhysicalCache.getNowPhysicalPowerNum(),
@@ -218,7 +222,7 @@ public class PhysicalPowerUsePropsController {
                         PhysicalCache.getResidueNowTime(),
                         PhysicalCache.getMaximumStrength(),
                         PhysicalCache.getMaximusResidueEndTime());
-                logger.info("PhysicalPowerSecondsResponse:{}", JsonUtils.object2StringTurbo(dataResponse));
+                logger.info("PhysicalPowerSecondsResponse:{}", JsonUtils.object2String(dataResponse));
                 NetContext.getRouter().send(session, dataResponse, gatewayAttachment);
             } else {
                 NetContext.getRouter().send(session, Error.valueOf(request, I18nEnum.error_login_process_not.toString()), gatewayAttachment);

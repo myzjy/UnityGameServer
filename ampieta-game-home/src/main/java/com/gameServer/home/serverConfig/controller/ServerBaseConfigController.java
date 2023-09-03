@@ -57,7 +57,9 @@ public class ServerBaseConfigController {
 
             bagUserItemEntities.add(ItemBaseData.ValueOf(item));
         });
-        NetContext.getRouter().send(session, ServerConfigResponse.ValueOf(bagUserItemEntities), gatewayAttachment);
+        var response=ServerConfigResponse.ValueOf(bagUserItemEntities);
+        logger.info("ServerConfigResponse:{}", JsonUtils.object2String(response));
+        NetContext.getRouter().send(session, response, gatewayAttachment);
     }
 
     @PacketReceiver
