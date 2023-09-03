@@ -12,6 +12,7 @@ import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.protocol.util.JsonUtils;
 import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +49,7 @@ public class puzzleController {
              * 设置 地图 基础属性配置
              */
             packet.setPuzzleConfigList(puzzleList);
+            logger.info("PuzzleAllConfigResponse:{}", JsonUtils.object2String(packet));
             NetContext.getRouter().send(session, packet, gatewayAttachment);
             return;
         }
