@@ -1,6 +1,8 @@
 package com.gameServer.gameBoot;
 
+import com.gameServer.commonRefush.entity.PuzzleChapterEntity;
 import com.gameServer.commonRefush.entity.PuzzleEntity;
+import com.gameServer.commonRefush.resource.PuzzleChapterResource;
 import com.gameServer.commonRefush.resource.PuzzleResource;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.scheduler.util.TimeUtils;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Component;
 public class PuzzleManager {
     @ResInjection
     public Storage<Integer, PuzzleResource> puzzleResourceStorage;
+    @ResInjection
+    private Storage<Integer, PuzzleChapterResource> puzzleChapterResourceStorage;
 
     public void UpDataPuzzleOrm() {
         var dict = puzzleResourceStorage.getAll();
@@ -54,6 +58,31 @@ public class PuzzleManager {
                 entity.setResourceStr(data.getResourcePath());
                 var update = TimeUtils.timeToString(TimeUtils.now());
                 entity.setUpdatedAt(update);
+                OrmContext.getAccessor().update(entity);
+            }
+        }
+    }
+
+    public void  UpDataPuzzleChapterOrm(){
+        var dict = puzzleChapterResourceStorage.getAll();
+        for (var data :
+                dict) {
+            var dataEntity = OrmContext.getAccessor().load(data.getId(), PuzzleChapterEntity.class);
+            if (dataEntity == null) {
+                var update = TimeUtils.timeToString(TimeUtils.now());
+                var entity = PuzzleChapterEntity.ValueOf(data.getId(),
+                                                         data.getMinPuzzle(),
+                                                         data.getMaxPuzzle(),
+                                                         data.getChapterName(),
+                                                         update,update );
+                OrmContext.getAccessor().insert(entity);
+            } else {
+                var update = TimeUtils.timeToString(TimeUtils.now());
+                var entity = PuzzleChapterEntity.ValueOf(data.getId(),
+                                                         data.getMinPuzzle(),
+                                                         data.getMaxPuzzle(),
+                                                         data.getChapterName(),
+                                                         dataEntity.getCreateAt(),update );
                 OrmContext.getAccessor().update(entity);
             }
         }

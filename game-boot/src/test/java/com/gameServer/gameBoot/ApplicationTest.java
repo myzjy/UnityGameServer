@@ -31,6 +31,7 @@ public class ApplicationTest {
         context.publishEvent(new AppStartEvent(context));
         var studentManager = context.getBean(PuzzleManager.class);
         studentManager.UpDataPuzzleOrm();
+        studentManager.UpDataPuzzleChapterOrm();
         var ormAddManager = context.getBean(OrmAddManager.class);
         ormAddManager.UpdateItemBaseCsvResource();
         ormAddManager.UpdateStageCsvResource();
