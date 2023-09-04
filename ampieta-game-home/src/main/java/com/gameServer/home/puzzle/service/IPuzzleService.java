@@ -1,5 +1,6 @@
 package com.gameServer.home.puzzle.service;
 
+import com.gameServer.commonRefush.entity.PuzzleChapterEntity;
 import com.gameServer.commonRefush.entity.PuzzleEntity;
 import com.gameServer.commonRefush.protocol.Puzzle.Puzzle;
 
@@ -17,5 +18,12 @@ public interface IPuzzleService {
      * @return 地图相关 结构数据
      */
     List<Puzzle> GetTheMapServiceDataList(List<PuzzleEntity> puzzleConfig);
+
     List<PuzzleEntity> GetOrmPuzzleEntityAllList();
+
+    /**
+     * 返回 章节 数据
+     * @return 返回 数据库总章节数据
+     */
+    List<PuzzleChapterEntity> GetOrmPuzzleChapterEntityAllList();
 }
