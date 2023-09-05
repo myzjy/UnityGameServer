@@ -1,7 +1,7 @@
 package com.gameServer.gameBoot;
 
-import com.gameServer.commonRefush.entity.PuzzleChapterEntity;
-import com.gameServer.commonRefush.entity.PuzzleEntity;
+import com.gameServer.commonRefush.ormEntity.PuzzleChapterDataEntity;
+import com.gameServer.commonRefush.ormEntity.PuzzleEntity;
 import com.gameServer.commonRefush.resource.PuzzleChapterResource;
 import com.gameServer.commonRefush.resource.PuzzleResource;
 import com.zfoo.orm.OrmContext;
@@ -67,22 +67,22 @@ public class PuzzleManager {
         var dict = puzzleChapterResourceStorage.getAll();
         for (var data :
                 dict) {
-            var dataEntity = OrmContext.getAccessor().load(data.getId(), PuzzleChapterEntity.class);
+            var dataEntity = OrmContext.getAccessor().load(data.getId(), PuzzleChapterDataEntity.class);
             if (dataEntity == null) {
                 var update = TimeUtils.timeToString(TimeUtils.now());
-                var entity = PuzzleChapterEntity.ValueOf(data.getId(),
-                                                         data.getMinPuzzle(),
-                                                         data.getMaxPuzzle(),
-                                                         data.getChapterName(),
-                                                         update,update );
+                var entity = PuzzleChapterDataEntity.ValueOf(data.getId(),
+                                                             data.getMinPuzzle(),
+                                                             data.getMaxPuzzle(),
+                                                             data.getChapterName(),
+                                                             update, update );
                 OrmContext.getAccessor().insert(entity);
             } else {
                 var update = TimeUtils.timeToString(TimeUtils.now());
-                var entity = PuzzleChapterEntity.ValueOf(data.getId(),
-                                                         data.getMinPuzzle(),
-                                                         data.getMaxPuzzle(),
-                                                         data.getChapterName(),
-                                                         dataEntity.getCreateAt(),update );
+                var entity = PuzzleChapterDataEntity.ValueOf(data.getId(),
+                                                             data.getMinPuzzle(),
+                                                             data.getMaxPuzzle(),
+                                                             data.getChapterName(),
+                                                             dataEntity.getCreateAt(), update );
                 OrmContext.getAccessor().update(entity);
             }
         }

@@ -1,8 +1,11 @@
 package com.gameServer.home.puzzle.service;
 
-import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
-import com.gameServer.commonRefush.entity.PuzzleEntity;
+import com.gameServer.commonRefush.entity.PuzzleChapterCachesEntity;
+import com.gameServer.commonRefush.entity.PuzzleUserDataCaChesEntity;
+import com.gameServer.commonRefush.ormEntity.PuzzleChapterDataEntity;
+import com.gameServer.commonRefush.ormEntity.PuzzleEntity;
 import com.gameServer.commonRefush.protocol.Puzzle.Puzzle;
+import com.gameServer.commonRefush.protocol.Puzzle.PuzzleChapter;
 import com.gameServer.commonRefush.protocol.Puzzle.PuzzleRewardsData;
 import com.gameServer.home.bag.service.IBagService;
 import com.zfoo.orm.OrmContext;
@@ -79,5 +82,23 @@ public class PuzzleService implements IPuzzleService {
     public List<PuzzleEntity> GetOrmPuzzleEntityAllList() {
         var puzzleConfig = OrmContext.getQuery(PuzzleEntity.class).queryAll();
         return puzzleConfig;
+    }
+
+    @Override
+    public List<PuzzleChapterDataEntity> GetPuzzleChapterDataEntityAllList() {
+        var ChapterDataConfig = OrmContext.getQuery(PuzzleChapterDataEntity.class).queryAll();
+        return ChapterDataConfig;
+    }
+
+    @Override
+    public List<PuzzleChapter> GetThePuzzleChapterList(List<PuzzleChapterDataEntity> config, long uid) {
+        List<PuzzleChapter> puzzleList = new ArrayList<>();
+        for (int i = 0; i < config.size(); i++) {
+            var data = config.get(i);
+            var id = String.format(data.getId() + "|" + uid );
+            //OrmContext.getQuery(PuzzleChapterCachesEntity.class).
+            var puzzleChapter = PuzzleChapter.ValueOf(data.getId(), data.getChapterName(), data.getMinPuzzle(), data.getMaxPuzzle())
+        }
+        return null;
     }
 }

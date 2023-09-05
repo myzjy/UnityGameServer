@@ -1,17 +1,13 @@
 package com.gameServer.home.puzzle.controller;
 
-import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
-import com.gameServer.commonRefush.entity.PuzzleEntity;
 import com.gameServer.commonRefush.protocol.Puzzle.Puzzle;
 import com.gameServer.commonRefush.protocol.Puzzle.PuzzleAllConfigRequest;
 import com.gameServer.commonRefush.protocol.Puzzle.PuzzleAllConfigResponse;
-import com.gameServer.commonRefush.protocol.Puzzle.PuzzleRewardsData;
 import com.gameServer.home.puzzle.service.IPuzzleService;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
-import com.zfoo.orm.OrmContext;
 import com.zfoo.protocol.util.JsonUtils;
 import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
@@ -19,8 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.temporal.ValueRange;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +37,7 @@ public class puzzleController {
         if (puzzleAllConfigRequest.getEventId() < 1) {
             //获取 实时性
             var puzzleConfig = iPuzzleService.GetOrmPuzzleEntityAllList();
+            var puzzleChapterConfig=iPuzzleService.GetPuzzleChapterDataEntityAllList();
             var packet = PuzzleAllConfigResponse.ValueOf();
             List<Puzzle> puzzleList = iPuzzleService.GetTheMapServiceDataList(puzzleConfig);
             /**

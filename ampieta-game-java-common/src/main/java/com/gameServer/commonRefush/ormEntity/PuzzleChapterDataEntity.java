@@ -1,4 +1,4 @@
-package com.gameServer.commonRefush.entity;
+package com.gameServer.commonRefush.ormEntity;
 
 import com.zfoo.orm.model.entity.IEntity;
 
@@ -7,7 +7,7 @@ import com.zfoo.orm.model.entity.IEntity;
  * @version 1.0
  * @since 2023/9/4 15 55
  */
-public class PuzzleChapterEntity implements IEntity<Integer> {
+public class PuzzleChapterDataEntity implements IEntity<Integer> {
     /**
      * id
      */
@@ -83,8 +83,8 @@ public class PuzzleChapterEntity implements IEntity<Integer> {
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
-    public static PuzzleChapterEntity ValueOf(int id,int minPuzzle,int maxPuzzle,String chapterName,String createAt,String updatedAt){
-        var data=new PuzzleChapterEntity();
+    public static PuzzleChapterDataEntity ValueOf(int id, int minPuzzle, int maxPuzzle, String chapterName, String createAt, String updatedAt){
+        var data=new PuzzleChapterDataEntity();
         data.setId(id);
         data.setMinPuzzle(minPuzzle);
         data.setMaxPuzzle(maxPuzzle);
