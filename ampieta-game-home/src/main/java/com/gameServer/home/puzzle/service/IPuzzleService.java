@@ -1,9 +1,8 @@
 package com.gameServer.home.puzzle.service;
 
-import com.gameServer.commonRefush.ormEntity.PuzzleChapterDataEntity;
-import com.gameServer.commonRefush.ormEntity.PuzzleEntity;
+import com.gameServer.commonRefush.entity.PuzzleChapterEntity;
+import com.gameServer.commonRefush.entity.PuzzleEntity;
 import com.gameServer.commonRefush.protocol.Puzzle.Puzzle;
-import com.gameServer.commonRefush.protocol.Puzzle.PuzzleChapter;
 
 import java.util.List;
 
@@ -24,11 +23,8 @@ public interface IPuzzleService {
     List<PuzzleEntity> GetOrmPuzzleEntityAllList();
 
     /**
-     * 返回 数据库中 章节 数据
-     *
-     * @return 返回 数据库中 章节 数据
+     * 返回 章节 数据
+     * @return 返回 数据库总章节数据
      */
-    List<PuzzleChapterDataEntity> GetPuzzleChapterDataEntityAllList();
-
-    List<PuzzleChapter> GetThePuzzleChapterList(List<PuzzleChapterDataEntity> config);
+    List<PuzzleChapterEntity> GetOrmPuzzleChapterEntityAllList();
 }
