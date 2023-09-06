@@ -38,12 +38,15 @@ public class puzzleController {
             //获取 实时性
             var puzzleConfig = iPuzzleService.GetOrmPuzzleEntityAllList();
             var puzzleChapterConfig=iPuzzleService.GetPuzzleChapterDataEntityAllList();
+            var puzzleChapter=iPuzzleService.GetThePuzzleChapterList(puzzleChapterConfig,session.getUid());
+            var puzzleList = iPuzzleService.GetTheMapServiceDataList(puzzleConfig);
+
             var packet = PuzzleAllConfigResponse.ValueOf();
-            List<Puzzle> puzzleList = iPuzzleService.GetTheMapServiceDataList(puzzleConfig);
             /* *
              * 设置 地图 基础属性配置
              */
             packet.setPuzzleConfigList(puzzleList);
+            packet.setPuzzleChapterConfigList(puzzleChapter);
             logger.info("PuzzleAllConfigResponse:{}", JsonUtils.object2String(packet));
             NetContext.getRouter().send(session, packet, gatewayAttachment);
             return;

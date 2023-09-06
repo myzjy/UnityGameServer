@@ -91,11 +91,6 @@ public class PuzzleService implements IPuzzleService {
     }
 
     @Override
-    public List<PuzzleChapterDataEntity> GetOrmPuzzleChapterEntityAllList() {
-        return null;
-    }
-
-    @Override
     public List<PuzzleChapter> GetThePuzzleChapterList(List<PuzzleChapterDataEntity> config, long uid) {
         List<PuzzleChapter> puzzleList = new ArrayList<>();
         for (PuzzleChapterDataEntity data : config) {

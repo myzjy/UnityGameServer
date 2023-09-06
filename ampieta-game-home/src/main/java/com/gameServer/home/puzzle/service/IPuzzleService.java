@@ -22,12 +22,12 @@ public interface IPuzzleService {
     List<Puzzle> GetTheMapServiceDataList(List<PuzzleEntity> puzzleConfig);
 
     List<PuzzleEntity> GetOrmPuzzleEntityAllList();
-     List<PuzzleChapterDataEntity> GetPuzzleChapterDataEntityAllList();
     /**
      * 返回 章节 数据
      * @return 返回 数据库总章节数据
      */
-    List<PuzzleChapterDataEntity> GetOrmPuzzleChapterEntityAllList();
+     List<PuzzleChapterDataEntity> GetPuzzleChapterDataEntityAllList();
+
 
     /**
      * 返回 章节数据

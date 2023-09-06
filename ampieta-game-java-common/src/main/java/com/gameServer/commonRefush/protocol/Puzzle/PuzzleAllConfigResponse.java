@@ -16,23 +16,37 @@ public class PuzzleAllConfigResponse implements IPacket {
     /**
      * 地图配置
      */
-    private List<Puzzle> puzzleConfigList= new ArrayList<>();
-    private List<PuzzleChapter> puzzleChapterConfigList=new ArrayList<>();
-    
-    public static PuzzleAllConfigResponse ValueOf(){
-        var packet=new PuzzleAllConfigResponse();
-        packet.puzzleConfigList=new ArrayList<>();
-        packet.puzzleChapterConfigList=new ArrayList<>();
+    private List<Puzzle> puzzleConfigList = new ArrayList<>();
+    private List<PuzzleChapter> puzzleChapterConfigList = new ArrayList<>();
+
+    public static PuzzleAllConfigResponse ValueOf() {
+        var packet = new PuzzleAllConfigResponse();
+        packet.puzzleConfigList = new ArrayList<>();
+        packet.puzzleChapterConfigList = new ArrayList<>();
         return packet;
     }
-    public void setPuzzleConfigList(List<Puzzle> list){
-        puzzleConfigList=new ArrayList<>();
-        if(list==null){
+
+    public void setPuzzleConfigList(List<Puzzle> list) {
+        puzzleConfigList = new ArrayList<>();
+        if (list == null) {
             return;
         }
         puzzleConfigList.addAll(list);
     }
-    public List<Puzzle> getPuzzleConfigList(){
+
+    public List<Puzzle> getPuzzleConfigList() {
         return puzzleConfigList;
+    }
+
+    public void setPuzzleChapterConfigList(List<PuzzleChapter> puzzleChapterConfigList) {
+        this.puzzleChapterConfigList = new ArrayList<>();
+        if (puzzleChapterConfigList == null) {
+            return;
+        }
+        this.puzzleChapterConfigList.addAll(puzzleChapterConfigList);
+    }
+
+    public List<PuzzleChapter> getPuzzleChapterConfigList() {
+        return puzzleChapterConfigList;
     }
 }
