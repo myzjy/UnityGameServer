@@ -91,14 +91,35 @@ public class PuzzleService implements IPuzzleService {
     }
 
     @Override
+    public List<PuzzleChapterDataEntity> GetOrmPuzzleChapterEntityAllList() {
+        return null;
+    }
+
+    @Override
     public List<PuzzleChapter> GetThePuzzleChapterList(List<PuzzleChapterDataEntity> config, long uid) {
         List<PuzzleChapter> puzzleList = new ArrayList<>();
-        for (int i = 0; i < config.size(); i++) {
-            var data = config.get(i);
-            var id = String.format(data.getId() + "|" + uid );
-            //OrmContext.getQuery(PuzzleChapterCachesEntity.class).
-            var puzzleChapter = PuzzleChapter.ValueOf(data.getId(), data.getChapterName(), data.getMinPuzzle(), data.getMaxPuzzle())
+        for (PuzzleChapterDataEntity data : config) {
+            var id = String.format(data.getId() + "|" + uid);
+            var caches = OrmContext.getAccessor().load(id, PuzzleChapterCachesEntity.class);
+            if (caches != null) {
+                var puzzleChapter = PuzzleChapter.ValueOf(data.getId(),
+                                                          data.getChapterName(),
+                                                          data.getMinPuzzle(),
+                                                          data.getMaxPuzzle(),
+                                                          caches.getNowCarryOutPuzzleId(),
+                                                          caches.getDoneMaxPuzzleId());
+                puzzleList.add(puzzleChapter);
+            } else {
+                logger.error("id:{},class:{},数据库中查找不到对应数据", id, PuzzleChapterCachesEntity.class);
+                var puzzleChapter = PuzzleChapter.ValueOf(data.getId(),
+                                                          data.getChapterName(),
+                                                          data.getMinPuzzle(),
+                                                          data.getMaxPuzzle(),
+                                                          -1,
+                                                          0);
+                puzzleList.add(puzzleChapter);
+            }
         }
-        return null;
+        return puzzleList;
     }
 }

@@ -17,10 +17,12 @@ public class PuzzleAllConfigResponse implements IPacket {
      * 地图配置
      */
     private List<Puzzle> puzzleConfigList= new ArrayList<>();
+    private List<PuzzleChapter> puzzleChapterConfigList=new ArrayList<>();
     
     public static PuzzleAllConfigResponse ValueOf(){
         var packet=new PuzzleAllConfigResponse();
         packet.puzzleConfigList=new ArrayList<>();
+        packet.puzzleChapterConfigList=new ArrayList<>();
         return packet;
     }
     public void setPuzzleConfigList(List<Puzzle> list){

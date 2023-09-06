@@ -40,7 +40,7 @@ public class puzzleController {
             var puzzleChapterConfig=iPuzzleService.GetPuzzleChapterDataEntityAllList();
             var packet = PuzzleAllConfigResponse.ValueOf();
             List<Puzzle> puzzleList = iPuzzleService.GetTheMapServiceDataList(puzzleConfig);
-            /**
+            /* *
              * 设置 地图 基础属性配置
              */
             packet.setPuzzleConfigList(puzzleList);
@@ -48,7 +48,7 @@ public class puzzleController {
             NetContext.getRouter().send(session, packet, gatewayAttachment);
             return;
         }
-        /**
+        /* *
          * 活动 相关 请求配置器
          */
     }
