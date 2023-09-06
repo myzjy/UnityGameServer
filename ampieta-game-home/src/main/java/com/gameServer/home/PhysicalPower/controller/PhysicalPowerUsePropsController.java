@@ -44,7 +44,8 @@ public class PhysicalPowerUsePropsController {
      */
     @PacketReceiver
     public void atPhysicalPowerUserPropsRequest(Session session, PhysicalPowerUserPropsRequest request, GatewayAttachment gatewayAttachment) {
-        logger.info("[uid:{}] 调用使用体力 开始一张战斗之后就会扣除", session.getUid());
+        logger.info("[uid:{}] 调用使用体力 开始一张战斗之后就会扣除,PhysicalPowerUserPropsRequest:{}",
+                    session.getUid(), JsonUtils.object2String(request));
         var physicalData = physicalPowerService.FindOnePhysicalPower(session.getUid());
         var userData = userLoginService.LoadPlayerUserEntity(session.getUid());
         var configData = userLoginService.GetConfigResourceData(userData.getPlayerLv());
@@ -56,14 +57,13 @@ public class PhysicalPowerUsePropsController {
             physicalData.setResidueEndTime(0);
             physicalData.setResidueNowTime(0);
             physicalPowerService.UpdatePhysicalPowerEntityOrm(physicalData);
-            OrmContext.getAccessor().update(physicalData);
             logger.info("[uid:{}]当前体力：{} 满的，清空体力时间数据 完成", physicalData.getId(), physicalData.getNowPhysicalPowerNum());
         }
-        /**
+        /* *
          * physicalReduce= 当前体力-使用的体力值
          */
         var physicalReduce = physicalData.getNowPhysicalPowerNum() - request.getUsePropNum();
-        /**
+        /* *
          * 减少体力是否大于 最大体力
          */
         if (physicalReduce >= physicalData.getMaximumStrength()) {
@@ -76,8 +76,8 @@ public class PhysicalPowerUsePropsController {
             physicalData.setResidueEndTime(0);
             physicalData.setResidueNowTime(0);
             physicalPowerService.UpdatePhysicalPowerEntityOrm(physicalData);
-            OrmContext.getAccessor().update(physicalData);
-            logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库", physicalData.getId());
+            logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库,更新数据 PhysicalPowerEntity:{}",
+                        physicalData.getId(),JsonUtils.object2String(physicalData));
             var response = PhysicalPowerUserPropsResponse.ValueOf(
                     physicalData.getNowPhysicalPowerNum(),
                     physicalData.getResidueTime(),
@@ -114,17 +114,17 @@ public class PhysicalPowerUsePropsController {
                 physicalData.setResidueNowTime(TimeUtils.now());
                 //更新数据库内容
                 physicalPowerService.UpdatePhysicalPowerEntityOrm(physicalData);
-                OrmContext.getAccessor().update(physicalData);
-                logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库", physicalData.getId());
+                logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库 ,需要更新数据 PhysicalPowerEntity:{}",
+                            physicalData.getId(),JsonUtils.object2String(physicalData));
                 var response = PhysicalPowerUserPropsResponse.ValueOf(
                         physicalData.getNowPhysicalPowerNum(),
                         physicalData.getResidueTime(),
                         physicalData.getMaximumStrength(),
                         physicalData.getMaximusResidueEndTime(),
                         physicalData.getResidueNowTime());
+                logger.info("[玩家：{}],数据：{}", physicalData.getId(), JsonUtils.object2String(response));
                 //当前体力当好使用完
                 NetContext.getRouter().send(session, response, gatewayAttachment);
-                logger.info("[玩家：{}],数据：{}", physicalData.getId(), JsonUtils.object2String(response));
             } else if (physicalReduce < 0) {
                 //体力不够用
                 logger.error("当前扣除体力值：{},扣除完体力值：{},体力不够用", request.getUsePropNum(), physicalReduce);
@@ -214,7 +214,7 @@ public class PhysicalPowerUsePropsController {
             }
             //rpc 体力缓存已经刷新 返回出去
             var PhysicalCache = physicalPowerService.FindOnePhysicalPower(session.getUid());
-            logger.info("PhysicalPowerEntity:{}",JsonUtils.object2String(PhysicalCache));
+            logger.info("PhysicalPowerEntity:{}", JsonUtils.object2String(PhysicalCache));
             if (PhysicalCache != null) {
                 var dataResponse = PhysicalPowerSecondsResponse.ValueOf(
                         PhysicalCache.getNowPhysicalPowerNum(),

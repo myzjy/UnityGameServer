@@ -31,16 +31,17 @@ public class puzzleController {
     @PacketReceiver
     public void atPuzzleAllConfigRequest(Session session, PuzzleAllConfigRequest puzzleAllConfigRequest, GatewayAttachment gatewayAttachment) {
         logger.info("=============================================");
-        logger.info("[当前服务器调用时间{}] [调用协议：{}]", TimeUtils.simpleDateString(), puzzleAllConfigRequest.protocolId());
+        logger.info("[当前服务器调用时间{}] [调用协议：{}] PuzzleAllConfigRequest:{}",
+                    TimeUtils.simpleDateString(), puzzleAllConfigRequest.protocolId(),
+                    JsonUtils.object2String(puzzleAllConfigRequest));
         logger.info("=============================================");
         //不是活动地图相关
         if (puzzleAllConfigRequest.getEventId() < 1) {
             //获取 实时性
             var puzzleConfig = iPuzzleService.GetOrmPuzzleEntityAllList();
-            var puzzleChapterConfig=iPuzzleService.GetPuzzleChapterDataEntityAllList();
-            var puzzleChapter=iPuzzleService.GetThePuzzleChapterList(puzzleChapterConfig,session.getUid());
+            var puzzleChapterConfig = iPuzzleService.GetPuzzleChapterDataEntityAllList();
+            var puzzleChapter = iPuzzleService.GetThePuzzleChapterList(puzzleChapterConfig, session.getUid());
             var puzzleList = iPuzzleService.GetTheMapServiceDataList(puzzleConfig);
-
             var packet = PuzzleAllConfigResponse.ValueOf();
             /* *
              * 设置 地图 基础属性配置

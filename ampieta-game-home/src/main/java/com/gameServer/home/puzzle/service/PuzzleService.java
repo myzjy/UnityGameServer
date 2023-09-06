@@ -57,7 +57,7 @@ public class PuzzleService implements IPuzzleService {
                  * 具体奖励内容
                  */
                 var rewardValueStr2 = rewardValueStrSplit[1];
-                var rewardValues = rewardValueStr2.split("|");
+                var rewardValues = rewardValueStr2.split("\\|");
                 int rewardID = Integer.parseInt(rewardValues[0]);
                 int rewardNum = Integer.parseInt(rewardValues[1]);
                 PuzzleRewardsData data1 = new PuzzleRewardsData();
@@ -81,12 +81,14 @@ public class PuzzleService implements IPuzzleService {
     @Override
     public List<PuzzleEntity> GetOrmPuzzleEntityAllList() {
         var puzzleConfig = OrmContext.getQuery(PuzzleEntity.class).queryAll();
+        logger.info("index:{}, PuzzleEntityConfig:{}", puzzleConfig.size(), JsonUtils.object2String(puzzleConfig));
         return puzzleConfig;
     }
 
     @Override
     public List<PuzzleChapterDataEntity> GetPuzzleChapterDataEntityAllList() {
         var ChapterDataConfig = OrmContext.getQuery(PuzzleChapterDataEntity.class).queryAll();
+        logger.info("index:{}, ChapterDataConfig:{}", ChapterDataConfig.size(), JsonUtils.object2String(ChapterDataConfig));
         return ChapterDataConfig;
     }
 
