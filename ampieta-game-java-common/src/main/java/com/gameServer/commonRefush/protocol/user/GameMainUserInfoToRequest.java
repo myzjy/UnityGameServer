@@ -1,8 +1,8 @@
 package com.gameServer.commonRefush.protocol.user;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
-import com.zfoo.protocol.IPacket;
-import com.zfoo.protocol.registration.anno.Protocol;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * 在GameMain 界面请求User 数据 Exp Lv 金币 钻石 付费钻石 角色数据

@@ -1,8 +1,8 @@
 package com.gameServer.commonRefush.protocol.serverConfig;
 
 import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
-import com.zfoo.protocol.IPacket;
-import com.zfoo.storage.model.anno.Id;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * @author zjy
@@ -14,7 +14,6 @@ public class ItemBaseData implements IPacket {
     /**
      * 道具id
      */
-    @Id
     private int id;
     /**
      * 道具名字

@@ -1,7 +1,6 @@
 package com.gameServer.commonRefush.protocol.user;
-
-import com.zfoo.protocol.IPacket;
-import com.zfoo.protocol.registration.anno.Protocol;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * 登录的时候会请求一边 相关数据，也有一定区别
