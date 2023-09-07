@@ -1,5 +1,6 @@
 package com.gameServer.commonRefush.protocol.bag;
 
+import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -10,7 +11,7 @@ import com.zfoo.protocol.anno.Protocol;
  * @since 2022/12/5 19:55
  */
 @Protocol(id = 1007)
-public class AllBagItemRequest {
+public class AllBagItemRequest implements IPacket {
     public static final transient short PROTOCOL_ID = 1007;
 
     private int type;
