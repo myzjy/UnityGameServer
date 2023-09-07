@@ -18,7 +18,7 @@ public class ApplicationTest {
 
 
     @Test
-    public void startApplication1() {
+        public void startApplication1() {
         Application.main(null);
 
         ThreadUtils.sleep(Long.MAX_VALUE);
