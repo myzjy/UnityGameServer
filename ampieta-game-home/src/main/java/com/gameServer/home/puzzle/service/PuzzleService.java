@@ -119,4 +119,30 @@ public class PuzzleService implements IPuzzleService {
         }
         return puzzleList;
     }
+
+    @Override
+    public void InsterPuzzleChapterDataCachesEntity(PuzzleChapterCachesEntity entity) {
+        OrmContext.getAccessor().insert(entity);
+    }
+
+    @Override
+    public PuzzleChapterCachesEntity FindPuzzleChapterCachesEntity(String id) {
+        var data = OrmContext.getAccessor().load(id, PuzzleChapterCachesEntity.class);
+        if (data == null) {
+            logger.info("查找id：{}，数据不存在", id);
+            return null;
+        }
+        return data;
+    }
+
+    @Override
+    public PuzzleChapterCachesEntity FindPuzzleChapterCachesEntity(int puzzleId, long uid) {
+        var id = String.format(puzzleId + "|" + uid);
+        var data = OrmContext.getAccessor().load(id, PuzzleChapterCachesEntity.class);
+        if (data == null) {
+            logger.info("查找 puzzleId：{}，uid:{},数据不存在", puzzleId, uid);
+            return null;
+        }
+        return data;
+    }
 }
