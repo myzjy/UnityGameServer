@@ -1,15 +1,15 @@
 package com.gameServer.commonRefush.resource;
 
-import com.zfoo.storage.model.anno.Id;
-import com.zfoo.storage.model.anno.Index;
-import com.zfoo.storage.model.anno.Resource;
+import com.zfoo.storage.anno.Id;
+import com.zfoo.storage.anno.Index;
+import com.zfoo.storage.anno.Storage;
 
 /**
  * @author zjy
  * @version 1.0
  * @since 2023/9/4 17 28
  */
-@Resource(alias = "PuzzleChapterResource")
+@Storage
 public class PuzzleChapterResource {
     /**
      * id

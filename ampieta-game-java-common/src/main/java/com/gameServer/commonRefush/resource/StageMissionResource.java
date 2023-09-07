@@ -1,14 +1,14 @@
 package com.gameServer.commonRefush.resource;
 
-import com.zfoo.storage.model.anno.Id;
-import com.zfoo.storage.model.anno.Resource;
+import com.zfoo.storage.anno.Id;
+import com.zfoo.storage.anno.Storage;
 
 /**
  * @author zjy
  * @version 1.0
  * @since 2023/8/9 11 52
  */
-@Resource(alias = "StageMissionResource")
+@Storage
 public class StageMissionResource {
     @Id
     protected int id;

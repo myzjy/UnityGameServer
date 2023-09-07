@@ -1,15 +1,15 @@
 package com.gameServer.commonRefush.resource;
 
-import com.zfoo.storage.model.anno.Id;
-import com.zfoo.storage.model.anno.Index;
-import com.zfoo.storage.model.anno.Resource;
+import com.zfoo.storage.anno.Id;
+import com.zfoo.storage.anno.Index;
+import com.zfoo.storage.anno.Storage;
 
 /**
  * @author zjy
  * @version 1.0
  * @since 2023/8/6 17 48
  */
-@Resource(alias="StageResource")
+@Storage
 public class StageResource{
     @Id
     @Index
