@@ -1,6 +1,6 @@
 package com.gameServer.commonRefush.protocol.bag;
 
-import com.zfoo.protocol.IPacket;
+import com.zfoo.net.packet.IPacket;
 
 import java.util.ArrayList;
 import java.util.List;

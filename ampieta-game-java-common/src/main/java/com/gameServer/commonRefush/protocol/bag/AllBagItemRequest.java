@@ -1,6 +1,6 @@
 package com.gameServer.commonRefush.protocol.bag;
 
-import com.zfoo.protocol.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * 获取背包的所有物品
@@ -9,7 +9,8 @@ import com.zfoo.protocol.IPacket;
  * @version 1.0
  * @since 2022/12/5 19:55
  */
-public class AllBagItemRequest implements IPacket {
+@Protocol(id = 1007)
+public class AllBagItemRequest {
     public static final transient short PROTOCOL_ID = 1007;
 
     private int type;
@@ -22,10 +23,6 @@ public class AllBagItemRequest implements IPacket {
         this.type = type;
     }
 
-    @Override
-    public short protocolId() {
-        return PROTOCOL_ID;
-    }
 
     public static AllBagItemRequest ValueOf() {
         return new AllBagItemRequest();

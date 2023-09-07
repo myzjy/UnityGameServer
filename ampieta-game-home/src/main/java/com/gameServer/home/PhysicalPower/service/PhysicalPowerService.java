@@ -5,8 +5,8 @@ import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.resource.ConfigResource;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.orm.OrmContext;
-import com.zfoo.orm.cache.IEntityCaches;
-import com.zfoo.orm.model.anno.EntityCachesInjection;
+import com.zfoo.orm.anno.EntityCacheAutowired;
+import com.zfoo.orm.cache.IEntityCache;
 import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +21,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class PhysicalPowerService implements IPhysicalPowerService {
     private  final Logger logger = LoggerFactory.getLogger(PhysicalPowerService.class);
-    @EntityCachesInjection
-    private IEntityCaches<Long, PhysicalPowerEntity> physicalPowerEntityIEntityCaches;
+    @EntityCacheAutowired
+    private IEntityCache<Long, PhysicalPowerEntity> physicalPowerEntityIEntityCaches;
     @Autowired
     private IUserLoginService userLoginService;
 

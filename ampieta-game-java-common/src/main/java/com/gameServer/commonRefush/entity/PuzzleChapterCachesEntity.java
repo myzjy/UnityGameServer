@@ -1,7 +1,7 @@
 package com.gameServer.commonRefush.entity;
 
 import com.gameServer.commonRefush.entity.composite.PuzzleUserCompositeDataID;
-import com.zfoo.orm.model.entity.IEntity;
+import com.zfoo.orm.model.IEntity;
 
 /**
  * 当前 章节 进度

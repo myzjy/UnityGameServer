@@ -1,11 +1,10 @@
 package com.gameServer.commonRefush.entity;
 
 import com.zfoo.net.session.Session;
-import com.zfoo.orm.model.anno.Cache;
-import com.zfoo.orm.model.anno.EntityCache;
-import com.zfoo.orm.model.anno.Id;
-import com.zfoo.orm.model.anno.Persister;
-import com.zfoo.orm.model.entity.IEntity;
+import com.zfoo.orm.anno.EntityCache;
+import com.zfoo.orm.anno.Id;
+import com.zfoo.orm.anno.Persister;
+import com.zfoo.orm.model.IEntity;
 
 /**
  * 体力缓存

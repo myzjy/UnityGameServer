@@ -1,6 +1,6 @@
 package com.gameServer.commonRefush.ormEntity;
 
-import com.zfoo.orm.model.entity.IEntity;
+import com.zfoo.orm.model.IEntity;
 
 /**
  * @author zjy

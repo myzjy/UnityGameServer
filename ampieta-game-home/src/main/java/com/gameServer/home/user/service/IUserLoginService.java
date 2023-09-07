@@ -5,7 +5,7 @@ import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
 import com.gameServer.commonRefush.entity.PlayerUserEntity;
 import com.gameServer.commonRefush.resource.AccesGameTimeResource;
 import com.gameServer.commonRefush.resource.ConfigResource;
-import com.zfoo.orm.cache.IEntityCaches;
+import com.zfoo.orm.cache.IEntityCache;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -55,7 +55,7 @@ public interface IUserLoginService {
      *
      * @return
      */
-    IEntityCaches<Long, PlayerUserEntity> AllPlayerUserEntityCaches();
+    IEntityCache<Long, PlayerUserEntity> AllPlayerUserEntityCaches();
 
     /**
      * 查找 数据库中 的数据

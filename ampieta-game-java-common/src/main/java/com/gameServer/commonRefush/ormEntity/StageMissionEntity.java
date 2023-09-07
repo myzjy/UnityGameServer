@@ -1,7 +1,7 @@
 package com.gameServer.commonRefush.ormEntity;
 
-import com.zfoo.orm.model.entity.IEntity;
-import com.zfoo.storage.model.anno.Id;
+import com.zfoo.orm.model.IEntity;
+import com.zfoo.storage.anno.Id;
 
 /**
  * @author zjy

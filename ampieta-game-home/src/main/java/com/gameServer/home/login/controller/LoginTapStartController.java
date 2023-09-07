@@ -8,14 +8,13 @@ import com.gameServer.commonRefush.protocol.login.LoginTapToStartResponse;
 import com.gameServer.commonRefush.resource.AccesGameTimeResource;
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
+import com.zfoo.net.anno.PacketReceiver;
 import com.zfoo.net.router.attachment.GatewayAttachment;
-import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.scheduler.util.TimeUtils;
-import com.zfoo.storage.model.anno.ResInjection;
-import com.zfoo.storage.model.anno.Resource;
-import com.zfoo.storage.model.vo.Storage;
+import com.zfoo.storage.anno.StorageAutowired;
+import com.zfoo.storage.manager.StorageInt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,8 +35,8 @@ public class LoginTapStartController {
     private static final Logger logger = LoggerFactory.getLogger(LoginTapStartController.class);
     @Value("${spring.profiles.active}")
     private TankDeployEnum deployEnum;
-    @ResInjection
-    private Storage<Integer, AccesGameTimeResource> accesGameTimeResourceStorage;
+    @StorageAutowired
+    private StorageInt<Integer, AccesGameTimeResource> accesGameTimeResourceStorage;
 
     @PacketReceiver
     public void atLoginTapToStartRequest(Session session, LoginTapToStartRequest request, GatewayAttachment gatewayAttachment) throws ParseException {

@@ -1,7 +1,7 @@
 package com.gameServer.commonRefush.entity;
 
-import com.zfoo.orm.model.anno.Id;
-import com.zfoo.orm.model.entity.IEntity;
+import com.zfoo.orm.anno.Id;
+import com.zfoo.orm.model.IEntity;
 
 /**
  * 背包所属者 当前道具

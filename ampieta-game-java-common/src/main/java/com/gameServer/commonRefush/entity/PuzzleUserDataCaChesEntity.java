@@ -2,8 +2,8 @@ package com.gameServer.commonRefush.entity;
 
 import com.gameServer.commonRefush.entity.composite.PuzzleUserCompositeDataID;
 import com.gameServer.commonRefush.entity.composite.PuzzleUserDataRewardsCaChes;
-import com.zfoo.orm.model.anno.Id;
-import com.zfoo.orm.model.entity.IEntity;
+import com.zfoo.orm.anno.Id;
+import com.zfoo.orm.model.IEntity;
 
 /**
  * 玩家 关卡 进度

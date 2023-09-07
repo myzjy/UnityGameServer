@@ -1,7 +1,7 @@
 package com.gameServer.commonRefush.ormEntity;
 
-import com.zfoo.orm.model.anno.Id;
-import com.zfoo.orm.model.entity.IEntity;
+import com.zfoo.orm.anno.Id;
+import com.zfoo.orm.model.IEntity;
 
 /**
  * 关卡基础

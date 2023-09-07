@@ -1,6 +1,6 @@
 package com.gameServer.commonRefush.event.create;
 
-import com.zfoo.event.model.event.IEvent;
+import com.zfoo.event.model.IEvent;
 
 /**
  * 把表中的服务器开启时间，写入数据库中
