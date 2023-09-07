@@ -1,6 +1,7 @@
 package com.gameServer.commonRefush.protocol.register;
 
-import com.zfoo.protocol.IPacket;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * 注册服务器控制器返回

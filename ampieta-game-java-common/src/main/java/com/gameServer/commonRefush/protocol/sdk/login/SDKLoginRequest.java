@@ -1,8 +1,8 @@
 package com.gameServer.commonRefush.protocol.sdk.login;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
-import com.zfoo.protocol.IPacket;
-import com.zfoo.protocol.registration.anno.Protocol;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * sdk登录

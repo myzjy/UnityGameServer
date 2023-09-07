@@ -1,8 +1,8 @@
 package com.gameServer.commonRefush.protocol.riqueza;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
-import com.zfoo.protocol.IPacket;
-import com.zfoo.protocol.registration.anno.Protocol;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * 刷新主界面的金币 钻石 付费钻石

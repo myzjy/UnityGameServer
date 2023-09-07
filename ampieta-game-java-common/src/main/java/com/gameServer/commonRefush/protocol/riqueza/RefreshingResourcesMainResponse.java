@@ -1,7 +1,7 @@
 package com.gameServer.commonRefush.protocol.riqueza;
 
-import com.zfoo.protocol.IPacket;
-import com.zfoo.protocol.registration.anno.Protocol;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * 返回自己拥有金币 钻石 付费钻石
