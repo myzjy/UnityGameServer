@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
-<protocols author="ZJY">
+<protocols>
 
-    <module id="1" name="native" minId="0" maxId="100">
-        <protocol id="0" location="com.zfoo.net.router.attachment.SignalAttachment"/>
-        <protocol id="1" location="com.zfoo.net.router.attachment.SignalOnlyAttachment"/>
-        <protocol id="2" location="com.zfoo.net.router.attachment.GatewayAttachment"/>
-        <protocol id="3" location="com.zfoo.net.router.attachment.UdpAttachment"/>
-        <protocol id="4" location="com.zfoo.net.router.attachment.HttpAttachment"/>
-        <protocol id="5" location="com.zfoo.net.router.attachment.NoAnswerAttachment"/>
+    <module id="1" name="native">
+        <protocol location="com.zfoo.net.router.attachment.SignalAttachment"/>
+        <protocol location="com.zfoo.net.router.attachment.SignalOnlyAttachment"/>
+        <protocol location="com.zfoo.net.router.attachment.GatewayAttachment"/>
+        <protocol location="com.zfoo.net.router.attachment.UdpAttachment"/>
+        <protocol location="com.zfoo.net.router.attachment.HttpAttachment"/>
+        <protocol location="com.zfoo.net.router.attachment.NoAnswerAttachment"/>
 
 
         <protocol id="20" location="com.zfoo.net.core.gateway.model.AuthUidToGatewayCheck"/>
@@ -17,68 +17,63 @@
         <protocol id="23" location="com.zfoo.net.core.gateway.model.GatewaySessionInactiveAsk"/>
         <protocol id="24" location="com.zfoo.net.core.gateway.model.GatewaySynchronizeSidAsk"/>
     </module>
-    <module id="2" name="gameserver" minId="1000" maxId="5000">
-        <protocol id="1000" location="com.gameServer.commonRefush.protocol.login.LoginRequest"/>
-        <protocol id="1001" location="com.gameServer.commonRefush.protocol.login.LoginResponse"/>
-        <protocol id="1002" location="com.gameServer.commonRefush.protocol.login.LogoutRequest"/>
-        <protocol id="1003" location="com.gameServer.commonRefush.protocol.login.LogoutResponse"/>
-        <protocol id="1004" location="com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest"/>
-        <protocol id="1005" location="com.gameServer.commonRefush.protocol.register.RegisterRequest"/>
-        <protocol id="1006" location="com.gameServer.commonRefush.protocol.register.RegisterResponse"/>
-        <protocol id="1007" location="com.gameServer.commonRefush.protocol.bag.AllBagItemRequest"/>
-        <protocol id="1008" location="com.gameServer.commonRefush.protocol.bag.AllBagItemResponse"/>
-        <protocol id="1009" location="com.gameServer.commonRefush.protocol.serverConfig.ServerConfigRequest"/>
-        <protocol id="1010" location="com.gameServer.commonRefush.protocol.serverConfig.ServerConfigResponse"/>
-        <protocol id="1011" location="com.gameServer.commonRefush.protocol.bag.UseBagItemRequest"/>
-        <protocol id="1012" location="com.gameServer.commonRefush.protocol.login.GetPlayerInfoResponse"/>
-        <protocol id="1013" location="com.gameServer.commonRefush.protocol.login.LoginTapToStartRequest"/>
-        <protocol id="1014" location="com.gameServer.commonRefush.protocol.login.LoginTapToStartResponse"/>
+    <module id="2" name="gameserver">
+        <protocol location="com.gameServer.commonRefush.protocol.login.LoginRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.login.LoginResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.login.LogoutRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.login.LogoutResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.login.GetPlayerInfoRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.register.RegisterRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.register.RegisterResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.bag.AllBagItemRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.bag.AllBagItemResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.serverConfig.ServerConfigRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.serverConfig.ServerConfigResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.bag.UseBagItemRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.login.GetPlayerInfoResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.login.LoginTapToStartRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.login.LoginTapToStartResponse"/>
 
-        <protocol id="1019" location="com.gameServer.commonRefush.protocol.login.LogRequest"/>
-        <protocol id="1020" location="com.gameServer.commonRefush.protocol.login.LogResponse"/>
-        <protocol id="1021" location="com.gameServer.commonRefush.protocol.cache.LogAsk" enhance="false"/>
-        <protocol id="1022" location="com.gameServer.commonRefush.protocol.cache.LogAnswer" enhance="false"/>
-        <protocol id="1023" location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerRequest"/>
-        <protocol id="1024" location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerResponse"/>
-        <protocol id="1025"
-                  location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUserPropsRequest"/>
-        <protocol id="1026"
-                  location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUserPropsResponse"/>
-        <protocol id="1027" location="com.gameServer.commonRefush.protocol.riqueza.RefreshingResourcesMainRequest"/>
-        <protocol id="1028" location="com.gameServer.commonRefush.protocol.riqueza.RefreshingResourcesMainResponse"/>
-        <protocol id="1029" location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerSecondsRequest"/>
-        <protocol id="1030" location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerSecondsResponse"/>
-        <protocol id="1031" location="com.gameServer.commonRefush.protocol.user.GameMainUserInfoToRequest"/>
-        <protocol id="1032" location="com.gameServer.commonRefush.protocol.user.GameMainUserInfoToResponse"/>
-        <protocol id="1033" location="com.gameServer.commonRefush.protocol.bag.UseTheBagItemEffectRequest"/>
-        <protocol id="1034" location="com.gameServer.commonRefush.protocol.bag.UseTheBagItemEffectResponse"/>
-        <protocol id="1035" location="com.gameServer.commonRefush.protocol.Puzzle.PuzzleAllConfigRequest"/>
-        <protocol id="1036" location="com.gameServer.commonRefush.protocol.Puzzle.PuzzleAllConfigResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.login.LogRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.login.LogResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.cache.LogAsk"/>
+        <protocol location="com.gameServer.commonRefush.protocol.cache.LogAnswer"/>
+        <protocol location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUserPropsRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerUserPropsResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.riqueza.RefreshingResourcesMainRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.riqueza.RefreshingResourcesMainResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerSecondsRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.physicalPower.PhysicalPowerSecondsResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.user.GameMainUserInfoToRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.user.GameMainUserInfoToResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.bag.UseTheBagItemEffectRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.bag.UseTheBagItemEffectResponse"/>
+        <protocol location="com.gameServer.commonRefush.protocol.Puzzle.PuzzleAllConfigRequest"/>
+        <protocol location="com.gameServer.commonRefush.protocol.Puzzle.PuzzleAllConfigResponse"/>
     </module>
-    <module id="3" name="common" minId="100" maxId="500">
-        <protocol id="100" location="com.zfoo.net.packet.common.Message"/>
-        <protocol id="101" location="com.zfoo.net.packet.common.Error"/>
-        <protocol id="102" location="com.zfoo.net.packet.common.Heartbeat"/>
-        <protocol id="103" location="com.zfoo.net.packet.common.Ping"/>
-        <protocol id="104" location="com.zfoo.net.packet.common.Pong"/>
+    <module id="3" name="common" >
+        <protocol  location="com.zfoo.net.packet.common.Message"/>
+        <protocol  location="com.zfoo.net.packet.common.Error"/>
+        <protocol  location="com.zfoo.net.packet.common.Heartbeat"/>
+        <protocol  location="com.zfoo.net.packet.common.Ping"/>
+        <protocol  location="com.zfoo.net.packet.common.Pong"/>
 
-        <protocol id="111" location="com.zfoo.net.packet.common.PairLong"/>
-        <protocol id="112" location="com.zfoo.net.packet.common.PairString"/>
-        <protocol id="113" location="com.zfoo.net.packet.common.PairLS"/>
-        <protocol id="114" location="com.zfoo.net.packet.common.TripleLong"/>
-        <protocol id="115" location="com.zfoo.net.packet.common.TripleString"/>
-        <protocol id="116" location="com.zfoo.net.packet.common.TripleLSS"/>
-        <protocol id="200" location="com.gameServer.commonRefush.protocol.bag.BagUserItemData"/>
-        <protocol id="201" location="com.gameServer.commonRefush.protocol.serverConfig.ItemBaseData"/>
-        <protocol id="202" location="com.gameServer.commonRefush.protocol.Puzzle.Puzzle"/>
-        <protocol id="203" location="com.gameServer.commonRefush.protocol.Puzzle.PuzzleRewardsData"/>
-        <protocol id="204" location="com.gameServer.commonRefush.protocol.Puzzle.PuzzleChapter"/>
+        <protocol  location="com.zfoo.net.packet.common.PairLong"/>
+        <protocol  location="com.zfoo.net.packet.common.PairString"/>
+        <protocol  location="com.zfoo.net.packet.common.PairLS"/>
+        <protocol  location="com.zfoo.net.packet.common.TripleLong"/>
+        <protocol  location="com.zfoo.net.packet.common.TripleString"/>
+        <protocol  location="com.zfoo.net.packet.common.TripleLSS"/>
+        <protocol  location="com.gameServer.commonRefush.protocol.bag.BagUserItemData"/>
+        <protocol  location="com.gameServer.commonRefush.protocol.serverConfig.ItemBaseData"/>
+        <protocol  location="com.gameServer.commonRefush.protocol.Puzzle.Puzzle"/>
+        <protocol  location="com.gameServer.commonRefush.protocol.Puzzle.PuzzleRewardsData"/>
+        <protocol  location="com.gameServer.commonRefush.protocol.Puzzle.PuzzleChapter"/>
 
     </module>
-    <module id="4" name="unityGameSdk" minId="5000" maxId="6000">
-        <protocol id="5000" location="com.gameServer.commonRefush.protocol.sdk.login.SDKLoginRequest"/>
+    <module id="4" name="unityGameSdk">
+        <protocol  location="com.gameServer.commonRefush.protocol.sdk.login.SDKLoginRequest"/>
     </module>
-    <!--    <module id="4" name="gameHome" minId="501" maxId="999">-->
-
-    <!--    </module>-->
 </protocols>

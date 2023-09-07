@@ -13,6 +13,7 @@ import java.util.List;
  * @version 1.0
  * @since 2022/12/18 1:48
  */
+@Protocol(id = 1010)
 public class ServerConfigResponse implements IPacket {
     public static final transient short PROTOCOL_ID = 1010;
     /**

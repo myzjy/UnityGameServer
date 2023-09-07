@@ -9,13 +9,8 @@ import com.zfoo.protocol.anno.Protocol;
  * @version 1.0
  * @since 2022/11/3 23:34
  */
+@Protocol(id = 1005)
 public class RegisterRequest implements IPacket, IGatewayLoadBalancer {
-    public static final transient short PROTOCOL_ID = 1005;
-
-    @Override
-    public short protocolId() {
-        return PROTOCOL_ID;
-    }
 
     /**
      * 账号

@@ -10,13 +10,8 @@ import com.zfoo.protocol.anno.Protocol;
  * @version 1.0
  * @since 2022/11/3 23:59
  */
+@Protocol(id = 1006)
 public class RegisterResponse implements IPacket {
-    public static final transient short PROTOCOL_ID = 1006;
-
-    @Override
-    public short protocolId() {
-        return PROTOCOL_ID;
-    }
 
     /**
      * 是否注册成功

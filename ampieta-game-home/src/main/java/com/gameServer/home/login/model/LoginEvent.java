@@ -1,6 +1,6 @@
 package com.gameServer.home.login.model;
 
-import com.zfoo.event.model.event.IEvent;
+import com.zfoo.event.model.IEvent;
 
 /**
  * 登录事件 目前可能用不到

@@ -1,6 +1,5 @@
 package com.gameServer.gameBoot;
 
-import com.zfoo.event.model.event.AppStartEvent;
 import com.zfoo.util.net.HostAndPort;
 import com.zfoo.util.net.NetUtils;
 import org.slf4j.Logger;

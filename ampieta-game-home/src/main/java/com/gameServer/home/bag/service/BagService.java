@@ -3,8 +3,8 @@ package com.gameServer.home.bag.service;
 import com.gameServer.commonRefush.entity.BagUserItemEntity;
 import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
 import com.zfoo.orm.OrmContext;
-import com.zfoo.orm.cache.IEntityCaches;
-import com.zfoo.orm.model.anno.EntityCachesInjection;
+import com.zfoo.orm.anno.EntityCacheAutowired;
+import com.zfoo.orm.cache.IEntityCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -22,8 +22,8 @@ public class BagService implements IBagService {
     /**
      * 背包基础
      */
-    @EntityCachesInjection
-    private IEntityCaches<Integer, ItemBoxBaseEntity> itemBoxBaseEntityIEntityCaches;
+    @EntityCacheAutowired
+    private IEntityCache<Integer, ItemBoxBaseEntity> itemBoxBaseEntityIEntityCaches;
 
    
     @Override

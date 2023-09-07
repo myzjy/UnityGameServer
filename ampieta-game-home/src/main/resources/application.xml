@@ -43,7 +43,6 @@ http://www.zfoo.com/schema/storage
     </storage:storage>
 
     <net:config id="gameserver" protocol-location="protocol.xml"
-                        csharp-protocol="${net.generate.cs.protocol}"
 
                         fold-protocol="${net.fold.protocol}"
     >

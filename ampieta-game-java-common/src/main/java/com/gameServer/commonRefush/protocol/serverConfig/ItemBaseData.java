@@ -9,6 +9,7 @@ import com.zfoo.protocol.anno.Protocol;
  * @version 1.0
  * @since 2022/12/31 0:55
  */
+@Protocol(id = 201)
 public class ItemBaseData implements IPacket {
     public static final transient short PROTOCOL_ID = 201;
     /**

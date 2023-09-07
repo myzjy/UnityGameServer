@@ -3,14 +3,15 @@ package com.gameServer.commonRefush.protocol.bag;
 import com.gameServer.commonRefush.entity.BagUserItemEntity;
 import com.zfoo.net.packet.IPacket;
 import com.zfoo.orm.anno.Id;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * @author zjy
  * @version 1.0
  * @since 2022/12/31 0:47
  */
+@Protocol(id = 200)
 public class BagUserItemData implements IPacket {
-    public static final transient short PROTOCOL_ID = 200;
     /**
      * 当前道具 在数据库中的唯一id
      *
@@ -93,12 +94,6 @@ public class BagUserItemData implements IPacket {
 
     public void setItemNew(boolean itemNew) {
         this.itemNew = itemNew;
-    }
-
-
-    @Override
-    public short protocolId() {
-        return PROTOCOL_ID;
     }
 
     /**

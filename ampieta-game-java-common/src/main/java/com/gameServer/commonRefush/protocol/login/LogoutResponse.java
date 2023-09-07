@@ -1,22 +1,17 @@
 package com.gameServer.commonRefush.protocol.login;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * @author Administrator
  * @version 1.0
  * @since 2022/9/18 23:44
  */
+@Protocol(id = 1003)
 public class LogoutResponse implements IPacket {
-    public static final transient short PROTOCOL_ID = 1003;
     private long uid;
-
     private long sid;
-
-    @Override
-    public short protocolId() {
-        return PROTOCOL_ID;
-    }
 
     public long getUid() {
         return uid;

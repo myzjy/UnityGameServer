@@ -10,17 +10,18 @@ import com.gameServer.commonRefush.protocol.serverConfig.ServerConfigResponse;
 import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.net.NetContext;
+import com.zfoo.net.anno.PacketReceiver;
 import com.zfoo.net.packet.common.Error;
 import com.zfoo.net.router.attachment.GatewayAttachment;
-import com.zfoo.net.router.receiver.PacketReceiver;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.protocol.util.JsonUtils;
-import com.zfoo.storage.model.anno.ResInjection;
-import com.zfoo.storage.model.vo.Storage;
+import com.zfoo.storage.anno.StorageAutowired;
+import com.zfoo.storage.manager.StorageInt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -37,11 +38,10 @@ public class ServerBaseConfigController {
     /**
      * 背包基础
      */
-    @ResInjection
-    public Storage<Integer, ItemBaseCsvResource> itemCsvResources;
+    @StorageAutowired
+    public StorageInt<Integer, ItemBaseCsvResource> itemCsvResources;
     @Autowired
-    private IUserLoginService iUserLoginService;
-
+    private IUserLoginService userLoginService;
     @PacketReceiver
     public void atServerConfigRequest(Session session, ServerConfigRequest request, GatewayAttachment gatewayAttachment) {
         if (session.getUid() < 1) {
@@ -65,7 +65,7 @@ public class ServerBaseConfigController {
     @PacketReceiver
     public void atRefreshingResourcesMainRequest(Session session, RefreshingResourcesMainRequest request, GatewayAttachment gatewayAttachment) {
         logger.info("刷新主界面上面的金币 钻石 付费钻石 调用protocol id：{}", request.protocolId());
-        var user =iUserLoginService.LoadPlayerUserEntity(session.getUid());
+        var user =userLoginService.LoadPlayerUserEntity(session.getUid());
         if (user == null) {
             //没查询到 对应角色 报错提示
             logger.error("数据库中查询角色id：{},出现错误", session.getUid());

@@ -1,7 +1,7 @@
 package com.gameServer.gameBoot;
 
 import com.gameServer.commonRefush.constant.TankDeployEnum;
-import com.zfoo.event.model.event.AppStartEvent;
+import com.zfoo.event.model.AppStartEvent;
 import com.zfoo.protocol.util.StringUtils;
 import com.zfoo.util.ThreadUtils;
 import org.junit.Ignore;

@@ -8,6 +8,7 @@ import com.zfoo.protocol.anno.Protocol;
  * @version 1.0
  * @since
  */
+@Protocol(id = 1009)
 public class ServerConfigRequest implements IPacket {
     public static final transient short PROTOCOL_ID = 1009;
 
