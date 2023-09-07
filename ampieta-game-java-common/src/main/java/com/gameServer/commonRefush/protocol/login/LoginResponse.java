@@ -1,14 +1,15 @@
 package com.gameServer.commonRefush.protocol.login;
 
-import com.zfoo.protocol.IPacket;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * @version 0.0.1
  * @autor zjy
  * @since 2022/7/17 11:32 PM
  */
+@Protocol(id = 1001)
 public class LoginResponse implements IPacket {
-    public static final transient short PROTOCOL_ID = 1001;
 
     public String getToken() {
         return token;
@@ -112,12 +113,6 @@ public class LoginResponse implements IPacket {
 
     public void setDiamondNum(long diamondNum) {
         DiamondNum = diamondNum;
-    }
-
-
-    @Override
-    public short protocolId() {
-        return PROTOCOL_ID;
     }
 
     public int getMaxExp() {

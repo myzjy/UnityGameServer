@@ -1,6 +1,6 @@
 package com.gameServer.commonRefush.protocol.login;
 
-import com.zfoo.protocol.IPacket;
+import com.zfoo.net.packet.IPacket;
 
 /**
  * @author Administrator

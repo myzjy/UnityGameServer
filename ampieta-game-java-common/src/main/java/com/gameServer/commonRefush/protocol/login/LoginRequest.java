@@ -1,7 +1,8 @@
 package com.gameServer.commonRefush.protocol.login;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
-import com.zfoo.protocol.IPacket;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 
 /**
@@ -9,9 +10,9 @@ import com.zfoo.protocol.IPacket;
  * @version 0.1
  * @since 2022/6/18 12:25
  */
+@Protocol(id = 1000)
 public class LoginRequest implements IPacket, IGatewayLoadBalancer {
 
-    public static final transient short PROTOCOL_ID = 1000;
     /**
      * @apiNote   account 账号
      * */
@@ -39,10 +40,6 @@ public class LoginRequest implements IPacket, IGatewayLoadBalancer {
         return account;
     }
 
-    @Override
-    public short protocolId() {
-        return PROTOCOL_ID;
-    }
     public String getAccount() {
         return account;
     }
