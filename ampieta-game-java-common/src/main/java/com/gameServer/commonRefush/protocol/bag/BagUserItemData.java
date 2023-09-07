@@ -1,8 +1,8 @@
 package com.gameServer.commonRefush.protocol.bag;
 
 import com.gameServer.commonRefush.entity.BagUserItemEntity;
-import com.zfoo.orm.model.anno.Id;
-import com.zfoo.protocol.IPacket;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.orm.anno.Id;
 
 /**
  * @author zjy

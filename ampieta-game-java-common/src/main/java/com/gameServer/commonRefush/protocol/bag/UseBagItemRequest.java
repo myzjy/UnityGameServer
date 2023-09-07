@@ -1,7 +1,7 @@
 package com.gameServer.commonRefush.protocol.bag;
 
-import com.zfoo.protocol.IPacket;
-import com.zfoo.protocol.registration.anno.Protocol;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * 使用背包道具 这个协议中不包括 使用装备

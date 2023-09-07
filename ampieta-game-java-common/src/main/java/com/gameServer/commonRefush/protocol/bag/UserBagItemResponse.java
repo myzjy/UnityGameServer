@@ -1,8 +1,7 @@
 package com.gameServer.commonRefush.protocol.bag;
 
 import com.gameServer.commonRefush.entity.BagUserItemEntity;
-import com.zfoo.protocol.IPacket;
-import com.zfoo.protocol.registration.anno.Protocol;
+import com.zfoo.net.packet.IPacket;
 
 import java.util.ArrayList;
 import java.util.List;
