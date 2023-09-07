@@ -1,7 +1,7 @@
 package com.gameServer.commonRefush.protocol.Puzzle;
 
-import com.zfoo.protocol.IPacket;
-import com.zfoo.protocol.registration.anno.Protocol;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 import java.util.ArrayList;
 import java.util.List;

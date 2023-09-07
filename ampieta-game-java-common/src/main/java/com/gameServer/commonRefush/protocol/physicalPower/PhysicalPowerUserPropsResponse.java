@@ -1,7 +1,7 @@
 package com.gameServer.commonRefush.protocol.physicalPower;
 
-import com.zfoo.protocol.IPacket;
-import com.zfoo.protocol.registration.anno.Protocol;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * 使用完成体力之后 扣除玩体力 返回出去
@@ -29,8 +29,6 @@ public class PhysicalPowerUserPropsResponse implements IPacket {
      * 最大体力 用于限制 这个值会随着 等级增长
      */
     private int maximumStrength;
-
-
     /**
      * 我恢复到最大体力的结束时间
      * <p>这里不是时间戳<p/>
@@ -86,5 +84,4 @@ public class PhysicalPowerUserPropsResponse implements IPacket {
     public void setMaximusResidueEndTime(int maximusResidueEndTime) {
         this.maximusResidueEndTime = maximusResidueEndTime;
     }
-
 }

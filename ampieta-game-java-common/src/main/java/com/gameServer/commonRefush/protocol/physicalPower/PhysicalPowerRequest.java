@@ -1,8 +1,8 @@
 package com.gameServer.commonRefush.protocol.physicalPower;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
-import com.zfoo.protocol.IPacket;
-import com.zfoo.protocol.registration.anno.Protocol;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * 获取体力 在登录 进入主界面的时候

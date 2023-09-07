@@ -1,8 +1,7 @@
 package com.gameServer.commonRefush.protocol.Puzzle;
 
-import com.zfoo.protocol.IPacket;
-import com.zfoo.protocol.registration.anno.Protocol;
-import com.zfoo.storage.model.anno.Id;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
  */
 @Protocol(id = 202)
 public class Puzzle implements IPacket {
-    @Id
     private int id;
     /**
      * 关卡名字
@@ -26,12 +24,10 @@ public class Puzzle implements IPacket {
      * 关联到 上一个关卡id
      */
     private int lastPuzzleID;
-
     /**
      * 下一个 关卡id 可用在 跳下一关
      */
     private int nextPuzzleID;
-
     /**
      * 关卡 奖励
      */
