@@ -221,7 +221,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
             }
         }
         userEntity.setNowPhysicalPowerNum(entity.getNowPhysicalPowerNum());
-        OrmContext.getAccessor().update(userEntity);
+        userLoginService.UpdatePlayerUserEntity(userEntity);
         return entity;
     }
 

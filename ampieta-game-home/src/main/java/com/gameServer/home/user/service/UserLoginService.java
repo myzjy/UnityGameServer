@@ -8,6 +8,7 @@ import com.gameServer.commonRefush.resource.ConfigResource;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.orm.anno.EntityCacheAutowired;
 import com.zfoo.orm.cache.IEntityCache;
+import com.zfoo.protocol.util.JsonUtils;
 import com.zfoo.storage.anno.Storage;
 import com.zfoo.storage.anno.StorageAutowired;
 import com.zfoo.storage.manager.StorageInt;
@@ -72,6 +73,8 @@ public class UserLoginService implements IUserLoginService {
     @Override
     public void InsertPlayerUserEntity(PlayerUserEntity entity) {
         OrmContext.getAccessor().insert(entity);
+        UserModelDict.update(entity);
+        logger.info("插入 PlayerUser 数据库 PlayerUserEntity:{}", JsonUtils.object2String(entity));
     }
 
     @Override

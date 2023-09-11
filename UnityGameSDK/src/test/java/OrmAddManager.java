@@ -4,8 +4,8 @@ import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
 import com.gameServer.commonRefush.resource.StageResource;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.scheduler.util.TimeUtils;
-import com.zfoo.storage.model.anno.ResInjection;
-import com.zfoo.storage.model.vo.Storage;
+import com.zfoo.storage.anno.StorageAutowired;
+import com.zfoo.storage.manager.StorageInt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -19,10 +19,10 @@ import org.springframework.stereotype.Component;
 public class OrmAddManager {
     private static final Logger logger = LoggerFactory.getLogger(OrmAddManager.class);
     
-    @ResInjection
-    private Storage<Integer, ItemBaseCsvResource> itemBaseCsvResourceStorage;
-    @ResInjection
-    private Storage<Integer, StageResource> stageResourceStorage;
+    @StorageAutowired
+    private StorageInt<Integer, ItemBaseCsvResource> itemBaseCsvResourceStorage;
+    @StorageAutowired
+    private StorageInt<Integer, StageResource> stageResourceStorage;
 
     /**
      * 插入数据 stage
