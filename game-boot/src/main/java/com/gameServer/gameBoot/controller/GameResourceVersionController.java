@@ -1,11 +1,9 @@
 package com.gameServer.gameBoot.controller;
 
-import com.gameServer.commonRefush.result.BaseResponse;
-import com.gameServer.commonRefush.result.CodeEnum;
+import com.gameServer.common.result.BaseResponse;
+import com.gameServer.common.result.CodeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,4 +38,3 @@ public class GameResourceVersionController {
 
     }
 }
-

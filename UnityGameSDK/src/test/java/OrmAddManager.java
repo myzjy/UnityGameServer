@@ -1,7 +1,7 @@
-import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
-import com.gameServer.commonRefush.ormEntity.StageDataEntity;
-import com.gameServer.commonRefush.resource.ItemBaseCsvResource;
-import com.gameServer.commonRefush.resource.StageResource;
+import com.gameServer.common.entity.ItemBoxBaseEntity;
+import com.gameServer.common.ormEntity.StageDataEntity;
+import com.gameServer.common.resource.ItemBaseCsvResource;
+import com.gameServer.common.resource.StageResource;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.storage.anno.StorageAutowired;

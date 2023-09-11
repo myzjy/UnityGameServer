@@ -1,4 +1,4 @@
-import com.gameServer.commonRefush.constant.TankDeployEnum;
+import com.gameServer.common.constant.TankDeployEnum;
 import com.gameServer.unityGameSDK.Application;
 import com.zfoo.event.model.event.AppStartEvent;
 import com.zfoo.util.ThreadUtils;

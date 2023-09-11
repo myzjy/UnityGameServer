@@ -1,7 +1,7 @@
 package com.gameServer.gameBoot.controller;
 
-import com.gameServer.commonRefush.result.BaseResponse;
-import com.gameServer.commonRefush.result.CodeEnum;
+import com.gameServer.common.result.BaseResponse;
+import com.gameServer.common.result.CodeEnum;
 import com.gameServer.gameBoot.model.register.RegisterDataModelRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,10 +1,10 @@
 package com.gameServer.home.puzzle.service;
 
-import com.gameServer.commonRefush.entity.PuzzleChapterCachesEntity;
-import com.gameServer.commonRefush.ormEntity.PuzzleChapterDataEntity;
-import com.gameServer.commonRefush.ormEntity.PuzzleEntity;
-import com.gameServer.commonRefush.protocol.Puzzle.Puzzle;
-import com.gameServer.commonRefush.protocol.Puzzle.PuzzleChapter;
+import com.gameServer.common.entity.PuzzleChapterCachesEntity;
+import com.gameServer.common.ormEntity.PuzzleChapterDataEntity;
+import com.gameServer.common.ormEntity.PuzzleEntity;
+import com.gameServer.common.protocol.Puzzle.Puzzle;
+import com.gameServer.common.protocol.Puzzle.PuzzleChapter;
 
 import java.util.List;
 

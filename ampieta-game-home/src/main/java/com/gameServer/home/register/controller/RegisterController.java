@@ -1,15 +1,15 @@
 package com.gameServer.home.register.controller;
 
-import com.gameServer.commonRefush.constant.I18nEnum;
-import com.gameServer.commonRefush.entity.AccountEntity;
-import com.gameServer.commonRefush.entity.PlayerUserEntity;
-import com.gameServer.commonRefush.protocol.cache.LogAnswer;
-import com.gameServer.commonRefush.protocol.cache.LogAsk;
-import com.gameServer.commonRefush.protocol.login.LogRequest;
-import com.gameServer.commonRefush.protocol.login.LogResponse;
-import com.gameServer.commonRefush.protocol.register.RegisterRequest;
-import com.gameServer.commonRefush.protocol.register.RegisterResponse;
-import com.gameServer.commonRefush.util.TokenUtils;
+import com.gameServer.common.constant.I18nEnum;
+import com.gameServer.common.entity.AccountEntity;
+import com.gameServer.common.entity.PlayerUserEntity;
+import com.gameServer.common.protocol.cache.LogAnswer;
+import com.gameServer.common.protocol.cache.LogAsk;
+import com.gameServer.common.protocol.login.LogRequest;
+import com.gameServer.common.protocol.login.LogResponse;
+import com.gameServer.common.protocol.register.RegisterRequest;
+import com.gameServer.common.protocol.register.RegisterResponse;
+import com.gameServer.common.util.TokenUtils;
 import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
 import com.gameServer.home.register.service.IRegisterService;
 import com.gameServer.home.user.service.IUserLoginService;

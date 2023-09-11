@@ -1,5 +1,5 @@
-import com.gameServer.commonRefush.ormEntity.PuzzleEntity;
-import com.gameServer.commonRefush.resource.PuzzleResource;
+import com.gameServer.common.ormEntity.PuzzleEntity;
+import com.gameServer.common.resource.PuzzleResource;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.storage.model.anno.ResInjection;

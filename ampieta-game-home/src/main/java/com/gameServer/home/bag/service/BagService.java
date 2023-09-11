@@ -1,7 +1,7 @@
 package com.gameServer.home.bag.service;
 
-import com.gameServer.commonRefush.entity.BagUserItemEntity;
-import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
+import com.gameServer.common.entity.BagUserItemEntity;
+import com.gameServer.common.entity.ItemBoxBaseEntity;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.orm.anno.EntityCacheAutowired;
 import com.zfoo.orm.cache.IEntityCache;

@@ -1,6 +1,6 @@
 package com.gameServer.home;
 
-import com.gameServer.commonRefush.constant.TankDeployEnum;
+import com.gameServer.common.constant.TankDeployEnum;
 import com.zfoo.util.ThreadUtils;
 import org.junit.Ignore;
 import org.junit.Test;

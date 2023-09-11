@@ -1,8 +1,7 @@
 package com.gameServer.home.puzzle.controller;
 
-import com.gameServer.commonRefush.protocol.Puzzle.Puzzle;
-import com.gameServer.commonRefush.protocol.Puzzle.PuzzleAllConfigRequest;
-import com.gameServer.commonRefush.protocol.Puzzle.PuzzleAllConfigResponse;
+import com.gameServer.common.protocol.Puzzle.PuzzleAllConfigRequest;
+import com.gameServer.common.protocol.Puzzle.PuzzleAllConfigResponse;
 import com.gameServer.home.puzzle.service.IPuzzleService;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.anno.PacketReceiver;
@@ -14,8 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @author zjy

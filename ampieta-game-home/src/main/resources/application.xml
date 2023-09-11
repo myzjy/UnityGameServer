@@ -57,7 +57,7 @@ http://www.zfoo.com/schema/storage
         </net:consumers>
     </net:config>
 
-    <orm:config id="mongodbConfig" entity-package="com.gameServer.commonRefush.**.entity">
+    <orm:config id="mongodbConfig" entity-package="com.gameServer.common.**.entity">
 
         <!-- 数据库相关配置 -->
         <orm:host database="${mongodb.database}" user="${mongodb.user}" password="${mongodb.password}">

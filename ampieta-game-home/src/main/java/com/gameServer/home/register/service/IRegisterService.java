@@ -1,6 +1,6 @@
 package com.gameServer.home.register.service;
 
-import com.gameServer.commonRefush.entity.AccountEntity;
+import com.gameServer.common.entity.AccountEntity;
 
 /**
  * @author zjy

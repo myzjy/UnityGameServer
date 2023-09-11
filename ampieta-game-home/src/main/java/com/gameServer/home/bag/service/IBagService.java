@@ -1,8 +1,7 @@
 package com.gameServer.home.bag.service;
 
-import com.gameServer.commonRefush.entity.BagUserItemEntity;
-import com.gameServer.commonRefush.entity.ItemBoxBaseEntity;
-import com.gameServer.commonRefush.protocol.bag.BagUserItemData;
+import com.gameServer.common.entity.BagUserItemEntity;
+import com.gameServer.common.entity.ItemBoxBaseEntity;
 
 import java.util.List;
 

@@ -1,5 +1,4 @@
-import com.gameServer.commonRefush.constant.TankDeployEnum;
-import com.gameServer.commonRefush.resource.PuzzleResource;
+import com.gameServer.common.constant.TankDeployEnum;
 import org.junit.Ignore;
 import org.junit.Test;
 

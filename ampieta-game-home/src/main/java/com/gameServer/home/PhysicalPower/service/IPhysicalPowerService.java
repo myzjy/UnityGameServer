@@ -1,8 +1,8 @@
 package com.gameServer.home.PhysicalPower.service;
 
-import com.gameServer.commonRefush.entity.PhysicalPowerEntity;
-import com.gameServer.commonRefush.entity.PlayerUserEntity;
-import com.gameServer.commonRefush.resource.ConfigResource;
+import com.gameServer.common.entity.PhysicalPowerEntity;
+import com.gameServer.common.entity.PlayerUserEntity;
+import com.gameServer.common.resource.ConfigResource;
 
 /**
  * 体力相关service
