@@ -1,6 +1,6 @@
 import com.gameServer.common.constant.TankDeployEnum;
 import com.gameServer.unityGameSDK.Application;
-import com.zfoo.event.model.event.AppStartEvent;
+import com.zfoo.event.model.AppStartEvent;
 import com.zfoo.util.ThreadUtils;
 import org.junit.Ignore;
 import org.junit.Test;

@@ -2,8 +2,8 @@ import com.gameServer.common.ormEntity.PuzzleEntity;
 import com.gameServer.common.resource.PuzzleResource;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.scheduler.util.TimeUtils;
-import com.zfoo.storage.model.anno.ResInjection;
-import com.zfoo.storage.model.vo.Storage;
+import com.zfoo.storage.anno.StorageAutowired;
+import com.zfoo.storage.manager.StorageInt;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PuzzleManager {
-    @ResInjection
-    public Storage<Integer, PuzzleResource> puzzleResourceStorage;
+    @StorageAutowired
+    public StorageInt<Integer, PuzzleResource> puzzleResourceStorage;
 
     public void UpDataPuzzleOrm() {
         var dict = puzzleResourceStorage.getAll();
