@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.Puzzle;
 
+import com.gameServer.common.attribute.grounding.MonsterData;
 import com.zfoo.net.packet.IPacket;
 
 /**
@@ -15,5 +16,5 @@ public class PuzzleLevelBattleResponse implements IPacket {
     /**
      * 怪物 数据
      */
-    private String monsterStr;
+    private MonsterData[] monsterStr;
 }
