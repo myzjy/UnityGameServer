@@ -10,7 +10,7 @@ import com.zfoo.net.packet.IPacket;
  */
 public class PuzzleLevelBattleResponse implements IPacket {
     /**
-     *
+     * 当前关卡名字
      */
     private String levelStr;
     /**
