@@ -37,4 +37,9 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
      * 当前角色 最大 HP 加上 装备词条
      */
     private int entityNowMaxHp;
+    /**
+     * 当前防御力
+     */
+    private int nowDef;
+
 }
