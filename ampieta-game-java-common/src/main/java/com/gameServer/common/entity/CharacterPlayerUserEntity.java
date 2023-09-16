@@ -29,4 +29,12 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
      * 当前角色 最大 HP 没有加上 装备词条
      */
     private int entityMaxHp;
+    /**
+     *  当前角色 HP 加上 装备词条 得出来的
+     */
+    private int entityNowHp;
+    /**
+     * 当前角色 最大 HP 加上 装备词条
+     */
+    private int entityNowMaxHp;
 }
