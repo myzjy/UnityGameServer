@@ -14,4 +14,9 @@ public class CharacterUserCompositeDataID implements Comparable<CharacterUserCom
      * 玩家UID
      */
     private long uid;
+
+    @Override
+    public int compareTo(CharacterUserCompositeDataID o) {
+        return 0;
+    }
 }
