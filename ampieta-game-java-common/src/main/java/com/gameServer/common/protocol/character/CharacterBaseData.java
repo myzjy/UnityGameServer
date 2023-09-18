@@ -37,12 +37,12 @@ public class CharacterBaseData implements IPacket {
 
     /**
      * 进行创建值
-     * @param roleID
-     * @param lv
-     * @param nowExp
-     * @param noeMaxExp
-     * @param lvQuantity
-     * @param maxLvQuantity
+     * @param roleID  角色id 获取 数据库中得基础信息
+     * @param lv 等级
+     * @param nowExp 当前经验
+     * @param noeMaxExp 最大经验
+     * @param lvQuantity  星级
+     * @param maxLvQuantity 最大星级
      * @return
      */
     private static CharacterBaseData ValueOf(long roleID, int lv, int nowExp, int noeMaxExp, int lvQuantity, int maxLvQuantity) {
