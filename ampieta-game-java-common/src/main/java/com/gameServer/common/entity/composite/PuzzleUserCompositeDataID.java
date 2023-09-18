@@ -13,4 +13,20 @@ public class PuzzleUserCompositeDataID implements Comparable<PuzzleUserComposite
     public int compareTo(PuzzleUserCompositeDataID o) {
         return 0;
     }
+
+    public int getPuzzleId() {
+        return puzzleId;
+    }
+
+    public void setPuzzleId(int puzzleId) {
+        this.puzzleId = puzzleId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 }
