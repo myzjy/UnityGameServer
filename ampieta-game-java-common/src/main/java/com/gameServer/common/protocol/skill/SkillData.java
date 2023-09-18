@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.skill;
 
+import com.gameServer.common.attribute.grounding.SkillBaseData;
 import com.zfoo.net.packet.IPacket;
 
 /**
@@ -9,18 +10,7 @@ import com.zfoo.net.packet.IPacket;
  * @since 2023/9/12 00 04
  */
 public class SkillData  implements IPacket {
-    /**
-     * 技能ID 技能id不会重复
-     */
-    private int skillID;
-    /**
-     * 技能名字
-     */
-    private String skillName;
-    /**
-     * 技能介绍
-     */
-    private String skillDesc;
+    private SkillBaseData skillBaseData;
     /**
      * 技能type
      * 表示 技能类别

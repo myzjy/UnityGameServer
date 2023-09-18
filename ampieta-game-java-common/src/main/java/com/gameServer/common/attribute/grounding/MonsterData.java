@@ -1,5 +1,8 @@
 package com.gameServer.common.attribute.grounding;
 
+import com.gameServer.common.lasting.SkillLastingData;
+import com.gameServer.common.protocol.skill.SkillData;
+
 /**
  * 基础怪物
  * @author zjy
@@ -23,6 +26,10 @@ public class MonsterData {
     /**
      * 技能id
      */
-    private int[] skillID;
+    private SkillData[] skillBaseDatas;
+    /**
+     * 是不是boss
+     */
+    private boolean isBoss;
 
 }
