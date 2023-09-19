@@ -14,4 +14,20 @@ public class PuzzleUserDataRewardsCaChes {
      * 当前星级是否 已获取
      */
     private boolean rewardsObtain;
+
+    public int getStarRating() {
+        return starRating;
+    }
+
+    public void setStarRating(int starRating) {
+        this.starRating = starRating;
+    }
+
+    public boolean isRewardsObtain() {
+        return rewardsObtain;
+    }
+
+    public void setRewardsObtain(boolean rewardsObtain) {
+        this.rewardsObtain = rewardsObtain;
+    }
 }

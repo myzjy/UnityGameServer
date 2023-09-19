@@ -15,6 +15,22 @@ public class CharacterUserCompositeDataID implements Comparable<CharacterUserCom
      */
     private long uid;
 
+    public int getCharacterId() {
+        return characterId;
+    }
+
+    public void setCharacterId(int characterId) {
+        this.characterId = characterId;
+    }
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
+
     @Override
     public int compareTo(CharacterUserCompositeDataID o) {
         return 0;
