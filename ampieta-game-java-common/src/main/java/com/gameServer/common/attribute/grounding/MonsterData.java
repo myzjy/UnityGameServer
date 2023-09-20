@@ -1,6 +1,5 @@
 package com.gameServer.common.attribute.grounding;
 
-import com.gameServer.common.lasting.SkillLastingData;
 import com.gameServer.common.protocol.skill.SkillData;
 
 /**

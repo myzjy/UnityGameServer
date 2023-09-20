@@ -43,9 +43,9 @@ public class CharacterBaseData implements IPacket {
      * @param noeMaxExp 最大经验
      * @param lvQuantity  星级
      * @param maxLvQuantity 最大星级
-     * @return
+     * @return 角色基础数据结构
      */
-    private static CharacterBaseData ValueOf(long roleID, int lv, int nowExp, int noeMaxExp, int lvQuantity, int maxLvQuantity) {
+    public static CharacterBaseData ValueOf(long roleID, int lv, int nowExp, int noeMaxExp, int lvQuantity, int maxLvQuantity) {
         var data = new CharacterBaseData();
         data.setRoleID(roleID);
         data.setLv(lv);
