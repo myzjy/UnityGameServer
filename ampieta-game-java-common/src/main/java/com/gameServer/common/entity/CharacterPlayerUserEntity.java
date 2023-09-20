@@ -42,4 +42,5 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
      */
     private int nowDef;
 
+
 }

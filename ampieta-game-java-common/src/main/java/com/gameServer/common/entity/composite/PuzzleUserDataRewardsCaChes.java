@@ -1,6 +1,7 @@
 package com.gameServer.common.entity.composite;
 
 /**
+ * 关卡 星级
  * @author zjy
  * @version 1.0
  * @since 2023/9/5 15 39
