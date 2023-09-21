@@ -17,4 +17,33 @@ public class EquipmentGlossaryData implements IPacket {
      * 数值
      */
     private int equipmentNum;
+
+    /**
+     * 词条创建
+     * @param equipmentType type
+     * @param equipmentNum num
+     * @return 词条创建
+     */
+    public static EquipmentGlossaryData ValueOf(int equipmentType,int equipmentNum){
+        var data=new EquipmentGlossaryData();
+        data.setEquipmentType(equipmentType);
+        data.setEquipmentNum(equipmentNum);
+        return data;
+    }
+
+    public int getEquipmentType() {
+        return equipmentType;
+    }
+
+    public void setEquipmentType(int equipmentType) {
+        this.equipmentType = equipmentType;
+    }
+
+    public int getEquipmentNum() {
+        return equipmentNum;
+    }
+
+    public void setEquipmentNum(int equipmentNum) {
+        this.equipmentNum = equipmentNum;
+    }
 }
