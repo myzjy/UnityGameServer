@@ -32,6 +32,55 @@ public class EquipmentData implements IPacket {
      * 圣遗物 升级 的 最大经验
      */
     private int maxEquipmentExp;
+    public static EquipmentData ValueOf(){
+        return new EquipmentData();
+    }
 
+    public EquipmentGlossaryData getSubjectClauseEquipmentData() {
+        return SubjectClauseEquipmentData;
+    }
 
+    public void setSubjectClauseEquipmentData(EquipmentGlossaryData subjectClauseEquipmentData) {
+        SubjectClauseEquipmentData = subjectClauseEquipmentData;
+    }
+
+    public EquipmentGlossaryData[] getAdverbStripEquipmentDatas() {
+        return AdverbStripEquipmentDatas;
+    }
+
+    public void setAdverbStripEquipmentDatas(EquipmentGlossaryData[] adverbStripEquipmentDatas) {
+        AdverbStripEquipmentDatas = adverbStripEquipmentDatas;
+    }
+
+    public int getEquipmentLv() {
+        return equipmentLv;
+    }
+
+    public void setEquipmentLv(int equipmentLv) {
+        this.equipmentLv = equipmentLv;
+    }
+
+    public int getEquipmentMaxLv() {
+        return equipmentMaxLv;
+    }
+
+    public void setEquipmentMaxLv(int equipmentMaxLv) {
+        this.equipmentMaxLv = equipmentMaxLv;
+    }
+
+    public int getNowEquipmentExp() {
+        return nowEquipmentExp;
+    }
+
+    public void setNowEquipmentExp(int nowEquipmentExp) {
+        this.nowEquipmentExp = nowEquipmentExp;
+    }
+
+    public int getMaxEquipmentExp() {
+        return maxEquipmentExp;
+    }
+
+    public void setMaxEquipmentExp(int maxEquipmentExp) {
+        this.maxEquipmentExp = maxEquipmentExp;
+    }
 }
