@@ -24,6 +24,14 @@ public class EquipmentData implements IPacket {
      * 当前圣遗物最大等级
      */
     private int equipmentMaxLv;
+    /**
+     * 圣遗物 升级 的 当前经验
+     */
+    private int nowEquipmentExp;
+    /**
+     * 圣遗物 升级 的 最大经验
+     */
+    private int maxEquipmentExp;
 
 
 }
