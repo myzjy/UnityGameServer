@@ -15,7 +15,7 @@ public class EquipmentData implements IPacket {
     /**
      * 副 词条 多个词条
      */
-    private EquipmentGlossaryData[] AdverbStripEquipmentDatas;
+    private EquipmentGlossaryData[] AdverbStripEquipmentDataList;
     /**
      * 等级
      */
@@ -44,12 +44,12 @@ public class EquipmentData implements IPacket {
         SubjectClauseEquipmentData = subjectClauseEquipmentData;
     }
 
-    public EquipmentGlossaryData[] getAdverbStripEquipmentDatas() {
-        return AdverbStripEquipmentDatas;
+    public EquipmentGlossaryData[] getAdverbStripEquipmentDataList() {
+        return AdverbStripEquipmentDataList;
     }
 
-    public void setAdverbStripEquipmentDatas(EquipmentGlossaryData[] adverbStripEquipmentDatas) {
-        AdverbStripEquipmentDatas = adverbStripEquipmentDatas;
+    public void setAdverbStripEquipmentDataList(EquipmentGlossaryData[] adverbStripEquipmentDataList) {
+        AdverbStripEquipmentDataList = adverbStripEquipmentDataList;
     }
 
     public int getEquipmentLv() {
