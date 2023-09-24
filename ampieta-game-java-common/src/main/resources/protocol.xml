@@ -52,6 +52,8 @@
         <protocol location="com.gameServer.common.protocol.bag.UseTheBagItemEffectResponse"/>
         <protocol location="com.gameServer.common.protocol.Puzzle.PuzzleAllConfigRequest"/>
         <protocol location="com.gameServer.common.protocol.Puzzle.PuzzleAllConfigResponse"/>
+        <protocol location="com.gameServer.common.protocol.equipment.EquipmentAllDataRequest"/>
+        <protocol location="com.gameServer.common.protocol.equipment.EquipmentAllDataResponse"/>
     </module>
     <module id="3" name="common" >
         <protocol  location="com.zfoo.net.packet.common.Message"/>
@@ -71,6 +73,8 @@
         <protocol  location="com.gameServer.common.protocol.Puzzle.Puzzle"/>
         <protocol  location="com.gameServer.common.protocol.Puzzle.PuzzleRewardsData"/>
         <protocol  location="com.gameServer.common.protocol.Puzzle.PuzzleChapter"/>
+        <protocol  location="com.gameServer.common.protocol.equipment.EquipmentGlossaryData"/>
+        <protocol  location="com.gameServer.common.protocol.equipment.EquipmentData"/>
 
     </module>
     <module id="4" name="unityGameSdk">

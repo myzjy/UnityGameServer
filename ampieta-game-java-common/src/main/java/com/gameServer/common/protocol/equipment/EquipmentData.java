@@ -1,12 +1,16 @@
 package com.gameServer.common.protocol.equipment;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
+
+import java.util.List;
 
 /**
  * @author zjy
  * @version 1.0
  * @since 2023/9/20 23 49
  */
+@Protocol(id = 206)
 public class EquipmentData implements IPacket {
     /**
      * 主属性 词条
@@ -32,6 +36,10 @@ public class EquipmentData implements IPacket {
      * 圣遗物 升级 的 最大经验
      */
     private int maxEquipmentExp;
+    /**
+     * list  包含 当前等级之前 圣遗物转换 经验值
+     */
+    private List<Integer> rankSwitchingExperienceList;
     public static EquipmentData ValueOf(){
         return new EquipmentData();
     }

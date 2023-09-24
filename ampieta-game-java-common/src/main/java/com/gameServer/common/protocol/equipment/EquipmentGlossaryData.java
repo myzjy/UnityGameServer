@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.equipment;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * 圣遗物的词条
@@ -8,6 +9,7 @@ import com.zfoo.net.packet.IPacket;
  * @version 1.0
  * @since 2023/9/20 23 54
  */
+@Protocol(id = 205)
 public class EquipmentGlossaryData implements IPacket {
     /**
      * 圣遗物 副属性 词条 type
