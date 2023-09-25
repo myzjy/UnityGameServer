@@ -30,7 +30,7 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
      */
     private int entityMaxHp;
     /**
-     *  当前角色 HP 加上 装备词条 得出来的
+     * 当前角色 HP 加上 装备词条 得出来的
      */
     private int entityNowHp;
     /**
@@ -42,5 +42,59 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
      */
     private int nowDef;
 
+    /**
+     * 角色数据创建
+     */
+    public static CharacterPlayerUserEntity ValueOf() {
+        var data = new CharacterPlayerUserEntity();
+        return data;
+    }
 
+    public CharacterUserCompositeDataID getDataID() {
+        return dataID;
+    }
+
+    public void setDataID(CharacterUserCompositeDataID dataID) {
+        this.dataID = dataID;
+    }
+
+    public int getEntityHp() {
+        return entityHp;
+    }
+
+    public void setEntityHp(int entityHp) {
+        this.entityHp = entityHp;
+    }
+
+    public int getEntityMaxHp() {
+        return entityMaxHp;
+    }
+
+    public void setEntityMaxHp(int entityMaxHp) {
+        this.entityMaxHp = entityMaxHp;
+    }
+
+    public int getEntityNowHp() {
+        return entityNowHp;
+    }
+
+    public void setEntityNowHp(int entityNowHp) {
+        this.entityNowHp = entityNowHp;
+    }
+
+    public int getEntityNowMaxHp() {
+        return entityNowMaxHp;
+    }
+
+    public void setEntityNowMaxHp(int entityNowMaxHp) {
+        this.entityNowMaxHp = entityNowMaxHp;
+    }
+
+    public int getNowDef() {
+        return nowDef;
+    }
+
+    public void setNowDef(int nowDef) {
+        this.nowDef = nowDef;
+    }
 }

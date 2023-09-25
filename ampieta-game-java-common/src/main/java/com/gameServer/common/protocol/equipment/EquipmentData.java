@@ -40,8 +40,20 @@ public class EquipmentData implements IPacket {
      * list  包含 当前等级之前 圣遗物转换 经验值
      */
     private List<Integer> rankSwitchingExperienceList;
-    public static EquipmentData ValueOf(){
-        return new EquipmentData();
+
+    public static EquipmentData ValueOf(int[] subjectClauses,
+                                        EquipmentGlossaryData[] AdverbStripEquipmentDataList,
+                                        int equipmentLv, int equipmentMaxLv,
+                                        int nowEquipmentExp, int maxEquipmentExp) {
+        var data = new EquipmentData();
+        EquipmentGlossaryData subjectClauseData = EquipmentGlossaryData.ValueOf(subjectClauses[0], subjectClauses[1]);
+        data.setSubjectClauseEquipmentData(subjectClauseData);
+        data.setAdverbStripEquipmentDataList(AdverbStripEquipmentDataList);
+        data.setEquipmentLv(equipmentLv);
+        data.setEquipmentMaxLv(equipmentMaxLv);
+        data.setNowEquipmentExp(nowEquipmentExp);
+        data.setMaxEquipmentExp(maxEquipmentExp);
+        return data;
     }
 
     public EquipmentGlossaryData getSubjectClauseEquipmentData() {
@@ -90,5 +102,13 @@ public class EquipmentData implements IPacket {
 
     public void setMaxEquipmentExp(int maxEquipmentExp) {
         this.maxEquipmentExp = maxEquipmentExp;
+    }
+
+    public List<Integer> getRankSwitchingExperienceList() {
+        return rankSwitchingExperienceList;
+    }
+
+    public void setRankSwitchingExperienceList(List<Integer> rankSwitchingExperienceList) {
+        this.rankSwitchingExperienceList = rankSwitchingExperienceList;
     }
 }
