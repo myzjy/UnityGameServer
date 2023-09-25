@@ -7,3 +7,6 @@
 [submodule "zfoo"]
 	path = zfoo
 	url = git@github.com:myzjy/zfoo.git
+[submodule "ampieta-game-web-server-project"]
+	path = ampieta-game-web-server-project
+	url = git@github.com:myzjy/ampieta-game-web-server-project.git
