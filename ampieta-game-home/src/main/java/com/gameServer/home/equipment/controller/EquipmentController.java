@@ -1,5 +1,9 @@
 package com.gameServer.home.equipment.controller;
 
+import com.gameServer.common.protocol.equipment.EquipmentAllDataRequest;
+import com.zfoo.net.anno.PacketReceiver;
+import com.zfoo.net.router.attachment.GatewayAttachment;
+import com.zfoo.net.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -15,5 +19,10 @@ public class EquipmentController {
 
     public EquipmentController() {
         logger.info("[EquipmentController]");
+    }
+    @PacketReceiver
+    public void atEquipmentAllDataRequest(Session session, EquipmentAllDataRequest request, GatewayAttachment gateway){
+        logger.info("获取所有圣遗物，请求者UID：{}",session.getUid());
+
     }
 }
