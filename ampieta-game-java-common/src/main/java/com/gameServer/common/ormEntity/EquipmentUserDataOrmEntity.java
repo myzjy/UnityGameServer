@@ -22,7 +22,7 @@ public class EquipmentUserDataOrmEntity implements IEntity<Long> {
     private int equipmentID;
 
     @Override
-    public long id() {
+    public Long id() {
         return id;
     }
 
