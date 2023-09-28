@@ -20,6 +20,10 @@ public class EquipmentUserDataOrmEntity implements IEntity<Long> {
      * 圣遗物所属 id
      */
     private int equipmentID;
+    /**
+     * 圣遗物所属 套装id
+     */
+    private int equipmentSuitID;
 
     @Override
     public Long id() {
@@ -48,5 +52,22 @@ public class EquipmentUserDataOrmEntity implements IEntity<Long> {
 
     public void setEquipmentID(int equipmentID) {
         this.equipmentID = equipmentID;
+    }
+
+    public int getEquipmentSuitID() {
+        return equipmentSuitID;
+    }
+
+    public void setEquipmentSuitID(int equipmentSuitID) {
+        this.equipmentSuitID = equipmentSuitID;
+    }
+
+    public static EquipmentUserDataOrmEntity ValueOf(long id, long uid, int equipmentID,int equipmentSuitID){
+        var data=new EquipmentUserDataOrmEntity();
+        data.setId(id);
+        data.setUid(uid);
+        data.setEquipmentID(equipmentID);
+        data.setEquipmentSuitID(equipmentSuitID);
+        return data;
     }
 }
