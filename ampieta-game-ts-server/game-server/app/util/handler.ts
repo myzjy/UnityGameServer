@@ -43,8 +43,10 @@ let handleData = function (socket: ISocket, pkg: any) {
     // if (socket.state !== ST_WORKING) {
     //     return;
     // }
+    console.log(pkg.toString());
+
     let data = JSON.parse(pkg)
-    console.log(data)
+    console.log(data.toString());
     socket.emit('message', data);
 };
 
@@ -63,4 +65,3 @@ export default function (socket: ISocket, pkg: any) {
         socket.disconnect();
     }
 }
-

@@ -18,10 +18,12 @@ let encode = function (this: IConnector, reqId: number, route: string, msg: any)
 let decode = function (this: any, msg: any) {
 
 
-    let route = msg.route;
+    let route = msg.protocolId;
+    msg.id=route;
+    logger.log("启用字典:" + this.connector.useDict);
     if (!!this.connector.useDict) {
         let abbrs = this.dictionary.getAbbrs();
-
+        logger.log("abbrs:" +JSON.stringify( abbrs));
         if (!abbrs[route]) {
             logger.error('字典错误!route没有缩写 : %s', route);
             return null;
@@ -77,7 +79,7 @@ let encodeBody = function (server: any, route: string, msgBody: any) {
     // } else if (!!server.decodeIO_protobuf && !!server.decodeIO_protobuf.check(Constants.RESERVED.SERVER, route)) {
     //     msgBody = server.decodeIO_protobuf.encode(route, msgBody);
     // } else {
-        msgBody = Buffer.from(JSON.stringify(msgBody), 'utf8');
+    msgBody = Buffer.from(JSON.stringify(msgBody), 'utf8');
     // }
     return msgBody;
 };
