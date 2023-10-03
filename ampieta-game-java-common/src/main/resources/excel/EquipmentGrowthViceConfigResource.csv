@@ -1,0 +1,4 @@
+viceId,viceName,PosGrowthType,initNums
+int,string,int,string
+id,详细属性,属性所属pos对应,
+1,暴击率,3,
