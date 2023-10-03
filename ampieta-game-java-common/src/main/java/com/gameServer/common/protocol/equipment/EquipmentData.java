@@ -40,11 +40,16 @@ public class EquipmentData implements IPacket {
      * list  包含 当前等级之前 圣遗物转换 经验值
      */
     private List<Integer> rankSwitchingExperienceList;
+    /**
+     * 当前装备所属 角色 id
+     */
+    private int useTheRole;
 
     public static EquipmentData ValueOf(int[] subjectClauses,
                                         EquipmentGlossaryData[] AdverbStripEquipmentDataList,
                                         int equipmentLv, int equipmentMaxLv,
-                                        int nowEquipmentExp, int maxEquipmentExp) {
+                                        int nowEquipmentExp, int maxEquipmentExp,
+                                        int useTheRole) {
         var data = new EquipmentData();
         EquipmentGlossaryData subjectClauseData = EquipmentGlossaryData.ValueOf(subjectClauses[0], subjectClauses[1]);
         data.setSubjectClauseEquipmentData(subjectClauseData);
@@ -53,6 +58,7 @@ public class EquipmentData implements IPacket {
         data.setEquipmentMaxLv(equipmentMaxLv);
         data.setNowEquipmentExp(nowEquipmentExp);
         data.setMaxEquipmentExp(maxEquipmentExp);
+        data.setUseTheRole(useTheRole);
         return data;
     }
 
@@ -110,5 +116,13 @@ public class EquipmentData implements IPacket {
 
     public void setRankSwitchingExperienceList(List<Integer> rankSwitchingExperienceList) {
         this.rankSwitchingExperienceList = rankSwitchingExperienceList;
+    }
+
+    public int getUseTheRole() {
+        return useTheRole;
+    }
+
+    public void setUseTheRole(int useTheRole) {
+        this.useTheRole = useTheRole;
     }
 }
