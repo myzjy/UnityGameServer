@@ -36,6 +36,7 @@ public class ApplicationTest {
         ormAddManager.UpdateItemBaseCsvResource();
         ormAddManager.UpdateStageCsvResource();
         ormAddManager.UpdateStageMissionCsvResource();
+        ormAddManager.UpdateEquipmentGrowthViceConfigResource();
 
     }
 }

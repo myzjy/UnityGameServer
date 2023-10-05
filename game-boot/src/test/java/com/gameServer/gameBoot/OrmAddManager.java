@@ -1,6 +1,7 @@
 package com.gameServer.gameBoot;
 
 import com.gameServer.common.entity.ItemBoxBaseEntity;
+import com.gameServer.common.ormEntity.EquipmentGrowthViceConfigDataEntity;
 import com.gameServer.common.ormEntity.StageDataEntity;
 import com.gameServer.common.ormEntity.StageMissionEntity;
 import com.gameServer.common.resource.EquipmentGrowthViceConfigResource;
@@ -15,6 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author zjy
  * @version 1.0
@@ -23,16 +27,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrmAddManager {
     private static final Logger logger = LoggerFactory.getLogger(OrmAddManager.class);
-
     @StorageAutowired
     private StorageInt<Integer, ItemBaseCsvResource> itemBaseCsvResourceStorage;
     @StorageAutowired
     private StorageInt<Integer, StageResource> stageResourceStorage;
     @StorageAutowired
     private StorageInt<Integer, StageMissionResource> stageMissionResourceStorage;
-
     @StorageAutowired
     private StorageInt<Integer, EquipmentGrowthViceConfigResource> equipmentGrowthViceConfigResourceStorageInt;
+
     /**
      * 更新 stageMission 表
      */
@@ -54,9 +57,7 @@ public class OrmAddManager {
                 var updateEntity = getStageMissionEntity(data, entity, createOrUpdate);
                 OrmContext.getAccessor().update(updateEntity);
             }
-
         }
-
     }
 
     private StageMissionEntity getStageMissionEntity(StageMissionResource data, StageMissionEntity entity, String createOrUpdate) {
@@ -116,9 +117,7 @@ public class OrmAddManager {
                 createData.setPuzzleId(data.getPuzzleId());
                 OrmContext.getAccessor().insert(createData);
             }
-
         }
-
     }
 
     private StageDataEntity getStageDataEntity(StageDataEntity entity, String update) {
@@ -149,7 +148,6 @@ public class OrmAddManager {
             //设置
             var entity = OrmContext.getAccessor().load(data.getId(), ItemBoxBaseEntity.class);
             var update = TimeUtils.timeToString(TimeUtils.now());
-
             if (entity != null) {
                 var newEntity = getItemBoxBasEntity(data, entity, update);
                 OrmContext.getAccessor().update(newEntity);
@@ -158,7 +156,6 @@ public class OrmAddManager {
                 OrmContext.getAccessor().insert(newEntity);
             }
         }
-
     }
 
     private ItemBoxBaseEntity getBoxBasEntity(ItemBaseCsvResource data, String update) {
@@ -195,5 +192,34 @@ public class OrmAddManager {
         newEntity.setType(data.getType());
         newEntity.setUpdateAt(update);
         return newEntity;
+    }
+
+    public void UpdateEquipmentGrowthViceConfigResource() {
+        var dict = equipmentGrowthViceConfigResourceStorageInt.getAll();
+        for (var data : dict) {
+            var entity = OrmContext.getAccessor().load(data.getViceId(), EquipmentGrowthViceConfigDataEntity.class);
+            var update = TimeUtils.timeToString(TimeUtils.now());
+            if (entity != null) {
+                //数据库中存在
+                entity.setViceId(entity.getViceId());
+                entity.setInitNums(entity.getInitNums());
+                entity.setPosGrowthType(entity.getPosGrowthType());
+                entity.setViceName(entity.getViceName());
+                entity.setCreateAt(entity.getCreateAt());
+                entity.setUpdateAt(update);
+            } else {
+                var str = data.getInitNums().split("/");
+                var initNums = new float[str.length];
+                var index = 0;
+                for (var s : str) {
+                    var n = Float.parseFloat(s);
+                    initNums[index++] = (n);
+                }
+                //数据库中不存在
+                var dataCreate = EquipmentGrowthViceConfigDataEntity.ValueOf(data.getViceId(), data.getViceName(), data.getPosGrowthType(),initNums );
+                dataCreate.setUpdateAt(update);
+                dataCreate.setCreateAt(update);
+            }
+        }
     }
 }

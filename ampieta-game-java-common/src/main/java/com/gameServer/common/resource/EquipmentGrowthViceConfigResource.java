@@ -17,8 +17,17 @@ public class EquipmentGrowthViceConfigResource {
 
     @Id
     private int viceId;
+    /**
+     * 详细属性
+     */
     private String viceName;
+    /**
+     * 属性所属pos对应
+     */
     private int PosGrowthType;
+    /**
+     * 副属性的初始值数组
+     */
     private String initNums;
 
     public int getViceId() {
