@@ -24,7 +24,7 @@ public class EquipmentUserDataOrmEntity implements IEntity<Long> {
      * 圣遗物所属 套装id
      */
     private int equipmentSuitID;
-    private int useThe
+    //private int useThe
 
     @Override
     public Long id() {

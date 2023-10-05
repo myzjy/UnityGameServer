@@ -1,5 +1,5 @@
 viceId,viceName,PosGrowthType,initNums
-int,string,int,string
+int,String,int,String
 id,详细属性,属性所属pos对应,副属性的初始值数组
 1,暴击率,3,2.72/3.11/3.5/3.89
 2,暴击伤害,10,5.44/6.22/6.99/7.77
