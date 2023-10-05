@@ -25,31 +25,15 @@ public class EquipmentGrowthViceConfigResource {
         return viceId;
     }
 
-    public void setViceId(int viceId) {
-        this.viceId = viceId;
-    }
-
     public String getViceName() {
         return viceName;
-    }
-
-    public void setViceName(String viceName) {
-        this.viceName = viceName;
     }
 
     public int getPosGrowthType() {
         return PosGrowthType;
     }
 
-    public void setPosGrowthType(int posGrowthType) {
-        PosGrowthType = posGrowthType;
-    }
-
     public String getInitNums() {
         return initNums;
-    }
-
-    public void setInitNums(String initNums) {
-        this.initNums = initNums;
     }
 }

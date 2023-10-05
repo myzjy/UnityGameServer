@@ -3,6 +3,7 @@ package com.gameServer.gameBoot;
 import com.gameServer.common.entity.ItemBoxBaseEntity;
 import com.gameServer.common.ormEntity.StageDataEntity;
 import com.gameServer.common.ormEntity.StageMissionEntity;
+import com.gameServer.common.resource.EquipmentGrowthViceConfigResource;
 import com.gameServer.common.resource.ItemBaseCsvResource;
 import com.gameServer.common.resource.StageMissionResource;
 import com.gameServer.common.resource.StageResource;
@@ -30,6 +31,8 @@ public class OrmAddManager {
     @StorageAutowired
     private StorageInt<Integer, StageMissionResource> stageMissionResourceStorage;
 
+    @StorageAutowired
+    private StorageInt<Integer, EquipmentGrowthViceConfigResource> equipmentGrowthViceConfigResourceStorageInt;
     /**
      * 更新 stageMission 表
      */
@@ -51,7 +54,6 @@ public class OrmAddManager {
                 var updateEntity = getStageMissionEntity(data, entity, createOrUpdate);
                 OrmContext.getAccessor().update(updateEntity);
             }
-
 
         }
 

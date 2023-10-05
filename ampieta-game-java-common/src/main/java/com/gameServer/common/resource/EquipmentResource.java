@@ -1,5 +1,6 @@
 package com.gameServer.common.resource;
 
+import com.zfoo.storage.anno.Id;
 import com.zfoo.storage.anno.Storage;
 
 /**
@@ -12,6 +13,7 @@ public class EquipmentResource {
     /**
      * 圣遗物id
      */
+    @Id
     private int id;
     /**
      * 圣遗物介绍id
