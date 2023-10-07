@@ -11,16 +11,14 @@
     <properties>
         <skipTests>true</skipTests>
         <!-- 本项目的其它module版本号 -->
-        <zfoo.boot.version>3.0</zfoo.boot.version>
-        <zfoo.event.version>3.0</zfoo.event.version>
-        <zfoo.hotswap.version>3.0</zfoo.hotswap.version>
-        <zfoo.monitor.version>3.0</zfoo.monitor.version>
-        <zfoo.net.version>3.0</zfoo.net.version>
-        <zfoo.scheduler.version>3.0</zfoo.scheduler.version>
-        <zfoo.storage.version>3.0</zfoo.storage.version>
-        <zfoo.orm.version>3.0</zfoo.orm.version>
-        <zfoo.protocol.version>3.0</zfoo.protocol.version>
-        <zfoo.util.version>3.0</zfoo.util.version>
+        <zfoo.boot.version>3.1.4</zfoo.boot.version>
+        <zfoo.event.version>3.1.4</zfoo.event.version>
+        <zfoo.hotswap.version>3.1.4</zfoo.hotswap.version>
+        <zfoo.monitor.version>3.1.4</zfoo.monitor.version>
+        <zfoo.net.version>3.1.4</zfoo.net.version>
+        <zfoo.scheduler.version>3.1.4</zfoo.scheduler.version>
+        <zfoo.storage.version>3.1.4</zfoo.storage.version>
+        <zfoo.orm.version>3.1.4</zfoo.orm.version>
 
         <!-- 核心spring框架，优先使用spring boot的日志版本 -->
         <spring.version>6.0.11</spring.version>
@@ -175,11 +173,7 @@
             <version>${zfoo.orm.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.zfoo</groupId>
-            <artifactId>util</artifactId>
-            <version>${zfoo.util.version}</version>
-        </dependency>
+
 
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -248,6 +242,18 @@
             <artifactId>common</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>storage</artifactId>
+            <version>3.1.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zfoo</groupId>
+            <artifactId>orm</artifactId>
+            <version>3.1.4</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
