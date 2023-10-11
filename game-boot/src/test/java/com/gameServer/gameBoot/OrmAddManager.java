@@ -207,6 +207,7 @@ public class OrmAddManager {
                 entity.setViceName(entity.getViceName());
                 entity.setCreateAt(entity.getCreateAt());
                 entity.setUpdateAt(update);
+                OrmContext.getAccessor().update(entity);
             } else {
                 var str = data.getInitNums().split("/");
                 var initNums = new float[str.length];
@@ -219,6 +220,7 @@ public class OrmAddManager {
                 var dataCreate = EquipmentGrowthViceConfigDataEntity.ValueOf(data.getViceId(), data.getViceName(), data.getPosGrowthType(),initNums );
                 dataCreate.setUpdateAt(update);
                 dataCreate.setCreateAt(update);
+                OrmContext.getAccessor().insert(dataCreate);
             }
         }
     }

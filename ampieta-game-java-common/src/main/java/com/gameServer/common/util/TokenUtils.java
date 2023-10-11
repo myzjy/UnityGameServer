@@ -1,10 +1,10 @@
 package com.gameServer.common.util;
 
+import com.zfoo.net.util.security.AesUtils;
 import com.zfoo.protocol.model.Triple;
+import com.zfoo.protocol.util.RandomUtils;
 import com.zfoo.protocol.util.StringUtils;
 import com.zfoo.scheduler.util.TimeUtils;
-import com.zfoo.util.math.RandomUtils;
-import com.zfoo.util.security.AesUtils;
 
 /**
  * @author Administrator
@@ -18,6 +18,7 @@ public abstract class TokenUtils {
      * 加密方式：用户id，加盐，过期时间戳
      */
     public static String set(long userId) {
+
         var salt = RandomUtils.randomString(8);
         var now = TimeUtils.now() + TOKEN_EXPIRE_TIME;
         var source = userId + StringUtils.VERTICAL_BAR + salt + StringUtils.VERTICAL_BAR + now;
