@@ -15,20 +15,36 @@ public class EquipmentGrowthViceDataEntity implements IEntity<Long> {
      * 在数据库中存放
      */
     private long ormId;
+    /**
+     *
+     */
     private int equipmentId;
+    /**
+     * 当前圣遗物拥有者
+     */
     private long uid;
+    /**
+     * 当前等级
+     */
+    private int lv;
+    /**
+     * 当前经验
+     */
+    private int nowExp;
     /**
      * 名字
      */
     private String viceName;
     /**
-     * 副属性的初始值数组
+     * 副属性的 具体数值 数组
      */
     private List<EquipmentGrowthData> initNums;
-    public static EquipmentGrowthViceDataEntity ValueOf(){
-        var data=new EquipmentGrowthViceDataEntity();
+
+    public static EquipmentGrowthViceDataEntity ValueOf() {
+        var data = new EquipmentGrowthViceDataEntity();
         return data;
     }
+
     @Override
     public Long id() {
         return ormId;

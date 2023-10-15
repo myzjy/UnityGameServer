@@ -13,13 +13,17 @@ import java.util.List;
 @Protocol(id = 206)
 public class EquipmentData implements IPacket {
     /**
+     * 当前 圣遗物 装备 id
+     */
+    private int equipmentId;
+    /**
      * 主属性 词条
      */
     private EquipmentGlossaryData SubjectClauseEquipmentData;
     /**
      * 副 词条 多个词条
      */
-    private EquipmentGlossaryData[] AdverbStripEquipmentDataList;
+    private List<EquipmentGlossaryData> AdverbStripEquipmentDataList;
     /**
      * 等级
      */
@@ -45,13 +49,12 @@ public class EquipmentData implements IPacket {
      */
     private int useTheRole;
 
-    public static EquipmentData ValueOf(int[] subjectClauses,
-                                        EquipmentGlossaryData[] AdverbStripEquipmentDataList,
+    public static EquipmentData ValueOf(EquipmentGlossaryData subjectClauseData,
+                                        List<EquipmentGlossaryData> AdverbStripEquipmentDataList,
                                         int equipmentLv, int equipmentMaxLv,
                                         int nowEquipmentExp, int maxEquipmentExp,
-                                        int useTheRole) {
+                                        int useTheRole,int equipmentId) {
         var data = new EquipmentData();
-        EquipmentGlossaryData subjectClauseData = EquipmentGlossaryData.ValueOf(subjectClauses[0], subjectClauses[1]);
         data.setSubjectClauseEquipmentData(subjectClauseData);
         data.setAdverbStripEquipmentDataList(AdverbStripEquipmentDataList);
         data.setEquipmentLv(equipmentLv);
@@ -59,7 +62,16 @@ public class EquipmentData implements IPacket {
         data.setNowEquipmentExp(nowEquipmentExp);
         data.setMaxEquipmentExp(maxEquipmentExp);
         data.setUseTheRole(useTheRole);
+        data.setEquipmentId(equipmentId);
         return data;
+    }
+
+    public int getEquipmentId() {
+        return equipmentId;
+    }
+
+    public void setEquipmentId(int equipmentId) {
+        this.equipmentId = equipmentId;
     }
 
     public EquipmentGlossaryData getSubjectClauseEquipmentData() {
@@ -70,11 +82,11 @@ public class EquipmentData implements IPacket {
         SubjectClauseEquipmentData = subjectClauseEquipmentData;
     }
 
-    public EquipmentGlossaryData[] getAdverbStripEquipmentDataList() {
+    public List<EquipmentGlossaryData> getAdverbStripEquipmentDataList() {
         return AdverbStripEquipmentDataList;
     }
 
-    public void setAdverbStripEquipmentDataList(EquipmentGlossaryData[] adverbStripEquipmentDataList) {
+    public void setAdverbStripEquipmentDataList(List<EquipmentGlossaryData> adverbStripEquipmentDataList) {
         AdverbStripEquipmentDataList = adverbStripEquipmentDataList;
     }
 
