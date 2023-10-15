@@ -1,7 +1,7 @@
 package com.gameServer.home;
 
 import com.gameServer.common.constant.TankDeployEnum;
-import com.zfoo.util.ThreadUtils;
+import com.zfoo.protocol.util.ThreadUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -20,7 +20,6 @@ public class ApplicationTest {
     @Test
         public void startApplication1() {
         Application.main(null);
-
         ThreadUtils.sleep(Long.MAX_VALUE);
     }
 }

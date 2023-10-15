@@ -63,7 +63,7 @@ public class LoginController {
             NetContext.getRouter().send(session, Error.valueOf(request.protocolId(), 0, I18nEnum.error_account_password.getMessage()), gatewayAttachment);
             return;
         }
-        var sid = session.getSid();
+        //var sid = session.getSid();
         {
             var accountUser = OrmContext.getAccessor().load(account, AccountEntity.class);
             if (accountUser == null) {
@@ -137,10 +137,11 @@ public class LoginController {
         userLoginService.UpdatePlayerUserEntity(userCache);
         //防止token 过时
         var tokenTriple = TokenUtils.get(userCache.getToken());
+        var salt=tokenTriple.getMiddle();
         var expirationTimeLong = tokenTriple.getRight();
         var nowLong = TimeUtils.now();
-        logger.info("当前token：{},[当前uid：{}],[当前sid：{}]", tokenTriple, session.getUid(), session.getSid());
-        logger.info("[expirationTimeLong:{}],[nowLog:{}][当前token是否过期：{}]", TimeUtils.timeToString(expirationTimeLong), TimeUtils.timeToString(nowLong), nowLong > expirationTimeLong);
+        logger.info("当前token：{},[当前uid：{}],[当前sid：{}][salt:{}]", tokenTriple, session.getUid(), session.getSid(),salt);
+        logger.info("[expirationTimeLong:{}],[nowLog:{}][当前token是否过期：{}][expirationTimeLong:{}]", TimeUtils.timeToString(expirationTimeLong), TimeUtils.timeToString(nowLong), nowLong > expirationTimeLong,expirationTimeLong);
         if (nowLong > expirationTimeLong) {
             //代表过时的token
             var token = TokenUtils.set(userCache.getId());
