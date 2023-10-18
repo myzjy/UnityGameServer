@@ -1,6 +1,7 @@
 package com.gameServer.common.entity.composite;
 
 /**
+ * 属性值 圣遗物
  * @author zjy
  * @version 1.0
  * @since 2023/10/10 00 11

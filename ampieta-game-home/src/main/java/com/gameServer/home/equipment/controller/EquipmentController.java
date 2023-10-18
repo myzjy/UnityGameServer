@@ -48,6 +48,7 @@ public class EquipmentController {
                                                                  glossaryData.getGrowthViceNum());
                 equipmentGlossaryDataList.add(mPrimaryData);
             }
+            //switch (data.getViceName())
             //var userData = EquipmentData.ValueOf(primaryData, equipmentGlossaryDataList, data.getLv());
         }
         //var response = EquipmentAllDataResponse.ValueOf()
