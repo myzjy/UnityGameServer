@@ -7,6 +7,3 @@
 [submodule "zfoo"]
 	path = zfoo
 	url = git@github.com:myzjy/zfoo.git
-[submodule "skynet"]
-	path = skynet
-	url = git@github.com:myzjy/skynet.git
