@@ -19,6 +19,11 @@ public class EquipmentResource {
      * 圣遗物介绍id
      */
     private int desId;
+    /**
+     * 品阶
+     */
+    private int quality;
+
 
     public int getId() {
         return id;
