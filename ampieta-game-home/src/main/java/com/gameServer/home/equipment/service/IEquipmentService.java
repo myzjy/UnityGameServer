@@ -1,6 +1,7 @@
 package com.gameServer.home.equipment.service;
 
 import com.gameServer.common.ormEntity.EquipmentUserDataOrmEntity;
+import com.gameServer.common.resource.EquipmentConfigResource;
 
 import java.util.List;
 
@@ -16,4 +17,11 @@ public interface IEquipmentService {
      * @return
      */
     List<EquipmentUserDataOrmEntity> GetAllTheUserToEquipmentUserDataOrm(long uid);
+
+    /**
+     * 根据品阶返回 品阶数据
+     * @param quality
+     * @return
+     */
+    EquipmentConfigResource FindQualityGetEquipmentConfigData(int quality);
 }

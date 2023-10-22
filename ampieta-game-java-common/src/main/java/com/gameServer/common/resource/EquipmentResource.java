@@ -32,4 +32,8 @@ public class EquipmentResource {
     public int getDesId() {
         return desId;
     }
+
+    public int getQuality() {
+        return quality;
+    }
 }

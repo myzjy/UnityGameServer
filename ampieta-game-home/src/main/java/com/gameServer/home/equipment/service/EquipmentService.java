@@ -1,7 +1,11 @@
 package com.gameServer.home.equipment.service;
 
 import com.gameServer.common.ormEntity.EquipmentUserDataOrmEntity;
+import com.gameServer.common.resource.EquipmentConfigResource;
+import com.gameServer.common.resource.EquipmentResource;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.storage.anno.StorageAutowired;
+import com.zfoo.storage.manager.StorageInt;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
@@ -28,7 +32,10 @@ public class EquipmentService implements IEquipmentService {
             return -1;
         }
     };
-
+    @StorageAutowired
+    private StorageInt<Integer, EquipmentConfigResource> equipmentConfigResourceStorageInt;
+    @StorageAutowired
+    private StorageInt<Integer, EquipmentResource> equipmentResourceStorageInt;
     @Override
     public List<EquipmentUserDataOrmEntity> GetAllTheUserToEquipmentUserDataOrm(long uid) {
         //查找到 传递 UID 的玩家 所有  圣遗物装备
@@ -37,5 +44,10 @@ public class EquipmentService implements IEquipmentService {
         //排序
         list.sort(playerUserIdComparator);
         return list;
+    }
+
+    @Override
+    public EquipmentConfigResource FindQualityGetEquipmentConfigData(int quality) {
+        return equipmentConfigResourceStorageInt.get(quality);
     }
 }
