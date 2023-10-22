@@ -1,4 +1,4 @@
-id,desId
-int,int
-圣遗物id,介绍id
-1001,1001
+id,desId,quality
+int,int,int
+圣遗物id,介绍id,品阶
+1001,1001,3
