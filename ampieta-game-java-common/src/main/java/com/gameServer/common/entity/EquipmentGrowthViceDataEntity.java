@@ -6,6 +6,7 @@ import com.zfoo.orm.model.IEntity;
 import java.util.List;
 
 /**
+ * 缓存 数据库 的 圣遗物 装备
  * @author zjy
  * @version 1.0
  * @since 2023/10/9 16 46
