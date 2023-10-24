@@ -11,33 +11,7 @@ import com.zfoo.protocol.anno.Protocol;
 @Protocol(id = 1001)
 public class LoginResponse implements IPacket {
 
-    public String getToken() {
-        return token;
-    }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    private String token;
-
-    public long getUid() {
-        return uid;
-    }
-
-    public void setUid(long uid) {
-        this.uid = uid;
-    }
-
-    private long uid;
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     private String userName;
 
@@ -145,5 +119,32 @@ public class LoginResponse implements IPacket {
 
     public void setLv(int lv) {
         this.lv = lv;
+    }
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    private String token;
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
+
+    private long uid;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
