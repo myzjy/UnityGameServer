@@ -1,4 +1,4 @@
-desId,desStr
-int,string
-描述id,描述
-1001,是珍贵的药材，但存放了这么久已经失去了药用价值。
+desId,name,desStr
+int,string,string
+描述id,圣遗物名字,描述
+1001,游医的银莲,是珍贵的药材，但存放了这么久已经失去了药用价值。
