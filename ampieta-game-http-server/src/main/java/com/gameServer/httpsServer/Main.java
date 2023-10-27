@@ -1,7 +1,6 @@
-package com.gameServer.gameBoot;
+package com.gameServer.httpsServer;
 
-import com.zfoo.net.core.HostAndPort;
-import com.zfoo.net.util.NetUtils;
+import com.zfoo.protocol.util.ThreadUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -20,16 +19,8 @@ import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration
 import org.springframework.boot.autoconfigure.jdbc.JndiDataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author Administrator
- * @version 1.0
- * @since 2022/9/18 1:07
- */
 @SpringBootApplication(exclude = {
         // 排除JDBC自动配置
         DataSourceAutoConfiguration.class,
@@ -52,14 +43,11 @@ import org.springframework.web.bind.annotation.RestController;
         RedisReactiveAutoConfiguration.class,
         RedisRepositoriesAutoConfiguration.class})
 @RestController
-public class Application {
-    private static final Logger logger = LoggerFactory.getLogger(Application.class);
-    public static final HostAndPort GATEWAY_HOST_AND_PORT = HostAndPort.valueOf(NetUtils.getLocalhostStr(), 5000);
-    
+public class Main {
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) {
-        var context = SpringApplication.run(Application.class, args);
-//        context.registerShutdownHook();
-//        context.publishEvent(new AppStartEvent(context));
-        logger.info("Start Web Application!");
+        var context = SpringApplication.run(Main.class, args);
+        ThreadUtils.sleep(Long.MAX_VALUE);
+
     }
 }

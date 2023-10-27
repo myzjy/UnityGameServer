@@ -3,7 +3,7 @@ package com.gameServer.gameBoot;
 import com.gameServer.common.constant.TankDeployEnum;
 import com.zfoo.event.model.AppStartEvent;
 import com.zfoo.protocol.util.StringUtils;
-import com.zfoo.util.ThreadUtils;
+import com.zfoo.protocol.util.ThreadUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
