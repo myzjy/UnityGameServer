@@ -43,10 +43,10 @@ import org.springframework.web.bind.annotation.RestController;
         RedisReactiveAutoConfiguration.class,
         RedisRepositoriesAutoConfiguration.class})
 @RestController
-public class Main {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+public class Application {
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
     public static void main(String[] args) {
-        var context = SpringApplication.run(Main.class, args);
+        var context = SpringApplication.run(Application.class, args);
         ThreadUtils.sleep(Long.MAX_VALUE);
 
     }
