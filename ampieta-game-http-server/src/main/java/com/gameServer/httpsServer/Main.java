@@ -19,6 +19,8 @@ import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration
 import org.springframework.boot.autoconfigure.jdbc.JndiDataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication(exclude = {
@@ -43,11 +45,16 @@ import org.springframework.web.bind.annotation.RestController;
         RedisReactiveAutoConfiguration.class,
         RedisRepositoriesAutoConfiguration.class})
 @RestController
+@ImportResource("classpath:app.xml")
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) {
+        //var context = new ClassPathXmlApplicationContext("application.xml");
+
         var context = SpringApplication.run(Main.class, args);
+
         ThreadUtils.sleep(Long.MAX_VALUE);
 
     }
+
 }

@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 public class RegisterController {
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
-    @Bean
     @RequestMapping(value = "/version", method = RequestMethod.POST)
     @ResponseBody
     public BaseResponse getResVersion(@RequestBody RegisterDataModelRequest cm) {

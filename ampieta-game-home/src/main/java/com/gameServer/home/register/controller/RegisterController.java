@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
 public class RegisterController {
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
     @Autowired
-    private IUserLoginService iUserLoginService;
+    private IUserLoginService userLoginService;
     @Autowired
     private IRegisterService iRegisterService;
     @Autowired
@@ -84,7 +84,7 @@ public class RegisterController {
         //没找到 生成新的uid uid只会在创建角色了会出现
         var newUID = MongoIdUtils.getIncrementIdFromMongoDefault(PlayerUserEntity.class) + 10000000;
         logger.info("[UID:{}],[{sid:{}}]", newUID, session.getSid());
-        var user = iUserLoginService.LoadPlayerUserEntity(newUID);
+        var user = userLoginService.LoadPlayerUserEntity(newUID);
         //判断当前UID能不能找到对应
         if (user == null) {
             logger.error("[UID:{}]数据库中找不到,开始创建新的玩家数据", newUID);
@@ -106,7 +106,7 @@ public class RegisterController {
         session.setUid(newUID);
         logger.info("[Token:{}]", userEntity.getToken());
         //插入数据了，就代表注册成功了
-        iUserLoginService.InsertPlayerUserEntity(userEntity);
+        userLoginService.InsertPlayerUserEntity(userEntity);
         //需保证第一个链接服务器的必须是服务器内客户端
         //必须保证万无一失 rpc请求
         physicalPowerService.CreatePhysicalPower(userEntity.getPlayerLv(), userEntity.getId());
