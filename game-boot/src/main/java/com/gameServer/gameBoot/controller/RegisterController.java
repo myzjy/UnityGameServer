@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/register")
 public class RegisterController {
     private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
+    @StorageAutowired
+    private StorageInt<Integer, EquipmentResource> equipmentResourceStorageInt;
 
     @RequestMapping(value = "/version", method = RequestMethod.POST)
     @ResponseBody
