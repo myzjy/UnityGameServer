@@ -1,13 +1,11 @@
 package com.gameServer.gameBoot;
 
 import com.gameServer.common.entity.ItemBoxBaseEntity;
+import com.gameServer.common.entity.config.ConfigResourceEntity;
 import com.gameServer.common.ormEntity.EquipmentGrowthViceConfigDataEntity;
 import com.gameServer.common.ormEntity.StageDataEntity;
 import com.gameServer.common.ormEntity.StageMissionEntity;
-import com.gameServer.common.resource.EquipmentGrowthViceConfigResource;
-import com.gameServer.common.resource.ItemBaseCsvResource;
-import com.gameServer.common.resource.StageMissionResource;
-import com.gameServer.common.resource.StageResource;
+import com.gameServer.common.resource.*;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.storage.anno.StorageAutowired;
@@ -28,6 +26,8 @@ import java.util.List;
 public class OrmAddManager {
     private static final Logger logger = LoggerFactory.getLogger(OrmAddManager.class);
     @StorageAutowired
+    private StorageInt<Integer, ConfigResource> configResourceStorage;
+    @StorageAutowired
     private StorageInt<Integer, ItemBaseCsvResource> itemBaseCsvResourceStorage;
     @StorageAutowired
     private StorageInt<Integer, StageResource> stageResourceStorage;
@@ -35,6 +35,73 @@ public class OrmAddManager {
     private StorageInt<Integer, StageMissionResource> stageMissionResourceStorage;
     @StorageAutowired
     private StorageInt<Integer, EquipmentGrowthViceConfigResource> equipmentGrowthViceConfigResourceStorageInt;
+
+    public void UpdateConfigResource() throws Exception {
+        if (configResourceStorage == null) {
+            throw new Exception("ConfigResource 数据表 不存在");
+        }
+        var configAll = configResourceStorage.getAll();
+        for (var data : configAll) {
+            var ormEntity = OrmContext.getAccessor().load(data.getLv(), ConfigResourceEntity.class);
+            var createOrUpdate = TimeUtils.timeToString(TimeUtils.now());
+            if (ormEntity == null) {
+                var createEntity = getConfigResourceEntity(data, createOrUpdate);
+                OrmContext.getAccessor().insert(createEntity);
+            } else {
+                var updateEntity = getConfigResourceEntity(data, ormEntity);
+                OrmContext.getAccessor().update(updateEntity);
+            }
+        }
+    }
+
+    private ConfigResourceEntity getConfigResourceEntity(ConfigResource data, String createOrUpdate) {
+        var createEntity = ConfigResourceEntity.ValueOf();
+        createEntity.setId(data.getLv());
+        createEntity.setLv(data.getLv());
+        createEntity.setMaxExp(data.getMaxExp());
+        createEntity.setResidueTime(data.getResidueTime());
+        createEntity.setMaxPhysical(data.getMaxPhysical());
+        createEntity.setTheLock(data.isTheLock());
+        createEntity.setCreateAt(createOrUpdate);
+        createEntity.setUpdateAt(createOrUpdate);
+        return createEntity;
+    }
+
+    private ConfigResourceEntity getConfigResourceEntity(ConfigResource data, ConfigResourceEntity ormEntity) {
+        var updateEntity = ConfigResourceEntity.ValueOf();
+        if (ormEntity.getLv() != data.getLv()) {
+            //数据库中 和 本地 配置 表不一致 依据 本地为准
+            updateEntity.setLv(data.getLv());
+        } else {
+            updateEntity.setLv(data.getLv());
+        }
+        if (ormEntity.getResidueTime() != data.getResidueTime()) {
+            //数据库中 和 本地 配置 表不一致 依据 本地为准
+            updateEntity.setResidueTime(data.getResidueTime());
+        } else {
+            updateEntity.setResidueTime(data.getResidueTime());
+        }
+        if (ormEntity.getMaxPhysical() != data.getMaxPhysical()) {
+            //数据库中 和 本地 配置 表不一致 依据 本地为准
+            updateEntity.setMaxPhysical(data.getMaxPhysical());
+        } else {
+            updateEntity.setMaxPhysical(data.getMaxPhysical());
+        }
+        if (ormEntity.getMaxExp() != data.getMaxExp()) {
+            //数据库中 和 本地 配置 表不一致 依据 本地为准
+            updateEntity.setMaxExp(data.getMaxExp());
+        } else {
+            updateEntity.setMaxExp(data.getMaxExp());
+        }
+        if (ormEntity.isTheLock() != data.isTheLock()) {
+            //数据库中 和 本地 配置 表不一致 依据 本地为准
+            updateEntity.setTheLock(data.isTheLock());
+        } else {
+            updateEntity.setTheLock(data.isTheLock());
+        }
+        updateEntity.setId(data.getLv());
+        return updateEntity;
+    }
 
     /**
      * 更新 stageMission 表
@@ -200,6 +267,7 @@ public class OrmAddManager {
             var entity = OrmContext.getAccessor().load(data.getViceId(), EquipmentGrowthViceConfigDataEntity.class);
             var update = TimeUtils.timeToString(TimeUtils.now());
             if (entity != null) {
+                entity.setId(entity.getViceId());
                 //数据库中存在
                 entity.setViceId(entity.getViceId());
                 entity.setInitNums(entity.getInitNums());
@@ -210,14 +278,14 @@ public class OrmAddManager {
                 OrmContext.getAccessor().update(entity);
             } else {
                 var str = data.getInitNums().split("/");
-                var initNums = new float[str.length];
+                var initNums = new ArrayList<String>();
                 var index = 0;
                 for (var s : str) {
-                    var n = Float.parseFloat(s);
-                    initNums[index++] = (n);
+                    initNums.add(s);
                 }
                 //数据库中不存在
-                var dataCreate = EquipmentGrowthViceConfigDataEntity.ValueOf(data.getViceId(), data.getViceName(), data.getPosGrowthType(),initNums );
+                var dataCreate = EquipmentGrowthViceConfigDataEntity.ValueOf(data.getViceId(), data.getViceName(), data.getPosGrowthType(), initNums);
+                dataCreate.setId(data.getViceId());
                 dataCreate.setUpdateAt(update);
                 dataCreate.setCreateAt(update);
                 OrmContext.getAccessor().insert(dataCreate);

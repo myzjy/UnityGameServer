@@ -25,7 +25,7 @@ public class ApplicationTest {
         ThreadUtils.sleep(Long.MAX_VALUE);
     }
     @Test
-    public void TestEx() {
+    public void TestEx() throws Exception {
         var context = new ClassPathXmlApplicationContext("app.xml");
         context.registerShutdownHook();
         context.publishEvent(new AppStartEvent(context));
@@ -37,6 +37,6 @@ public class ApplicationTest {
         ormAddManager.UpdateStageCsvResource();
         ormAddManager.UpdateStageMissionCsvResource();
         ormAddManager.UpdateEquipmentGrowthViceConfigResource();
-
+        ormAddManager.UpdateConfigResource();
     }
 }

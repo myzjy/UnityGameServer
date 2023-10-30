@@ -1,18 +1,25 @@
 package com.gameServer.common.ormEntity;
 
+import com.zfoo.orm.anno.EntityCache;
+import com.zfoo.orm.anno.Index;
 import com.zfoo.orm.model.IEntity;
 import com.zfoo.storage.anno.Id;
+
+import java.util.List;
 
 /**
  * @author zjy
  * @version 1.0
  * @since 2023/10/5 18 53
  */
+@EntityCache
 public class EquipmentGrowthViceConfigDataEntity implements IEntity<Integer> {
+    @Id
+    @Index(ascending = true, unique = true)
+    private int id;
     /**
      * id
      */
-    @Id
     private int viceId;
     /**
      * 详细属性
@@ -25,7 +32,8 @@ public class EquipmentGrowthViceConfigDataEntity implements IEntity<Integer> {
     /**
      * 副属性的初始值数组
      */
-    private float[] initNums;
+
+    private List<String> initNums;
     /**
      * 创建时间
      */
@@ -39,13 +47,21 @@ public class EquipmentGrowthViceConfigDataEntity implements IEntity<Integer> {
     public Integer id() {
         return viceId;
     }
-    public static EquipmentGrowthViceConfigDataEntity ValueOf(int viceId,String viceName,int posGrowthType,float[] initNums){
+    public static EquipmentGrowthViceConfigDataEntity ValueOf(int viceId,String viceName,int posGrowthType,List<String> initNums){
         var data=new EquipmentGrowthViceConfigDataEntity();
         data.setViceId(viceId);
         data.setViceName(viceName);
         data.setPosGrowthType(posGrowthType);
         data.setInitNums(initNums);
         return data;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getViceId() {
@@ -72,11 +88,11 @@ public class EquipmentGrowthViceConfigDataEntity implements IEntity<Integer> {
         this.posGrowthType = posGrowthType;
     }
 
-    public float[] getInitNums() {
+    public List<String> getInitNums() {
         return initNums;
     }
 
-    public void setInitNums(float[] initNums) {
+    public void setInitNums(List<String> initNums) {
         this.initNums = initNums;
     }
 
