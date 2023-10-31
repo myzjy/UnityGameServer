@@ -18,7 +18,7 @@ public class ApplicationTest {
 
     @org.junit.Test
     public void startApplication() {
-        Main.main(StringUtils.EMPTY_ARRAY);
+        Application.main(StringUtils.EMPTY_ARRAY);
         ThreadUtils.sleep(Long.MAX_VALUE);
     }
 }
