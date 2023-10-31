@@ -11,12 +11,12 @@ import com.zfoo.orm.model.IEntity;
  * @since 2022/7/23 9:40 AM
  */
 @EntityCache
-public class AccountEntity implements IEntity<String> {
+public class AccountEntity implements IEntity<Integer> {
     /**
      * 为account
      */
     @Id
-    private String id;
+    private int id;
 
 
     @Index(ascending = true, unique = true)
@@ -27,7 +27,7 @@ public class AccountEntity implements IEntity<String> {
     @Index(ascending = true, unique = true)
     private long uid;
 
-    public static AccountEntity valueOf(String id, String account, String password, long uid) {
+    public static AccountEntity valueOf(int id, String account, String password, long uid) {
         var entity = new AccountEntity();
         entity.id = id;
         entity.account = account;
@@ -37,15 +37,15 @@ public class AccountEntity implements IEntity<String> {
     }
 
     @Override
-    public String id() {
+    public Integer id() {
         return id;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
