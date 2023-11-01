@@ -1,6 +1,7 @@
 package com.gameServer.home.login.controller;
 
 import com.gameServer.common.constant.TankDeployEnum;
+import com.gameServer.common.entity.AccessGameTimeEntity;
 import com.gameServer.common.protocol.login.LoginTapToStartRequest;
 import com.gameServer.common.protocol.login.LoginTapToStartResponse;
 import com.gameServer.common.resource.AccesGameTimeResource;
@@ -8,6 +9,7 @@ import com.zfoo.net.NetContext;
 import com.zfoo.net.anno.PacketReceiver;
 import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.session.Session;
+import com.zfoo.orm.OrmContext;
 import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.storage.anno.StorageAutowired;
 import com.zfoo.storage.manager.StorageInt;
@@ -30,8 +32,7 @@ public class LoginTapStartController {
     private static final Logger logger = LoggerFactory.getLogger(LoginTapStartController.class);
     @Value("${spring.profiles.active}")
     private TankDeployEnum deployEnum;
-    @StorageAutowired
-    private StorageInt<Integer, AccesGameTimeResource> accesGameTimeResourceStorage;
+
 
     @PacketReceiver
     public void atLoginTapToStartRequest(Session session, LoginTapToStartRequest request, GatewayAttachment gatewayAttachment) throws ParseException {
@@ -39,13 +40,13 @@ public class LoginTapStartController {
         logger.info("[当前服务器调用时间{}] [调用协议：{}]", TimeUtils.simpleDateString(), request.protocolId());
         logger.info("=============================================");
         //读取到服务器
-        var timeEntityList = accesGameTimeResourceStorage.get(1);
+        var timeEntityList = OrmContext.getAccessor().load(1, AccessGameTimeEntity.class);
         
-        var serverOpenDate = new Date(timeEntityList.getTime());
+        var serverOpenDate = timeEntityList.getTime();
         var dateTime = TimeUtils.dateToString(serverOpenDate);
         logger.info(dateTime);
         var nowTimeEntity = timeEntityList.getTime();
-        if (TimeUtils.now() < nowTimeEntity) {
+        if (TimeUtils.now() < nowTimeEntity.getTime()) {
             logger.info("[服务器开启] 可以开始链接登录");
             NetContext.getRouter().send(session, LoginTapToStartResponse.ValueOf("服务器正在开启阶段", true), gatewayAttachment);
         } else {

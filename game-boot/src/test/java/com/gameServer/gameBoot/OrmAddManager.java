@@ -1,5 +1,6 @@
 package com.gameServer.gameBoot;
 
+import com.gameServer.common.entity.AccessGameTimeEntity;
 import com.gameServer.common.entity.ItemBoxBaseEntity;
 import com.gameServer.common.entity.config.ConfigResourceEntity;
 import com.gameServer.common.ormEntity.EquipmentGrowthViceConfigDataEntity;
@@ -7,6 +8,7 @@ import com.gameServer.common.ormEntity.StageDataEntity;
 import com.gameServer.common.ormEntity.StageMissionEntity;
 import com.gameServer.common.resource.*;
 import com.zfoo.orm.OrmContext;
+import com.zfoo.protocol.util.JsonUtils;
 import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.storage.anno.StorageAutowired;
 import com.zfoo.storage.manager.StorageInt;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,6 +38,33 @@ public class OrmAddManager {
     private StorageInt<Integer, StageMissionResource> stageMissionResourceStorage;
     @StorageAutowired
     private StorageInt<Integer, EquipmentGrowthViceConfigResource> equipmentGrowthViceConfigResourceStorageInt;
+    @StorageAutowired
+    private StorageInt<Integer, AccesGameTimeResource> accesGameTimeResourceStorage;
+    public void  UpdateOrInAccesGameTimeResource() throws Exception {
+        if(accesGameTimeResourceStorage==null){
+            throw new Exception("AccesGameTimeResource 数据表 不存在");
+        }
+        var dict = accesGameTimeResourceStorage.getAll();
+        for (var item : dict) {
+
+            var entity =  OrmContext.getAccessor().load(item.getTimeID(), AccessGameTimeEntity.class);
+            if (entity == null) {
+                //数据库没有相关配置
+                entity = new AccessGameTimeEntity();
+                entity.setTimeID(item.getTimeID());
+                entity.setTime(new Date(item.getTime()));
+                entity.setId(item.getTimeID());
+                OrmContext.getAccessor().insert(entity);
+            } else {
+                entity = new AccessGameTimeEntity();
+                entity.setTimeID(item.getTimeID());
+                entity.setTime(new Date(item.getTime()));
+                entity.setId(item.getTimeID());
+                OrmContext.getAccessor().update(entity);
+            }
+            logger.info("AccesGameTimeResource:{}", JsonUtils.object2String(entity));
+        }
+    }
 
     public void UpdateConfigResource() throws Exception {
         if (configResourceStorage == null) {
