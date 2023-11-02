@@ -38,5 +38,6 @@ public class ApplicationTest {
         ormAddManager.UpdateStageMissionCsvResource();
         ormAddManager.UpdateEquipmentGrowthViceConfigResource();
         ormAddManager.UpdateConfigResource();
+        ormAddManager.UpdateOrInAccesGameTimeResource();
     }
 }

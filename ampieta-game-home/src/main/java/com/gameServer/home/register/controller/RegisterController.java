@@ -82,14 +82,15 @@ public class RegisterController {
         }
         //创建账号 往数据库里保存
         //没找到 生成新的uid uid只会在创建角色了会出现
-        var newUID = MongoIdUtils.getIncrementIdFromMongoDefault(PlayerUserEntity.class) + 10000000;
+        var mongoIdNum = MongoIdUtils.getIncrementIdFromMongoDefault(PlayerUserEntity.class);
+        var newUID = mongoIdNum + 10000000;
         logger.info("[UID:{}],[{sid:{}}]", newUID, session.getSid());
         var user = userLoginService.LoadPlayerUserEntity(newUID);
         //判断当前UID能不能找到对应
         if (user == null) {
             logger.error("[UID:{}]数据库中找不到,开始创建新的玩家数据", newUID);
             //名字先不取
-            accountUser = AccountEntity.valueOf(account, account, password, newUID);
+            accountUser = AccountEntity.valueOf((int) mongoIdNum, account, password, newUID);
             logger.info("创建的玩家数据：[accountUser:{}]", accountUser);
             //插入数据库
             iRegisterService.InsterAccountEntityOrm(accountUser);
@@ -110,7 +111,6 @@ public class RegisterController {
         //需保证第一个链接服务器的必须是服务器内客户端
         //必须保证万无一失 rpc请求
         physicalPowerService.CreatePhysicalPower(userEntity.getPlayerLv(), userEntity.getId());
-
         logger.info("[uid:{}] 玩家体力数据创建成功", userEntity.getId());
         NetContext.getRouter().send(session, RegisterResponse.valueOf(true, "ok"), gatewayAttachment);
     }
