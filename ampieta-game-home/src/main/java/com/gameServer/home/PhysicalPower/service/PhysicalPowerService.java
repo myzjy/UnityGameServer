@@ -276,9 +276,8 @@ public class PhysicalPowerService implements IPhysicalPowerService {
             return true;
         }
         //相差的时间 精确到毫秒级别
-        var differenceLastTime = (int) (TimeUtils.now() / 1000) - (int) (data.getResidueNowTime() / 1000);
         //相差秒数
-        var differenceToTime = differenceLastTime;
+        var differenceToTime = (int) (TimeUtils.now() / 1000) - (int) (data.getResidueNowTime() / 1000);
         var dateTime = TimeUtils.timeToString(data.getResidueNowTime());
         logger.info("[uid:{}] 体力恢复实时时间：{},更当前时间相差秒数为{}", userEntity.getId(), dateTime, differenceToTime);
         if (differenceToTime >= 0) {
