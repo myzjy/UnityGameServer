@@ -39,6 +39,8 @@ public class OrmAddManager {
     @StorageAutowired
     private StorageInt<Integer, EquipmentGrowthViceConfigResource> equipmentGrowthViceConfigResourceStorageInt;
     @StorageAutowired
+    private StorageInt<Integer, EquipmentGrowthConfigResource> equipmentGrowthConfigResourceStorageInt;
+    @StorageAutowired
     private StorageInt<Integer, AccesGameTimeResource> accesGameTimeResourceStorage;
     public void  UpdateOrInAccesGameTimeResource() throws Exception {
         if(accesGameTimeResourceStorage==null){
