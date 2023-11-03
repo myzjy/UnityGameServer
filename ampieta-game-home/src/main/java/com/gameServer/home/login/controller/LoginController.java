@@ -117,6 +117,8 @@ public class LoginController {
             return;
         }
         physicalPowerService.RefreshLoginPhysicalPower(session.getUid());
+        //无需赋值 体力值 刷新的时候 已经赋值
+        userCache = userLoginService.LoadPlayerUserEntity(uid);
         //以防测试期间出现问题
         if (userCache.getToken() == null) {
             logger.info("[当前 uid:{}] 开始获取token", userCache.getId());
@@ -125,7 +127,6 @@ public class LoginController {
             logger.info("[当前 uid:{}][新token：{}]", userCache.getId(), token);
             userCache.setToken(token);
         }
-        userLoginService.UpdatePlayerUserEntity(userCache);
         //防止token 过时
         var tokenTriple = TokenUtils.get(userCache.getToken());
         var salt = tokenTriple.getMiddle();
@@ -141,19 +142,6 @@ public class LoginController {
         }
         userCache.setNowLvMaxExp(data.getMaxExp());
         //覆盖登录时间
-        userCache = PlayerUserEntity.valueOf(userCache.getId(),
-                                             userCache.getName(),
-                                             TimeUtils.now(),
-                                             userCache.getRegisterTime(),
-                                             userCache.getToken(),
-                                             userCache.getGoldNum(),
-                                             userCache.getPremiumDiamondNum(),
-                                             userCache.getDiamondNum(),
-                                             userCache.getEndLoginOutTime(),
-                                             userCache.getNowExp(),
-                                             userCache.getNowPhysicalPowerNum(),
-                                             userCache.getNowLvMaxExp(),
-                                             userCache.getPlayerLv());
         userCache.setLastLoginTime(TimeUtils.now());
         logger.info("[{}][{}]创建最新玩家登录数据 更新数据库", userCache.getId(), sid);
         userCache.sid = sid;
@@ -161,7 +149,7 @@ public class LoginController {
         logger.info("[玩家{}] 更新 玩家数据缓存 赋值 session sid", uid);
         logger.info("[{}][{}]数据库刷新成功", userCache.getId(), sid);
         userLoginService.UpdatePlayerUserEntity(userCache);
-        logger.info("UID:{},class:{}, 更新过后 PlayerUserEntity:{}", uid, LoginController.class, JsonUtils.object2String(userCache));
+        logger.info("UID:{}, 更新过后 PlayerUserEntity:{}", uid, JsonUtils.object2String(userCache));
         //返回数据
         var resposne = LoginResponse.valueOf(userCache.getToken(),
                                              userCache.getName(),

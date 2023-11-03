@@ -49,7 +49,12 @@ public class LoginResponse implements IPacket {
      * 拿到token之后返回出去
      * @param token 玩家token
      */
-    public static LoginResponse valueOf(String token, String userName, long uid, long goldNum, long premiumDiamondNum, long diamondNum,int lv,int exp,int maxLv,int maxExp) {
+    public static LoginResponse valueOf(String token,
+                                        String userName,
+                                        long uid,
+                                        long goldNum,
+                                        long premiumDiamondNum,
+                                        long diamondNum,int lv,int exp,int maxLv,int maxExp) {
         var paket = new LoginResponse();
         paket.token = token;
         //可能会为，因为没有到玩家取名步骤

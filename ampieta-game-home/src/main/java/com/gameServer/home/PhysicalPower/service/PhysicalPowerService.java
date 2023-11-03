@@ -262,7 +262,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
     }
 
     @Override
-    public boolean RefreshLoginPhysicalPower(long uid) {
+    public PlayerUserEntity RefreshLoginPhysicalPower(long uid) {
         var userEntity = userLoginService.LoadPlayerUserEntity(uid);
         var data = FindOnePhysicalPower(uid);
         var config = userLoginService.GetConfigResourceData(userEntity.getPlayerLv());
@@ -273,7 +273,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
         }
         var nowPhysicalPower = data.getNowPhysicalPowerNum();
         if (nowPhysicalPower >= data.getMaximumStrength()) {
-            return true;
+            return userEntity;
         }
         //相差的时间 精确到毫秒级别
         //相差秒数
@@ -292,7 +292,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
         //更新 缓存 数据库
         UpdatePhysicalPowerEntityOrm(data);
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}] 更新数据库", uid, nowPhysicalPower, data.getMaximumStrength());
-        return false;
+        return userEntity;
     }
 
     @Override
