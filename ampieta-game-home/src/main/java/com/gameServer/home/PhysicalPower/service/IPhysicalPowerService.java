@@ -54,7 +54,7 @@ public interface IPhysicalPowerService {
      * 刷新 体力 数据库
      * @param uid 玩家 UID
      */
-    boolean RefreshLoginPhysicalPower(long uid);
+    PlayerUserEntity RefreshLoginPhysicalPower(long uid);
 
     /**
      * Create

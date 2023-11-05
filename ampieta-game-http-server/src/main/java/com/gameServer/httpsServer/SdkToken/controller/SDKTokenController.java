@@ -2,7 +2,10 @@ package com.gameServer.httpsServer.SdkToken.controller;
 
 import com.gameServer.common.util.TokenUtils;
 import com.gameServer.httpsServer.request.sdkToken.GetSdkTokenServerRequest;
+import com.gameServer.httpsServer.request.sdkToken.RefreshSdkTokenServerRequest;
 import com.gameServer.httpsServer.response.sdkToken.GetSdkTokenServerResponse;
+import com.gameServer.httpsServer.response.sdkToken.RefreshSdkTokenServerResponse;
+import com.zfoo.scheduler.util.TimeUtils;
 import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -31,5 +34,27 @@ public class SDKTokenController {
             GetSdkTokenServerRequest request) {
         logger.info("获取");
         return GetSdkTokenServerResponse.ValueOf(TokenUtils.set(request.uid));
+    }
+    @Bean
+    @RequestMapping(value = "/refreshSdkToken", method = RequestMethod.POST)
+    @ResponseBody
+    public RefreshSdkTokenServerResponse refreshSdkTokenServerResponse(
+            @RequestBody
+            @NotNull
+            RefreshSdkTokenServerRequest request
+    ){
+        var tokenTriple = TokenUtils.get(request.sdkToken);
+        var salt = tokenTriple.getMiddle();
+        var expirationTimeLong = tokenTriple.getRight();
+        var nowLong = TimeUtils.now();
+        logger.info("当前token：{},[当前uid：{}][salt:{}]", tokenTriple, request.uid, salt);
+        logger.info("[expirationTimeLong:{}],[nowLog:{}][当前token是否过期：{}][expirationTimeLong:{}]", TimeUtils.timeToString(expirationTimeLong), TimeUtils.timeToString(nowLong), nowLong > expirationTimeLong, expirationTimeLong);
+        if (nowLong > expirationTimeLong) {
+            //代表过时的token
+            var token = TokenUtils.set(request.uid);
+            logger.info("[{}]重新设置Token:[{}]", request.uid, token);
+          return RefreshSdkTokenServerResponse.ValueOf(token);
+        }
+        return RefreshSdkTokenServerResponse.ValueOf(request.sdkToken);
     }
 }

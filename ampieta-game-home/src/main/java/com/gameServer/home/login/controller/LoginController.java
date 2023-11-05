@@ -64,31 +64,22 @@ public class LoginController {
             return;
         }
         //var sid = session.getSid();
-        {
-            var accountUser = OrmContext.getAccessor().load(account, AccountEntity.class);
-            if (accountUser == null) {
-                logger.error("[account：{}，玩家登录]登录时间{}[error:{}]", account, TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), I18nEnum.error_account_not_exit.getMessage());
-                NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()), gatewayAttachment);
-                return;
-            }
-            //验证密码
-            if (StringUtils.isNotBlank(accountUser.getPassword()) && !accountUser.getPassword().trim().equals(password.trim())) {
-                if (accountUser.getUid() > 0) {
-                    logger.info("[password:{}]账号或密码错误", password);
-                } else {
-                    logger.info("[uid:{}][password:{}]账号或密码错误", accountUser.getUid(), password);
-                }
-                logger.error("[UID:{}],Error{}", accountUser.getUid(), I18nEnum.error_account_password.toString());
-                //给客户端服务器
-                NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_password.toString()), gatewayAttachment);
-                return;
-            }
-        }
-        //数据库拿去
-        AccountEntity accountUser = OrmContext.getAccessor().load(account, AccountEntity.class);
+        var accountUser = OrmContext.getAccessor().load(account, AccountEntity.class);
         if (accountUser == null) {
             logger.error("[account：{}，玩家登录]登录时间{}[error:{}]", account, TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), I18nEnum.error_account_not_exit.getMessage());
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()), gatewayAttachment);
+            return;
+        }
+        //验证密码
+        if (StringUtils.isNotBlank(accountUser.getPassword()) && !accountUser.getPassword().trim().equals(password.trim())) {
+            if (accountUser.getUid() > 0) {
+                logger.info("[password:{}]账号或密码错误", password);
+            } else {
+                logger.info("[uid:{}][password:{}]账号或密码错误", accountUser.getUid(), password);
+            }
+            logger.error("[UID:{}],Error{}", accountUser.getUid(), I18nEnum.error_account_password.toString());
+            //给客户端服务器
+            NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_password.toString()), gatewayAttachment);
             return;
         }
         NetContext.getRouter().send(session, AuthUidToGatewayCheck.valueOf(accountUser.getUid()), gatewayAttachment);
@@ -126,6 +117,8 @@ public class LoginController {
             return;
         }
         physicalPowerService.RefreshLoginPhysicalPower(session.getUid());
+        //无需赋值 体力值 刷新的时候 已经赋值
+        userCache = userLoginService.LoadPlayerUserEntity(uid);
         //以防测试期间出现问题
         if (userCache.getToken() == null) {
             logger.info("[当前 uid:{}] 开始获取token", userCache.getId());
@@ -134,14 +127,13 @@ public class LoginController {
             logger.info("[当前 uid:{}][新token：{}]", userCache.getId(), token);
             userCache.setToken(token);
         }
-        userLoginService.UpdatePlayerUserEntity(userCache);
         //防止token 过时
         var tokenTriple = TokenUtils.get(userCache.getToken());
-        var salt=tokenTriple.getMiddle();
+        var salt = tokenTriple.getMiddle();
         var expirationTimeLong = tokenTriple.getRight();
         var nowLong = TimeUtils.now();
-        logger.info("当前token：{},[当前uid：{}],[当前sid：{}][salt:{}]", tokenTriple, session.getUid(), session.getSid(),salt);
-        logger.info("[expirationTimeLong:{}],[nowLog:{}][当前token是否过期：{}][expirationTimeLong:{}]", TimeUtils.timeToString(expirationTimeLong), TimeUtils.timeToString(nowLong), nowLong > expirationTimeLong,expirationTimeLong);
+        logger.info("当前token：{},[当前uid：{}],[当前sid：{}][salt:{}]", tokenTriple, session.getUid(), session.getSid(), salt);
+        logger.info("[expirationTimeLong:{}],[nowLog:{}][当前token是否过期：{}][expirationTimeLong:{}]", TimeUtils.timeToString(expirationTimeLong), TimeUtils.timeToString(nowLong), nowLong > expirationTimeLong, expirationTimeLong);
         if (nowLong > expirationTimeLong) {
             //代表过时的token
             var token = TokenUtils.set(userCache.getId());
@@ -150,19 +142,6 @@ public class LoginController {
         }
         userCache.setNowLvMaxExp(data.getMaxExp());
         //覆盖登录时间
-        userCache = PlayerUserEntity.valueOf(userCache.getId(),
-                                             userCache.getName(),
-                                             TimeUtils.now(),
-                                             userCache.getRegisterTime(),
-                                             userCache.getToken(),
-                                             userCache.getGoldNum(),
-                                             userCache.getPremiumDiamondNum(),
-                                             userCache.getDiamondNum(),
-                                             userCache.getEndLoginOutTime(),
-                                             userCache.getNowExp(),
-                                             userCache.getNowPhysicalPowerNum(),
-                                             userCache.getNowLvMaxExp(),
-                                             userCache.getPlayerLv());
         userCache.setLastLoginTime(TimeUtils.now());
         logger.info("[{}][{}]创建最新玩家登录数据 更新数据库", userCache.getId(), sid);
         userCache.sid = sid;
@@ -170,7 +149,7 @@ public class LoginController {
         logger.info("[玩家{}] 更新 玩家数据缓存 赋值 session sid", uid);
         logger.info("[{}][{}]数据库刷新成功", userCache.getId(), sid);
         userLoginService.UpdatePlayerUserEntity(userCache);
-        logger.info("UID:{},class:{}, 更新过后 PlayerUserEntity:{}",uid, LoginController.class, JsonUtils.object2String(userCache));
+        logger.info("UID:{}, 更新过后 PlayerUserEntity:{}", uid, JsonUtils.object2String(userCache));
         //返回数据
         var resposne = LoginResponse.valueOf(userCache.getToken(),
                                              userCache.getName(),

@@ -262,7 +262,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
     }
 
     @Override
-    public boolean RefreshLoginPhysicalPower(long uid) {
+    public PlayerUserEntity RefreshLoginPhysicalPower(long uid) {
         var userEntity = userLoginService.LoadPlayerUserEntity(uid);
         var data = FindOnePhysicalPower(uid);
         var config = userLoginService.GetConfigResourceData(userEntity.getPlayerLv());
@@ -273,12 +273,11 @@ public class PhysicalPowerService implements IPhysicalPowerService {
         }
         var nowPhysicalPower = data.getNowPhysicalPowerNum();
         if (nowPhysicalPower >= data.getMaximumStrength()) {
-            return true;
+            return userEntity;
         }
         //相差的时间 精确到毫秒级别
-        var differenceLastTime = (int) (TimeUtils.now() / 1000) - (int) (data.getResidueNowTime() / 1000);
         //相差秒数
-        var differenceToTime = differenceLastTime;
+        var differenceToTime = (int) (TimeUtils.now() / 1000) - (int) (data.getResidueNowTime() / 1000);
         var dateTime = TimeUtils.timeToString(data.getResidueNowTime());
         logger.info("[uid:{}] 体力恢复实时时间：{},更当前时间相差秒数为{}", userEntity.getId(), dateTime, differenceToTime);
         if (differenceToTime >= 0) {
@@ -293,7 +292,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
         //更新 缓存 数据库
         UpdatePhysicalPowerEntityOrm(data);
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}] 更新数据库", uid, nowPhysicalPower, data.getMaximumStrength());
-        return false;
+        return userEntity;
     }
 
     @Override
