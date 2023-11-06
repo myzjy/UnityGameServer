@@ -36,8 +36,11 @@ public class ApplicationTest {
         ormAddManager.UpdateItemBaseCsvResource();
         ormAddManager.UpdateStageCsvResource();
         ormAddManager.UpdateStageMissionCsvResource();
-        ormAddManager.UpdateEquipmentGrowthViceConfigResource();
         ormAddManager.UpdateConfigResource();
         ormAddManager.UpdateOrInAccesGameTimeResource();
+        var equipmentOrm=new EquipmentOrmAddManager();
+        equipmentOrm.UpdateEquipmentGrowthConfigResource();
+        equipmentOrm.UpdateEquipmentGrowthViceConfigResource();
+        equipmentOrm.UpdateEquipmentPrimaryConfigResource();
     }
 }

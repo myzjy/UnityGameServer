@@ -37,10 +37,6 @@ public class OrmAddManager {
     @StorageAutowired
     private StorageInt<Integer, StageMissionResource> stageMissionResourceStorage;
     @StorageAutowired
-    private StorageInt<Integer, EquipmentGrowthViceConfigResource> equipmentGrowthViceConfigResourceStorageInt;
-    @StorageAutowired
-    private StorageInt<Integer, EquipmentGrowthConfigResource> equipmentGrowthConfigResourceStorageInt;
-    @StorageAutowired
     private StorageInt<Integer, AccesGameTimeResource> accesGameTimeResourceStorage;
     public void  UpdateOrInAccesGameTimeResource() throws Exception {
         if(accesGameTimeResourceStorage==null){
@@ -293,35 +289,5 @@ public class OrmAddManager {
         return newEntity;
     }
 
-    public void UpdateEquipmentGrowthViceConfigResource() {
-        var dict = equipmentGrowthViceConfigResourceStorageInt.getAll();
-        for (var data : dict) {
-            var entity = OrmContext.getAccessor().load(data.getViceId(), EquipmentGrowthViceConfigDataEntity.class);
-            var update = TimeUtils.timeToString(TimeUtils.now());
-            if (entity != null) {
-                entity.setId(entity.getViceId());
-                //数据库中存在
-                entity.setViceId(entity.getViceId());
-                entity.setInitNums(entity.getInitNums());
-                entity.setPosGrowthType(entity.getPosGrowthType());
-                entity.setViceName(entity.getViceName());
-                entity.setCreateAt(entity.getCreateAt());
-                entity.setUpdateAt(update);
-                OrmContext.getAccessor().update(entity);
-            } else {
-                var str = data.getInitNums().split("/");
-                var initNums = new ArrayList<String>();
-                var index = 0;
-                for (var s : str) {
-                    initNums.add(s);
-                }
-                //数据库中不存在
-                var dataCreate = EquipmentGrowthViceConfigDataEntity.ValueOf(data.getViceId(), data.getViceName(), data.getPosGrowthType(), initNums);
-                dataCreate.setId(data.getViceId());
-                dataCreate.setUpdateAt(update);
-                dataCreate.setCreateAt(update);
-                OrmContext.getAccessor().insert(dataCreate);
-            }
-        }
-    }
+
 }

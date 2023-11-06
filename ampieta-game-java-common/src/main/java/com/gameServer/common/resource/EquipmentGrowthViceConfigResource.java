@@ -5,6 +5,7 @@ import com.zfoo.storage.anno.Storage;
 
 /**
  * 圣遗物 副属性 初始
+ *
  * @author zjy
  * @version 1.0
  * @since 2023/10/5 01 20
@@ -14,7 +15,6 @@ public class EquipmentGrowthViceConfigResource {
     /**
      * id
      */
-
     @Id
     private int viceId;
     /**

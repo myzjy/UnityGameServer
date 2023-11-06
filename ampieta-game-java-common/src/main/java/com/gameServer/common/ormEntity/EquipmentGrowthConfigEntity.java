@@ -23,6 +23,17 @@ public class EquipmentGrowthConfigEntity implements IEntity<Integer> {
      * 位置的名字
      */
     private String posName;
+    /**
+     * 当前数据创建时间
+     */
+    private String createAt;
+    /**
+     * 当前数据更新时间
+     */
+    private String updateAt;
+    public static EquipmentGrowthConfigEntity ValueOf(){
+        return new EquipmentGrowthConfigEntity();
+    }
     @Override
     public Integer id() {
         return id;
@@ -50,5 +61,21 @@ public class EquipmentGrowthConfigEntity implements IEntity<Integer> {
 
     public void setPosName(String posName) {
         this.posName = posName;
+    }
+
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(String updateAt) {
+        this.updateAt = updateAt;
     }
 }
