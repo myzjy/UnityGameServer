@@ -26,11 +26,11 @@ public class EquipmentPrimaryConfigDataEntity implements IEntity<Integer> {
     /**
      * 1级初始属性
      */
-    private int primaryGrowthInts;
+    private float primaryGrowthInts;
     /**
      * 品阶的最大等级的最大属性值
      */
-    private int primaryGrowthMaxInt;
+    private float primaryGrowthMaxInt;
     /**
      * 属性位置所属名字
      */
@@ -85,19 +85,19 @@ public class EquipmentPrimaryConfigDataEntity implements IEntity<Integer> {
         this.growthPosName = growthPosName;
     }
 
-    public int getPrimaryGrowthInts() {
+    public float getPrimaryGrowthInts() {
         return primaryGrowthInts;
     }
 
-    public void setPrimaryGrowthInts(int primaryGrowthInts) {
+    public void setPrimaryGrowthInts(float primaryGrowthInts) {
         this.primaryGrowthInts = primaryGrowthInts;
     }
 
-    public int getPrimaryGrowthMaxInt() {
+    public float getPrimaryGrowthMaxInt() {
         return primaryGrowthMaxInt;
     }
 
-    public void setPrimaryGrowthMaxInt(int primaryGrowthMaxInt) {
+    public void setPrimaryGrowthMaxInt(float primaryGrowthMaxInt) {
         this.primaryGrowthMaxInt = primaryGrowthMaxInt;
     }
 

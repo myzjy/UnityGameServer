@@ -41,6 +41,6 @@ public class ApplicationTest {
         var equipmentOrm=new EquipmentOrmAddManager();
         equipmentOrm.UpdateEquipmentGrowthConfigResource();
         equipmentOrm.UpdateEquipmentGrowthViceConfigResource();
-        equipmentOrm.UpdateEquipmentPrimaryConfigResource();
+        //equipmentOrm.UpdateEquipmentPrimaryConfigResource();
     }
 }
