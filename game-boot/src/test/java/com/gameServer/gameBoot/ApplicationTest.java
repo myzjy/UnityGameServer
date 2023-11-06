@@ -38,9 +38,9 @@ public class ApplicationTest {
         ormAddManager.UpdateStageMissionCsvResource();
         ormAddManager.UpdateConfigResource();
         ormAddManager.UpdateOrInAccesGameTimeResource();
-        var equipmentOrm=new EquipmentOrmAddManager();
+        var equipmentOrm=context.getBean(EquipmentOrmAddManager.class);
         equipmentOrm.UpdateEquipmentGrowthConfigResource();
         equipmentOrm.UpdateEquipmentGrowthViceConfigResource();
-        //equipmentOrm.UpdateEquipmentPrimaryConfigResource();
+        equipmentOrm.UpdateEquipmentPrimaryConfigResource();
     }
 }

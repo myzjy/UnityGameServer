@@ -1,6 +1,7 @@
 package com.gameServer.common.resource;
 
 import com.zfoo.storage.anno.Id;
+import com.zfoo.storage.anno.Index;
 import com.zfoo.storage.anno.Storage;
 
 /**
@@ -11,35 +12,35 @@ import com.zfoo.storage.anno.Storage;
 @Storage
 public class StageMissionResource {
     @Id
-    protected int id;
+    private int id;
     /**
      * 当前任务完成排序对比任务id
      */
-    protected int order;
+    private int order;
     /**
      * 对应的关卡id
      */
-    protected int puzzleId;
+    private int puzzleId;
     /**
      * 标题
      */
-    protected String title;
+    private String title;
     /**
      * 显示
      */
-    protected String shortText;
+    private String shortText;
     /**
      * 错误显示消息
      */
-    protected String failedText;
+    private String failedText;
     /**
      * 标识
      */
-    protected String outGameSuffix;
+    private String outGameSuffix;
     /**
      * 显示信息
      */
-    protected  String formatText;
+    private  String formatText;
     
 
     public int getId() {
