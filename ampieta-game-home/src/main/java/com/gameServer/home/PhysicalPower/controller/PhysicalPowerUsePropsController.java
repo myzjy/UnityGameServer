@@ -76,7 +76,7 @@ public class PhysicalPowerUsePropsController {
             physicalData.setResidueNowTime(0);
             physicalPowerService.UpdatePhysicalPowerEntityOrm(physicalData);
             logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库,更新数据 PhysicalPowerEntity:{}",
-                        physicalData.getId(),JsonUtils.object2String(physicalData));
+                        physicalData.getId(), JsonUtils.object2String(physicalData));
             var response = PhysicalPowerUserPropsResponse.ValueOf(
                     physicalData.getNowPhysicalPowerNum(),
                     physicalData.getResidueTime(),
@@ -114,7 +114,7 @@ public class PhysicalPowerUsePropsController {
                 //更新数据库内容
                 physicalPowerService.UpdatePhysicalPowerEntityOrm(physicalData);
                 logger.info("[玩家：{}] 更新 PhysicalPowerEntity 数据库 ,需要更新数据 PhysicalPowerEntity:{}",
-                            physicalData.getId(),JsonUtils.object2String(physicalData));
+                            physicalData.getId(), JsonUtils.object2String(physicalData));
                 var response = PhysicalPowerUserPropsResponse.ValueOf(
                         physicalData.getNowPhysicalPowerNum(),
                         physicalData.getResidueTime(),
@@ -149,19 +149,16 @@ public class PhysicalPowerUsePropsController {
             }
             logger.error("[uid:{}] 获取体力 时,数据库相关不存在，开始创建", session.getUid());
             //体力重新创建出来了，返回出去
-            var createData = physicalPowerService.FindOnePhysicalPower(session.getUid());
-            if (createData == null) {
-                physicalPowerService.CreatePhysicalPower(user.getPlayerLv(), user.getId());
-                /**
-                 * 上创建成功了 重新获取
-                 */
-                createData = physicalPowerService.FindOnePhysicalPower(session.getUid());
-            }
+            physicalPowerService.CreatePhysicalPower(user.getPlayerLv(), user.getId());
+            /**
+             * 上创建成功了 重新获取
+             */
+            data = physicalPowerService.FindOnePhysicalPower(session.getUid());
             /**
              * 上面rpc 通信 创建 体力失败了 没有创建成功
              * 没有获取到对应
              */
-            if (createData == null) {
+            if (data == null) {
                 logger.error("[uid:{}] 获取体力 时,数据库错误，创建数据错误", session.getUid());
                 NetContext.getRouter().send(session, Error.valueOf("数据库错误，创建数据错误，请联系客服"), gatewayAttachment);
                 return;
@@ -170,11 +167,11 @@ public class PhysicalPowerUsePropsController {
             //有了数据传递过去
             NetContext.getRouter().send(session,
                                         PhysicalPowerResponse.ValueOf(
-                                                createData.getNowPhysicalPowerNum(),
-                                                createData.getResidueTime(),
-                                                createData.getMaximumStrength(),
-                                                createData.getMaximusResidueEndTime(),
-                                                createData.getResidueNowTime()), gatewayAttachment);
+                                                data.getNowPhysicalPowerNum(),
+                                                data.getResidueTime(),
+                                                data.getMaximumStrength(),
+                                                data.getMaximusResidueEndTime(),
+                                                data.getResidueNowTime()), gatewayAttachment);
         } else {
             physicalPowerService.RefreshLoginPhysicalPower(session.getUid());
             data = physicalPowerService.FindOnePhysicalPower(session.getUid());
