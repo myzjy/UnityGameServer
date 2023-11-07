@@ -10,6 +10,7 @@ import com.zfoo.orm.OrmContext;
 import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.storage.anno.StorageAutowired;
 import com.zfoo.storage.manager.StorageInt;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +20,7 @@ import java.util.Collections;
  * @version 1.0
  * @since 2023/11/6 14 46
  */
+@Component
 public class EquipmentOrmAddManager {
     @StorageAutowired
     private StorageInt<Integer, EquipmentGrowthViceConfigResource> equipmentGrowthViceConfigResourceStorageInt;
