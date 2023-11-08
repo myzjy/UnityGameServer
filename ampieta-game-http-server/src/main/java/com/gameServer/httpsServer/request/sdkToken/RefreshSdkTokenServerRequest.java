@@ -11,6 +11,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class RefreshSdkTokenServerRequest {
-    public String sdkToken;
-    public long uid;
+    public String sdkToken="";
+    public long uid = 0;
 }
