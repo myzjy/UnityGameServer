@@ -1,4 +1,8 @@
-id,desId,quality,equipmentPosType,equipmentName
-int,int,int,int,string
-圣遗物id,介绍id,品阶,装备只能装配在什么位置,圣遗物的名字
-1001,1001,3,1,游医的银莲
+id,desId,quality,equipmentPosType,equipmentName,mainAttributes
+int,int,int,int,string,string
+圣遗物id,介绍id,品阶,装备只能装配在什么位置,圣遗物的名字,主属性集合可以获取那些属性
+1001,1001,3,1,游医的银莲,1
+1002,1002,3,2,游医的枭羽,3
+1003,1003,3,3,游医的怀钟,5|7|9|11|13
+1004,1004,3,3,游医的药壶,5|7|9|11|13
+1005,1005,3,3,游医的方巾,5|7|9|11|13
