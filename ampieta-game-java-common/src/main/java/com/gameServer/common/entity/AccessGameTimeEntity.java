@@ -20,7 +20,15 @@ public class AccessGameTimeEntity implements IEntity<Integer> {
 
     @Index(ascending = true, unique = true)
     private int timeID;
-    private Date time;
+    private long time;
+    /**
+     * 当前数据创建时间
+     */
+    private String createAt;
+    /**
+     * 当前数据更新时间
+     */
+    private String updateAt;
 
     @Override
     public Integer id() {
@@ -35,14 +43,14 @@ public class AccessGameTimeEntity implements IEntity<Integer> {
         this.id = id;
     }
 
-    public Date getTime() {
+    public long getTime() {
         return time;
     }
 
     /***
      * 设置服务器开始或者关闭时间 ，用于判断 或者显示
      */
-    public void setTime(Date time) {
+    public void setTime(long time) {
         this.time = time;
     }
 
@@ -58,5 +66,25 @@ public class AccessGameTimeEntity implements IEntity<Integer> {
 
     public void setTimeID(int timeID) {
         this.timeID = timeID;
+    }
+
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(String updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public static AccessGameTimeEntity valueOf(){
+        return new AccessGameTimeEntity();
     }
 }

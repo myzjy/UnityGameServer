@@ -33,7 +33,6 @@ public class LoginTapStartController {
     @Value("${spring.profiles.active}")
     private TankDeployEnum deployEnum;
 
-
     @PacketReceiver
     public void atLoginTapToStartRequest(Session session, LoginTapToStartRequest request, GatewayAttachment gatewayAttachment) throws ParseException {
         logger.info("=============================================");
@@ -41,12 +40,17 @@ public class LoginTapStartController {
         logger.info("=============================================");
         //读取到服务器
         var timeEntityList = OrmContext.getAccessor().load(1, AccessGameTimeEntity.class);
-        
-        var serverOpenDate = timeEntityList.getTime();
-        var dateTime = TimeUtils.dateToString(serverOpenDate);
+        long serverOpenDate = 0;
+        if (timeEntityList != null) {
+            serverOpenDate = timeEntityList.getTime();
+        }
+        var dateTime = TimeUtils.dateToString(new Date(serverOpenDate));
         logger.info(dateTime);
-        var nowTimeEntity = timeEntityList.getTime();
-        if (TimeUtils.now() < nowTimeEntity.getTime()) {
+        long nowTimeEntity = 0;
+        if (timeEntityList != null) {
+            nowTimeEntity = timeEntityList.getTime();
+        }
+        if (TimeUtils.now() < nowTimeEntity) {
             logger.info("[服务器开启] 可以开始链接登录");
             NetContext.getRouter().send(session, LoginTapToStartResponse.ValueOf("服务器正在开启阶段", true), gatewayAttachment);
         } else {
@@ -54,6 +58,4 @@ public class LoginTapStartController {
             NetContext.getRouter().send(session, LoginTapToStartResponse.ValueOf("服务器已关闭", false), gatewayAttachment);
         }
     }
-
-
 }

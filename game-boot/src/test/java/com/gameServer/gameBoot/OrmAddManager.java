@@ -9,6 +9,7 @@ import com.gameServer.common.ormEntity.StageMissionEntity;
 import com.gameServer.common.resource.*;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.protocol.util.JsonUtils;
+import com.zfoo.protocol.util.StringUtils;
 import com.zfoo.scheduler.util.TimeUtils;
 import com.zfoo.storage.anno.StorageAutowired;
 import com.zfoo.storage.manager.StorageInt;
@@ -38,27 +39,31 @@ public class OrmAddManager {
     private StorageInt<Integer, StageMissionResource> stageMissionResourceStorage;
     @StorageAutowired
     private StorageInt<Integer, AccesGameTimeResource> accesGameTimeResourceStorage;
-    public void  UpdateOrInAccesGameTimeResource() throws Exception {
-        if(accesGameTimeResourceStorage==null){
+
+    public void UpdateOrInAccesGameTimeResource() throws Exception {
+        if (accesGameTimeResourceStorage == null) {
             throw new Exception("AccesGameTimeResource 数据表 不存在");
         }
         var dict = accesGameTimeResourceStorage.getAll();
         for (var item : dict) {
-
-            var entity =  OrmContext.getAccessor().load(item.getTimeID(), AccessGameTimeEntity.class);
+            var entity = OrmContext.getAccessor().load(item.getTimeID(), AccessGameTimeEntity.class);
+            var createEntity = AccessGameTimeEntity.valueOf();
+            createEntity.setTimeID(item.getTimeID());
+            createEntity.setTime(item.getTime());
+            createEntity.setId(item.getTimeID());
+            var createOrUpdate = TimeUtils.timeToString(TimeUtils.now());
+            createEntity.setUpdateAt(createOrUpdate);
             if (entity == null) {
+                createEntity.setCreateAt(createOrUpdate);
                 //数据库没有相关配置
-                entity = new AccessGameTimeEntity();
-                entity.setTimeID(item.getTimeID());
-                entity.setTime(new Date(item.getTime()));
-                entity.setId(item.getTimeID());
-                OrmContext.getAccessor().insert(entity);
+                OrmContext.getAccessor().insert(createEntity);
             } else {
-                entity = new AccessGameTimeEntity();
-                entity.setTimeID(item.getTimeID());
-                entity.setTime(new Date(item.getTime()));
-                entity.setId(item.getTimeID());
-                OrmContext.getAccessor().update(entity);
+                if (StringUtils.isEmpty(entity.getCreateAt())) {
+                    createEntity.setCreateAt(createOrUpdate);
+                } else {
+                    createEntity.setCreateAt(entity.getCreateAt());
+                }
+                OrmContext.getAccessor().update(createEntity);
             }
             logger.info("AccesGameTimeResource:{}", JsonUtils.object2String(entity));
         }
@@ -72,63 +77,26 @@ public class OrmAddManager {
         for (var data : configAll) {
             var ormEntity = OrmContext.getAccessor().load(data.getLv(), ConfigResourceEntity.class);
             var createOrUpdate = TimeUtils.timeToString(TimeUtils.now());
+            var createEntity = ConfigResourceEntity.ValueOf();
+            createEntity.setId(data.getLv());
+            createEntity.setLv(data.getLv());
+            createEntity.setUpdateAt(createOrUpdate);
+            createEntity.setMaxExp(data.getMaxExp());
+            createEntity.setTheLock(data.isTheLock());
+            createEntity.setResidueTime(data.getResidueTime());
+            createEntity.setMaxPhysical(data.getMaxPhysical());
             if (ormEntity == null) {
-                var createEntity = getConfigResourceEntity(data, createOrUpdate);
+                createEntity.setCreateAt(createOrUpdate);
                 OrmContext.getAccessor().insert(createEntity);
             } else {
-                var updateEntity = getConfigResourceEntity(data, ormEntity);
-                OrmContext.getAccessor().update(updateEntity);
+                if (StringUtils.isEmpty(ormEntity.getCreateAt())) {
+                    createEntity.setCreateAt(createOrUpdate);
+                } else {
+                    createEntity.setCreateAt(ormEntity.getCreateAt());
+                }
+                OrmContext.getAccessor().update(createEntity);
             }
         }
-    }
-
-    private ConfigResourceEntity getConfigResourceEntity(ConfigResource data, String createOrUpdate) {
-        var createEntity = ConfigResourceEntity.ValueOf();
-        createEntity.setId(data.getLv());
-        createEntity.setLv(data.getLv());
-        createEntity.setMaxExp(data.getMaxExp());
-        createEntity.setResidueTime(data.getResidueTime());
-        createEntity.setMaxPhysical(data.getMaxPhysical());
-        createEntity.setTheLock(data.isTheLock());
-        createEntity.setCreateAt(createOrUpdate);
-        createEntity.setUpdateAt(createOrUpdate);
-        return createEntity;
-    }
-
-    private ConfigResourceEntity getConfigResourceEntity(ConfigResource data, ConfigResourceEntity ormEntity) {
-        var updateEntity = ConfigResourceEntity.ValueOf();
-        if (ormEntity.getLv() != data.getLv()) {
-            //数据库中 和 本地 配置 表不一致 依据 本地为准
-            updateEntity.setLv(data.getLv());
-        } else {
-            updateEntity.setLv(data.getLv());
-        }
-        if (ormEntity.getResidueTime() != data.getResidueTime()) {
-            //数据库中 和 本地 配置 表不一致 依据 本地为准
-            updateEntity.setResidueTime(data.getResidueTime());
-        } else {
-            updateEntity.setResidueTime(data.getResidueTime());
-        }
-        if (ormEntity.getMaxPhysical() != data.getMaxPhysical()) {
-            //数据库中 和 本地 配置 表不一致 依据 本地为准
-            updateEntity.setMaxPhysical(data.getMaxPhysical());
-        } else {
-            updateEntity.setMaxPhysical(data.getMaxPhysical());
-        }
-        if (ormEntity.getMaxExp() != data.getMaxExp()) {
-            //数据库中 和 本地 配置 表不一致 依据 本地为准
-            updateEntity.setMaxExp(data.getMaxExp());
-        } else {
-            updateEntity.setMaxExp(data.getMaxExp());
-        }
-        if (ormEntity.isTheLock() != data.isTheLock()) {
-            //数据库中 和 本地 配置 表不一致 依据 本地为准
-            updateEntity.setTheLock(data.isTheLock());
-        } else {
-            updateEntity.setTheLock(data.isTheLock());
-        }
-        updateEntity.setId(data.getLv());
-        return updateEntity;
     }
 
     /**
@@ -164,7 +132,7 @@ public class OrmAddManager {
         entity.setOrder(data.getOrder());
         entity.setOutGameSuffix(data.getOutGameSuffix());
         entity.setShortText(data.getShortText());
-        if (entity.getCreateAt() == null) {
+        if (StringUtils.isEmpty(entity.getCreateAt())) {
             entity.setCreateAt(createOrUpdate);
         } else {
             entity.setCreateAt(entity.getCreateAt());
@@ -197,40 +165,26 @@ public class OrmAddManager {
         for (var data : stageDict) {
             var entity = OrmContext.getAccessor().load(data.getId(), StageDataEntity.class);
             var update = TimeUtils.timeToString(TimeUtils.now());
+            var updateData = StageDataEntity.ValueOf();
+            updateData.setUpdatedAt(update);
+            updateData.setId(data.getId());
+            updateData.setOrder(data.getOrder());
+            updateData.setMissionId(data.getMissionId());
+            updateData.setLockMessage(data.getLockMessage());
+            updateData.setStandbyRole(data.getStandbyRole());
+            updateData.setPuzzleId(data.getPuzzleId());
             if (entity != null) {
-                var updateData = getStageDataEntity(entity, update);
+                if (StringUtils.isEmpty(entity.getCreateAt())) {
+                    updateData.setCreateAt(update);
+                } else {
+                    updateData.setCreateAt(entity.getCreateAt());
+                }
                 OrmContext.getAccessor().update(updateData);
             } else {
-                var createData = StageDataEntity.ValueOf();
-                createData.setCreateAt(update);
-                createData.setUpdatedAt(update);
-                createData.setId(data.getId());
-                createData.setOrder(data.getOrder());
-                createData.setMissionId(data.getMissionId());
-                createData.setLockMessage(data.getLockMessage());
-                createData.setStandbyRole(data.getStandbyRole());
-                createData.setPuzzleId(data.getPuzzleId());
-                OrmContext.getAccessor().insert(createData);
+                updateData.setCreateAt(update);
+                OrmContext.getAccessor().insert(updateData);
             }
         }
-    }
-
-    private StageDataEntity getStageDataEntity(StageDataEntity entity, String update) {
-        var updateData = StageDataEntity.ValueOf();
-        if (entity.getCreateAt() == null) {
-            logger.info(entity.getCreateAt());
-            updateData.setCreateAt(update);
-        } else {
-            updateData.setCreateAt(entity.getCreateAt());
-        }
-        updateData.setUpdatedAt(update);
-        updateData.setId(entity.getId());
-        updateData.setOrder(entity.getOrder());
-        updateData.setMissionId(entity.getMissionId());
-        updateData.setLockMessage(entity.getLockMessage());
-        updateData.setStandbyRole(entity.getStandbyRole());
-        updateData.setPuzzleId(entity.getPuzzleId());
-        return updateData;
     }
 
     /**
@@ -238,56 +192,32 @@ public class OrmAddManager {
      */
     public void UpdateItemBaseCsvResource() {
         var dict = itemBaseCsvResourceStorage.getAll();
-        for (var data :
-                dict) {
+        for (var data : dict) {
             //设置
             var entity = OrmContext.getAccessor().load(data.getId(), ItemBoxBaseEntity.class);
             var update = TimeUtils.timeToString(TimeUtils.now());
+            var createEntity = ItemBoxBaseEntity.ValueOf();
+            createEntity.setIcon(data.getIcon());
+            createEntity.setItemId(data.getId());
+            createEntity.setResources(data.getResourcePath());
+            createEntity.setDes(data.getDes());
+            createEntity.setName(data.getName());
+            createEntity.setMaxNum(data.getMaxNum());
+            createEntity.setMinNum(data.getMinNum());
+            createEntity.setQuality(data.getQuality());
+            createEntity.setType(data.getType());
+            createEntity.setUpdateAt(update);
             if (entity != null) {
-                var newEntity = getItemBoxBasEntity(data, entity, update);
-                OrmContext.getAccessor().update(newEntity);
+                if (StringUtils.isEmpty(entity.getCreateAt())) {
+                    createEntity.setCreateAt(update);
+                } else {
+                    createEntity.setCreateAt(entity.getCreateAt());
+                }
+                OrmContext.getAccessor().update(createEntity);
             } else {
-                var newEntity = getBoxBasEntity(data, update);
-                OrmContext.getAccessor().insert(newEntity);
+                createEntity.setCreateAt(update);
+                OrmContext.getAccessor().insert(createEntity);
             }
         }
     }
-
-    private ItemBoxBaseEntity getBoxBasEntity(ItemBaseCsvResource data, String update) {
-        var newEntity = ItemBoxBaseEntity.ValueOf();
-        newEntity.setIcon(data.getIcon());
-        newEntity.setItemId(data.getId());
-        newEntity.setResources(data.getResourcePath());
-        newEntity.setDes(data.getDes());
-        newEntity.setName(data.getName());
-        newEntity.setMaxNum(data.getMaxNum());
-        newEntity.setMinNum(data.getMinNum());
-        newEntity.setQuality(data.getQuality());
-        newEntity.setType(data.getType());
-        newEntity.setCreateAt(update);
-        newEntity.setUpdateAt(update);
-        return newEntity;
-    }
-
-    private ItemBoxBaseEntity getItemBoxBasEntity(ItemBaseCsvResource data, ItemBoxBaseEntity entity, String update) {
-        var newEntity = ItemBoxBaseEntity.ValueOf();
-        if (entity.getCreateAt() == null) {
-            newEntity.setCreateAt(update);
-        } else {
-            newEntity.setCreateAt(entity.getCreateAt());
-        }
-        newEntity.setItemId(data.getId());
-        newEntity.setIcon(data.getIcon());
-        newEntity.setResources(data.getResourcePath());
-        newEntity.setDes(data.getDes());
-        newEntity.setName(data.getName());
-        newEntity.setMaxNum(data.getMaxNum());
-        newEntity.setMinNum(data.getMinNum());
-        newEntity.setQuality(data.getQuality());
-        newEntity.setType(data.getType());
-        newEntity.setUpdateAt(update);
-        return newEntity;
-    }
-
-
 }

@@ -42,5 +42,8 @@ public class ApplicationTest {
         equipmentOrm.UpdateEquipmentGrowthConfigResource();
         equipmentOrm.UpdateEquipmentGrowthViceConfigResource();
         equipmentOrm.UpdateEquipmentPrimaryConfigResource();
+        equipmentOrm.UpdateEquipmentResource();
+        equipmentOrm.UpdateEquipmentConfigResource();
+        equipmentOrm.UpdateEquipmentDesResource();
     }
 }

@@ -1,7 +1,6 @@
 package com.gameServer.home.user.controller;
 
 import com.gameServer.common.entity.AccessGameTimeEntity;
-import com.gameServer.common.event.create.CreateOrmAccesTimeEvent;
 import com.gameServer.common.protocol.user.GameMainUserInfoToRequest;
 import com.gameServer.common.protocol.user.GameMainUserInfoToResponse;
 import com.gameServer.home.user.service.IUserLoginService;
@@ -17,8 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-
 /**
  * @author zjy
  * @version 1.0
@@ -30,33 +27,6 @@ public class UserLoginController {
     private static final Logger logger = LoggerFactory.getLogger(UserLoginController.class);
     @Autowired
     private IUserLoginService userLoginService;
-
-    @EventReceiver
-    public void onCreateOrmAccesTimeEvent(CreateOrmAccesTimeEvent event) {
-        if (userLoginService.IsAcesGameTimeResource()) {
-            logger.error("未配置服务器开始时间");
-            return;
-        }
-        var dict = userLoginService.GetAccesTimeAll();
-        for (var item : dict) {
-            var entity = userLoginService.FindAccessGameTimeEntity(item.getTimeID());
-            if (entity == null) {
-                //数据库没有相关配置
-                entity = new AccessGameTimeEntity();
-                entity.setTimeID(item.getTimeID());
-                entity.setTime(new Date(item.getTime()));
-                entity.setId(item.getTimeID());
-                userLoginService.InsertAccessGameTimeEntity(entity);
-            } else {
-                entity = new AccessGameTimeEntity();
-                entity.setTimeID(item.getTimeID());
-                entity.setTime(new Date(item.getTime()));
-                entity.setId(item.getTimeID());
-                userLoginService.UpdateAccessGameTimeEntity(entity);
-            }
-            logger.info("AccesGameTimeResource:{}", JsonUtils.object2String(entity));
-        }
-    }
 
     @PacketReceiver
     public void atGameMainUserInfoToRequest(Session session, GameMainUserInfoToRequest request, GatewayAttachment gatewayAttachment) {
