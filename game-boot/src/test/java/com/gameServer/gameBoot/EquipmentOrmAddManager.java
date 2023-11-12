@@ -129,6 +129,7 @@ public class EquipmentOrmAddManager {
             createEntity.setEquipmentPosType(data.getEquipmentPosType());
             createEntity.setQuality(data.getQuality());
             createEntity.setDesId(data.getDesId());
+            createEntity.setMainAttributes(data.getMainAttributes());
             createEntity.setUpdateAt(update);
             if (entity == null) {
                 createEntity.setCreateAt(update);
@@ -182,6 +183,8 @@ public class EquipmentOrmAddManager {
             createEntity.setName(data.getName());
             createEntity.setUpdateAt(update);
             createEntity.setDesId(data.getDesId());
+            createEntity.setDesStr(data.getDesStr());
+            createEntity.setStoryDesStr(data.getStoryDesStr());
             if (entity == null) {
                 createEntity.setCreateAt(update);
                 OrmContext.getAccessor().insert(createEntity);
