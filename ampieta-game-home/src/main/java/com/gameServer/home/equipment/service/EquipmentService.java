@@ -1,5 +1,6 @@
 package com.gameServer.home.equipment.service;
 
+import com.gameServer.common.ormEntity.EquipmentConfigDataEntity;
 import com.gameServer.common.ormEntity.EquipmentUserDataOrmEntity;
 import com.gameServer.common.resource.EquipmentConfigResource;
 import com.gameServer.common.resource.EquipmentResource;
@@ -47,7 +48,7 @@ public class EquipmentService implements IEquipmentService {
     }
 
     @Override
-    public EquipmentConfigResource FindQualityGetEquipmentConfigData(int quality) {
-        return equipmentConfigResourceStorageInt.get(quality);
+    public EquipmentConfigDataEntity FindQualityGetEquipmentConfigData(int quality) {
+        return OrmContext.getAccessor().load(quality,EquipmentConfigDataEntity.class);
     }
 }

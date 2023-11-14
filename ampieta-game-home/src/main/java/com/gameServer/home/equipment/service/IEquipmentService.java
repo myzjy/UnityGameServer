@@ -1,5 +1,6 @@
 package com.gameServer.home.equipment.service;
 
+import com.gameServer.common.ormEntity.EquipmentConfigDataEntity;
 import com.gameServer.common.ormEntity.EquipmentUserDataOrmEntity;
 import com.gameServer.common.resource.EquipmentConfigResource;
 
@@ -23,5 +24,5 @@ public interface IEquipmentService {
      * @param quality
      * @return
      */
-    EquipmentConfigResource FindQualityGetEquipmentConfigData(int quality);
+    EquipmentConfigDataEntity FindQualityGetEquipmentConfigData(int quality);
 }
