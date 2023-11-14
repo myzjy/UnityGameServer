@@ -55,29 +55,36 @@
         <protocol location="com.gameServer.common.protocol.equipment.EquipmentAllDataRequest"/>
         <protocol location="com.gameServer.common.protocol.equipment.EquipmentAllDataResponse"/>
     </module>
-    <module id="3" name="common" >
-        <protocol  location="com.zfoo.net.packet.common.Message"/>
-        <protocol  location="com.zfoo.net.packet.common.Error"/>
-        <protocol  location="com.zfoo.net.packet.common.Heartbeat"/>
-        <protocol  location="com.zfoo.net.packet.common.Ping"/>
-        <protocol  location="com.zfoo.net.packet.common.Pong"/>
+    <module id="3" name="common">
+        <protocol location="com.zfoo.net.packet.common.Message"/>
+        <protocol location="com.zfoo.net.packet.common.Error"/>
+        <protocol location="com.zfoo.net.packet.common.Heartbeat"/>
+        <protocol location="com.zfoo.net.packet.common.Ping"/>
+        <protocol location="com.zfoo.net.packet.common.Pong"/>
 
-        <protocol  location="com.zfoo.net.packet.common.PairLong"/>
-        <protocol  location="com.zfoo.net.packet.common.PairString"/>
-        <protocol  location="com.zfoo.net.packet.common.PairLS"/>
-        <protocol  location="com.zfoo.net.packet.common.TripleLong"/>
-        <protocol  location="com.zfoo.net.packet.common.TripleString"/>
-        <protocol  location="com.zfoo.net.packet.common.TripleLSS"/>
-        <protocol  location="com.gameServer.common.protocol.bag.BagUserItemData"/>
-        <protocol  location="com.gameServer.common.protocol.serverConfig.ItemBaseData"/>
-        <protocol  location="com.gameServer.common.protocol.Puzzle.Puzzle"/>
-        <protocol  location="com.gameServer.common.protocol.Puzzle.PuzzleRewardsData"/>
-        <protocol  location="com.gameServer.common.protocol.Puzzle.PuzzleChapter"/>
-        <protocol  location="com.gameServer.common.protocol.equipment.EquipmentGlossaryData"/>
-        <protocol  location="com.gameServer.common.protocol.equipment.EquipmentData"/>
+        <protocol location="com.zfoo.net.packet.common.PairLong"/>
+        <protocol location="com.zfoo.net.packet.common.PairString"/>
+        <protocol location="com.zfoo.net.packet.common.PairLS"/>
+        <protocol location="com.zfoo.net.packet.common.TripleLong"/>
+        <protocol location="com.zfoo.net.packet.common.TripleString"/>
+        <protocol location="com.zfoo.net.packet.common.TripleLSS"/>
+        <protocol location="com.gameServer.common.protocol.bag.BagUserItemData"/>
+        <protocol location="com.gameServer.common.protocol.serverConfig.ItemBaseData"/>
+        <protocol location="com.gameServer.common.protocol.Puzzle.Puzzle"/>
+        <protocol location="com.gameServer.common.protocol.Puzzle.PuzzleRewardsData"/>
+        <protocol location="com.gameServer.common.protocol.Puzzle.PuzzleChapter"/>
+        <protocol location="com.gameServer.common.protocol.equipment.EquipmentGlossaryData"/>
+        <protocol location="com.gameServer.common.protocol.equipment.EquipmentData"/>
+
+        <protocol id="207" location="com.gameServer.common.protocol.equipment.base.EquipmentConfigBaseData"/>
+        <protocol id="208" location="com.gameServer.common.protocol.equipment.base.EquipmentPrimaryConfigBaseData"/>
+        <protocol id="209" location="com.gameServer.common.protocol.equipment.base.EquipmentBaseData"/>
+        <protocol id="210" location="com.gameServer.common.protocol.equipment.base.EquipmentGrowthViceConfigBaseData"/>
+        <protocol id="211" location="com.gameServer.common.protocol.equipment.base.EquipmentGrowthConfigBaseData"/>
+        <protocol id="212" location="com.gameServer.common.protocol.equipment.base.EquipmentDesBaseData"/>
 
     </module>
     <module id="4" name="unityGameSdk">
-        <protocol  location="com.gameServer.common.protocol.sdk.login.SDKLoginRequest"/>
+        <protocol location="com.gameServer.common.protocol.sdk.login.SDKLoginRequest"/>
     </module>
 </protocols>
