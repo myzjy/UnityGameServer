@@ -25,32 +25,29 @@ import java.util.List;
  */
 @Component
 public class EquipmentController {
-    private static final Logger logger = LoggerFactory.getLogger(EquipmentController.class);
-    @Autowired
-    private IEquipmentService iEquipmentService;
+  private static final Logger logger = LoggerFactory.getLogger(EquipmentController.class);
+  @Autowired
+  private IEquipmentService iEquipmentService;
 
-    public EquipmentController() {
-        logger.info("[EquipmentController]");
-    }
+  public EquipmentController() {
+    logger.info("[EquipmentController]");
+  }
 
-    @PacketReceiver
-    public void atEquipmentAllDataRequest(Session session, EquipmentAllDataRequest request, GatewayAttachment gateway) {
-        logger.info("获取所有圣遗物，请求者UID：{}", session.getUid());
-        var userEquipmentList = iEquipmentService.GetAllTheUserToEquipmentUserDataOrm(session.getUid());
-        List<EquipmentData> equipmentDataList = new ArrayList<>();
-        List<EquipmentGlossaryData> equipmentGlossaryDataList = new ArrayList<>();
-        for (var data : userEquipmentList) {
-            var primaryData = EquipmentGlossaryData.ValueOf(data.getThisPrimaryAttributes().getPosType(),
-                                                            data.getThisPrimaryAttributes().getGrowthViceNum());
-            equipmentGlossaryDataList.clear();
-            for (var glossaryData : data.getInitNums()) {
-                var mPrimaryData = EquipmentGlossaryData.ValueOf(glossaryData.getPosType(),
-                                                                 glossaryData.getGrowthViceNum());
-                equipmentGlossaryDataList.add(mPrimaryData);
-            }
-            //switch (data.getViceName())
-            //var userData = EquipmentData.ValueOf(primaryData, equipmentGlossaryDataList, data.getLv());
-        }
-        //var response = EquipmentAllDataResponse.ValueOf()
+  @PacketReceiver
+  public void atEquipmentAllDataRequest(Session session, EquipmentAllDataRequest request, GatewayAttachment gateway) {
+    logger.info("获取所有圣遗物，请求者UID：{}", session.getUid());
+    var userEquipmentList = iEquipmentService.GetAllTheUserToEquipmentUserDataOrm(session.getUid());
+    List<EquipmentData> equipmentDataList = new ArrayList<>();
+    List<EquipmentGlossaryData> equipmentGlossaryDataList = new ArrayList<>();
+    for (var data : userEquipmentList) {
+      var primaryData = EquipmentGlossaryData.ValueOf(data.getThisPrimaryAttributes().getPosType(),
+          data.getThisPrimaryAttributes().getGrowthViceNum());
+      equipmentGlossaryDataList.clear();
+      for (var glossaryData : data.getInitNums()) {
+        var mPrimaryData = EquipmentGlossaryData.ValueOf(glossaryData.getPosType(),
+            glossaryData.getGrowthViceNum());
+        equipmentGlossaryDataList.add(mPrimaryData);
+      }
     }
+  }
 }
