@@ -2,8 +2,10 @@ package com.gameServer.home.equipment.service;
 
 import com.gameServer.common.ormEntity.EquipmentBaseDataEntity;
 import com.gameServer.common.ormEntity.EquipmentConfigDataEntity;
+import com.gameServer.common.ormEntity.EquipmentDesBaseDataEntity;
 import com.gameServer.common.ormEntity.EquipmentUserDataOrmEntity;
 import com.gameServer.common.protocol.equipment.base.EquipmentBaseData;
+import com.gameServer.common.protocol.equipment.base.EquipmentDesBaseData;
 import com.gameServer.common.resource.EquipmentConfigResource;
 
 import java.util.List;
@@ -37,4 +39,9 @@ public interface IEquipmentService {
    * @return
    */
   EquipmentBaseData CreateEqueipmentBaseData(EquipmentBaseDataEntity entity);
+
+  /**
+   * @param entity
+   */
+  EquipmentDesBaseData CreateEqueipmentDesBaseData(EquipmentDesBaseDataEntity entity);
 }
