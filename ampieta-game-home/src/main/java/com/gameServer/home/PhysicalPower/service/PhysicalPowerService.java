@@ -298,7 +298,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
 
     @Override
     public void CreatePhysicalPower(int lv, long uid) {
-        var physicalData = FindOnePhysicalPower(uid);
+        var physicalData =  OrmContext.getAccessor().load(uid, PhysicalPowerEntity.class);
         var userData = userLoginService.LoadPlayerUserEntity(uid);
         var config = userLoginService.GetConfigResourceData(userData.getPlayerLv());
         /**
