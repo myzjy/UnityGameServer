@@ -104,7 +104,6 @@ public class LoginController {
         //获取的玩家 uid小于0
         if (userCache.getId() <= 0) {
             logger.error("[玩家当前uid:{}][sid：{}],错误值，请检查", userCache.getId(), session.getSid());
-            userLoginService.UpdatePlayerUserEntity(userCache);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()));
             return;
         }
