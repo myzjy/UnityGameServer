@@ -18,6 +18,7 @@ import com.zfoo.net.anno.PacketReceiver;
 import com.zfoo.net.packet.common.Error;
 import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.session.Session;
+import com.zfoo.orm.OrmContext;
 import com.zfoo.orm.util.MongoIdUtils;
 import com.zfoo.protocol.util.StringUtils;
 import com.zfoo.scheduler.util.TimeUtils;
@@ -85,7 +86,7 @@ public class RegisterController {
         var mongoIdNum = MongoIdUtils.getIncrementIdFromMongoDefault(PlayerUserEntity.class);
         var newUID = mongoIdNum + 10000000;
         logger.info("[UID:{}],[{sid:{}}]", newUID, session.getSid());
-        var user = userLoginService.LoadPlayerUserEntity(newUID);
+        var user = OrmContext.getAccessor().load(newUID, PlayerUserEntity.class);
         //判断当前UID能不能找到对应
         if (user == null) {
             logger.error("[UID:{}]数据库中找不到,开始创建新的玩家数据", newUID);

@@ -53,8 +53,10 @@ public class UserLoginService implements IUserLoginService {
 
     @Override
     public PlayerUserEntity LoadPlayerUserEntity(long UserID) {
-        var entity
-                = OrmContext.getAccessor().load(UserID, PlayerUserEntity.class);
+        var entity = UserModelDict.load(UserID);
+        if (entity == null) {
+            entity = OrmContext.getAccessor().load(UserID, PlayerUserEntity.class);
+        }
         return entity;
     }
 
