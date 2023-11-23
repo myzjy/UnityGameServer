@@ -26,7 +26,7 @@ public class ConfigResourceEntity implements IEntity<Integer> {
      * 最大经验
      */
     private int maxExp;
-    private boolean isTheLock;
+    private boolean theLock;
     private String createAt;
     protected String updateAt;
 
@@ -93,17 +93,17 @@ public class ConfigResourceEntity implements IEntity<Integer> {
         this.maxExp = maxExp;
     }
 
-    public boolean isTheLock() {
-        return isTheLock;
+    public boolean getTheLock() {
+        return theLock;
     }
 
     public void setTheLock(boolean theLock) {
-        isTheLock = theLock;
+        theLock = theLock;
     }
 
     @Override
     public Integer id() {
-        return lv;
+        return id;
     }
 
     public String getCreateAt() {

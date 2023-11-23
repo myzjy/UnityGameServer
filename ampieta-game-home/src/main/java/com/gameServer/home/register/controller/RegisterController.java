@@ -103,6 +103,7 @@ public class RegisterController {
         PlayerUserEntity userEntity = PlayerUserEntity.valueOf(newUID, userName, TimeUtils.now(), TimeUtils.now(),
                                                                token, 0, 0, 0, 0,
                                                                0, 0, 0, 1);
+        userEntity.setUid(newUID);
         userEntity.setToken(TokenUtils.set(newUID));
         session.setUid(newUID);
         logger.info("[Token:{}]", userEntity.getToken());

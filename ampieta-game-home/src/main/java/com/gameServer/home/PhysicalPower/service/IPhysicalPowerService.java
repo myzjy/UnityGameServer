@@ -2,6 +2,7 @@ package com.gameServer.home.PhysicalPower.service;
 
 import com.gameServer.common.entity.PhysicalPowerEntity;
 import com.gameServer.common.entity.PlayerUserEntity;
+import com.gameServer.common.entity.config.ConfigResourceEntity;
 import com.gameServer.common.resource.ConfigResource;
 
 /**
@@ -33,7 +34,7 @@ public interface IPhysicalPowerService {
      */
     PhysicalPowerEntity PhysicalPowerGetResidueTime(PhysicalPowerEntity entity,
                                                     int differenceToTime,
-                                                    ConfigResource config,
+                                                    ConfigResourceEntity config,
                                                     PlayerUserEntity userEntity);
 
     /**
@@ -47,7 +48,7 @@ public interface IPhysicalPowerService {
      */
     PhysicalPowerEntity PhysicalPowerGetResidueEndTime(PhysicalPowerEntity entity,
                                                        int differenceToTime,
-                                                       ConfigResource config,
+                                                       ConfigResourceEntity config,
                                                        PlayerUserEntity userEntity);
 
     /**

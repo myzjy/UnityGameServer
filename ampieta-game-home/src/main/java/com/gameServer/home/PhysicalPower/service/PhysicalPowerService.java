@@ -2,6 +2,7 @@ package com.gameServer.home.PhysicalPower.service;
 
 import com.gameServer.common.entity.PhysicalPowerEntity;
 import com.gameServer.common.entity.PlayerUserEntity;
+import com.gameServer.common.entity.config.ConfigResourceEntity;
 import com.gameServer.common.resource.ConfigResource;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.orm.OrmContext;
@@ -53,7 +54,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
     public PhysicalPowerEntity PhysicalPowerGetResidueTime(
             PhysicalPowerEntity entity,
             int differenceToTime,
-            ConfigResource config,
+            ConfigResourceEntity config,
             PlayerUserEntity userEntity) {
         var dateTime = TimeUtils.timeToString(entity.getResidueNowTime());
         int differenceToTimeNum = 0;
@@ -228,7 +229,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
     @Override
     public PhysicalPowerEntity PhysicalPowerGetResidueEndTime(PhysicalPowerEntity entity,
                                                               int differenceToTime,
-                                                              ConfigResource config,
+                                                              ConfigResourceEntity config,
                                                               PlayerUserEntity userEntity) {
         int differenceToTimeNum = 0;
         if (differenceToTime > 0) {

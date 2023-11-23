@@ -3,6 +3,7 @@ package com.gameServer.home.user.service;
 import com.gameServer.common.entity.AccessGameTimeEntity;
 import com.gameServer.common.entity.PhysicalPowerEntity;
 import com.gameServer.common.entity.PlayerUserEntity;
+import com.gameServer.common.entity.config.ConfigResourceEntity;
 import com.gameServer.common.resource.AccesGameTimeResource;
 import com.gameServer.common.resource.ConfigResource;
 import com.zfoo.orm.OrmContext;
@@ -26,8 +27,6 @@ import java.util.Collection;
 public class UserLoginService implements IUserLoginService {
     private static final Logger logger = LoggerFactory.getLogger(UserLoginService.class);
     @StorageAutowired
-    private StorageInt<Integer, ConfigResource> configResourceStorage;
-    @StorageAutowired
     private StorageInt<Integer, AccesGameTimeResource> accesGameTimeResourceStorage;
     /**
      * 用户数据
@@ -40,24 +39,22 @@ public class UserLoginService implements IUserLoginService {
     private IEntityCache<Integer, AccessGameTimeEntity> accessGameTimeEntityIEntityCaches;
 
     @Override
-    public ConfigResource GetConfigResourceData(int lv) {
-        var resourceData = configResourceStorage.get(lv);
+    public ConfigResourceEntity GetConfigResourceData(int lv) {
+        var resourceData = OrmContext.getAccessor().load(lv, ConfigResourceEntity.class);
         return resourceData;
     }
 
     @Override
     public int ConfigResourceLength() {
-        var length = configResourceStorage.size();
+        var list = OrmContext.getQuery(ConfigResourceEntity.class).queryAll();
+        var length = list.size();
         return length;
     }
 
     @Override
     public PlayerUserEntity LoadPlayerUserEntity(long UserID) {
-        var entity = UserModelDict.load(UserID);
-        if (entity == null) {
-            entity = OrmContext.getAccessor().load(UserID, PlayerUserEntity.class);
-            UserModelDict.update(entity);
-        }
+        var entity
+                = OrmContext.getAccessor().load(UserID, PlayerUserEntity.class);
         return entity;
     }
 

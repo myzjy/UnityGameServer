@@ -64,7 +64,7 @@ public class LoginController {
             return;
         }
         //var sid = session.getSid();
-        var accountUser = OrmContext.getAccessor().load(account, AccountEntity.class);
+        var accountUser = OrmContext.getQuery(AccountEntity.class).eq("account", account).queryFirst();
         if (accountUser == null) {
             logger.error("[account：{}，玩家登录]登录时间{}[error:{}]", account, TimeUtils.dateFormatForDayTimeString(TimeUtils.now()), I18nEnum.error_account_not_exit.getMessage());
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()), gatewayAttachment);

@@ -77,6 +77,7 @@ public class PlayerUserEntity implements IEntity<Long> {
      * 当前体力
      */
     private int nowPhysicalPowerNum;
+    private long uid;
 
 //    private long
 
@@ -259,5 +260,13 @@ public class PlayerUserEntity implements IEntity<Long> {
      */
     public void setNowPhysicalPowerNum(int nowPhysicalPowerNum) {
         this.nowPhysicalPowerNum = nowPhysicalPowerNum;
+    }
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
     }
 }

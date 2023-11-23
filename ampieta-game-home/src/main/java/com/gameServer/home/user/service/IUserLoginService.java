@@ -2,6 +2,7 @@ package com.gameServer.home.user.service;
 
 import com.gameServer.common.entity.AccessGameTimeEntity;
 import com.gameServer.common.entity.PlayerUserEntity;
+import com.gameServer.common.entity.config.ConfigResourceEntity;
 import com.gameServer.common.resource.AccesGameTimeResource;
 import com.gameServer.common.resource.ConfigResource;
 import com.zfoo.orm.cache.IEntityCache;
@@ -16,7 +17,7 @@ import java.util.Collection;
  */
 @Component
 public interface IUserLoginService {
-    ConfigResource GetConfigResourceData(int lv);
+    ConfigResourceEntity GetConfigResourceData(int lv);
 
     int ConfigResourceLength();
 
