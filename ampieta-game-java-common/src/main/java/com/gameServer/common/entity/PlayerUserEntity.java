@@ -269,4 +269,9 @@ public class PlayerUserEntity implements IEntity<Long> {
     public void setUid(long uid) {
         this.uid = uid;
     }
+
+    @Override
+    public boolean empty() {
+        return IEntity.super.empty();
+    }
 }
