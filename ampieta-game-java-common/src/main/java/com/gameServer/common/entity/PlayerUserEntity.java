@@ -261,14 +261,14 @@ public class PlayerUserEntity implements IEntity<Long> {
     public void setNowPhysicalPowerNum(int nowPhysicalPowerNum) {
         this.nowPhysicalPowerNum = nowPhysicalPowerNum;
     }
-
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
     public long getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
-        this.uid = uid;
-    }
+
 
     @Override
     public boolean empty() {
