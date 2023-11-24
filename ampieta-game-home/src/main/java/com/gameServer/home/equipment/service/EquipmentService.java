@@ -58,7 +58,7 @@ public class EquipmentService implements IEquipmentService {
     }
 
     @Override
-    public EquipmentBaseData CreateEqueipmentBaseData(EquipmentBaseDataEntity entity) {
+    public EquipmentBaseData CreateEquipmentBaseData(EquipmentBaseDataEntity entity) {
         var data = EquipmentBaseData.valueOf();
         data.setDesId(entity.getDesId());
         data.setEquipmentName(entity.getEquipmentName());
@@ -69,7 +69,7 @@ public class EquipmentService implements IEquipmentService {
     }
 
     @Override
-    public EquipmentDesBaseData CreateEqueipmentDesBaseData(EquipmentDesBaseDataEntity entity) {
+    public EquipmentDesBaseData CreateEquipmentDesBaseData(EquipmentDesBaseDataEntity entity) {
         var data = EquipmentDesBaseData.valueOf();
         data.setDesStr(entity.getDesStr());
         data.setStoryDesStr(data.getStoryDesStr());
