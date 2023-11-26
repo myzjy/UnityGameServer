@@ -70,43 +70,22 @@ public class ServerBaseConfigController {
         var equipmentPrimaryConfigDataServerList = new ArrayList<EquipmentPrimaryConfigBaseData>();
         var equipmentPrimaryConfigBaseDataList = OrmContext.getQuery(EquipmentPrimaryConfigDataEntity.class).queryAll();
         equipmentPrimaryConfigBaseDataList.forEach((data) -> {
-            var createData = EquipmentPrimaryConfigBaseData.valueOf();
-            createData.setId(data.getId());
-            createData.setGrowthPosInt(data.getGrowthPosInt());
-            createData.setGrowthPosName(data.getGrowthPosName());
-            createData.setPrimaryQuality(data.getPrimaryQuality());
-            createData.setPrimaryGrowthInts(data.getPrimaryGrowthInts());
-            equipmentPrimaryConfigDataServerList.add(createData);
+            equipmentPrimaryConfigDataServerList.add(iEquipmentService.CreateEquipmentPrimaryConfigBaseData(data));
         });
         var equipmentGrowthConfigBaseDataServerList = new ArrayList<EquipmentGrowthConfigBaseData>();
         var equipmentGrowthConfigList = OrmContext.getQuery(EquipmentGrowthConfigEntity.class).queryAll();
         equipmentGrowthConfigList.forEach((data) -> {
-            var createData = EquipmentGrowthConfigBaseData.valueOf();
-            createData.setId(data.getId());
-            createData.setPosName(data.getPosName());
-            createData.setLocationOfEquipmentType(data.getLocationOfEquipmentType());
-            equipmentGrowthConfigBaseDataServerList.add(createData);
+            equipmentGrowthConfigBaseDataServerList.add(iEquipmentService.CreateEquipmentGrowthConfigBaseData(data));
         });
         var equipmentGrowthViceConfigDataServerList = new ArrayList<EquipmentGrowthViceConfigBaseData>();
         var equipmentGrowthViceConfigDataList = OrmContext.getQuery(EquipmentGrowthViceConfigDataEntity.class).queryAll();
         equipmentGrowthViceConfigDataList.forEach((data) -> {
-            var createData = EquipmentGrowthViceConfigBaseData.valueOf();
-            createData.setInitNums(data.getInitNums());
-            createData.setViceId(data.getViceId());
-            createData.setPosGrowthType(data.getPosGrowthType());
-            createData.setViceName(data.getViceName());
-            equipmentGrowthViceConfigDataServerList.add(createData);
+            equipmentGrowthViceConfigDataServerList.add(iEquipmentService.CreateEquipmentGrowthViceConfigBaseData(data));
         });
         var equipmentConfigDataServerList = new ArrayList<EquipmentConfigBaseData>();
         var equipmentConfigBaseDataList = OrmContext.getQuery(EquipmentConfigDataEntity.class).queryAll();
         equipmentConfigBaseDataList.forEach((data) -> {
-            var createData = EquipmentConfigBaseData.valueOf();
-            createData.setLv1(data.getLv1());
-            createData.setLv2(data.getLv2());
-            createData.setLv3(data.getLv3());
-            createData.setLv4(data.getLv4());
-            createData.setQuality(data.getQuality());
-            equipmentConfigDataServerList.add(createData);
+            equipmentConfigDataServerList.add(iEquipmentService.CreateEquipmentConfigBaseData(data));
         });
         var response = ServerConfigResponse.ValueOf();
         response.setBagItemEntityList(bagUserItemEntities);

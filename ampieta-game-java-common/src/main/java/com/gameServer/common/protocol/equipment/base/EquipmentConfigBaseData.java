@@ -3,6 +3,7 @@ package com.gameServer.common.protocol.equipment.base;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
+ * 圣遗物 每个品阶 能够到达的最大等级 配置
  * @author zjy
  * @version 1.0
  * @since 2023/11/14 12 43

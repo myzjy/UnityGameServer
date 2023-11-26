@@ -3,6 +3,7 @@ package com.gameServer.common.protocol.equipment.base;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
+ * 圣遗物 名字 品质 这个装备的属性 可获取属性
  * @author zjy
  * @version 1.0
  * @since 2023/11/14 16 33
