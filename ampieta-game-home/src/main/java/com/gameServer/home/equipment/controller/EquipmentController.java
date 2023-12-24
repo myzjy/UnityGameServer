@@ -6,6 +6,7 @@ import com.gameServer.common.protocol.equipment.EquipmentAllDataResponse;
 import com.gameServer.common.protocol.equipment.EquipmentData;
 import com.gameServer.common.protocol.equipment.EquipmentGlossaryData;
 import com.gameServer.home.equipment.service.IEquipmentService;
+import com.zfoo.net.NetContext;
 import com.zfoo.net.anno.PacketReceiver;
 import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.session.Session;
@@ -53,5 +54,8 @@ public class EquipmentController {
             equipmentData.setAdverbStripEquipmentDataList(equipmentGlossaryDataList);
             equipmentDataList.add(equipmentData);
         }
+        var response = EquipmentAllDataResponse.ValueOf(equipmentDataList);
+        NetContext.getRouter().send(session, response
+                , gateway);
     }
 }
