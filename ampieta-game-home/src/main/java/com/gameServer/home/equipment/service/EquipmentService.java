@@ -1,11 +1,7 @@
 package com.gameServer.home.equipment.service;
 
-import com.gameServer.common.ormEntity.EquipmentBaseDataEntity;
-import com.gameServer.common.ormEntity.EquipmentConfigDataEntity;
-import com.gameServer.common.ormEntity.EquipmentDesBaseDataEntity;
-import com.gameServer.common.ormEntity.EquipmentUserDataOrmEntity;
-import com.gameServer.common.protocol.equipment.base.EquipmentBaseData;
-import com.gameServer.common.protocol.equipment.base.EquipmentDesBaseData;
+import com.gameServer.common.ormEntity.*;
+import com.gameServer.common.protocol.equipment.base.*;
 import com.gameServer.common.resource.EquipmentConfigResource;
 import com.gameServer.common.resource.EquipmentResource;
 import com.zfoo.orm.OrmContext;
@@ -76,5 +72,46 @@ public class EquipmentService implements IEquipmentService {
         data.setName(data.getName());
         data.setDesId(data.getDesId());
         return data;
+    }
+
+    @Override
+    public EquipmentPrimaryConfigBaseData CreateEquipmentPrimaryConfigBaseData(EquipmentPrimaryConfigDataEntity entity) {
+        var createData = EquipmentPrimaryConfigBaseData.valueOf();
+        createData.setId(entity.getId());
+        createData.setGrowthPosInt(entity.getGrowthPosInt());
+        createData.setGrowthPosName(entity.getGrowthPosName());
+        createData.setPrimaryQuality(entity.getPrimaryQuality());
+        createData.setPrimaryGrowthInts(entity.getPrimaryGrowthInts());
+        return createData;
+    }
+
+    @Override
+    public EquipmentGrowthConfigBaseData CreateEquipmentGrowthConfigBaseData(EquipmentGrowthConfigEntity entity) {
+        var createData = EquipmentGrowthConfigBaseData.valueOf();
+        createData.setId(entity.getId());
+        createData.setPosName(entity.getPosName());
+        createData.setLocationOfEquipmentType(entity.getLocationOfEquipmentType());
+        return createData;
+    }
+
+    @Override
+    public EquipmentGrowthViceConfigBaseData CreateEquipmentGrowthViceConfigBaseData(EquipmentGrowthViceConfigDataEntity entity) {
+        var createData = EquipmentGrowthViceConfigBaseData.valueOf();
+        createData.setInitNums(entity.getInitNums());
+        createData.setViceId(entity.getViceId());
+        createData.setPosGrowthType(entity.getPosGrowthType());
+        createData.setViceName(entity.getViceName());
+        return createData;
+    }
+
+    @Override
+    public EquipmentConfigBaseData CreateEquipmentConfigBaseData(EquipmentConfigDataEntity entity) {
+        var createData = EquipmentConfigBaseData.valueOf();
+        createData.setLv1(entity.getLv1());
+        createData.setLv2(entity.getLv2());
+        createData.setLv3(entity.getLv3());
+        createData.setLv4(entity.getLv4());
+        createData.setQuality(entity.getQuality());
+        return createData;
     }
 }
