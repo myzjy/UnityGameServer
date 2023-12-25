@@ -1,0 +1,3 @@
+id,weaponType,weaponSkills,weaponInitValue
+int,int,int,
+武器id,武器类型,武器技能
