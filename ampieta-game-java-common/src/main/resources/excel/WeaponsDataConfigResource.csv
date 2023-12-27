@@ -1,4 +1,4 @@
-id,weaponType,weaponSkills,weaponInitValue,weaponInitProgress
-int,int,int,string,string
-武器id,武器类型,武器技能,武器1级初始值,武器强化1-20级每级强化数字
+id,weaponType,weaponSkills,weaponInitValue,weaponInitProgress,iconResource
+int,int,int,string,string,string
+武器id,武器类型,武器技能,武器1级初始值,武器强化1-20级每级强化数字,icon资源
 10000,1,1001,60,3.2
