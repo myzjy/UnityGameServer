@@ -1,0 +1,7 @@
+id,type,weaponName
+int,int,string
+1,1,长柄武器
+2,2,双手剑
+3,3,法器
+4,4,弓
+5,5,单手剑
