@@ -1,6 +1,6 @@
-import {pinus} from 'pinus';
-import {preload} from './preload';
-import {MyHybridConnector} from "./app/util/myHrbridconnector";
+import { pinus } from 'pinus';
+import { preload } from './preload';
+import { MyHybridConnector } from "./app/util/myHrbridconnector";
 import * as path from 'path';
 
 /**
@@ -17,16 +17,16 @@ let app = pinus.createApp();
 app.set('name', 'tsServer');
 
 // app configuration
-app.configure('production|development', 'connector', function () {
-    // app.set('dictionaryConfig', {dict: path.join(app.getBase(), '/config/dictionary'), ignoreAutoRouter: false});
-    app.set('connectorConfig',
-        {
-            connector: MyHybridConnector,
-            heartbeat: 3,
-            useDict: true,
-            forwardMsg:false,
-            useProtobuf: false
-        });
+app.configure('production|development', 'connector', function() {
+  // app.set('dictionaryConfig', {dict: path.join(app.getBase(), '/config/dictionary'), ignoreAutoRouter: false});
+  app.set('connectorConfig',
+    {
+      connector: MyHybridConnector,
+      heartbeat: 3,
+      useDict: true,
+      forwardMsg: false,
+      useProtobuf: false
+    });
 });
 
 // start app
