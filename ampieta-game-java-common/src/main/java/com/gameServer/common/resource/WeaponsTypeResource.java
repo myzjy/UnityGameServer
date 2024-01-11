@@ -15,7 +15,9 @@ public class WeaponsTypeResource {
     @Id
     @Index
     protected int id;
-    //武器type
+    /**
+     * 武器 type
+     */
     protected int type;
     /**
      * 武器 type 对应 的名字
