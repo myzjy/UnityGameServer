@@ -18,12 +18,13 @@ public class ApplicationTest {
     static {
         TankDeployEnum.InitDefaultEnv();
     }
-    @Test
-    public void startApplication(){
-        Application.main(StringUtils.EMPTY_ARRAY);
 
+    @Test
+    public void startApplication() {
+        Application.main(StringUtils.EMPTY_ARRAY);
         ThreadUtils.sleep(Long.MAX_VALUE);
     }
+
     @Test
     public void TestEx() throws Exception {
         var context = new ClassPathXmlApplicationContext("app.xml");
@@ -38,12 +39,14 @@ public class ApplicationTest {
         ormAddManager.UpdateStageMissionCsvResource();
         ormAddManager.UpdateConfigResource();
         ormAddManager.UpdateOrInAccesGameTimeResource();
-        var equipmentOrm=context.getBean(EquipmentOrmAddManager.class);
+        var equipmentOrm = context.getBean(EquipmentOrmAddManager.class);
         equipmentOrm.UpdateEquipmentGrowthConfigResource();
         equipmentOrm.UpdateEquipmentGrowthViceConfigResource();
         equipmentOrm.UpdateEquipmentPrimaryConfigResource();
         equipmentOrm.UpdateEquipmentResource();
         equipmentOrm.UpdateEquipmentConfigResource();
         equipmentOrm.UpdateEquipmentDesResource();
+        var weaponOrm = context.getBean(WeaponOrmAddManager.class);
+        weaponOrm.UpdateOrInWeaponsDataConfigResource();
     }
 }

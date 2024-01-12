@@ -25,6 +25,14 @@ public class WeaponsTypeDataEntity implements IEntity<Integer> {
      * 武器类型名
      */
     private String weaponName;
+    /**
+     * 创建时间
+     */
+    private String createAt;
+    /**
+     * 更新时间
+     */
+    private String updateAt;
 
     public int getId() {
         return id;
@@ -48,5 +56,21 @@ public class WeaponsTypeDataEntity implements IEntity<Integer> {
 
     public void setWeaponName(String weaponName) {
         this.weaponName = weaponName;
+    }
+
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(String updateAt) {
+        this.updateAt = updateAt;
     }
 }

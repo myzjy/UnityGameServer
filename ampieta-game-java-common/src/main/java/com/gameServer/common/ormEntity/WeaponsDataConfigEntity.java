@@ -43,8 +43,108 @@ public class WeaponsDataConfigEntity implements IEntity<Integer> {
      * 当前武器等级最大值
      */
     protected int maxLv;
+    /**
+     * 创建时间
+     */
+    private String createAt;
+    /**
+     * 更新时间
+     */
+    private String updateAt;
     @Override
     public Integer id() {
         return id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getWeaponName() {
+        return weaponName;
+    }
+
+    public void setWeaponName(String weaponName) {
+        this.weaponName = weaponName;
+    }
+
+    public int getWeaponType() {
+        return weaponType;
+    }
+
+    public void setWeaponType(int weaponType) {
+        this.weaponType = weaponType;
+    }
+
+    public int getWeaponSkills() {
+        return weaponSkills;
+    }
+
+    public void setWeaponSkills(int weaponSkills) {
+        this.weaponSkills = weaponSkills;
+    }
+
+    public String getWeaponInitValue() {
+        return weaponInitValue;
+    }
+
+    public void setWeaponInitValue(String weaponInitValue) {
+        this.weaponInitValue = weaponInitValue;
+    }
+
+    public String getWeaponInitProgress() {
+        return weaponInitProgress;
+    }
+
+    public void setWeaponInitProgress(String weaponInitProgress) {
+        this.weaponInitProgress = weaponInitProgress;
+    }
+
+    public String getIconResource() {
+        return iconResource;
+    }
+
+    public void setIconResource(String iconResource) {
+        this.iconResource = iconResource;
+    }
+
+    public String getWeaponBreakthrough() {
+        return weaponBreakthrough;
+    }
+
+    public void setWeaponBreakthrough(String weaponBreakthrough) {
+        this.weaponBreakthrough = weaponBreakthrough;
+    }
+
+    public int getMaxLv() {
+        return maxLv;
+    }
+
+    public void setMaxLv(int maxLv) {
+        this.maxLv = maxLv;
+    }
+
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(String updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public static WeaponsDataConfigEntity valueOf(){
+        return new WeaponsDataConfigEntity();
     }
 }
