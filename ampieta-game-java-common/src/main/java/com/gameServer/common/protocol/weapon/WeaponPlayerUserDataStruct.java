@@ -20,5 +20,11 @@ public class WeaponPlayerUserDataStruct implements IPacket {
      * 武器 type 武器所属类型
      */
     private int weaponType;
-    private
+    /**
+     * 当前武器所属技能
+     */
+    private int nowSkills;
+
+
+
 }
