@@ -28,6 +28,10 @@ public class WeaponsDataConfigEntity implements IEntity<Integer> {
      */
     protected String weaponInitValue;
     /**
+     * 武器主词条的所属属性type
+     */
+    protected int weaponMainInitType;
+    /**
      * 武器强化1-20级每级强化数字
      */
     protected String weaponInitProgress;
@@ -51,6 +55,7 @@ public class WeaponsDataConfigEntity implements IEntity<Integer> {
      * 更新时间
      */
     private String updateAt;
+
     @Override
     public Integer id() {
         return id;
@@ -144,7 +149,15 @@ public class WeaponsDataConfigEntity implements IEntity<Integer> {
         this.updateAt = updateAt;
     }
 
-    public static WeaponsDataConfigEntity valueOf(){
+    public int getWeaponMainInitType() {
+        return weaponMainInitType;
+    }
+
+    public void setWeaponMainInitType(int weaponMainInitType) {
+        this.weaponMainInitType = weaponMainInitType;
+    }
+
+    public static WeaponsDataConfigEntity valueOf() {
         return new WeaponsDataConfigEntity();
     }
 }
