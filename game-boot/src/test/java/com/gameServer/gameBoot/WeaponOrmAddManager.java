@@ -52,7 +52,7 @@ public class WeaponOrmAddManager {
                 newEntity.setWeaponInitValue(item.getWeaponInitValue());
                 newEntity.setCreateAt(createOrUpdate);
                 newEntity.setUpdateAt(createOrUpdate);
-                OrmContext.getAccessor().update(newEntity);
+                OrmContext.getAccessor().insert(newEntity);
             } else {
                 //覆盖掉
                 ormData.setId(item.getId());
@@ -64,6 +64,7 @@ public class WeaponOrmAddManager {
                 ormData.setWeaponSkills(item.getWeaponSkills());
                 ormData.setWeaponInitProgress(item.getWeaponInitProgress());
                 ormData.setWeaponInitValue(item.getWeaponInitValue());
+                ormData.setCreateAt(newEntity.getCreateAt());
                 ormData.setUpdateAt(createOrUpdate);
                 OrmContext.getAccessor().update(ormData);
             }
