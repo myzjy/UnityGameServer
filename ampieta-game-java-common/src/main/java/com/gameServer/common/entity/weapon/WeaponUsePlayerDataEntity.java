@@ -68,6 +68,10 @@ public class WeaponUsePlayerDataEntity implements IEntity<Long> {
      * 武器主属性数值
      */
     private int weaponValue;
+    /**
+     * 是否被锁
+     */
+    private boolean lock;
 
     public long getId() {
         return id;
@@ -171,6 +175,14 @@ public class WeaponUsePlayerDataEntity implements IEntity<Long> {
 
     public void setWeaponValue(int weaponValue) {
         this.weaponValue = weaponValue;
+    }
+
+    public boolean isLock() {
+        return lock;
+    }
+
+    public void setLock(boolean lock) {
+        this.lock = lock;
     }
 
     public static WeaponUsePlayerDataEntity ValueOf() {
