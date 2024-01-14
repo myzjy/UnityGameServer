@@ -1,17 +1,19 @@
 package com.gameServer.common.protocol.weapon;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * @author zjy
  * @version 1.0
  * @since 2024/1/13 22 22
  */
+@Protocol(id = 213)
 public class WeaponPlayerUserDataStruct implements IPacket {
     /**
      * 武器id
      */
-    private int id;
+    private long id;
     /**
      * 武器名字
      */
@@ -64,11 +66,11 @@ public class WeaponPlayerUserDataStruct implements IPacket {
      */
     private String weaponModelNameIcons;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

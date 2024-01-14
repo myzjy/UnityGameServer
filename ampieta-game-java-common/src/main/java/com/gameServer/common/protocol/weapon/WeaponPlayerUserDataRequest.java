@@ -28,6 +28,22 @@ public class WeaponPlayerUserDataRequest implements IPacket, IGatewayLoadBalance
         return findUserId;
     }
 
+    public long getFindUserId() {
+        return findUserId;
+    }
+
+    public void setFindUserId(long findUserId) {
+        this.findUserId = findUserId;
+    }
+
+    public long getFindWeaponId() {
+        return findWeaponId;
+    }
+
+    public void setFindWeaponId(long findWeaponId) {
+        this.findWeaponId = findWeaponId;
+    }
+
     public static WeaponPlayerUserDataRequest valueOf() {
         return new WeaponPlayerUserDataRequest();
     }
