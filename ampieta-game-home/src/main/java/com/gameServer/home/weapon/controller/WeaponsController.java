@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author zjy
@@ -43,7 +44,7 @@ public class WeaponsController {
             var findUidDataList = OrmContext.getQuery(WeaponUsePlayerDataEntity.class).eq("userUid", uid);
             //查找到的
             var findWeapon = findUidDataList.eq("weaponId", weaponId).queryAll();
-            var create = new ArrayList<WeaponPlayerUserDataStruct>();
+            var create = getWeaponPlayerUserDataStructs();
             //循环遍历
             for (var item : findWeapon) {
                 var findWeaponConfig = OrmContext.getAccessor().load(item.getWeaponId(), WeaponsDataConfigEntity.class);
@@ -51,6 +52,7 @@ public class WeaponsController {
                     NetContext.getRouter().send(session, Error.valueOf("数据库错误，请联系客服"));
                     return;
                 }
+                logger.info("查找玩家：{}",item.getUserUid());
                 logger.info("[WeaponUsePlayerDataEntity]:{}", JsonUtils.object2String(item));
                 var data = getWeaponPlayerUserDataStruct(item, findWeaponConfig);
                 create.add(data);
@@ -59,6 +61,10 @@ public class WeaponsController {
             response.setWeaponPlayerUserDataStructList(create);
             NetContext.getRouter().send(session, response, gatewayAttachment);
         }
+    }
+
+    private ArrayList<WeaponPlayerUserDataStruct> getWeaponPlayerUserDataStructs() {
+        return new ArrayList<>();
     }
 
     public void SendFindUserWeaponList(Session session, WeaponPlayerUserDataRequest request, GatewayAttachment gatewayAttachment) {
