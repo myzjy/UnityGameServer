@@ -21,6 +21,11 @@ public class WeaponUsePlayerDataEntity implements IEntity<Long> {
     }
 
     /**
+     * 武器名字
+     */
+    private String weaponName;
+
+    /**
      * 当前装备所属玩家
      */
     private long userUid;
@@ -72,6 +77,14 @@ public class WeaponUsePlayerDataEntity implements IEntity<Long> {
      * 是否被锁
      */
     private boolean lock;
+    /**
+     * 创建时间
+     */
+    private String createAt;
+    /**
+     * 更新时间
+     */
+    private String updateAt;
 
     public long getId() {
         return id;
@@ -79,6 +92,14 @@ public class WeaponUsePlayerDataEntity implements IEntity<Long> {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getWeaponName() {
+        return weaponName;
+    }
+
+    public void setWeaponName(String weaponName) {
+        this.weaponName = weaponName;
     }
 
     public long getUserUid() {
@@ -175,6 +196,22 @@ public class WeaponUsePlayerDataEntity implements IEntity<Long> {
 
     public void setWeaponValue(int weaponValue) {
         this.weaponValue = weaponValue;
+    }
+
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(String updateAt) {
+        this.updateAt = updateAt;
     }
 
     public boolean isLock() {
