@@ -43,6 +43,21 @@ public class WeaponsController {
             var findUidDataList = OrmContext.getQuery(WeaponUsePlayerDataEntity.class).eq("userUid", uid);
             //查找到的
             var findWeapon = findUidDataList.eq("weaponId", weaponId).queryAll();
+            var create = new ArrayList<WeaponPlayerUserDataStruct>();
+            //循环遍历
+            for (var item : findWeapon) {
+                var findWeaponConfig = OrmContext.getAccessor().load(item.getWeaponId(), WeaponsDataConfigEntity.class);
+                if (findWeaponConfig == null) {
+                    NetContext.getRouter().send(session, Error.valueOf("数据库错误，请联系客服"));
+                    return;
+                }
+                logger.info("[WeaponUsePlayerDataEntity]:{}", JsonUtils.object2String(item));
+                var data = getWeaponPlayerUserDataStruct(item, findWeaponConfig);
+                create.add(data);
+            }
+            var response = WeaponPlayerUserDataResponse.ValueOf();
+            response.setWeaponPlayerUserDataStructList(create);
+            NetContext.getRouter().send(session, response, gatewayAttachment);
         }
     }
 
