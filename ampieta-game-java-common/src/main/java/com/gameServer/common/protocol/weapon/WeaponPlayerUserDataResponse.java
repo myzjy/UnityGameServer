@@ -15,6 +15,10 @@ import java.util.List;
 @Protocol(id = 1040)
 public class WeaponPlayerUserDataResponse implements IPacket {
     /**
+     * 当前玩家调用 查询到的是谁的 装备
+     */
+    private long usePlayerUid;
+    /**
      * 玩家武器数据
      */
     private List<WeaponPlayerUserDataStruct> weaponPlayerUserDataStructList;
@@ -25,6 +29,14 @@ public class WeaponPlayerUserDataResponse implements IPacket {
 
     public void setWeaponPlayerUserDataStructList(List<WeaponPlayerUserDataStruct> weaponPlayerUserDataStructList) {
         this.weaponPlayerUserDataStructList = weaponPlayerUserDataStructList;
+    }
+
+    public long getUsePlayerUid() {
+        return usePlayerUid;
+    }
+
+    public void setUsePlayerUid(long usePlayerUid) {
+        this.usePlayerUid = usePlayerUid;
     }
 
     public static WeaponPlayerUserDataResponse ValueOf() {

@@ -52,13 +52,14 @@ public class WeaponsController {
                     NetContext.getRouter().send(session, Error.valueOf("数据库错误，请联系客服"));
                     return;
                 }
-                logger.info("查找玩家：{}",item.getUserUid());
+                logger.info("查找玩家：{}", item.getUserUid());
                 logger.info("[WeaponUsePlayerDataEntity]:{}", JsonUtils.object2String(item));
                 var data = getWeaponPlayerUserDataStruct(item, findWeaponConfig);
                 create.add(data);
             }
             var response = WeaponPlayerUserDataResponse.ValueOf();
             response.setWeaponPlayerUserDataStructList(create);
+            response.setUsePlayerUid(uid);
             NetContext.getRouter().send(session, response, gatewayAttachment);
         }
     }
