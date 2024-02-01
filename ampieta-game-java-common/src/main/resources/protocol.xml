@@ -27,7 +27,7 @@
         <protocol location="com.gameServer.common.protocol.register.RegisterResponse"/>
         <protocol location="com.gameServer.common.protocol.bag.AllBagItemRequest"/>
         <protocol location="com.gameServer.common.protocol.bag.AllBagItemResponse"/>
-        <protocol location="com.gameServer.common.protocol.serverConfig.ServerConfigRequest"/>
+        <protocol id="1009" location="com.gameServer.common.protocol.serverConfig.ServerConfigRequest"/>
         <protocol location="com.gameServer.common.protocol.serverConfig.ServerConfigResponse"/>
         <protocol location="com.gameServer.common.protocol.bag.UseBagItemRequest"/>
         <protocol location="com.gameServer.common.protocol.login.GetPlayerInfoResponse"/>
