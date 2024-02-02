@@ -3,10 +3,6 @@ package com.gameServer.home.register.controller;
 import com.gameServer.common.constant.I18nEnum;
 import com.gameServer.common.entity.AccountEntity;
 import com.gameServer.common.entity.PlayerUserEntity;
-import com.gameServer.common.protocol.cache.LogAnswer;
-import com.gameServer.common.protocol.cache.LogAsk;
-import com.gameServer.common.protocol.login.LogRequest;
-import com.gameServer.common.protocol.login.LogResponse;
 import com.gameServer.common.protocol.register.RegisterRequest;
 import com.gameServer.common.protocol.register.RegisterResponse;
 import com.gameServer.common.util.TokenUtils;
@@ -127,21 +123,4 @@ public class RegisterController {
         NetContext.getRouter().send(session, RegisterResponse.valueOf(true, "ok"), gatewayAttachment);
     }
 
-    @PacketReceiver
-    public void atLogAsk(Session session, LogAsk ask) {
-        logger.info("[{}]", ask);
-        logger.info("{}", session);
-        NetContext.getRouter().send(session, new LogAnswer());
-    }
-
-    @PacketReceiver
-    public void atLogRequest(Session session, LogRequest request) {
-        var serverSession = NetContext.getSessionManager().getServerSession(1);
-        logger.info("{}", serverSession);
-        NetContext.getRouter().
-                  asyncAsk(serverSession, new LogAsk(), LogAnswer.class, null).whenComplete(res -> {
-                      logger.info("回到");
-                      NetContext.getRouter().send(session, new LogResponse());
-                  });
-    }
 }

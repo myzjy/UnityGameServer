@@ -221,11 +221,11 @@ public class PhysicalPowerUsePropsController {
                 logger.info("PhysicalPowerSecondsResponse:{}", JsonUtils.object2String(dataResponse));
                 NetContext.getRouter().send(session, dataResponse, gatewayAttachment);
             } else {
-                NetContext.getRouter().send(session, Error.valueOf(request, I18nEnum.error_login_process_not.toString()), gatewayAttachment);
+                NetContext.getRouter().send(session, Error.valueOf(request.protocolId(), I18nEnum.error_login_process_not.toString()), gatewayAttachment);
             }
         } else {
             //请求时间出现问题 需要加入黑名单
-            NetContext.getRouter().send(session, Error.valueOf(request, "错误时间，请注意"));
+            NetContext.getRouter().send(session, Error.valueOf(request.protocolId(), "错误时间，请注意"));
         }
     }
 }

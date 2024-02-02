@@ -3,9 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
- 
+    <parent>
+        <groupId>com.gameServer</groupId>
+        <artifactId>unityGameServer</artifactId>
+        <version>1.0</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
     <artifactId>ampieta-game-cloud-gateway</artifactId>
-    <groupId>com.gameServer</groupId>
 <!--    <parent>-->
 <!--        <groupId>org.springframework.boot</groupId>-->
 <!--        <artifactId>spring-boot-starter-parent</artifactId>-->
@@ -19,16 +23,6 @@
     <properties>
         <spring-cloud.version>2020.0.2</spring-cloud.version>
         <skipTests>true</skipTests>
-        <!-- 本项目的其它module版本号 -->
-        <zfoo.boot.version>3.1.4</zfoo.boot.version>
-        <zfoo.event.version>3.1.4</zfoo.event.version>
-        <zfoo.hotswap.version>3.1.4</zfoo.hotswap.version>
-        <zfoo.monitor.version>3.1.4</zfoo.monitor.version>
-        <zfoo.net.version>3.1.4</zfoo.net.version>
-        <zfoo.scheduler.version>3.1.4</zfoo.scheduler.version>
-        <zfoo.storage.version>3.1.4</zfoo.storage.version>
-        <zfoo.orm.version>3.1.4</zfoo.orm.version>
-        <zfoo.protocol.version>3.1.4</zfoo.protocol.version>
 
         <!-- 核心spring框架，优先使用spring boot的日志版本 -->
         <spring.version>6.0.11</spring.version>

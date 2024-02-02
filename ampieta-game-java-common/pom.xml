@@ -4,25 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
-    <!--    <artifactId>commonRefush</artifactId>-->
+<parent>
     <groupId>com.gameServer</groupId>
+    <artifactId>unityGameServer</artifactId>
+    <version>1.0</version>
+    <relativePath/> <!-- lookup parent from repository -->
+</parent>
+    <!--    <artifactId>commonRefush</artifactId>-->
+
     <artifactId>common</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
     <properties>
         <skipTests>true</skipTests>
-        <!-- 本项目的其它module版本号 -->
-        <zfoo.boot.version>3.1.4</zfoo.boot.version>
-        <zfoo.event.version>3.1.4</zfoo.event.version>
-        <zfoo.hotswap.version>3.1.4</zfoo.hotswap.version>
-        <zfoo.monitor.version>3.1.4</zfoo.monitor.version>
-        <zfoo.net.version>3.1.4</zfoo.net.version>
-        <zfoo.scheduler.version>3.1.4</zfoo.scheduler.version>
-        <zfoo.storage.version>3.1.4</zfoo.storage.version>
-        <zfoo.orm.version>3.1.4</zfoo.orm.version>
-        <zfoo.protocol.version>3.1.4</zfoo.protocol.version>
 
 
         <!-- 核心spring框架，优先mav使用spring boot的日志版本 -->

@@ -22,7 +22,6 @@ public class ServerConfigRequest implements IPacket, IGatewayLoadBalancer {
         this.panel = panel;
     }
 
-    @Override
     public short protocolId() {
         return PROTOCOL_ID;
     }
