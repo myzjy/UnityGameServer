@@ -3,6 +3,8 @@ package com.gameServer.common.protocol.weapon;
 import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
+import java.util.Objects;
+
 /**
  * @author zjy
  * @version 1.0
@@ -142,6 +144,7 @@ public class WeaponPlayerUserDataStruct implements IPacket {
         return nowLvExp;
     }
 
+
     public void setNowLvExp(int nowLvExp) {
         this.nowLvExp = nowLvExp;
     }
@@ -168,6 +171,21 @@ public class WeaponPlayerUserDataStruct implements IPacket {
 
     public void setWeaponModelNameIcons(String weaponModelNameIcons) {
         this.weaponModelNameIcons = weaponModelNameIcons;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        WeaponPlayerUserDataStruct that = (WeaponPlayerUserDataStruct) o;
+        return id == that.id && weaponType == that.weaponType && nowSkills == that.nowSkills && weaponMainValue == that.weaponMainValue && weaponMainValueType == that.weaponMainValueType && nowLv == that.nowLv && nowMaxLv == that.nowMaxLv && nowLvExp == that.nowLvExp && nowLvMaxExp == that.nowLvMaxExp && Objects.equals(weaponName, that.weaponName) && Objects.equals(haveTimeAt, that.haveTimeAt) && Objects.equals(weaponIcons, that.weaponIcons) && Objects.equals(weaponModelNameIcons, that.weaponModelNameIcons);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, weaponName, weaponType, nowSkills, weaponMainValue, weaponMainValueType, haveTimeAt, nowLv, nowMaxLv, nowLvExp, nowLvMaxExp, weaponIcons, weaponModelNameIcons);
     }
 
     public static WeaponPlayerUserDataStruct ValueOf() {

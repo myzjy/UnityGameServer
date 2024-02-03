@@ -9,6 +9,12 @@
         <protocol location="com.zfoo.net.router.attachment.UdpAttachment"/>
         <protocol location="com.zfoo.net.router.attachment.HttpAttachment"/>
         <protocol location="com.zfoo.net.router.attachment.NoAnswerAttachment"/>
+
+        <protocol id="20" location="com.zfoo.net.core.gateway.model.AuthUidToGatewayCheck"/>
+        <protocol id="21" location="com.zfoo.net.core.gateway.model.AuthUidToGatewayConfirm"/>
+        <protocol id="22" location="com.zfoo.net.core.gateway.model.AuthUidAsk"/>
+        <protocol id="23" location="com.zfoo.net.core.gateway.model.GatewaySessionInactiveAsk"/>
+        <protocol id="24" location="com.zfoo.net.core.gateway.model.GatewaySynchronizeSidAsk"/>
     </module>
     <module id="2" name="gameserver">
         <protocol location="com.gameServer.common.protocol.login.LoginRequest"/>
