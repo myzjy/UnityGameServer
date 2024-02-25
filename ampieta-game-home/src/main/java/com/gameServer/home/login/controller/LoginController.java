@@ -216,8 +216,8 @@ public class LoginController {
         userLoginService.UpdatePlayerUserEntity(player);
     }
 
-    @PacketReceiver
-    public void atPing(Session session, Ping request, GatewayAttachment gatewayAttachment) {
-        NetContext.getRouter().send(session, Pong.valueOf(TimeUtils.now()), gatewayAttachment);
-    }
+    //@PacketReceiver
+    //public void atPing(Session session, Ping request, GatewayAttachment gatewayAttachment) {
+    //    NetContext.getRouter().send(session, Pong.valueOf(TimeUtils.now()), gatewayAttachment);
+    //}
 }
