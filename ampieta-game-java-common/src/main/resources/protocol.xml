@@ -82,6 +82,7 @@
         <protocol id="211" location="com.gameServer.common.protocol.equipment.base.EquipmentGrowthConfigBaseData"/>
         <protocol id="212" location="com.gameServer.common.protocol.equipment.base.EquipmentDesBaseData"/>
         <protocol id="213" location="com.gameServer.common.protocol.weapon.WeaponPlayerUserDataStruct"/>
+        <protocol id="214" location="com.gameServer.common.protocol.weapon.WeaponsConfigData"/>
 
     </module>
     <module id="4" name="unityGameSdk">

@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.serverConfig;
 
 import com.gameServer.common.protocol.equipment.base.*;
+import com.gameServer.common.protocol.weapon.WeaponsConfigData;
 import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
@@ -44,6 +45,10 @@ public class ServerConfigResponse implements IPacket {
      * 圣遗物副属性
      */
     private List<EquipmentGrowthViceConfigBaseData> equipmentGrowthViceConfigBaseDataList;
+    /**
+     * 武器配置
+     */
+    private List<WeaponsConfigData> weaponsConfigDataList;
 
     @Override
     public short protocolId() {
@@ -108,5 +113,13 @@ public class ServerConfigResponse implements IPacket {
 
     public void setEquipmentGrowthViceConfigBaseDataList(List<EquipmentGrowthViceConfigBaseData> equipmentGrowthViceConfigBaseDataList) {
         this.equipmentGrowthViceConfigBaseDataList = equipmentGrowthViceConfigBaseDataList;
+    }
+
+    public List<WeaponsConfigData> getWeaponsConfigDataList() {
+        return weaponsConfigDataList;
+    }
+
+    public void setWeaponsConfigDataList(List<WeaponsConfigData> weaponsConfigDataList) {
+        this.weaponsConfigDataList = weaponsConfigDataList;
     }
 }
