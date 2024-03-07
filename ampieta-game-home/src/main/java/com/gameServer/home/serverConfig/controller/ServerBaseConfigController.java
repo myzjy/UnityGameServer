@@ -12,6 +12,7 @@ import com.gameServer.common.protocol.weapon.WeaponsConfigData;
 import com.gameServer.common.resource.ItemBaseCsvResource;
 import com.gameServer.home.equipment.service.IEquipmentService;
 import com.gameServer.home.user.service.IUserLoginService;
+import com.gameServer.home.weapon.service.IWeaponService;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.anno.PacketReceiver;
 import com.zfoo.net.packet.common.Error;
@@ -43,6 +44,8 @@ public class ServerBaseConfigController {
     private IUserLoginService userLoginService;
     @Autowired
     private IEquipmentService iEquipmentService;
+    @Autowired
+    private IWeaponService iWeaponService;
 
     @PacketReceiver
     public void atServerConfigRequest(Session session, ServerConfigRequest request, GatewayAttachment gatewayAttachment) {
@@ -90,8 +93,8 @@ public class ServerBaseConfigController {
         });
         var weaponConfigBaseDataServerList = new ArrayList<WeaponsConfigData>();
         var weaponConfigBaseDataList = OrmContext.getQuery(WeaponsDataConfigEntity.class).queryAll();
-        weaponConfigBaseDataList.forEach(data->{
-
+        weaponConfigBaseDataList.forEach(data -> {
+            weaponConfigBaseDataServerList.add(iWeaponService.CreateWeaponConfigData(data));
         });
         var response = ServerConfigResponse.ValueOf();
         response.setBagItemEntityList(bagUserItemEntities);
@@ -101,6 +104,7 @@ public class ServerBaseConfigController {
         response.setEquipmentGrowthConfigBaseDataList(equipmentGrowthConfigBaseDataServerList);
         response.setEquipmentGrowthViceConfigBaseDataList(equipmentGrowthViceConfigDataServerList);
         response.setEquipmentConfigBaseDataList(equipmentConfigDataServerList);
+        response.setWeaponsConfigDataList(weaponConfigBaseDataServerList);
         logger.info("ServerConfigResponse:{}", JsonUtils.object2String(response));
         NetContext.getRouter().send(session, response, gatewayAttachment);
     }
