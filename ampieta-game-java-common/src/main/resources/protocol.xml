@@ -53,6 +53,7 @@
         <protocol location="com.gameServer.common.protocol.equipment.EquipmentAllDataResponse"/>
         <protocol id="1039" location="com.gameServer.common.protocol.weapon.WeaponPlayerUserDataRequest"/>
         <protocol id="1040" location="com.gameServer.common.protocol.weapon.WeaponPlayerUserDataResponse"/>
+        <protocol id="1041" location="com.gameServer.common.protocol.bag.BagClickServerDataMsgRequest"/>
     </module>
     <module id="3" name="common">
         <protocol location="com.zfoo.net.packet.common.Message"/>
@@ -83,6 +84,7 @@
         <protocol id="212" location="com.gameServer.common.protocol.equipment.base.EquipmentDesBaseData"/>
         <protocol id="213" location="com.gameServer.common.protocol.weapon.WeaponPlayerUserDataStruct"/>
         <protocol id="214" location="com.gameServer.common.protocol.weapon.WeaponsConfigData"/>
+        <protocol id="215" location="com.gameServer.common.protocol.bag.BagClickMsgDataPanel"/>
 
     </module>
     <module id="4" name="unityGameSdk">

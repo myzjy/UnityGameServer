@@ -10,5 +10,52 @@ import com.zfoo.protocol.anno.Protocol;
  */
 @Protocol(id=1041)
 public class BagClickServerDataMsgRequest {
+    /**
+     * 点击的 名字
+     */
     private String clickNameHandler;
+    /**
+     * 根据 所选 type 返回协议不一样
+     */
+    private int clickType;
+    /**
+     * 具体是那个玩家发送
+     */
+    private long masterUserId;
+    /**
+     * 根据不同的武器 道具id 服务器处理不一样
+     */
+    private int id;
+
+    public String getClickNameHandler() {
+        return clickNameHandler;
+    }
+
+    public void setClickNameHandler(String clickNameHandler) {
+        this.clickNameHandler = clickNameHandler;
+    }
+
+    public int getClickType() {
+        return clickType;
+    }
+
+    public void setClickType(int clickType) {
+        this.clickType = clickType;
+    }
+
+    public long getMasterUserId() {
+        return masterUserId;
+    }
+
+    public void setMasterUserId(long masterUserId) {
+        this.masterUserId = masterUserId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
