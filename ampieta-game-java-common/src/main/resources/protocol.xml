@@ -54,6 +54,7 @@
         <protocol id="1039" location="com.gameServer.common.protocol.weapon.WeaponPlayerUserDataRequest"/>
         <protocol id="1040" location="com.gameServer.common.protocol.weapon.WeaponPlayerUserDataResponse"/>
         <protocol id="1041" location="com.gameServer.common.protocol.bag.BagClickServerDataMsgRequest"/>
+        <protocol id="1042" location="com.gameServer.common.protocol.bag.BagClickServerDataMsgResponse"/>
     </module>
     <module id="3" name="common">
         <protocol location="com.zfoo.net.packet.common.Message"/>
