@@ -13,39 +13,39 @@ import com.zfoo.storage.anno.Index;
 public class WeaponsConfigData {
     @Id
     @Index
-    protected int id;
+    private int id;
     /**
      * 武器名字
      */
-    protected String weaponName;
+    private String weaponName;
     /**
      * 武器类型
      */
-    protected int weaponType;
+    private int weaponType;
     /**
      * 武器技能
      */
-    protected int weaponSkills;
+    private int weaponSkills;
     /**
      * 武器1级初始值
      */
-    protected String weaponInitValue;
+    private String weaponInitValue;
     /**
      * 武器强化1-20级每级强化数字
      */
-    protected String weaponInitProgress;
+    private String weaponInitProgress;
     /**
      * icon资源
      */
-    protected String iconResource;
+    private String iconResource;
     /**
      * 武器升级到特定等21级会突破在之后会加数值
      */
-    protected String weaponBreakthrough;
+    private String weaponBreakthrough;
     /**
      * 当前武器等级最大值
      */
-    protected int maxLv;
+    private int maxLv;
 
     public int getId() {
         return id;

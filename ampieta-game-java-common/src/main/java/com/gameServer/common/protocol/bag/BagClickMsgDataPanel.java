@@ -12,4 +12,11 @@ import com.zfoo.protocol.anno.Protocol;
 public class BagClickMsgDataPanel {
     private int id;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
