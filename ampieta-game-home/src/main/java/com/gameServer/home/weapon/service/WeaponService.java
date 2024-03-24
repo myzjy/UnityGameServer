@@ -2,6 +2,7 @@ package com.gameServer.home.weapon.service;
 
 import com.gameServer.common.ormEntity.WeaponsDataConfigEntity;
 import com.gameServer.common.protocol.weapon.WeaponsConfigData;
+import com.zfoo.orm.OrmContext;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,5 +24,10 @@ public class WeaponService implements IWeaponService {
         data.setMaxLv(entity.getMaxLv());
         data.setWeaponInitValue(entity.getWeaponInitValue());
         return data;
+    }
+
+    @Override
+    public WeaponsDataConfigEntity FindWeaponsConfigData(int id) {
+        return OrmContext.getAccessor().load(id, WeaponsDataConfigEntity.class);
     }
 }

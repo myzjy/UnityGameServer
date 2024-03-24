@@ -14,41 +14,28 @@ import com.zfoo.protocol.anno.Protocol;
 public class BagUserItemData implements IPacket {
     /**
      * 当前道具 在数据库中的唯一id
-     *
-     * @author zjy
-     * @version 1.0
      */
     @Id
-    private int _id;
+    private long _id;
     /**
      * 这个背包道具所属者是谁？
-     *
-     * @author zjy
-     * @version 1.0
-     * @
      */
     private long masterUserId;
     /**
+     * 这个道具如果是武器\圣遗物的话
+     * 这个武器\圣遗物 被谁 穿戴
+     */
+    private int userPlayerId;
+    /**
      * 道具的数量
-     *
-     * @author zjy
-     * @version 1.0
      */
     private int nowItemNum;
     /**
      * 道具id
-     *
-     * @author zjy
-     * @version 1.0
      */
     private int itemId;
-
-
     /**
      * 道具 装备 品质
-     *
-     * @author zjy
-     * @version 1.0
      */
     private int quality;
     /**
@@ -59,12 +46,8 @@ public class BagUserItemData implements IPacket {
      * Icon
      */
     private String icon;
-
     /**
      * 是否为新
-     *
-     * @author zjy
-     * @version 1.0
      */
     private boolean itemNew;
 
@@ -86,6 +69,14 @@ public class BagUserItemData implements IPacket {
         bagUserItem.setNowItemNum(_entity.getNowItemNum());
         bagUserItem.setItemNew(_entity.isNew());
         return bagUserItem;
+    }
+
+    public int getUserPlayerId() {
+        return userPlayerId;
+    }
+
+    public void setUserPlayerId(int userPlayerId) {
+        this.userPlayerId = userPlayerId;
     }
 
     public boolean isItemNew() {
@@ -137,7 +128,6 @@ public class BagUserItemData implements IPacket {
     /**
      * @return 返回当前背包道具 id
      * @author zjy
-     * @version 1.0
      */
     public int getItemId() {
         return itemId;
@@ -148,13 +138,12 @@ public class BagUserItemData implements IPacket {
      *
      * @param itemId 数量
      * @author zjy
-     * @version 1.0
      */
     public void setItemId(int itemId) {
         this.itemId = itemId;
     }
 
-    public Integer id() {
+    public long id() {
         return _id;
     }
 
@@ -164,9 +153,8 @@ public class BagUserItemData implements IPacket {
      *
      * @return 返回当前背包道具 唯一id
      * @author zjy
-     * @version 1.0
      */
-    public int get_id() {
+    public long get_id() {
         return _id;
     }
 
@@ -175,9 +163,8 @@ public class BagUserItemData implements IPacket {
      *
      * @param _id 唯一id
      * @author zjy
-     * @version 1.0
      */
-    public void set_id(int _id) {
+    public void set_id(long _id) {
         this._id = _id;
     }
 

@@ -1,19 +1,23 @@
 package com.gameServer.home.bag.controller;
 
 import com.gameServer.common.constant.BagItemType;
+import com.gameServer.common.constant.BagTypeEnum;
 import com.gameServer.common.entity.BagUserItemEntity;
+import com.gameServer.common.entity.weapon.WeaponUsePlayerDataEntity;
 import com.gameServer.common.event.bag.StartLoginBagEvent;
 import com.gameServer.common.protocol.bag.AllBagItemRequest;
 import com.gameServer.common.protocol.bag.AllBagItemResponse;
 import com.gameServer.common.protocol.bag.BagUserItemData;
 import com.gameServer.common.protocol.bag.UseTheBagItemEffectRequest;
 import com.gameServer.home.bag.service.IBagService;
+import com.gameServer.home.weapon.service.IWeaponService;
 import com.zfoo.event.anno.EventReceiver;
 import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.anno.PacketReceiver;
 import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.session.Session;
+import com.zfoo.orm.OrmContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +38,29 @@ public class BagController {
     private static final Logger logger = LoggerFactory.getLogger(BagController.class);
     @Autowired
     private IBagService mBagService;
+    @Autowired
+    private IWeaponService weaponService;
 
     @PacketReceiver
     public void atAllBagItemRequest(Session session, AllBagItemRequest request) {
-        EventBus.post(StartLoginBagEvent.ValueOf(session, request.getType()));
+        BagTypeEnum enumType = BagTypeEnum.GetType(request.getType());
+        switch (enumType) {
+            case Weapon: {
+                //武器相关协议处理
+                var findUidDataList = OrmContext.getQuery(WeaponUsePlayerDataEntity.class).eq("userUid", session.getUid());
+                var list = findUidDataList.queryAll();
+                for (int i = 0; i < list.size(); i++) {
+                    // 具体数据
+                    var item = list.get(i);
+                    var configData = weaponService.FindWeaponsConfigData(item.getWeaponId());
+                    BagUserItemData data = new BagUserItemData();
+                    data.set_id(item.getId());
+                    data.setItemId(item.getWeaponId());
+                    data.setIcon(item.getCreateAt());
+                }
+            }
+            break;
+        }
     }
 
     @EventReceiver
@@ -73,20 +96,20 @@ public class BagController {
          * 获取到对应 数据库中配置
          */
         var itemBase = mBagService.loadItemBoxBaseEntity(request.getItemId());
-        ;
-        switch (itemBase.getType()) {
-            case 1: {
+        BagTypeEnum enumType = BagTypeEnum.GetType(itemBase.getType());
+        switch (enumType) {
+            case Weapon: {
                 //武器
                 logger.info("[UID:{}] 使用[{}] {}", session.getUid(), BagItemType.Weapons.getCodeMessage(), itemBase.getName());
             }
             break;
-            case 2: {
-                /* *
-                 * 首饰
-                 */
-                logger.info("[UID:{}] 使用[{}] {}", session.getUid(), BagItemType.Jewelry.getCodeMessage(), itemBase.getName());
-            }
-            break;
+            //case 2: {
+            //    /* *
+            //     * 首饰
+            //     */
+            //    logger.info("[UID:{}] 使用[{}] {}", session.getUid(), BagItemType.Jewelry.getCodeMessage(), itemBase.getName());
+            //}
+            //break;
         }
     }
 }

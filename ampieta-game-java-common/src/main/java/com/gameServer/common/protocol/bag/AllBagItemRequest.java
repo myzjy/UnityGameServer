@@ -12,9 +12,15 @@ import com.zfoo.protocol.anno.Protocol;
  */
 @Protocol(id = 1007)
 public class AllBagItemRequest implements IPacket {
-    public static final transient short PROTOCOL_ID = 1007;
-
+    /**
+     * 调用协议 之后 在我点击
+     */
     private int type;
+    /**
+     * 背包的协议号 字符 在 字段 type 一样的情况下
+     * 当前字段  额外 协议字符 不一样 返回不一样
+     */
+    private String msgProtocol;
 
     public int getType() {
         return type;
@@ -24,6 +30,13 @@ public class AllBagItemRequest implements IPacket {
         this.type = type;
     }
 
+    public String getMsgProtocol() {
+        return msgProtocol;
+    }
+
+    public void setMsgProtocol(String msgProtocol) {
+        this.msgProtocol = msgProtocol;
+    }
 
     public static AllBagItemRequest ValueOf() {
         return new AllBagItemRequest();

@@ -16,4 +16,5 @@ public interface IWeaponService {
      * @return 返回 创建出来的 WeaponsConfigDate类
      */
     WeaponsConfigData CreateWeaponConfigData(WeaponsDataConfigEntity entity);
+    WeaponsDataConfigEntity FindWeaponsConfigData(int id);
 }

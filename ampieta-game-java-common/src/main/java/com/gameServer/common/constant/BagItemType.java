@@ -1,7 +1,7 @@
 package com.gameServer.common.constant;
 
 /**
- * 背包 道具 Enum 
+ * 背包 装备 Enum
  * @author zjy
  * @version 1.0
  * @since 2023/7/30 00 14
