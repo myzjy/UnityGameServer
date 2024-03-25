@@ -1,8 +1,8 @@
-id,weaponName,weaponType,weaponSkills,weaponInitValue,weaponInitType,weaponInitProgress,iconResource,weaponBreakthrough,maxLv
-int,string,int,int,string,int,string,string,string,int
-武器id,武器名字,武器类型,武器技能,武器1级初始值,武器主属性type,武器强化1-20级每级强化数字,icon资源,武器升级到特定等21级会突破在之后会加数值,当前武器最大值
-10000,新手长枪,1,0,23,1,1.74,imager1,20+12|40+11|50+11|60+11,70
-10001,训练大剑,2,0,23,1,1.74,imager1,20+12|40+11|50+11|60+11,70
-10002,学徒笔记,3,0,23,1,1.74,imager1,20+12|40+11|50+11|60+11,70
-10003,猎弓,4,0,23,1,1.74,imager1,20+12|40+11|50+11|60+11,70
-10004,无锋剑,5,0,23,1,1.74,imager1,20+12|40+11|50+11|60+11,70
+id,weaponName,weaponType,weaponSkills,weaponInitValue,weaponInitType,weaponInitProgress,iconResource,weaponBreakthrough,maxLv,weaponQuality
+int,string,int,int,string,int,string,string,string,int,int
+武器id,武器名字,武器类型,武器技能,武器1级初始值,武器主属性type,武器强化1-20级每级强化数字,icon资源,武器升级到特定等21级会突破在之后会加数值,当前武器最大值,武器品质
+10000,新手长枪,1,0,23,1,1.74,imager1,20+12|40+11|50+11|60+11,70,1
+10001,训练大剑,2,0,23,1,1.74,imager1,20+12|40+11|50+11|60+11,70,1
+10002,学徒笔记,3,0,23,1,1.74,imager1,20+12|40+11|50+11|60+11,70,1
+10003,猎弓,4,0,23,1,1.74,imager1,20+12|40+11|50+11|60+11,70,1
+10004,无锋剑,5,0,23,1,1.74,imager1,20+12|40+11|50+11|60+11,70,2

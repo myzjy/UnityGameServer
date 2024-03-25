@@ -44,11 +44,13 @@ public class BagController {
     @PacketReceiver
     public void atAllBagItemRequest(Session session, AllBagItemRequest request) {
         BagTypeEnum enumType = BagTypeEnum.GetType(request.getType());
+        List<BagUserItemData> bagUserItemEntities = new ArrayList<>();
         switch (enumType) {
             case Weapon: {
                 //武器相关协议处理
                 var findUidDataList = OrmContext.getQuery(WeaponUsePlayerDataEntity.class).eq("userUid", session.getUid());
                 var list = findUidDataList.queryAll();
+                bagUserItemEntities = new ArrayList<>();
                 for (int i = 0; i < list.size(); i++) {
                     // 具体数据
                     var item = list.get(i);
@@ -57,10 +59,19 @@ public class BagController {
                     data.set_id(item.getId());
                     data.setItemId(item.getWeaponId());
                     data.setIcon(item.getCreateAt());
+                    data.setItemNew(item.isNewAndroid());
+                    data.setQuality(configData.getWeaponQuality());
+                    data.setMasterUserId(item.getUserUid());
+                    data.setNowItemNum(1);
+                    data.setResourcePath(configData.getIconResource());
+                    data.setUserPlayerId(item.getUserPlayerId());
+                    bagUserItemEntities.add(data);
                 }
             }
             break;
         }
+        NetContext.getRouter().send(session, AllBagItemResponse.ValueOf(bagUserItemEntities));
+
     }
 
     @EventReceiver

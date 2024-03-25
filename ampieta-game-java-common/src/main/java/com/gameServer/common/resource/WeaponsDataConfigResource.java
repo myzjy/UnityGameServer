@@ -46,6 +46,10 @@ public class WeaponsDataConfigResource {
      * 当前武器等级最大值
      */
     protected int maxLv;
+    /**
+     * 武器品质
+     */
+    protected int weaponQuality;
 
     public int getId() {
         return id;
@@ -81,5 +85,9 @@ public class WeaponsDataConfigResource {
 
     public int getMaxLv() {
         return maxLv;
+    }
+
+    public int getWeaponQuality() {
+        return weaponQuality;
     }
 }

@@ -48,6 +48,10 @@ public class WeaponsDataConfigEntity implements IEntity<Integer> {
      */
     protected int maxLv;
     /**
+     * 武器品质
+     */
+    protected int weaponQuality;
+    /**
      * 创建时间
      */
     private String createAt;
@@ -159,5 +163,13 @@ public class WeaponsDataConfigEntity implements IEntity<Integer> {
 
     public static WeaponsDataConfigEntity valueOf() {
         return new WeaponsDataConfigEntity();
+    }
+
+    public int getWeaponQuality() {
+        return weaponQuality;
+    }
+
+    public void setWeaponQuality(int weaponQuality) {
+        this.weaponQuality = weaponQuality;
     }
 }

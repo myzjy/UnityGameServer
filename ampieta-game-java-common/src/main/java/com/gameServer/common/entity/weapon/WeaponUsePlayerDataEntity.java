@@ -24,11 +24,14 @@ public class WeaponUsePlayerDataEntity implements IEntity<Long> {
      * 武器名字
      */
     private String weaponName;
-
     /**
      * 当前装备所属玩家
      */
     private long userUid;
+    /**
+     * 当前装备所属 角色
+     */
+    private int userPlayerId;
     /**
      * 武器id
      */
@@ -77,6 +80,14 @@ public class WeaponUsePlayerDataEntity implements IEntity<Long> {
      * 是否被锁
      */
     private boolean lock;
+    /**
+     * 平台 登录之后
+     */
+    private boolean newAndroid;
+    /**
+     * 平台 登录之后 物品获取 之后 有没有点击过
+     */
+    private boolean newPc;
     /**
      * 创建时间
      */
@@ -220,6 +231,30 @@ public class WeaponUsePlayerDataEntity implements IEntity<Long> {
 
     public void setLock(boolean lock) {
         this.lock = lock;
+    }
+
+    public boolean isNewAndroid() {
+        return newAndroid;
+    }
+
+    public void setNewAndroid(boolean newAndroid) {
+        this.newAndroid = newAndroid;
+    }
+
+    public boolean isNewPc() {
+        return newPc;
+    }
+
+    public void setNewPc(boolean newPc) {
+        this.newPc = newPc;
+    }
+
+    public int getUserPlayerId() {
+        return userPlayerId;
+    }
+
+    public void setUserPlayerId(int userPlayerId) {
+        this.userPlayerId = userPlayerId;
     }
 
     public static WeaponUsePlayerDataEntity ValueOf() {
