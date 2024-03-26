@@ -5,6 +5,7 @@ import com.gameServer.common.constant.BagTypeEnum;
 import com.gameServer.common.entity.BagUserItemEntity;
 import com.gameServer.common.entity.weapon.WeaponUsePlayerDataEntity;
 import com.gameServer.common.event.bag.StartLoginBagEvent;
+import com.gameServer.common.ormEntity.WeaponsDataConfigEntity;
 import com.gameServer.common.protocol.bag.AllBagItemRequest;
 import com.gameServer.common.protocol.bag.AllBagItemResponse;
 import com.gameServer.common.protocol.bag.BagUserItemData;
@@ -47,31 +48,37 @@ public class BagController {
         List<BagUserItemData> bagUserItemEntities = new ArrayList<>();
         switch (enumType) {
             case Weapon: {
-                //武器相关协议处理
-                var findUidDataList = OrmContext.getQuery(WeaponUsePlayerDataEntity.class).eq("userUid", session.getUid());
-                var list = findUidDataList.queryAll();
-                bagUserItemEntities = new ArrayList<>();
-                for (int i = 0; i < list.size(); i++) {
-                    // 具体数据
-                    var item = list.get(i);
-                    var configData = weaponService.FindWeaponsConfigData(item.getWeaponId());
-                    BagUserItemData data = new BagUserItemData();
-                    data.set_id(item.getId());
-                    data.setItemId(item.getWeaponId());
-                    data.setIcon(item.getCreateAt());
-                    data.setItemNew(item.isNewAndroid());
-                    data.setQuality(configData.getWeaponQuality());
-                    data.setMasterUserId(item.getUserUid());
-                    data.setNowItemNum(1);
-                    data.setResourcePath(configData.getIconResource());
-                    data.setUserPlayerId(item.getUserPlayerId());
-                    bagUserItemEntities.add(data);
+                if (request.getMsgProtocol() == "c001") {
+                    //武器相关协议处理
+                    var findUidDataList = OrmContext.getQuery(WeaponUsePlayerDataEntity.class).eq("userUid", session.getUid());
+                    var list = findUidDataList.queryAll();
+                    bagUserItemEntities = new ArrayList<>();
+                    for (WeaponUsePlayerDataEntity item : list) {
+                        // 具体数据
+                        var configData = weaponService.FindWeaponsConfigData(item.getWeaponId());
+                        BagUserItemData data = getBagUserItemData(item, configData);
+                        bagUserItemEntities.add(data);
+                    }
+                    NetContext.getRouter().send(session, AllBagItemResponse.ValueOf(bagUserItemEntities));
+                } else if (request.getMsgProtocol() == "c002") {
                 }
             }
             break;
         }
-        NetContext.getRouter().send(session, AllBagItemResponse.ValueOf(bagUserItemEntities));
+    }
 
+    private BagUserItemData getBagUserItemData(WeaponUsePlayerDataEntity item, WeaponsDataConfigEntity configData) {
+        BagUserItemData data = new BagUserItemData();
+        data.set_id(item.getId());
+        data.setItemId(item.getWeaponId());
+        data.setIcon(item.getCreateAt());
+        data.setItemNew(item.isNewAndroid());
+        data.setQuality(configData.getWeaponQuality());
+        data.setMasterUserId(item.getUserUid());
+        data.setNowItemNum(1);
+        data.setResourcePath(configData.getIconResource());
+        data.setUserPlayerId(item.getUserPlayerId());
+        return data;
     }
 
     @EventReceiver
