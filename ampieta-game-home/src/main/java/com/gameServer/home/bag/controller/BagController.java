@@ -59,7 +59,9 @@ public class BagController {
                         BagUserItemData data = getBagUserItemData(item, configData);
                         bagUserItemEntities.add(data);
                     }
-                    NetContext.getRouter().send(session, AllBagItemResponse.ValueOf(bagUserItemEntities));
+                    var response = AllBagItemResponse.ValueOf(bagUserItemEntities);
+                    response.setProtocolStr("c002");
+                    NetContext.getRouter().send(session, response);
                 } else if (request.getMsgProtocol() == "c002") {
                 }
             }
