@@ -163,6 +163,7 @@ public class LoginController {
         logger.info("LoginResponse:{}", JsonUtils.object2String(resposne));
         NetContext.getRouter().send(session, resposne
                 , gatewayAttachment);
+
     }
 
     @PacketReceiver

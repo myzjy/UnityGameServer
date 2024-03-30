@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 背包控制器 对于背包相关操作
@@ -43,12 +44,14 @@ public class BagController {
     private IWeaponService weaponService;
 
     @PacketReceiver
-    public void atAllBagItemRequest(Session session, AllBagItemRequest request) {
+    public void atAllBagItemRequest(Session session, AllBagItemRequest request, GatewayAttachment gatewayAttachment) {
         BagTypeEnum enumType = BagTypeEnum.GetType(request.getType());
+        logger.info("[type:{}],BagTypeEnum:{}", request.getType(), enumType);
         List<BagUserItemData> bagUserItemEntities = new ArrayList<>();
         switch (enumType) {
             case Weapon: {
-                if (request.getMsgProtocol() == "c001") {
+                logger.info("[type:{}],BagTypeEnum:{},msg:{}, switch,request.getMsgProtocol() == \"c001\":{}", request.getType(), enumType, request.getMsgProtocol(),(request.getMsgProtocol() == "c001"));
+                if (Objects.equals(request.getMsgProtocol(), "c001")) {
                     //武器相关协议处理
                     var findUidDataList = OrmContext.getQuery(WeaponUsePlayerDataEntity.class).eq("userUid", session.getUid());
                     var list = findUidDataList.queryAll();
@@ -61,7 +64,7 @@ public class BagController {
                     }
                     var response = AllBagItemResponse.ValueOf(bagUserItemEntities);
                     response.setProtocolStr("c002");
-                    NetContext.getRouter().send(session, response);
+                    NetContext.getRouter().send(session, response, gatewayAttachment);
                 } else if (request.getMsgProtocol() == "c002") {
                 }
             }
