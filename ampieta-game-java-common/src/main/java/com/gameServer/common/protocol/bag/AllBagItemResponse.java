@@ -17,6 +17,7 @@ import java.util.List;
 public class AllBagItemResponse implements IPacket {
 
     private List<BagUserItemData> list;
+    private  String protocolStr;
 
     public static AllBagItemResponse ValueOf(List<BagUserItemData> list) {
         var value = new AllBagItemResponse();
@@ -33,4 +34,11 @@ public class AllBagItemResponse implements IPacket {
         this.list = list;
     }
 
+    public String getProtocolStr() {
+        return protocolStr;
+    }
+
+    public void setProtocolStr(String protocolStr) {
+        this.protocolStr = protocolStr;
+    }
 }
