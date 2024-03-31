@@ -10,4 +10,12 @@ import com.zfoo.protocol.anno.Protocol;
 @Protocol(id = 1044)
 public class WeaponPlayerBagDataResponse {
     private long uid;
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
 }

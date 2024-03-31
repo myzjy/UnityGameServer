@@ -1,6 +1,10 @@
 package com.gameServer.common.protocol.character;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
+
+import java.awt.*;
+import java.util.List;
 
 /**
  * 角色基础信息
@@ -9,7 +13,9 @@ import com.zfoo.net.packet.IPacket;
  * @version 1.0
  * @since 2023/9/16 22 57
  */
+@Protocol(id = 216)
 public class CharacterBaseData implements IPacket {
+    private long id;
     /**
      * 角色id 获取 数据库中得基础信息
      */
@@ -18,6 +24,10 @@ public class CharacterBaseData implements IPacket {
      * 等级
      */
     private int lv;
+    /**
+     * 当前最大 的等级
+     */
+    private int nowMaxLv;
     /**
      * 经验
      */
@@ -34,18 +44,31 @@ public class CharacterBaseData implements IPacket {
      * 等级 最大 星级数量
      */
     private int maxLvQuantity;
+    /**
+     * 装备圣遗物 id 数据库中的id
+     */
+    private List<CharacterEquipmentIDData> equipmentList;
+    /**
+     * 角色装备 武器
+     */
+    private CharacterWeaponIDData characterWeaponIDData;
+
+    public static CharacterBaseData valueOf() {
+        return new CharacterBaseData();
+    }
 
     /**
      * 进行创建值
-     * @param roleID  角色id 获取 数据库中得基础信息
-     * @param lv 等级
-     * @param nowExp 当前经验
-     * @param noeMaxExp 最大经验
-     * @param lvQuantity  星级
+     *
+     * @param roleID        角色id 获取 数据库中得基础信息
+     * @param lv            等级
+     * @param nowExp        当前经验
+     * @param noeMaxExp     最大经验
+     * @param lvQuantity    星级
      * @param maxLvQuantity 最大星级
      * @return 角色基础数据结构
      */
-    public static CharacterBaseData ValueOf(long roleID, int lv, int nowExp, int noeMaxExp, int lvQuantity, int maxLvQuantity) {
+    public static CharacterBaseData ValueOf(long roleID, int lv, int nowExp, int noeMaxExp, int lvQuantity, int maxLvQuantity, int nowMaxLv) {
         var data = new CharacterBaseData();
         data.setRoleID(roleID);
         data.setLv(lv);
@@ -53,7 +76,16 @@ public class CharacterBaseData implements IPacket {
         data.setNoeMaxExp(noeMaxExp);
         data.setLvQuantity(lvQuantity);
         data.setMaxLvQuantity(maxLvQuantity);
+        data.setNowMaxLv(nowMaxLv);
         return data;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getRoleID() {
@@ -102,5 +134,29 @@ public class CharacterBaseData implements IPacket {
 
     public void setMaxLvQuantity(int maxLvQuantity) {
         this.maxLvQuantity = maxLvQuantity;
+    }
+
+    public int getNowMaxLv() {
+        return nowMaxLv;
+    }
+
+    public void setNowMaxLv(int nowMaxLv) {
+        this.nowMaxLv = nowMaxLv;
+    }
+
+    public List<CharacterEquipmentIDData> getEquipmentList() {
+        return equipmentList;
+    }
+
+    public void setEquipmentList(List<CharacterEquipmentIDData> equipmentList) {
+        this.equipmentList = equipmentList;
+    }
+
+    public CharacterWeaponIDData getCharacterWeaponIDData() {
+        return characterWeaponIDData;
+    }
+
+    public void setCharacterWeaponIDData(CharacterWeaponIDData characterWeaponIDData) {
+        this.characterWeaponIDData = characterWeaponIDData;
     }
 }

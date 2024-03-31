@@ -42,6 +42,7 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
      */
     private int nowDef;
 
+
     /**
      * 角色数据创建
      */
