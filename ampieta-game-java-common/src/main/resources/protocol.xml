@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
-<protocols>
+<>
 
     <module id="1" name="native">
         <protocol location="com.zfoo.net.router.attachment.SignalAttachment"/>
@@ -105,7 +105,11 @@
         <protocol id="218" location="com.gameServer.common.protocol.character.CharacterEquipmentIDData"/>
 
     </module>
+
     <module id="4" name="unityGameSdk">
         <protocol location="com.gameServer.common.protocol.sdk.login.SDKLoginRequest"/>
+    </module>
+    <module id="5" name="cache">
+
     </module>
 </protocols>
