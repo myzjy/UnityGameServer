@@ -1,2 +1,4 @@
-id,quality,characterId,characterRes,Level1AttributeAtk,Level1AttributeCriticalHitChance,Level1AttributeHpValue
-角色id,品质,角色id,角色资源名,1级的攻击属性,1级的暴击率,1级的生命值
+﻿id,quality,characterId,characterName,characterRes,Level1NoWAtk,Level1Atk,Level1CriticalHitChance,Level1HpValue,Level1Def,Level1ElementMastery,Level1ChargingEfficiencyOfElements,Level1CriticalHitDamage
+角色id,品质,角色id,角色名,角色资源名,1级没有装备攻击属性,1级的攻击属性,1级的暴击率,1级的生命值,1级防御力,1级元素精通,1级元素充能效率,1级暴击伤害
+int,int,int,string,string,int,int,float,int,int,float,float,int
+10001,5,10001,旅行者,lvXingZhe,18,41,5,912,57,0,100,50
