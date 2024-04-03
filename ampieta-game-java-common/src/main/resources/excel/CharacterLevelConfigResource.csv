@@ -1,4 +1,4 @@
-id,quality,characterId,characterName,characterRes,Level20NoAtk,Level20Atk,Level20HpValue,Level20Def,Level20AtkUp,Level20HpValueUp,Level20DefUp
-角色id,品质,角色id,角色名,角色资源名,20级没有装备武器攻击属性,20级的攻击属性,20级的生命值,20级防御力,20级突破之后攻击属性,20级突破之后的生命值,20级突破之后防御力
-int,int,int,string,string,int,float,int,float,float,int,float
-10001,5,10001,旅行者,lvXingZhe,NULL,NULL,NULL,NULL,NULL,NULL,NULL
+id,quality,characterId,characterName,characterRes,Level20NoAtk,Level20Atk,Level20HpValue,Level20Def,Level20AtkUp,Level20NoAtkUp,Level20HpValueUp,Level20DefUp,Level20AtkUp
+角色id,品质,角色id,角色名,角色资源名,20级没有装备武器攻击属性,20级的攻击属性,20级的生命值,20级防御力,20级突破之后攻击属性,20级突破之后没有装备武器攻击属性,20级突破之后的生命值,20级突破之后防御力,20级突破之后攻击力比突破前提升的百分比
+int,int,int,string,string,int,float,int,float,float,int,float,float,float
+10001,5,10001,旅行者,lvXingZhe,46,69,2342,147,82,59,3024,190,0
