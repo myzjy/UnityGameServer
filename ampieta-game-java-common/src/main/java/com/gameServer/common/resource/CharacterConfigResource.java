@@ -1,6 +1,7 @@
 package com.gameServer.common.resource;
 
 import com.zfoo.storage.anno.Id;
+import com.zfoo.storage.anno.Index;
 import com.zfoo.storage.anno.Storage;
 
 /**
@@ -13,7 +14,8 @@ import com.zfoo.storage.anno.Storage;
 @Storage
 public class CharacterConfigResource {
     @Id
-    private int id;
+    @Index
+    private int CId;
     /**
      * 品质
      */
@@ -59,8 +61,8 @@ public class CharacterConfigResource {
      */
     private int Level1CriticalHitDamage;
 
-    public int getId() {
-        return id;
+    public int getCId() {
+        return CId;
     }
 
     public int getQuality() {

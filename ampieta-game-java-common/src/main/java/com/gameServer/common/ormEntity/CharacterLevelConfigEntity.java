@@ -1,20 +1,13 @@
-package com.gameServer.common.resource;
+package com.gameServer.common.ormEntity;
 
-import com.zfoo.storage.anno.Id;
-import com.zfoo.storage.anno.Index;
-import com.zfoo.storage.anno.Storage;
+import com.zfoo.orm.model.IEntity;
 
 /**
- * 角色 抵达可以突破的等级 的 属性 突破前和突破后
- *
  * @author zjy
  * @version 1.0
- * @since 2024/4/2 18 12
+ * @since 2024/4/4 00 21
  */
-@Storage
-public class CharacterLevelConfigResource {
-    @Id
-    @Index
+public class CharacterLevelConfigEntity implements IEntity<Integer> {
     private int CId;
     /**
      * 品质
@@ -72,64 +65,152 @@ public class CharacterLevelConfigResource {
      * 当前等级突破之后的攻击属提升百分比
      */
     private int LevelAtkUpNum;
+    /**
+     * 当前数据创建时间
+     */
+    private String createAt;
+    /**
+     * 当前数据更新时间
+     */
+    private String updateAt;
+    @Override
+    public Integer id() {
+        return CId;
+    }
 
     public int getCId() {
         return CId;
+    }
+
+    public void setCId(int CId) {
+        this.CId = CId;
     }
 
     public int getQuality() {
         return quality;
     }
 
+    public void setQuality(int quality) {
+        this.quality = quality;
+    }
+
     public int getCharacterId() {
         return characterId;
+    }
+
+    public void setCharacterId(int characterId) {
+        this.characterId = characterId;
     }
 
     public String getCharacterName() {
         return characterName;
     }
 
+    public void setCharacterName(String characterName) {
+        this.characterName = characterName;
+    }
+
     public String getCharacterRes() {
         return characterRes;
+    }
+
+    public void setCharacterRes(String characterRes) {
+        this.characterRes = characterRes;
+    }
+
+    public int getLevelNum() {
+        return LevelNum;
+    }
+
+    public void setLevelNum(int levelNum) {
+        LevelNum = levelNum;
     }
 
     public int getLevelNoAtk() {
         return LevelNoAtk;
     }
 
+    public void setLevelNoAtk(int levelNoAtk) {
+        LevelNoAtk = levelNoAtk;
+    }
+
     public float getLevelAtk() {
         return LevelAtk;
+    }
+
+    public void setLevelAtk(float levelAtk) {
+        LevelAtk = levelAtk;
     }
 
     public int getLevelHpValue() {
         return LevelHpValue;
     }
 
+    public void setLevelHpValue(int levelHpValue) {
+        LevelHpValue = levelHpValue;
+    }
+
     public float getLevelDef() {
         return LevelDef;
+    }
+
+    public void setLevelDef(float levelDef) {
+        LevelDef = levelDef;
     }
 
     public float getLevelAtkUp() {
         return LevelAtkUp;
     }
 
+    public void setLevelAtkUp(float levelAtkUp) {
+        LevelAtkUp = levelAtkUp;
+    }
+
     public int getLevelNoAtkUp() {
         return LevelNoAtkUp;
+    }
+
+    public void setLevelNoAtkUp(int levelNoAtkUp) {
+        LevelNoAtkUp = levelNoAtkUp;
     }
 
     public int getLevelHpValueUp() {
         return LevelHpValueUp;
     }
 
+    public void setLevelHpValueUp(int levelHpValueUp) {
+        LevelHpValueUp = levelHpValueUp;
+    }
+
     public int getLevelDefUp() {
         return LevelDefUp;
+    }
+
+    public void setLevelDefUp(int levelDefUp) {
+        LevelDefUp = levelDefUp;
     }
 
     public int getLevelAtkUpNum() {
         return LevelAtkUpNum;
     }
 
-    public int getLevelNum() {
-        return LevelNum;
+    public void setLevelAtkUpNum(int levelAtkUpNum) {
+        LevelAtkUpNum = levelAtkUpNum;
+    }
+
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(String updateAt) {
+        this.updateAt = updateAt;
     }
 }

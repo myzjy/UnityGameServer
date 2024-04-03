@@ -1,4 +1,0 @@
-id,quality,characterId,characterName,characterRes,Level40NoAtk,Level40Atk,Level40HpValue,Level40Def,Level40AtkUp,Level40NoAtkUp,Level40HpValueUp,Level40DefUp,Level40AtkUp
-角色id,品质,角色id,角色名,角色资源名,40级没有装备武器攻击属性,40级的攻击属性,40级的生命值,40级防御力,40级突破之后攻击属性,40级突破之后没有装备武器攻击属性,40级突破之后的生命值,40级突破之后防御力,40级突破之后攻击力比突破前提升的百分比
-int,int,int,string,string,int,float,int,float,float,int,float,float,float
-10001,5,10001,旅行者,lvXingZhe,46,69,2342,147,82,59,3024,190,0
