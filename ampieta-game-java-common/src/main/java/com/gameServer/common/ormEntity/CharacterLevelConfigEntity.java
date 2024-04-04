@@ -1,5 +1,6 @@
 package com.gameServer.common.ormEntity;
 
+import com.zfoo.orm.anno.Id;
 import com.zfoo.orm.model.IEntity;
 
 /**
@@ -8,7 +9,8 @@ import com.zfoo.orm.model.IEntity;
  * @since 2024/4/4 00 21
  */
 public class CharacterLevelConfigEntity implements IEntity<Integer> {
-    private int CId;
+    @Id
+    private int id;
     /**
      * 品质
      */
@@ -73,17 +75,18 @@ public class CharacterLevelConfigEntity implements IEntity<Integer> {
      * 当前数据更新时间
      */
     private String updateAt;
+
     @Override
     public Integer id() {
-        return CId;
+        return id;
     }
 
-    public int getCId() {
-        return CId;
+    public int getId() {
+        return id;
     }
 
-    public void setCId(int CId) {
-        this.CId = CId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getQuality() {
@@ -212,5 +215,9 @@ public class CharacterLevelConfigEntity implements IEntity<Integer> {
 
     public void setUpdateAt(String updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public static CharacterLevelConfigEntity valueOf() {
+        return new CharacterLevelConfigEntity();
     }
 }

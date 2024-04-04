@@ -7,7 +7,7 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * 角色基础信息
+ * 角色基础信息 传递的都是 初略 计算完的 信息
  *
  * @author zjy
  * @version 1.0
@@ -20,6 +20,10 @@ public class CharacterBaseData implements IPacket {
      * 角色id 获取 数据库中得基础信息
      */
     private long roleID;
+    /**
+     * 角色品质
+     */
+    private int quantity;
     /**
      * 等级
      */
@@ -66,9 +70,11 @@ public class CharacterBaseData implements IPacket {
      * @param noeMaxExp     最大经验
      * @param lvQuantity    星级
      * @param maxLvQuantity 最大星级
+     * @param nowMaxLv      最大等级
+     * @param quantity      角色品质
      * @return 角色基础数据结构
      */
-    public static CharacterBaseData ValueOf(long roleID, int lv, int nowExp, int noeMaxExp, int lvQuantity, int maxLvQuantity, int nowMaxLv) {
+    public static CharacterBaseData ValueOf(long roleID, int lv, int nowExp, int noeMaxExp, int lvQuantity, int maxLvQuantity, int nowMaxLv, int quantity) {
         var data = new CharacterBaseData();
         data.setRoleID(roleID);
         data.setLv(lv);
@@ -77,6 +83,7 @@ public class CharacterBaseData implements IPacket {
         data.setLvQuantity(lvQuantity);
         data.setMaxLvQuantity(maxLvQuantity);
         data.setNowMaxLv(nowMaxLv);
+        data.setQuantity(quantity);
         return data;
     }
 
@@ -158,5 +165,13 @@ public class CharacterBaseData implements IPacket {
 
     public void setCharacterWeaponIDData(CharacterWeaponIDData characterWeaponIDData) {
         this.characterWeaponIDData = characterWeaponIDData;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

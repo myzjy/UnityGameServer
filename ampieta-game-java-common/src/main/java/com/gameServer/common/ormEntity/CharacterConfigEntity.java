@@ -9,8 +9,9 @@ import com.zfoo.orm.model.IEntity;
  * @since 2024/4/4 00 17
  */
 public class CharacterConfigEntity implements IEntity<Integer> {
+
     @Id
-    private int CId;
+    private int id;
     /**
      * 品质
      */
@@ -66,15 +67,15 @@ public class CharacterConfigEntity implements IEntity<Integer> {
 
     @Override
     public Integer id() {
-        return CId;
+        return id;
     }
 
-    public int getCId() {
-        return CId;
+    public int getId() {
+        return id;
     }
 
-    public void setCId(int CId) {
-        this.CId = CId;
+    public void setId(int CId) {
+        this.id = CId;
     }
 
     public int getQuality() {

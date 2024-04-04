@@ -48,5 +48,8 @@ public class ApplicationTest {
         equipmentOrm.UpdateEquipmentDesResource();
         var weaponOrm = context.getBean(WeaponOrmAddManager.class);
         weaponOrm.UpdateOrInWeaponsDataConfigResource();
+        var characterOrmManager = context.getBean(CharacterOrmManager.class);
+        characterOrmManager.UpdateCharacterConfigResource();
+        characterOrmManager.UpdateCharacterLevelConfigResource();
     }
 }

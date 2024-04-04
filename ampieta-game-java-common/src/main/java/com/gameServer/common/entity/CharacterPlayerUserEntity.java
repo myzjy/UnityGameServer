@@ -4,6 +4,8 @@ import com.gameServer.common.entity.composite.CharacterUserCompositeDataID;
 import com.zfoo.orm.anno.Id;
 import com.zfoo.orm.model.IEntity;
 
+import java.util.List;
+
 /**
  * @author zjy
  * @version 1.0
@@ -41,7 +43,30 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
      * 当前防御力
      */
     private int nowDef;
-
+    /**
+     * 暴击率
+     */
+    private int LeveCriticalHitChance;
+    /**
+     * 元素精通
+     */
+    private int LevelElementMastery;
+    /**
+     * 元素充能效率
+     */
+    private int LevelChargingEfficiencyOfElements;
+    /**
+     * 暴击伤害
+     */
+    private int LevelCriticalHitDamage;
+    /**
+     * 元素伤害
+     */
+    private int elementHitDamage;
+    /**
+     * 角色自身 元素伤害 type
+     */
+    private int elementType;
 
     /**
      * 角色数据创建

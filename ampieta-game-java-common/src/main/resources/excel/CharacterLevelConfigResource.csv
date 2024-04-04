@@ -2,4 +2,4 @@ CId,quality,characterId,LevelNum,characterName,characterRes,LevelNoAtk,LevelAtk,
 角色id,品质,角色id,等级,角色名,角色资源名,当前等级没有装备武器攻击属性,当前等级的攻击属性,当前等级的生命值,当前等级防御力,当前等级突破之后攻击属性,当前等级突破之后没有装备武器攻击属性,当前等级突破之后的生命值,当前等级突破之后防御力,当前等级突破之后攻击力比突破前提升的百分比
 int,int,int,int,string,string,int,float,int,float,float,int,float,float,float
 10001,5,10001,20,旅行者,lvXingZhe,46,69,2342,147,82,59,3024,190,0
-10002,5,10001,40,旅行者,lvXingZhe,46,69,2342,147,82,59,3024,190,0
+10002,5,10001,40,旅行者,lvXingZhe,89,112,4529,284,121,98,5013,315,0
