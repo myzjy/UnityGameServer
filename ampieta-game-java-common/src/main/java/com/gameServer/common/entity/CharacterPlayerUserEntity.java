@@ -46,19 +46,19 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
     /**
      * 暴击率
      */
-    private int LeveCriticalHitChance;
+    private int leveCriticalHitChance;
     /**
      * 元素精通
      */
-    private int LevelElementMastery;
+    private int levelElementMastery;
     /**
      * 元素充能效率
      */
-    private int LevelChargingEfficiencyOfElements;
+    private int levelChargingEfficiencyOfElements;
     /**
      * 暴击伤害
      */
-    private int LevelCriticalHitDamage;
+    private int levelCriticalHitDamage;
     /**
      * 元素伤害
      */
@@ -72,8 +72,7 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
      * 角色数据创建
      */
     public static CharacterPlayerUserEntity ValueOf() {
-        var data = new CharacterPlayerUserEntity();
-        return data;
+        return new CharacterPlayerUserEntity();
     }
 
     public CharacterUserCompositeDataID getDataID() {
@@ -122,5 +121,53 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
 
     public void setNowDef(int nowDef) {
         this.nowDef = nowDef;
+    }
+
+    public int getLeveCriticalHitChance() {
+        return leveCriticalHitChance;
+    }
+
+    public void setLeveCriticalHitChance(int leveCriticalHitChance) {
+        this.leveCriticalHitChance = leveCriticalHitChance;
+    }
+
+    public int getLevelElementMastery() {
+        return levelElementMastery;
+    }
+
+    public void setLevelElementMastery(int levelElementMastery) {
+        this.levelElementMastery = levelElementMastery;
+    }
+
+    public int getLevelChargingEfficiencyOfElements() {
+        return levelChargingEfficiencyOfElements;
+    }
+
+    public void setLevelChargingEfficiencyOfElements(int levelChargingEfficiencyOfElements) {
+        this.levelChargingEfficiencyOfElements = levelChargingEfficiencyOfElements;
+    }
+
+    public int getLevelCriticalHitDamage() {
+        return levelCriticalHitDamage;
+    }
+
+    public void setLevelCriticalHitDamage(int levelCriticalHitDamage) {
+        this.levelCriticalHitDamage = levelCriticalHitDamage;
+    }
+
+    public int getElementHitDamage() {
+        return elementHitDamage;
+    }
+
+    public void setElementHitDamage(int elementHitDamage) {
+        this.elementHitDamage = elementHitDamage;
+    }
+
+    public int getElementType() {
+        return elementType;
+    }
+
+    public void setElementType(int elementType) {
+        this.elementType = elementType;
     }
 }
