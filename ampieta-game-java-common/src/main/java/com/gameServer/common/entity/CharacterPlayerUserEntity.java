@@ -1,6 +1,7 @@
 package com.gameServer.common.entity;
 
 import com.gameServer.common.entity.composite.CharacterUserCompositeDataID;
+import com.gameServer.common.entity.composite.CharacterUserWeaponCompositeDataID;
 import com.zfoo.orm.anno.Id;
 import com.zfoo.orm.model.IEntity;
 
@@ -40,6 +41,22 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
      */
     private int entityNowMaxHp;
     /**
+     * 当前角色 攻击力 没有加上 装备词条
+     */
+    private int entityAtk;
+    /**
+     * 当前角色 最大 攻击力 没有加上 装备词条
+     */
+    private int entityMaxAtk;
+    /**
+     * 当前角色 攻击力 加上 装备词条 得出来的
+     */
+    private int entityNowAtk;
+    /**
+     * 当前角色 最大 攻击力 加上 装备词条
+     */
+    private int entityNowMaxAtk;
+    /**
      * 当前防御力
      */
     private int nowDef;
@@ -67,6 +84,10 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
      * 角色自身 元素伤害 type
      */
     private int elementType;
+    /**
+     * 武器 穿戴
+     */
+    private CharacterUserWeaponCompositeDataID weaponCompositeDataID;
 
     /**
      * 角色数据创建
@@ -169,5 +190,45 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
 
     public void setElementType(int elementType) {
         this.elementType = elementType;
+    }
+
+    public int getEntityAtk() {
+        return entityAtk;
+    }
+
+    public void setEntityAtk(int entityAtk) {
+        this.entityAtk = entityAtk;
+    }
+
+    public int getEntityMaxAtk() {
+        return entityMaxAtk;
+    }
+
+    public void setEntityMaxAtk(int entityMaxAtk) {
+        this.entityMaxAtk = entityMaxAtk;
+    }
+
+    public int getEntityNowAtk() {
+        return entityNowAtk;
+    }
+
+    public void setEntityNowAtk(int entityNowAtk) {
+        this.entityNowAtk = entityNowAtk;
+    }
+
+    public int getEntityNowMaxAtk() {
+        return entityNowMaxAtk;
+    }
+
+    public void setEntityNowMaxAtk(int entityNowMaxAtk) {
+        this.entityNowMaxAtk = entityNowMaxAtk;
+    }
+
+    public CharacterUserWeaponCompositeDataID getWeaponCompositeDataID() {
+        return weaponCompositeDataID;
+    }
+
+    public void setWeaponCompositeDataID(CharacterUserWeaponCompositeDataID weaponCompositeDataID) {
+        this.weaponCompositeDataID = weaponCompositeDataID;
     }
 }

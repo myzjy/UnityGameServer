@@ -60,6 +60,18 @@ public class CharacterConfigResource {
      * 1级暴击伤害
      */
     private int Level1CriticalHitDamage;
+    /**
+     * 当前等级没有装备武器攻击属性
+     */
+    private int Level1NoWAtk;
+    /**
+     * 角色默认武器id
+     */
+    private int characterDefaultWeaponId;
+    /**
+     * 角色默认武器id
+     */
+    private int weaponType;
 
     public int getCId() {
         return CId;
@@ -107,5 +119,17 @@ public class CharacterConfigResource {
 
     public int getLevel1CriticalHitDamage() {
         return Level1CriticalHitDamage;
+    }
+
+    public int getCharacterDefaultWeaponId() {
+        return characterDefaultWeaponId;
+    }
+
+    public int getWeaponType() {
+        return weaponType;
+    }
+
+    public int getLevel1NoWAtk() {
+        return Level1NoWAtk;
     }
 }

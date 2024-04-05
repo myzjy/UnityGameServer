@@ -49,6 +49,9 @@ public class CharacterOrmManager {
             entity.setLevel1Def(data.getLevel1Def());
             entity.setLevel1HpValue(data.getLevel1HpValue());
             entity.setLevel1ElementMastery(data.getLevel1ElementMastery());
+            entity.setCharacterDefaultWeaponId(data.getCharacterDefaultWeaponId());
+            entity.setWeaponType(data.getWeaponType());
+            entity.setLevel1NoWAtk(data.getLevel1NoWAtk());
             if (isCreate) {
                 OrmContext.getAccessor().insert(entity);
             } else {

@@ -9,7 +9,6 @@ import com.zfoo.orm.model.IEntity;
  * @since 2024/4/4 00 17
  */
 public class CharacterConfigEntity implements IEntity<Integer> {
-
     @Id
     private int id;
     /**
@@ -56,6 +55,18 @@ public class CharacterConfigEntity implements IEntity<Integer> {
      * 1级暴击伤害
      */
     private int Level1CriticalHitDamage;
+    /**
+     * 角色默认武器id
+     */
+    private int characterDefaultWeaponId;
+    /**
+     * 角色默认武器id
+     */
+    private int weaponType;
+    /**
+     * 当前等级没有装备武器攻击属性
+     */
+    private int Level1NoWAtk;
     /**
      * 当前数据创建时间
      */
@@ -184,5 +195,29 @@ public class CharacterConfigEntity implements IEntity<Integer> {
 
     public static CharacterConfigEntity valueOf() {
         return new CharacterConfigEntity();
+    }
+
+    public int getCharacterDefaultWeaponId() {
+        return characterDefaultWeaponId;
+    }
+
+    public void setCharacterDefaultWeaponId(int characterDefaultWeaponId) {
+        this.characterDefaultWeaponId = characterDefaultWeaponId;
+    }
+
+    public int getWeaponType() {
+        return weaponType;
+    }
+
+    public void setWeaponType(int weaponType) {
+        this.weaponType = weaponType;
+    }
+
+    public int getLevel1NoWAtk() {
+        return Level1NoWAtk;
+    }
+
+    public void setLevel1NoWAtk(int level1NoWAtk) {
+        Level1NoWAtk = level1NoWAtk;
     }
 }
