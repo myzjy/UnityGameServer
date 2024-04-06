@@ -10,7 +10,7 @@ import com.zfoo.protocol.anno.Protocol;
  * @version 1.0
  * @since 2024/3/31 22 20
  */
-@Protocol()
+@Protocol(id = 1047)
 public class CreateCharacterRequest implements IPacket {
     /**
      * 角色 id

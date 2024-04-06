@@ -1,9 +1,13 @@
 package com.gameServer.home.login.controller;
 
+import com.gameServer.common.cache.character.LoginCreateCharacterAnswer;
+import com.gameServer.common.cache.character.LoginCreateCharacterAsk;
 import com.gameServer.common.constant.I18nEnum;
 import com.gameServer.common.constant.TankDeployEnum;
 import com.gameServer.common.entity.AccountEntity;
+import com.gameServer.common.entity.CharacterPlayerUserEntity;
 import com.gameServer.common.entity.PlayerUserEntity;
+import com.gameServer.common.ormEntity.CharacterConfigEntity;
 import com.gameServer.common.protocol.login.GetPlayerInfoRequest;
 import com.gameServer.common.protocol.login.LoginRequest;
 import com.gameServer.common.protocol.login.LoginResponse;
@@ -163,8 +167,6 @@ public class LoginController {
         logger.info("LoginResponse:{}", JsonUtils.object2String(resposne));
         NetContext.getRouter().send(session, resposne
                 , gatewayAttachment);
-
-
     }
 
     @PacketReceiver
@@ -218,8 +220,14 @@ public class LoginController {
         userLoginService.UpdatePlayerUserEntity(player);
     }
 
-    //@PacketReceiver
-    //public void atPing(Session session, Ping request, GatewayAttachment gatewayAttachment) {
-    //    NetContext.getRouter().send(session, Pong.valueOf(TimeUtils.now()), gatewayAttachment);
-    //}
+    @PacketReceiver
+    public void atLoginCreateCharacterAsk(Session session, LoginCreateCharacterAsk loginCreateCharacterAsk, GatewayAttachment gatewayAttachment) {
+        logger.info("[当前服务器调用时间{}] [调用协议: 6003 ]", TimeUtils.simpleDateString());
+        // 需要创建的角色 id
+        var playerCreteId = loginCreateCharacterAsk.getPlayerId();
+        //当前 角色 配置
+        var config = OrmContext.getAccessor().load(playerCreteId, CharacterConfigEntity.class);
+        var character= CharacterPlayerUserEntity.ValueOf();
+        //character.setWeaponCompositeDataID();
+    }
 }

@@ -63,6 +63,9 @@
         <protocol id="1045" location="com.gameServer.common.protocol.character.AcquireCharacterRequest"/>
         <protocol id="1046" location="com.gameServer.common.protocol.character.AcquireCharacterResponse"/>
 
+        <protocol id="1047" location="com.gameServer.common.protocol.character.CreateCharacterRequest"/>
+        <protocol id="1048" location="com.gameServer.common.protocol.character.CreateCharacterResponse"/>
+
     </module>
     <module id="3" name="common">
         <protocol location="com.zfoo.net.packet.common.Message"/>
@@ -106,9 +109,13 @@
     </module>
 
     <module id="4" name="unityGameSdk">
-        <protocol location="com.gameServer.common.protocol.sdk.login.SDKLoginRequest"/>
+        <protocol id="5000"  location="com.gameServer.common.protocol.sdk.login.SDKLoginRequest"/>
     </module>
     <module id="5" name="cache">
+        <protocol id="6000" location="com.gameServer.common.cache.weapon.CreateWeaponDefaultAsk"/>
+        <protocol id="6001" location="com.gameServer.common.cache.weapon.CreateWeaponDefaultAnswer"/>
 
+        <protocol id="6002" location="com.gameServer.common.cache.character.LoginCreateCharacterAsk"/>
+        <protocol id="6003" location="com.gameServer.common.cache.character.LoginCreateCharacterAnswer"/>
     </module>
 </protocols>

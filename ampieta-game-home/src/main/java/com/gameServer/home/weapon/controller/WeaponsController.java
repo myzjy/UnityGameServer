@@ -1,5 +1,7 @@
 package com.gameServer.home.weapon.controller;
 
+import com.gameServer.common.cache.weapon.CreateWeaponDefaultAnswer;
+import com.gameServer.common.cache.weapon.CreateWeaponDefaultAsk;
 import com.gameServer.common.entity.weapon.WeaponUsePlayerDataEntity;
 import com.gameServer.common.ormEntity.WeaponsDataConfigEntity;
 import com.gameServer.common.protocol.weapon.WeaponPlayerUserDataRequest;
@@ -14,6 +16,7 @@ import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.protocol.util.JsonUtils;
+import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,5 +108,18 @@ public class WeaponsController {
         data.setWeaponModelNameIcons("");
         data.setNowLvMaxExp(item.getNowLvMaxExp());
         return data;
+    }
+
+    @PacketReceiver
+    public void atCreateWeaponDefaultAsk(Session session, CreateWeaponDefaultAsk answer, GatewayAttachment attachment) {
+        logger.info("[当前服务器调用时间{}] [调用协议：atCreateWeaponDefaultAsk]", TimeUtils.simpleDateString());
+        var config = OrmContext.getAccessor().load(answer.getPlayerId(), WeaponsDataConfigEntity.class);
+        var entity = WeaponUsePlayerDataEntity.ValueOf();
+        var update = TimeUtils.timeToString(TimeUtils.now());
+        entity.setCreateAt(update);
+        entity.setUpdateAt(update);
+        entity.setWeaponId(config.getId());
+        entity.setNowLvExp();
+
     }
 }

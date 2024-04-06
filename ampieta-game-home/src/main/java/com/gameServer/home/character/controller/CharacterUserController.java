@@ -6,6 +6,7 @@ import com.gameServer.common.entity.composite.CharacterUserWeaponCompositeDataID
 import com.gameServer.common.ormEntity.CharacterConfigEntity;
 import com.gameServer.common.protocol.character.AcquireCharacterRequest;
 import com.gameServer.common.protocol.character.CreateCharacterRequest;
+import com.gameServer.home.weapon.service.IWeaponService;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.anno.PacketReceiver;
 import com.zfoo.net.packet.common.Error;
@@ -16,6 +17,7 @@ import com.zfoo.protocol.util.JsonUtils;
 import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,6 +30,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CharacterUserController {
     private static final Logger logger = LoggerFactory.getLogger(CharacterUserController.class);
+    @Autowired
+    private IWeaponService iWeaponService;
 
     @PacketReceiver
     public void atAcquireCharacterRequest(Session session, AcquireCharacterRequest request, GatewayAttachment gatewayAttachment) {
@@ -59,6 +63,7 @@ public class CharacterUserController {
         weaponCreateData.setWeaponId(config.getCharacterDefaultWeaponId());
         weaponCreateData.setWeaponType(config.getWeaponType());
         weaponCreateData.setWeaponOrmIndex(0);
+
         entity = CharacterPlayerUserEntity.ValueOf();
         entity.setDataID(findId);
         entity.setEntityHp(config.getLevel1HpValue());
