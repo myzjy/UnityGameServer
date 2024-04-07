@@ -119,7 +119,7 @@ public class WeaponsController {
         entity.setCreateAt(update);
         entity.setUpdateAt(update);
         entity.setWeaponId(config.getId());
-        entity.setNowLvExp();
+        entity.setNowLvExp(0);
 
     }
 }
