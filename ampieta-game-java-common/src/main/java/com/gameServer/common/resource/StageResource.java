@@ -12,7 +12,6 @@ import com.zfoo.storage.anno.Storage;
 @Storage
 public class StageResource{
     @Id
-    @Index
     protected int id;
     /**
      * 排序

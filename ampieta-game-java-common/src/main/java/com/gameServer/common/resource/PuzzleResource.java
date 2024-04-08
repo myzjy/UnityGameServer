@@ -13,7 +13,6 @@ import com.zfoo.storage.anno.Storage;
 public class PuzzleResource {
  
     @Id
-    @Index
     private int id;
     /**
      * 关卡名字
@@ -51,8 +50,6 @@ public class PuzzleResource {
      */
     private String resourcePath;
 
-    public PuzzleResource() {
-    }
 
     public int getId() {
         return id;

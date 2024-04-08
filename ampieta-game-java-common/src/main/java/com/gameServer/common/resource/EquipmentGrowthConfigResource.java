@@ -12,7 +12,6 @@ import com.zfoo.storage.anno.Storage;
 @Storage
 public class EquipmentGrowthConfigResource {
     @Id
-    @Index
     private int id;
     /**
      * 圣遗物位置

@@ -15,7 +15,6 @@ public class PuzzleChapterResource {
      * id
      */
     @Id
-    @Index
     private int id;
     /**
      * 章节名

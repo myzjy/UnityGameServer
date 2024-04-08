@@ -1,6 +1,6 @@
 id,primaryQuality,growthPosInt,growthPosName,primaryGrowthInts,primaryGrowthMaxInt,primaryGrowthName
 int,int,int,string,float,float,string
-id,品阶,圣遗物属性位置,属性名字,1级初始属性,品阶的最大等级的最大属性值,属性位置所属名字
+下标,品阶,圣遗物属性位置,属性名字,1级初始属性,品阶的最大等级的最大属性值,属性位置所属名字
 1,4,1,生之花,645,3571,生命值(数字加成)
 2,5,1,生之花,717,4780,生命值(数字加成)
 3,4,2,死之羽,42,232,攻击力(数字加成)

@@ -1,5 +1,6 @@
 package com.gameServer.common.resource;
 
+import com.zfoo.storage.anno.Id;
 import com.zfoo.storage.anno.Storage;
 
 /**
@@ -10,6 +11,7 @@ public class WeaponGrowthValueDataConfigResource {
     /**
      * id
      */
+    @Id
     private int id;
     /**
      * 等级

@@ -13,7 +13,6 @@ import com.zfoo.storage.anno.Storage;
 @Storage
 public class AccesGameTimeResource {
     @Id
-    @Index
     private int timeID;
 
     public int getTimeID() {

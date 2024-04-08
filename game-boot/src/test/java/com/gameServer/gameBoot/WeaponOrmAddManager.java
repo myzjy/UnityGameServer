@@ -55,6 +55,7 @@ public class WeaponOrmAddManager {
                 newEntity.setWeaponSkills(item.getWeaponSkills());
                 newEntity.setWeaponInitProgress(item.getWeaponInitProgress());
                 newEntity.setWeaponInitValue(item.getWeaponInitValue());
+                newEntity.setWeaponQuality(item.getWeaponQuality());
                 newEntity.setCreateAt(createOrUpdate);
                 newEntity.setUpdateAt(createOrUpdate);
                 OrmContext.getAccessor().insert(newEntity);
@@ -69,6 +70,7 @@ public class WeaponOrmAddManager {
                 ormData.setWeaponSkills(item.getWeaponSkills());
                 ormData.setWeaponInitProgress(item.getWeaponInitProgress());
                 ormData.setWeaponInitValue(item.getWeaponInitValue());
+                ormData.setWeaponQuality(item.getWeaponQuality());
                 if (StringUtils.isEmpty(ormData.getCreateAt())) {
                     ormData.setCreateAt(createOrUpdate);
                 } else {

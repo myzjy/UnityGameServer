@@ -13,7 +13,6 @@ import com.zfoo.storage.anno.Storage;
 @Storage
 public class WeaponsTypeResource {
     @Id
-    @Index
     protected int id;
     /**
      * 武器 type

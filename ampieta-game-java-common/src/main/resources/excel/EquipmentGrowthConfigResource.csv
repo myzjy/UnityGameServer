@@ -1,6 +1,6 @@
 id,locationOfEquipmentType,posName
 int,int,string
-id,圣遗物位置,位置的名字
+下表,圣遗物位置,位置的名字
 1,1,生之花
 2,2,死之羽
 3,3,时之沙

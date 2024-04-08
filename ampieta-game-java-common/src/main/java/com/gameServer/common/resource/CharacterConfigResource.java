@@ -14,7 +14,6 @@ import com.zfoo.storage.anno.Storage;
 @Storage
 public class CharacterConfigResource {
     @Id
-    @Index
     private int CId;
     /**
      * 品质

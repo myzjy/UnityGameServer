@@ -12,7 +12,6 @@ import com.zfoo.storage.anno.Storage;
 @Storage
 public class WeaponsDataConfigResource {
     @Id
-    @Index
     protected int id;
     /**
      * 武器名字

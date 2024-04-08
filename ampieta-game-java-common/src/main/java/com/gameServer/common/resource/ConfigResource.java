@@ -12,7 +12,6 @@ import com.zfoo.storage.anno.Storage;
 @Storage
 public class ConfigResource {
     @Id
-    @Index
     private int lv;
 
     public int getLv() {

@@ -15,7 +15,6 @@ public class ItemBaseCsvResource {
      * 道具id
      */
     @Id
-    @Index
     private int id;
     /**
      * 道具名字

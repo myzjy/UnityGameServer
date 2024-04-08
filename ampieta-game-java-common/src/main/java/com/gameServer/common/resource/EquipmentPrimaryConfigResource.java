@@ -13,7 +13,6 @@ import com.zfoo.storage.anno.Storage;
 @Storage
 public class EquipmentPrimaryConfigResource {
     @Id
-    @Index
     private int id;
     /**
      * 品阶

@@ -81,15 +81,15 @@
         <skipTests>true</skipTests>
         <spring-cloud.version>2020.0.2</spring-cloud.version>
         <!-- 本项目的其它module版本号 -->
-        <zfoo.boot.version>3.0</zfoo.boot.version>
-        <zfoo.event.version>3.0</zfoo.event.version>
-        <zfoo.hotswap.version>3.0</zfoo.hotswap.version>
-        <zfoo.monitor.version>3.0</zfoo.monitor.version>
-        <zfoo.net.version>3.0</zfoo.net.version>
-        <zfoo.scheduler.version>3.0</zfoo.scheduler.version>
-        <zfoo.storage.version>3.0</zfoo.storage.version>
-        <zfoo.orm.version>3.0</zfoo.orm.version>
-        <zfoo.protocol.version>3.0</zfoo.protocol.version>
+        <zfoo.boot.version>3.1.4</zfoo.boot.version>
+        <zfoo.event.version>3.1.4</zfoo.event.version>
+        <zfoo.hotswap.version>3.1.4</zfoo.hotswap.version>
+        <zfoo.monitor.version>3.1.4</zfoo.monitor.version>
+        <zfoo.net.version>3.1.4</zfoo.net.version>
+        <zfoo.scheduler.version>3.1.4</zfoo.scheduler.version>
+        <zfoo.storage.version>3.1.4</zfoo.storage.version>
+        <zfoo.orm.version>3.1.4</zfoo.orm.version>
+        <zfoo.protocol.version>3.1.4</zfoo.protocol.version>
         <!-- 核心spring框架 -->
         <spring.version>5.3.4</spring.version>
         <spring.boot.version>2.4.3</spring.boot.version>
