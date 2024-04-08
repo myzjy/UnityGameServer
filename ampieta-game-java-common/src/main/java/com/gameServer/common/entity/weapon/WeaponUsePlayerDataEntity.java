@@ -61,7 +61,7 @@ public class WeaponUsePlayerDataEntity implements IEntity<Long> {
      */
     private int nowOrderNum;
     /**
-     * 当前武器 强化等阶 最高等级
+     * 当前武器 强化等阶 最高等级 对标的是武器 技能 最高进阶多少
      */
     private int maxOrderNum;
     /**

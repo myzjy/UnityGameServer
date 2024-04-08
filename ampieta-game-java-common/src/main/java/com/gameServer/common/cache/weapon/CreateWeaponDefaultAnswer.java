@@ -9,4 +9,7 @@ import com.zfoo.protocol.anno.Protocol;
  */
 @Protocol(id = 6001)
 public class CreateWeaponDefaultAnswer {
+    public static CreateWeaponDefaultAnswer valueOf() {
+        return new CreateWeaponDefaultAnswer();
+    }
 }

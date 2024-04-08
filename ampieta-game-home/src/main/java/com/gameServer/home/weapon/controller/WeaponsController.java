@@ -3,6 +3,7 @@ package com.gameServer.home.weapon.controller;
 import com.gameServer.common.cache.weapon.CreateWeaponDefaultAnswer;
 import com.gameServer.common.cache.weapon.CreateWeaponDefaultAsk;
 import com.gameServer.common.entity.weapon.WeaponUsePlayerDataEntity;
+import com.gameServer.common.ormEntity.WeaponGrowthValueDataConfigOrmEntity;
 import com.gameServer.common.ormEntity.WeaponsDataConfigEntity;
 import com.gameServer.common.protocol.weapon.WeaponPlayerUserDataRequest;
 import com.gameServer.common.protocol.weapon.WeaponPlayerUserDataResponse;
@@ -16,7 +17,9 @@ import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.protocol.util.JsonUtils;
+import com.zfoo.protocol.util.StringUtils;
 import com.zfoo.scheduler.util.TimeUtils;
+import org.apache.commons.lang.NullArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,12 +117,34 @@ public class WeaponsController {
     public void atCreateWeaponDefaultAsk(Session session, CreateWeaponDefaultAsk answer, GatewayAttachment attachment) {
         logger.info("[当前服务器调用时间{}] [调用协议：atCreateWeaponDefaultAsk]", TimeUtils.simpleDateString());
         var config = OrmContext.getAccessor().load(answer.getPlayerId(), WeaponsDataConfigEntity.class);
+        if (config == null) {
+            // rpc 返回
+            NetContext.getConsumer().send(CreateWeaponDefaultAnswer.valueOf(), attachment);
+            throw new NullArgumentException(StringUtils.format("当前 查找武器id:{}，数据库 中不存在", answer.getPlayerId()));
+        }
+        //武器等级
+        var weaponLv = OrmContext.getQuery(WeaponGrowthValueDataConfigOrmEntity.class).eq("quality", config.getWeaponQuality()).eq("lv", 1).queryFirst();
         var entity = WeaponUsePlayerDataEntity.ValueOf();
         var update = TimeUtils.timeToString(TimeUtils.now());
         entity.setCreateAt(update);
         entity.setUpdateAt(update);
         entity.setWeaponId(config.getId());
         entity.setNowLvExp(0);
-
+        entity.setNowLvMaxExp(weaponLv.getExp());
+        entity.setLock(false);
+        entity.setNowReinforcementEqualOrder(1);
+        entity.setMaxReinforcementEqualOrder(6);
+        entity.setLv(1);
+        entity.setNowMaxLv(20);
+        entity.setUserUid(session.getUid());
+        entity.setWeaponName(config.getWeaponName());
+        entity.setWeaponsSkill(config.getWeaponSkills());
+        entity.setNowOrderNum(1);
+        entity.setMaxOrderNum(5);
+        entity.setWeaponValue(config.getWeaponMainInitType());
+        entity.setNewPc(true);
+        entity.setNewAndroid(true);
+        OrmContext.getAccessor().insert(entity);
+        NetContext.getConsumer().send(CreateWeaponDefaultAnswer.valueOf(), attachment);
     }
 }
