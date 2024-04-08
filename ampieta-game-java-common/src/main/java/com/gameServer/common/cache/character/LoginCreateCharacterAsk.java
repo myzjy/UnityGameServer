@@ -9,7 +9,7 @@ import com.zfoo.protocol.anno.Protocol;
  * @version 1.0
  * @since 2024/4/1 23 03
  */
-@Protocol(id = 6003)
+@Protocol(id = 6002)
 public class LoginCreateCharacterAsk {
     /**
      * 需要创建角色的 id

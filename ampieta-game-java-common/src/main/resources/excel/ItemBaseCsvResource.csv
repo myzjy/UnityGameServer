@@ -1,4 +1,0 @@
-id,name,icon,minNum,maxNum,type,des,quality,resourcePath
-int,string,string,int,int,int,string,int,string
-des,des,des,des,des,des,des,des,des
-101,无双,st,0,9999,2,101,1,wushang

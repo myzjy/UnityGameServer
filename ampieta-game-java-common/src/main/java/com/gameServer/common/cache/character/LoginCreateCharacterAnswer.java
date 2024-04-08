@@ -7,6 +7,6 @@ import com.zfoo.protocol.anno.Protocol;
  * @version 1.0
  * @since 2024/4/1 23 08
  */
-@Protocol(id = 6004)
+@Protocol(id = 6003)
 public class LoginCreateCharacterAnswer {
 }

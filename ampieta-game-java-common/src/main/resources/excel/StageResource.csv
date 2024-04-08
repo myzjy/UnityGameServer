@@ -1,4 +1,0 @@
-id,order,puzzleId,standbyRole,lockMessage,missionId
-int,int,int,string,int,string
-关卡id,关卡排序,关卡管理配置id,关卡点击上去之后界面会显示的角色,关卡解锁条件,关卡任务
-110001,1,110001,200:1,110001,110001
