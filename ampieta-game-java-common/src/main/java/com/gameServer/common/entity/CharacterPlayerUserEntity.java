@@ -19,6 +19,7 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
     @Id
     private CharacterUserCompositeDataID dataID;
 
+
     @Override
     public CharacterUserCompositeDataID id() {
         return null;
@@ -231,4 +232,6 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
     public void setWeaponCompositeDataID(CharacterUserWeaponCompositeDataID weaponCompositeDataID) {
         this.weaponCompositeDataID = weaponCompositeDataID;
     }
+
+
 }

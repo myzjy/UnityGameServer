@@ -2,11 +2,15 @@ package com.gameServer.home.login.controller;
 
 import com.gameServer.common.cache.character.LoginCreateCharacterAnswer;
 import com.gameServer.common.cache.character.LoginCreateCharacterAsk;
+import com.gameServer.common.cache.weapon.CreateWeaponDefaultAnswer;
+import com.gameServer.common.cache.weapon.CreateWeaponDefaultAsk;
 import com.gameServer.common.constant.I18nEnum;
 import com.gameServer.common.constant.TankDeployEnum;
 import com.gameServer.common.entity.AccountEntity;
 import com.gameServer.common.entity.CharacterPlayerUserEntity;
 import com.gameServer.common.entity.PlayerUserEntity;
+import com.gameServer.common.entity.composite.CharacterUserCompositeDataID;
+import com.gameServer.common.entity.composite.CharacterUserWeaponCompositeDataID;
 import com.gameServer.common.ormEntity.CharacterConfigEntity;
 import com.gameServer.common.protocol.login.GetPlayerInfoRequest;
 import com.gameServer.common.protocol.login.LoginRequest;
@@ -14,6 +18,7 @@ import com.gameServer.common.protocol.login.LoginResponse;
 import com.gameServer.common.protocol.login.LogoutRequest;
 import com.gameServer.common.util.TokenUtils;
 import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
+import com.gameServer.home.character.service.ICharacterService;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.anno.PacketReceiver;
@@ -49,6 +54,8 @@ public class LoginController {
     private IUserLoginService userLoginService;
     @Autowired
     private IPhysicalPowerService physicalPowerService;
+    @Autowired
+    private ICharacterService characterService;
     @Value("${spring.profiles.active}")
     private TankDeployEnum deployEnum;
 
@@ -167,6 +174,7 @@ public class LoginController {
         logger.info("LoginResponse:{}", JsonUtils.object2String(resposne));
         NetContext.getRouter().send(session, resposne
                 , gatewayAttachment);
+        NetContext.getConsumer().syncAsk(LoginCreateCharacterAsk.valueOf(10001), LoginCreateCharacterAnswer.class, null).packet();
     }
 
     @PacketReceiver
@@ -221,13 +229,46 @@ public class LoginController {
     }
 
     @PacketReceiver
-    public void atLoginCreateCharacterAsk(Session session, LoginCreateCharacterAsk loginCreateCharacterAsk, GatewayAttachment gatewayAttachment) {
+    public void atLoginCreateCharacterAsk(Session session, LoginCreateCharacterAsk loginCreateCharacterAsk) throws Exception {
         logger.info("[当前服务器调用时间{}] [调用协议: 6003 ]", TimeUtils.simpleDateString());
         // 需要创建的角色 id
         var playerCreteId = loginCreateCharacterAsk.getPlayerId();
         //当前 角色 配置
         var config = OrmContext.getAccessor().load(playerCreteId, CharacterConfigEntity.class);
-        var character= CharacterPlayerUserEntity.ValueOf();
-        //character.setWeaponCompositeDataID();
+        if (config == null) {
+            return;
+        }
+        // 创建武器的 rpc
+        var sk = CreateWeaponDefaultAsk.valueOf(config.getCharacterDefaultWeaponId(), config.getWeaponType(), playerCreteId);
+        var Data = NetContext.getConsumer().syncAsk(sk, CreateWeaponDefaultAnswer.class, null).packet();
+        // 创建角色
+        var findId = new CharacterUserCompositeDataID();
+        findId.setCharacterId(playerCreteId);
+        findId.setUid(session.getUid());
+        var characterUser = CharacterPlayerUserEntity.ValueOf();
+        CharacterUserWeaponCompositeDataID _weaponCreateData =
+                characterService.createCharacterUserWeaponCompositeDataID(
+                        config.getCharacterDefaultWeaponId(),
+                        config.getWeaponType(), Data.getWeaponIndex());
+        characterUser = characterService.createCharacterPlayerUserEntity(findId,
+                                                                         config.getLevel1HpValue(),
+                                                                         config.getLevel1HpValue(),
+                                                                         config.getLevel1HpValue(),
+                                                                         config.getLevel1HpValue(),
+                                                                         config.getLevel1Atk(),
+                                                                         config.getLevel1Atk(),
+                                                                         config.getLevel1Atk(),
+                                                                         config.getLevel1Atk(),
+                                                                         config.getLevel1Def(),
+                                                                         config.getLevel1CriticalHitChance(),
+                                                                         config.getLevel1ElementMastery(),
+                                                                         config.getLevel1CriticalHitDamage(),
+                                                                         config.getLevel1ChargingEfficiencyOfElements(),
+                                                                         0,
+                                                                         1,
+                                                                         _weaponCreateData);
+        OrmContext.getAccessor().insert(characterUser);
+        var data = new LoginCreateCharacterAnswer();
+        NetContext.getRouter().send(session, data);
     }
 }

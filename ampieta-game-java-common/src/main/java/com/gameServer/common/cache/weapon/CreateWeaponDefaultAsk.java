@@ -17,12 +17,16 @@ public class CreateWeaponDefaultAsk {
      * 武器 type
      */
     private int weaponType;
+    /**
+     * 是否 有 装备角色
+     */
+    private int userPlayerId;
 
     public static CreateWeaponDefaultAsk valueOf() {
         return new CreateWeaponDefaultAsk();
     }
 
-    public static CreateWeaponDefaultAsk valueOf(int playerId, int weaponType) {
+    public static CreateWeaponDefaultAsk valueOf(int playerId, int weaponType, int userPlayerId) {
         var data = new CreateWeaponDefaultAsk();
         data.setPlayerId(playerId);
         data.setWeaponType(weaponType);
@@ -43,5 +47,13 @@ public class CreateWeaponDefaultAsk {
 
     public void setWeaponType(int weaponType) {
         this.weaponType = weaponType;
+    }
+
+    public int getUserPlayerId() {
+        return userPlayerId;
+    }
+
+    public void setUserPlayerId(int userPlayerId) {
+        this.userPlayerId = userPlayerId;
     }
 }

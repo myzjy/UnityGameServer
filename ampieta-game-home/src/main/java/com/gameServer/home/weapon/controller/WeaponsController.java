@@ -114,18 +114,22 @@ public class WeaponsController {
     }
 
     @PacketReceiver
-    public void atCreateWeaponDefaultAsk(Session session, CreateWeaponDefaultAsk answer, GatewayAttachment attachment) {
+    public void atCreateWeaponDefaultAsk(Session session, CreateWeaponDefaultAsk answer) {
         logger.info("[当前服务器调用时间{}] [调用协议：atCreateWeaponDefaultAsk]", TimeUtils.simpleDateString());
         var config = OrmContext.getAccessor().load(answer.getPlayerId(), WeaponsDataConfigEntity.class);
         if (config == null) {
             // rpc 返回
-            NetContext.getConsumer().send(CreateWeaponDefaultAnswer.valueOf(), attachment);
+            NetContext.getRouter().send(session,new CreateWeaponDefaultAnswer());
             throw new NullArgumentException(StringUtils.format("当前 查找武器id:{}，数据库 中不存在", answer.getPlayerId()));
+            //return;
         }
+        //数据库 中 武器数据 list
+        var weaponUserList = OrmContext.getQuery(WeaponUsePlayerDataEntity.class).queryAll();
         //武器等级
         var weaponLv = OrmContext.getQuery(WeaponGrowthValueDataConfigOrmEntity.class).eq("quality", config.getWeaponQuality()).eq("lv", 1).queryFirst();
         var entity = WeaponUsePlayerDataEntity.ValueOf();
         var update = TimeUtils.timeToString(TimeUtils.now());
+        entity.setId((long) weaponUserList.size() + 1);
         entity.setCreateAt(update);
         entity.setUpdateAt(update);
         entity.setWeaponId(config.getId());
@@ -133,18 +137,31 @@ public class WeaponsController {
         entity.setNowLvMaxExp(weaponLv.getExp());
         entity.setLock(false);
         entity.setNowReinforcementEqualOrder(1);
-        entity.setMaxReinforcementEqualOrder(6);
+        entity.setMaxReinforcementEqualOrder(config.getWeaponReinforcementEqualOrder());
+        entity.setUserPlayerId(answer.getUserPlayerId());
         entity.setLv(1);
-        entity.setNowMaxLv(20);
+        var breakthrough = config.getWeaponBreakthrough();
+        var breakthroughs = breakthrough.split("\\|");
+        if (breakthroughs.length > 0) {
+            var strL = breakthroughs[0].split("\\+");
+            int nowMaxLv = Integer.parseInt(strL[0]);
+            entity.setNowMaxLv(nowMaxLv);
+        } else {
+            NetContext.getRouter().send(session,new CreateWeaponDefaultAnswer());
+            throw new NumberFormatException(StringUtils.format("当前武器 id:{}，基础配置表 中的WeaponBreakthrough字段配置错误或者解析错误", config.getId()));
+            //return;
+        }
         entity.setUserUid(session.getUid());
         entity.setWeaponName(config.getWeaponName());
         entity.setWeaponsSkill(config.getWeaponSkills());
         entity.setNowOrderNum(1);
-        entity.setMaxOrderNum(5);
+        entity.setMaxOrderNum(config.getWeaponOrderNum());
         entity.setWeaponValue(config.getWeaponMainInitType());
         entity.setNewPc(true);
         entity.setNewAndroid(true);
         OrmContext.getAccessor().insert(entity);
-        NetContext.getConsumer().send(CreateWeaponDefaultAnswer.valueOf(), attachment);
+        var answerNew=new CreateWeaponDefaultAnswer();
+        answerNew.setWeaponIndex(entity.getWeaponId());
+        NetContext.getRouter().send(session,answerNew);
     }
 }

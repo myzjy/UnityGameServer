@@ -6,6 +6,7 @@ import com.gameServer.common.entity.composite.CharacterUserWeaponCompositeDataID
 import com.gameServer.common.ormEntity.CharacterConfigEntity;
 import com.gameServer.common.protocol.character.AcquireCharacterRequest;
 import com.gameServer.common.protocol.character.CreateCharacterRequest;
+import com.gameServer.home.character.service.ICharacterService;
 import com.gameServer.home.weapon.service.IWeaponService;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.anno.PacketReceiver;
@@ -32,6 +33,8 @@ public class CharacterUserController {
     private static final Logger logger = LoggerFactory.getLogger(CharacterUserController.class);
     @Autowired
     private IWeaponService iWeaponService;
+    @Autowired
+    private ICharacterService characterService;
 
     @PacketReceiver
     public void atAcquireCharacterRequest(Session session, AcquireCharacterRequest request, GatewayAttachment gatewayAttachment) {
@@ -59,28 +62,27 @@ public class CharacterUserController {
             NetContext.getRouter().send(session, Error.valueOf("数据错误"), gatewayAttachment);
             return;
         }
-        var weaponCreateData = CharacterUserWeaponCompositeDataID.valueOf();
-        weaponCreateData.setWeaponId(config.getCharacterDefaultWeaponId());
-        weaponCreateData.setWeaponType(config.getWeaponType());
-        weaponCreateData.setWeaponOrmIndex(0);
-
-        entity = CharacterPlayerUserEntity.ValueOf();
-        entity.setDataID(findId);
-        entity.setEntityHp(config.getLevel1HpValue());
-        entity.setEntityMaxHp(config.getLevel1HpValue());
-        entity.setEntityNowHp(config.getLevel1HpValue());
-        entity.setEntityNowMaxHp(config.getLevel1HpValue());
-        entity.setEntityAtk(config.getLevel1Atk());
-        entity.setEntityNowAtk(config.getLevel1Atk());
-        entity.setEntityMaxAtk(config.getLevel1Atk());
-        entity.setEntityNowMaxAtk(config.getLevel1Atk());
-        entity.setElementHitDamage(entity.getElementHitDamage());
-        entity.setElementType(entity.getElementType());
-        entity.setLeveCriticalHitChance(config.getLevel1CriticalHitChance());
-        entity.setLevelElementMastery(entity.getLevelElementMastery());
-        entity.setLevelCriticalHitDamage(entity.getLevelCriticalHitDamage());
-        entity.setLevelChargingEfficiencyOfElements(entity.getLevelChargingEfficiencyOfElements());
-        entity.setWeaponCompositeDataID(weaponCreateData);
+        var weaponCreateData =
+                characterService.createCharacterUserWeaponCompositeDataID(
+                        config.getCharacterDefaultWeaponId(),
+                        config.getWeaponType(), 0);
+        entity = characterService.createCharacterPlayerUserEntity(findId,
+                                                                  config.getLevel1HpValue(),
+                                                                  config.getLevel1HpValue(),
+                                                                  config.getLevel1HpValue(),
+                                                                  config.getLevel1HpValue(),
+                                                                  config.getLevel1Atk(),
+                                                                  config.getLevel1Atk(),
+                                                                  config.getLevel1Atk(),
+                                                                  config.getLevel1Atk(),
+                                                                  config.getLevel1Def(),
+                                                                  config.getLevel1CriticalHitChance(),
+                                                                  config.getLevel1ElementMastery(),
+                                                                  config.getLevel1CriticalHitDamage(),
+                                                                  config.getLevel1ChargingEfficiencyOfElements(),
+                                                                  0,
+                                                                  1,
+                                                                  weaponCreateData);
         OrmContext.getAccessor().insert(entity);
     }
 }

@@ -14,23 +14,23 @@ public class LoginCreateCharacterAsk {
     /**
      * 需要创建角色的 id
      */
-    private long playerId;
+    private int playerId;
 
     public static LoginCreateCharacterAsk valueOf() {
         return new LoginCreateCharacterAsk();
     }
 
-    public static LoginCreateCharacterAsk valueOf(long playerId) {
+    public static LoginCreateCharacterAsk valueOf(int playerId) {
         var data = new LoginCreateCharacterAsk();
         data.setPlayerId(playerId);
         return data;
     }
 
-    public long getPlayerId() {
+    public int getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(long playerId) {
+    public void setPlayerId(int playerId) {
         this.playerId = playerId;
     }
 }

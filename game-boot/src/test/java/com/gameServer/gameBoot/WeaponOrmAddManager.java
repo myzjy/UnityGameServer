@@ -55,7 +55,10 @@ public class WeaponOrmAddManager {
                 newEntity.setWeaponSkills(item.getWeaponSkills());
                 newEntity.setWeaponInitProgress(item.getWeaponInitProgress());
                 newEntity.setWeaponInitValue(item.getWeaponInitValue());
+                newEntity.setWeaponMainInitType(item.getWeaponMainInitType());
+                newEntity.setWeaponReinforcementEqualOrder(item.getReinforcementEqualOrder());
                 newEntity.setWeaponQuality(item.getWeaponQuality());
+                newEntity.setWeaponOrderNum(item.getOrderNum());
                 newEntity.setCreateAt(createOrUpdate);
                 newEntity.setUpdateAt(createOrUpdate);
                 OrmContext.getAccessor().insert(newEntity);
@@ -76,6 +79,9 @@ public class WeaponOrmAddManager {
                 } else {
                     ormData.setCreateAt(ormData.getCreateAt());
                 }
+                newEntity.setWeaponMainInitType(item.getWeaponMainInitType());
+                newEntity.setWeaponReinforcementEqualOrder(item.getReinforcementEqualOrder());
+                newEntity.setWeaponOrderNum(item.getOrderNum());
                 ormData.setUpdateAt(createOrUpdate);
                 OrmContext.getAccessor().update(ormData);
             }

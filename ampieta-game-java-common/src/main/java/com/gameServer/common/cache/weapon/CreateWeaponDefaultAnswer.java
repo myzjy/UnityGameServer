@@ -1,5 +1,6 @@
 package com.gameServer.common.cache.weapon;
 
+import com.gameServer.common.entity.weapon.WeaponUsePlayerDataEntity;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -9,7 +10,15 @@ import com.zfoo.protocol.anno.Protocol;
  */
 @Protocol(id = 6001)
 public class CreateWeaponDefaultAnswer {
-    public static CreateWeaponDefaultAnswer valueOf() {
-        return new CreateWeaponDefaultAnswer();
+
+    private int weaponIndex;
+
+    public int getWeaponIndex() {
+        return weaponIndex;
     }
+
+    public void setWeaponIndex(int weaponIndex) {
+        this.weaponIndex = weaponIndex;
+    }
+
 }

@@ -30,6 +30,10 @@ public class WeaponsDataConfigResource {
      */
     protected String weaponInitValue;
     /**
+     * 武器主属性的 type
+     */
+    protected int weaponMainInitType;
+    /**
      * 武器强化1-20级每级强化数字
      */
     protected String weaponInitProgress;
@@ -49,6 +53,14 @@ public class WeaponsDataConfigResource {
      * 武器品质
      */
     protected int weaponQuality;
+    /**
+     * 武器可以进阶几次  除开最低品质的 一般来说都是 5次
+     */
+    protected int orderNum;
+    /**
+     * 武器强化到一定等级可以突破 这个过程几次
+     */
+    protected int reinforcementEqualOrder;
 
     public int getId() {
         return id;
@@ -88,5 +100,17 @@ public class WeaponsDataConfigResource {
 
     public int getWeaponQuality() {
         return weaponQuality;
+    }
+
+    public int getOrderNum() {
+        return orderNum;
+    }
+
+    public int getWeaponMainInitType() {
+        return weaponMainInitType;
+    }
+
+    public int getReinforcementEqualOrder() {
+        return reinforcementEqualOrder;
     }
 }

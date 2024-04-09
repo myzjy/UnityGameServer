@@ -52,6 +52,14 @@ public class WeaponsDataConfigEntity implements IEntity<Integer> {
      */
     protected int weaponQuality;
     /**
+     * 武器进阶几次 固定的
+     */
+    protected int weaponOrderNum;
+    /**
+     *
+     */
+    protected int weaponReinforcementEqualOrder;
+    /**
      * 创建时间
      */
     private String createAt;
@@ -171,5 +179,21 @@ public class WeaponsDataConfigEntity implements IEntity<Integer> {
 
     public void setWeaponQuality(int weaponQuality) {
         this.weaponQuality = weaponQuality;
+    }
+
+    public int getWeaponOrderNum() {
+        return weaponOrderNum;
+    }
+
+    public void setWeaponOrderNum(int weaponOrderNum) {
+        this.weaponOrderNum = weaponOrderNum;
+    }
+
+    public int getWeaponReinforcementEqualOrder() {
+        return weaponReinforcementEqualOrder;
+    }
+
+    public void setWeaponReinforcementEqualOrder(int weaponReinforcementEqualOrder) {
+        this.weaponReinforcementEqualOrder = weaponReinforcementEqualOrder;
     }
 }
