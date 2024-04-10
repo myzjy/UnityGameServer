@@ -115,7 +115,7 @@ public class WeaponsController {
 
     @PacketReceiver
     public void atCreateWeaponDefaultAsk(Session session, CreateWeaponDefaultAsk answer) {
-        logger.info("[当前服务器调用时间{}] [调用协议：atCreateWeaponDefaultAsk]", TimeUtils.simpleDateString());
+        logger.info("[当前服务器调用时间{}] [调用协议：atCreateWeaponDefaultAsk]",TimeUtils.timeToString(TimeUtils.now()));
         var config = OrmContext.getAccessor().load(answer.getPlayerId(), WeaponsDataConfigEntity.class);
         if (config == null) {
             // rpc 返回
@@ -162,6 +162,7 @@ public class WeaponsController {
         OrmContext.getAccessor().insert(entity);
         var answerNew=new CreateWeaponDefaultAnswer();
         answerNew.setWeaponIndex(entity.getWeaponId());
+        logger.info("WeaponUsePlayerDataEntity:{}", JsonUtils.object2String(entity));
         NetContext.getRouter().send(session,answerNew);
     }
 }
