@@ -86,6 +86,10 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
      */
     private int elementType;
     /**
+     * 当前 角色 所属 玩家 uid
+     */
+    private long userUID;
+    /**
      * 武器 穿戴
      */
     private CharacterUserWeaponCompositeDataID weaponCompositeDataID;
@@ -233,5 +237,11 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
         this.weaponCompositeDataID = weaponCompositeDataID;
     }
 
+    public long getUserUID() {
+        return userUID;
+    }
 
+    public void setUserUID(long userUID) {
+        this.userUID = userUID;
+    }
 }

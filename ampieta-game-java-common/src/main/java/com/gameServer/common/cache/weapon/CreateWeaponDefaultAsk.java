@@ -21,15 +21,18 @@ public class CreateWeaponDefaultAsk {
      * 是否 有 装备角色
      */
     private int userPlayerId;
+    private long uid;
 
     public static CreateWeaponDefaultAsk valueOf() {
         return new CreateWeaponDefaultAsk();
     }
 
-    public static CreateWeaponDefaultAsk valueOf(int playerId, int weaponType, int userPlayerId) {
+    public static CreateWeaponDefaultAsk valueOf(int playerId, int weaponType, int userPlayerId, long uid) {
         var data = new CreateWeaponDefaultAsk();
         data.setPlayerId(playerId);
         data.setWeaponType(weaponType);
+        data.setUserPlayerId(userPlayerId);
+        data.setUid(uid);
         return data;
     }
 
@@ -55,5 +58,13 @@ public class CreateWeaponDefaultAsk {
 
     public void setUserPlayerId(int userPlayerId) {
         this.userPlayerId = userPlayerId;
+    }
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
     }
 }

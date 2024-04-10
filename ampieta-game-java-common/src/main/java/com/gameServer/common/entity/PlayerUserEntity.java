@@ -6,6 +6,8 @@ import com.zfoo.orm.anno.Id;
 import com.zfoo.orm.anno.Persister;
 import com.zfoo.orm.model.IEntity;
 
+import java.util.List;
+
 /**
  * @author zjy
  * @version 0.1
@@ -78,6 +80,10 @@ public class PlayerUserEntity implements IEntity<Long> {
      */
     private int nowPhysicalPowerNum;
     private long uid;
+    /**
+     * 当前 出战的角色 id
+     */
+    private List<Integer> fightPlayerList;
 
 //    private long
 
@@ -268,7 +274,13 @@ public class PlayerUserEntity implements IEntity<Long> {
         return uid;
     }
 
+    public List<Integer> getFightPlayerList() {
+        return fightPlayerList;
+    }
 
+    public void setFightPlayerList(List<Integer> fightPlayerList) {
+        this.fightPlayerList = fightPlayerList;
+    }
 
     @Override
     public boolean empty() {

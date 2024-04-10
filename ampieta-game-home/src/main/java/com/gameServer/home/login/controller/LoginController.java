@@ -160,7 +160,20 @@ public class LoginController {
         logger.info("[{}][{}]数据库刷新成功", userCache.getId(), sid);
         userLoginService.UpdatePlayerUserEntity(userCache);
         logger.info("UID:{}, 更新过后 PlayerUserEntity:{}", uid, JsonUtils.object2String(userCache));
-        //返回数据
+        //不需要 创建 角色
+        var list = OrmContext.getQuery(CharacterPlayerUserEntity.class).queryAll();
+        if (list.isEmpty()) {
+
+            //当前 角色 配置
+            var config = OrmContext.getAccessor().load(10001, CharacterConfigEntity.class);
+            if (config != null) {
+                // 创建武器的 rpc
+                var sk = CreateWeaponDefaultAsk.valueOf(config.getCharacterDefaultWeaponId(), config.getWeaponType(), 10001,session.getUid());
+                var Data = NetContext.getConsumer().syncAsk(sk, CreateWeaponDefaultAnswer.class, null).packet();
+                NetContext.getConsumer().syncAsk(LoginCreateCharacterAsk.valueOf(10001, Data.getWeaponIndex()), LoginCreateCharacterAnswer.class, null).packet();
+                //返回数据
+            }
+        }
         var resposne = LoginResponse.valueOf(userCache.getToken(),
                                              userCache.getName(),
                                              userCache.id(),
@@ -174,20 +187,6 @@ public class LoginController {
         logger.info("LoginResponse:{}", JsonUtils.object2String(resposne));
         NetContext.getRouter().send(session, resposne
                 , gatewayAttachment);
-        //不需要 创建 角色
-        var list = OrmContext.getQuery(CharacterPlayerUserEntity.class).queryAll();
-        if (!list.isEmpty()) {
-            return;
-        }
-        //当前 角色 配置
-        var config = OrmContext.getAccessor().load(10001, CharacterConfigEntity.class);
-        if (config == null) {
-            return;
-        }
-        // 创建武器的 rpc
-        var sk = CreateWeaponDefaultAsk.valueOf(config.getCharacterDefaultWeaponId(), config.getWeaponType(), 10001);
-        var Data = NetContext.getConsumer().syncAsk(sk, CreateWeaponDefaultAnswer.class, null).packet();
-        NetContext.getConsumer().syncAsk(LoginCreateCharacterAsk.valueOf(10001, Data.getWeaponIndex()), LoginCreateCharacterAnswer.class, null).packet();
     }
 
     @PacketReceiver
@@ -240,6 +239,4 @@ public class LoginController {
         logger.info("[退出游戏] 结束更新玩家退出游戏时间");
         userLoginService.UpdatePlayerUserEntity(player);
     }
-
-
 }

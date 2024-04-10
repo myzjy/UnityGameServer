@@ -123,6 +123,7 @@ public class CharacterUserController {
                         0,
                         1,
                         _weaponCreateData);
+        characterUser.setUserUID(session.getUid());
         logger.info("createCharacterPlayerUserEntity:{}", JsonUtils.object2String(characterUser));
 
         OrmContext.getAccessor().insert(characterUser);
