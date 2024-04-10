@@ -1,5 +1,7 @@
 package com.gameServer.home.character.controller;
 
+import com.gameServer.common.cache.character.LoginCreateCharacterAnswer;
+import com.gameServer.common.cache.character.LoginCreateCharacterAsk;
 import com.gameServer.common.entity.CharacterPlayerUserEntity;
 import com.gameServer.common.entity.composite.CharacterUserCompositeDataID;
 import com.gameServer.common.entity.composite.CharacterUserWeaponCompositeDataID;
@@ -66,7 +68,7 @@ public class CharacterUserController {
                 characterService.createCharacterUserWeaponCompositeDataID(
                         config.getCharacterDefaultWeaponId(),
                         config.getWeaponType(), 0);
-        entity = characterService.createCharacterPlayerUserEntity(findId,
+       var entityCreate = characterService.createCharacterPlayerUserEntity(findId,
                                                                   config.getLevel1HpValue(),
                                                                   config.getLevel1HpValue(),
                                                                   config.getLevel1HpValue(),
@@ -83,6 +85,48 @@ public class CharacterUserController {
                                                                   0,
                                                                   1,
                                                                   weaponCreateData);
-        OrmContext.getAccessor().insert(entity);
+        logger.info("createCharacterPlayerUserEntity:{}", JsonUtils.object2String(entityCreate));
+
+        OrmContext.getAccessor().insert(entityCreate);
+        var data = new LoginCreateCharacterAnswer();
+        //NetContext.getRouter().send(session, data);
+    }
+    @PacketReceiver
+    public void atLoginCreateCharacterAsk(Session session, LoginCreateCharacterAsk loginCreateCharacterAsk) throws Exception {
+        logger.info("[当前服务器调用时间{}] [调用协议: 6003 ]", TimeUtils.simpleDateString());
+        // 需要创建的角色 id
+        var playerCreteId = loginCreateCharacterAsk.getPlayerId();
+        //当前 角色 配置
+        var config = OrmContext.getAccessor().load(playerCreteId, CharacterConfigEntity.class);
+        if (config == null) {
+            return;
+        }
+        // 创建武器的 rpc
+        // 创建角色
+        var findId = new CharacterUserCompositeDataID();
+        findId.setCharacterId(playerCreteId);
+        findId.setUid(session.getUid());
+        var characterUser = CharacterPlayerUserEntity.ValueOf();
+        CharacterUserWeaponCompositeDataID _weaponCreateData =
+                characterService.createCharacterUserWeaponCompositeDataID(
+                        config.getCharacterDefaultWeaponId(),
+                        config.getWeaponType(), loginCreateCharacterAsk.getWeaponIndex());
+        characterUser = characterService
+                .createCharacterPlayerUserEntity(
+                        findId, config.getLevel1HpValue(),
+                        config.getLevel1HpValue(), config.getLevel1HpValue(),
+                        config.getLevel1HpValue(), config.getLevel1Atk(),
+                        config.getLevel1Atk(), config.getLevel1Atk(),
+                        config.getLevel1Atk(), config.getLevel1Def(),
+                        config.getLevel1CriticalHitChance(), config.getLevel1ElementMastery(),
+                        config.getLevel1CriticalHitDamage(), config.getLevel1ChargingEfficiencyOfElements(),
+                        0,
+                        1,
+                        _weaponCreateData);
+        logger.info("createCharacterPlayerUserEntity:{}", JsonUtils.object2String(characterUser));
+
+        OrmContext.getAccessor().insert(characterUser);
+        var data = new LoginCreateCharacterAnswer();
+        NetContext.getRouter().send(session, data);
     }
 }

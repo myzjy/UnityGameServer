@@ -174,6 +174,11 @@ public class LoginController {
         logger.info("LoginResponse:{}", JsonUtils.object2String(resposne));
         NetContext.getRouter().send(session, resposne
                 , gatewayAttachment);
+        //不需要 创建 角色
+        var list = OrmContext.getQuery(CharacterPlayerUserEntity.class).queryAll();
+        if (!list.isEmpty()) {
+            return;
+        }
         //当前 角色 配置
         var config = OrmContext.getAccessor().load(10001, CharacterConfigEntity.class);
         if (config == null) {
@@ -182,7 +187,7 @@ public class LoginController {
         // 创建武器的 rpc
         var sk = CreateWeaponDefaultAsk.valueOf(config.getCharacterDefaultWeaponId(), config.getWeaponType(), 10001);
         var Data = NetContext.getConsumer().syncAsk(sk, CreateWeaponDefaultAnswer.class, null).packet();
-        NetContext.getConsumer().syncAsk(LoginCreateCharacterAsk.valueOf(10001,Data.getWeaponIndex()), LoginCreateCharacterAnswer.class, null).packet();
+        NetContext.getConsumer().syncAsk(LoginCreateCharacterAsk.valueOf(10001, Data.getWeaponIndex()), LoginCreateCharacterAnswer.class, null).packet();
     }
 
     @PacketReceiver
@@ -236,46 +241,5 @@ public class LoginController {
         userLoginService.UpdatePlayerUserEntity(player);
     }
 
-    @PacketReceiver
-    public void atLoginCreateCharacterAsk(Session session, LoginCreateCharacterAsk loginCreateCharacterAsk) throws Exception {
-        logger.info("[当前服务器调用时间{}] [调用协议: 6003 ]", TimeUtils.simpleDateString());
-        // 需要创建的角色 id
-        var playerCreteId = loginCreateCharacterAsk.getPlayerId();
-        //当前 角色 配置
-        var config = OrmContext.getAccessor().load(playerCreteId, CharacterConfigEntity.class);
-        if (config == null) {
-            return;
-        }
-        // 创建武器的 rpc
 
-        // 创建角色
-        var findId = new CharacterUserCompositeDataID();
-        findId.setCharacterId(playerCreteId);
-        findId.setUid(session.getUid());
-        var characterUser = CharacterPlayerUserEntity.ValueOf();
-        CharacterUserWeaponCompositeDataID _weaponCreateData =
-                characterService.createCharacterUserWeaponCompositeDataID(
-                        config.getCharacterDefaultWeaponId(),
-                        config.getWeaponType(), loginCreateCharacterAsk.getWeaponIndex());
-        characterUser = characterService.createCharacterPlayerUserEntity(findId,
-                                                                         config.getLevel1HpValue(),
-                                                                         config.getLevel1HpValue(),
-                                                                         config.getLevel1HpValue(),
-                                                                         config.getLevel1HpValue(),
-                                                                         config.getLevel1Atk(),
-                                                                         config.getLevel1Atk(),
-                                                                         config.getLevel1Atk(),
-                                                                         config.getLevel1Atk(),
-                                                                         config.getLevel1Def(),
-                                                                         config.getLevel1CriticalHitChance(),
-                                                                         config.getLevel1ElementMastery(),
-                                                                         config.getLevel1CriticalHitDamage(),
-                                                                         config.getLevel1ChargingEfficiencyOfElements(),
-                                                                         0,
-                                                                         1,
-                                                                         _weaponCreateData);
-        OrmContext.getAccessor().insert(characterUser);
-        var data = new LoginCreateCharacterAnswer();
-        NetContext.getRouter().send(session, data);
-    }
 }
