@@ -15,14 +15,19 @@ public class LoginCreateCharacterAsk {
      * 需要创建角色的 id
      */
     private int playerId;
+    /**
+     * 武器 orm index
+     */
+    private int weaponIndex;
 
     public static LoginCreateCharacterAsk valueOf() {
         return new LoginCreateCharacterAsk();
     }
 
-    public static LoginCreateCharacterAsk valueOf(int playerId) {
+    public static LoginCreateCharacterAsk valueOf(int playerId, int weaponIndex) {
         var data = new LoginCreateCharacterAsk();
         data.setPlayerId(playerId);
+        data.setWeaponIndex(weaponIndex);
         return data;
     }
 
@@ -32,5 +37,13 @@ public class LoginCreateCharacterAsk {
 
     public void setPlayerId(int playerId) {
         this.playerId = playerId;
+    }
+
+    public int getWeaponIndex() {
+        return weaponIndex;
+    }
+
+    public void setWeaponIndex(int weaponIndex) {
+        this.weaponIndex = weaponIndex;
     }
 }

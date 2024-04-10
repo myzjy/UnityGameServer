@@ -174,7 +174,15 @@ public class LoginController {
         logger.info("LoginResponse:{}", JsonUtils.object2String(resposne));
         NetContext.getRouter().send(session, resposne
                 , gatewayAttachment);
-        NetContext.getConsumer().syncAsk(LoginCreateCharacterAsk.valueOf(10001), LoginCreateCharacterAnswer.class, null).packet();
+        //当前 角色 配置
+        var config = OrmContext.getAccessor().load(10001, CharacterConfigEntity.class);
+        if (config == null) {
+            return;
+        }
+        // 创建武器的 rpc
+        var sk = CreateWeaponDefaultAsk.valueOf(config.getCharacterDefaultWeaponId(), config.getWeaponType(), 10001);
+        var Data = NetContext.getConsumer().syncAsk(sk, CreateWeaponDefaultAnswer.class, null).packet();
+        NetContext.getConsumer().syncAsk(LoginCreateCharacterAsk.valueOf(10001,Data.getWeaponIndex()), LoginCreateCharacterAnswer.class, null).packet();
     }
 
     @PacketReceiver
@@ -239,8 +247,7 @@ public class LoginController {
             return;
         }
         // 创建武器的 rpc
-        var sk = CreateWeaponDefaultAsk.valueOf(config.getCharacterDefaultWeaponId(), config.getWeaponType(), playerCreteId);
-        var Data = NetContext.getConsumer().syncAsk(sk, CreateWeaponDefaultAnswer.class, null).packet();
+
         // 创建角色
         var findId = new CharacterUserCompositeDataID();
         findId.setCharacterId(playerCreteId);
@@ -249,7 +256,7 @@ public class LoginController {
         CharacterUserWeaponCompositeDataID _weaponCreateData =
                 characterService.createCharacterUserWeaponCompositeDataID(
                         config.getCharacterDefaultWeaponId(),
-                        config.getWeaponType(), Data.getWeaponIndex());
+                        config.getWeaponType(), loginCreateCharacterAsk.getWeaponIndex());
         characterUser = characterService.createCharacterPlayerUserEntity(findId,
                                                                          config.getLevel1HpValue(),
                                                                          config.getLevel1HpValue(),
