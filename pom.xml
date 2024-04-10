@@ -13,7 +13,6 @@
         <module>game-boot</module>
         <module>ampieta-game-home</module>
         <module>ampieta-game-gateway</module>
-        <module>UnityGameSDK</module>
         <module>ampieta-game-cloud-gateway</module>
         <module>ampieta-game-http-server</module>
     </modules>
