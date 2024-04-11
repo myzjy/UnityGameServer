@@ -6,8 +6,7 @@ import com.gameServer.common.entity.CharacterPlayerUserEntity;
 import com.gameServer.common.entity.composite.CharacterUserCompositeDataID;
 import com.gameServer.common.entity.composite.CharacterUserWeaponCompositeDataID;
 import com.gameServer.common.ormEntity.CharacterConfigEntity;
-import com.gameServer.common.protocol.character.AcquireCharacterRequest;
-import com.gameServer.common.protocol.character.CreateCharacterRequest;
+import com.gameServer.common.protocol.character.*;
 import com.gameServer.home.character.service.ICharacterService;
 import com.gameServer.home.weapon.service.IWeaponService;
 import com.zfoo.net.NetContext;
@@ -68,29 +67,39 @@ public class CharacterUserController {
                 characterService.createCharacterUserWeaponCompositeDataID(
                         config.getCharacterDefaultWeaponId(),
                         config.getWeaponType(), 0);
-       var entityCreate = characterService.createCharacterPlayerUserEntity(findId,
-                                                                  config.getLevel1HpValue(),
-                                                                  config.getLevel1HpValue(),
-                                                                  config.getLevel1HpValue(),
-                                                                  config.getLevel1HpValue(),
-                                                                  config.getLevel1Atk(),
-                                                                  config.getLevel1Atk(),
-                                                                  config.getLevel1Atk(),
-                                                                  config.getLevel1Atk(),
-                                                                  config.getLevel1Def(),
-                                                                  config.getLevel1CriticalHitChance(),
-                                                                  config.getLevel1ElementMastery(),
-                                                                  config.getLevel1CriticalHitDamage(),
-                                                                  config.getLevel1ChargingEfficiencyOfElements(),
-                                                                  0,
-                                                                  1,
-                                                                  weaponCreateData);
+        var entityCreate = characterService.createCharacterPlayerUserEntity(findId,
+                                                                            config.getLevel1HpValue(),
+                                                                            config.getLevel1HpValue(),
+                                                                            config.getLevel1HpValue(),
+                                                                            config.getLevel1HpValue(),
+                                                                            config.getLevel1Atk(),
+                                                                            config.getLevel1Atk(),
+                                                                            config.getLevel1Atk(),
+                                                                            config.getLevel1Atk(),
+                                                                            config.getLevel1Def(),
+                                                                            config.getLevel1CriticalHitChance(),
+                                                                            config.getLevel1ElementMastery(),
+                                                                            config.getLevel1CriticalHitDamage(),
+                                                                            config.getLevel1ChargingEfficiencyOfElements(),
+                                                                            0,
+                                                                            1,
+                                                                            weaponCreateData);
         logger.info("createCharacterPlayerUserEntity:{}", JsonUtils.object2String(entityCreate));
-
         OrmContext.getAccessor().insert(entityCreate);
-        var data = new LoginCreateCharacterAnswer();
-        //NetContext.getRouter().send(session, data);
+        var character = CharacterWeaponIDData.valueOf();
+        character.setWeaponId(weaponCreateData.getWeaponId());
+        character.setWeaponFindId(weaponCreateData.getWeaponOrmIndex());
+
+        CharacterBaseData characterBaseData = CharacterBaseData.valueOf();
+        characterBaseData.setQuantity(config.getQuality());
+        characterBaseData.setCharacterWeaponIDData(character);
+        characterBaseData.setNowMaxLv(entity.getEntityNowMaxHp());
+
+        var data = CreateCharacterResponse.valueOf();
+        data.setCharacterBaseData(characterBaseData);
+        NetContext.getRouter().send(session, data, gatewayAttachment);
     }
+
     @PacketReceiver
     public void atLoginCreateCharacterAsk(Session session, LoginCreateCharacterAsk loginCreateCharacterAsk) throws Exception {
         logger.info("[当前服务器调用时间{}] [调用协议: 6003 ]", TimeUtils.simpleDateString());
@@ -125,7 +134,6 @@ public class CharacterUserController {
                         _weaponCreateData);
         characterUser.setUserUID(session.getUid());
         logger.info("createCharacterPlayerUserEntity:{}", JsonUtils.object2String(characterUser));
-
         OrmContext.getAccessor().insert(characterUser);
         var data = new LoginCreateCharacterAnswer();
         NetContext.getRouter().send(session, data);

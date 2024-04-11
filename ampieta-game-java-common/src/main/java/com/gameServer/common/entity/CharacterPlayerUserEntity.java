@@ -26,6 +26,12 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
     }
 
     /**
+     *
+     */
+    private int nowLv;
+    private int nowMaxLv;
+
+    /**
      * 当前角色 HP 没有加上 装备词条
      */
     private int entityHp;
@@ -89,6 +95,14 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
      * 当前 角色 所属 玩家 uid
      */
     private long userUID;
+    /**
+     * 当前强化星阶
+     */
+    private int nowReinforcementEqualOrder;
+    /**
+     * 当前强化的星阶 最大
+     */
+    private int maxReinforcementEqualOrder;
     /**
      * 武器 穿戴
      */

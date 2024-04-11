@@ -4,6 +4,8 @@ import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
+ * 角色 佩戴武器id + weaponUser 在数据库中 的 index
+ *
  * @author zjy
  * @version 1.0
  * @since 2024/3/31 21 35
@@ -42,7 +44,7 @@ public class CharacterEquipmentIDData implements IPacket {
     /**
      * init now data
      *
-     * @param equipmentId 装备 id
+     * @param equipmentId     装备 id
      * @param equipmentFindId 在 数据库中存放的id
      * @return 返回 数据
      */
