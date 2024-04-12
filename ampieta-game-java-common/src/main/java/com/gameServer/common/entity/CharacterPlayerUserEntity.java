@@ -258,4 +258,36 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
     public void setUserUID(long userUID) {
         this.userUID = userUID;
     }
+
+    public int getNowLv() {
+        return nowLv;
+    }
+
+    public void setNowLv(int nowLv) {
+        this.nowLv = nowLv;
+    }
+
+    public int getNowMaxLv() {
+        return nowMaxLv;
+    }
+
+    public void setNowMaxLv(int nowMaxLv) {
+        this.nowMaxLv = nowMaxLv;
+    }
+
+    public int getNowReinforcementEqualOrder() {
+        return nowReinforcementEqualOrder;
+    }
+
+    public void setNowReinforcementEqualOrder(int nowReinforcementEqualOrder) {
+        this.nowReinforcementEqualOrder = nowReinforcementEqualOrder;
+    }
+
+    public int getMaxReinforcementEqualOrder() {
+        return maxReinforcementEqualOrder;
+    }
+
+    public void setMaxReinforcementEqualOrder(int maxReinforcementEqualOrder) {
+        this.maxReinforcementEqualOrder = maxReinforcementEqualOrder;
+    }
 }

@@ -68,6 +68,10 @@ public class CharacterConfigEntity implements IEntity<Integer> {
      */
     private int Level1NoWAtk;
     /**
+     * 当前强化的星阶 最大
+     */
+    private int maxReinforcementEqualOrder;
+    /**
      * 当前数据创建时间
      */
     private String createAt;
@@ -219,5 +223,13 @@ public class CharacterConfigEntity implements IEntity<Integer> {
 
     public void setLevel1NoWAtk(int level1NoWAtk) {
         Level1NoWAtk = level1NoWAtk;
+    }
+
+    public int getMaxReinforcementEqualOrder() {
+        return maxReinforcementEqualOrder;
+    }
+
+    public void setMaxReinforcementEqualOrder(int maxReinforcementEqualOrder) {
+        this.maxReinforcementEqualOrder = maxReinforcementEqualOrder;
     }
 }

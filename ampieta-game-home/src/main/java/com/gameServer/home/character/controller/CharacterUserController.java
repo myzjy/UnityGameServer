@@ -89,12 +89,10 @@ public class CharacterUserController {
         var character = CharacterWeaponIDData.valueOf();
         character.setWeaponId(weaponCreateData.getWeaponId());
         character.setWeaponFindId(weaponCreateData.getWeaponOrmIndex());
-
         CharacterBaseData characterBaseData = CharacterBaseData.valueOf();
         characterBaseData.setQuantity(config.getQuality());
         characterBaseData.setCharacterWeaponIDData(character);
         characterBaseData.setNowMaxLv(entity.getEntityNowMaxHp());
-
         var data = CreateCharacterResponse.valueOf();
         data.setCharacterBaseData(characterBaseData);
         NetContext.getRouter().send(session, data, gatewayAttachment);
@@ -133,6 +131,12 @@ public class CharacterUserController {
                         1,
                         _weaponCreateData);
         characterUser.setUserUID(session.getUid());
+        // 角色创建 1级
+        characterUser.setNowLv(1);
+        // 角色 初始
+        characterUser.setNowMaxLv(20);
+        characterUser.setNowReinforcementEqualOrder(0);
+        characterUser.setMaxReinforcementEqualOrder(config.getMaxReinforcementEqualOrder());
         logger.info("createCharacterPlayerUserEntity:{}", JsonUtils.object2String(characterUser));
         OrmContext.getAccessor().insert(characterUser);
         var data = new LoginCreateCharacterAnswer();
