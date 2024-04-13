@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 /**
  * 角色 协议回调
  *
@@ -86,16 +88,45 @@ public class CharacterUserController {
                                                                             weaponCreateData);
         logger.info("createCharacterPlayerUserEntity:{}", JsonUtils.object2String(entityCreate));
         OrmContext.getAccessor().insert(entityCreate);
+        var data = getInitCreateCharacterResponse(weaponCreateData, config);
+        NetContext.getRouter().send(session, data, gatewayAttachment);
+    }
+
+    /**
+     * 初始 创建
+     *
+     * @param weaponCreateData 角色 身上装备的武器 结构：武器id + 武器类型 + 玩家获取的武器在数据库中的orm index
+     * @param config           这个角色 的基础数据
+     * @return 返回 创建 角色成功的 Response 里面 附带 角色数据
+     */
+    private CreateCharacterResponse getInitCreateCharacterResponse(CharacterUserWeaponCompositeDataID weaponCreateData, CharacterConfigEntity config) {
         var character = CharacterWeaponIDData.valueOf();
         character.setWeaponId(weaponCreateData.getWeaponId());
         character.setWeaponFindId(weaponCreateData.getWeaponOrmIndex());
+        CharacterBaseData characterBaseData = getCharacterBaseData(config, character);
+        var data = CreateCharacterResponse.valueOf();
+        data.setCharacterBaseData(characterBaseData);
+        return data;
+    }
+
+    /**
+     * 角色数据
+     *
+     * @param config    这个角色 的基础数据
+     * @param character 角色 身上装备的武器 结构：武器id + 武器类型 + 玩家获取的武器在数据库中的orm index
+     * @return 这个角色 的基础数据
+     */
+    private CharacterBaseData getCharacterBaseData(CharacterConfigEntity config, CharacterWeaponIDData character) {
         CharacterBaseData characterBaseData = CharacterBaseData.valueOf();
         characterBaseData.setQuantity(config.getQuality());
         characterBaseData.setCharacterWeaponIDData(character);
-        characterBaseData.setNowMaxLv(entity.getEntityNowMaxHp());
-        var data = CreateCharacterResponse.valueOf();
-        data.setCharacterBaseData(characterBaseData);
-        NetContext.getRouter().send(session, data, gatewayAttachment);
+        characterBaseData.setLv(config.getLvInit());
+        characterBaseData.setNowMaxLv(config.getInitLvMax());
+        characterBaseData.setElementType(config.getElementType());
+        characterBaseData.setElementNum(0);
+        //初始的 没有 装备 圣遗物
+        characterBaseData.setEquipmentList(new ArrayList<>());
+        return characterBaseData;
     }
 
     @PacketReceiver
@@ -128,13 +159,13 @@ public class CharacterUserController {
                         config.getLevel1CriticalHitChance(), config.getLevel1ElementMastery(),
                         config.getLevel1CriticalHitDamage(), config.getLevel1ChargingEfficiencyOfElements(),
                         0,
-                        1,
+                        config.getElementType(),
                         _weaponCreateData);
         characterUser.setUserUID(session.getUid());
         // 角色创建 1级
-        characterUser.setNowLv(1);
+        characterUser.setNowLv(config.getLvInit());
         // 角色 初始
-        characterUser.setNowMaxLv(20);
+        characterUser.setNowMaxLv(config.getInitLvMax());
         characterUser.setNowReinforcementEqualOrder(0);
         characterUser.setMaxReinforcementEqualOrder(config.getMaxReinforcementEqualOrder());
         logger.info("createCharacterPlayerUserEntity:{}", JsonUtils.object2String(characterUser));

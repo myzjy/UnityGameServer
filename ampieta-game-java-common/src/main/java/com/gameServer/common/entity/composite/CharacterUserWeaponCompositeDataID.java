@@ -1,6 +1,8 @@
 package com.gameServer.common.entity.composite;
 
 /**
+ * 角色 身上装备的武器 结构：武器id + 武器类型 + 玩家获取的武器在数据库中的orm index
+ *
  * @author zjy
  * @version 1.0
  * @since 2024/4/5 23 51

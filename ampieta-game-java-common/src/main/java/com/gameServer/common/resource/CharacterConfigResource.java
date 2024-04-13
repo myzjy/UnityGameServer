@@ -71,6 +71,22 @@ public class CharacterConfigResource {
      * 角色默认武器id
      */
     private int weaponType;
+    /**
+     * 当前强化的星阶 最大
+     */
+    private int maxReinforcementEqualOrder;
+    /**
+     * 角色创建出来的初始等级
+     */
+    private int lvInit;
+    /**
+     * 角色创建出来初始最大等级
+     */
+    private int initLvMax;
+    /**
+     * 角色元素伤害类型
+     */
+    private int elementType;
 
     public int getCId() {
         return CId;
@@ -130,5 +146,21 @@ public class CharacterConfigResource {
 
     public int getLevel1NoWAtk() {
         return Level1NoWAtk;
+    }
+
+    public int getLvInit() {
+        return lvInit;
+    }
+
+    public int getInitLvMax() {
+        return initLvMax;
+    }
+
+    public int getElementType() {
+        return elementType;
+    }
+
+    public int getMaxReinforcementEqualOrder() {
+        return maxReinforcementEqualOrder;
     }
 }

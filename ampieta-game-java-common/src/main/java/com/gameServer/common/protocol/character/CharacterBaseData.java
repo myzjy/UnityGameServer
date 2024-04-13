@@ -56,35 +56,17 @@ public class CharacterBaseData implements IPacket {
      * 角色装备 武器
      */
     private CharacterWeaponIDData characterWeaponIDData;
+    /**
+     * 角色元素伤害类型
+     */
+    private int elementType;
+    /**
+     * 元素 伤害 数据 百分比的
+     */
+    private float elementNum;
 
     public static CharacterBaseData valueOf() {
         return new CharacterBaseData();
-    }
-
-    /**
-     * 进行创建值
-     *
-     * @param roleID        角色id 获取 数据库中得基础信息
-     * @param lv            等级
-     * @param nowExp        当前经验
-     * @param noeMaxExp     最大经验
-     * @param lvQuantity    星级
-     * @param maxLvQuantity 最大星级
-     * @param nowMaxLv      最大等级
-     * @param quantity      角色品质
-     * @return 角色基础数据结构
-     */
-    public static CharacterBaseData ValueOf(long roleID, int lv, int nowExp, int noeMaxExp, int lvQuantity, int maxLvQuantity, int nowMaxLv, int quantity) {
-        var data = new CharacterBaseData();
-        data.setRoleID(roleID);
-        data.setLv(lv);
-        data.setNowExp(nowExp);
-        data.setNoeMaxExp(noeMaxExp);
-        data.setLvQuantity(lvQuantity);
-        data.setMaxLvQuantity(maxLvQuantity);
-        data.setNowMaxLv(nowMaxLv);
-        data.setQuantity(quantity);
-        return data;
     }
 
     public long getId() {
@@ -173,5 +155,21 @@ public class CharacterBaseData implements IPacket {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public int getElementType() {
+        return elementType;
+    }
+
+    public void setElementType(int elementType) {
+        this.elementType = elementType;
+    }
+
+    public float getElementNum() {
+        return elementNum;
+    }
+
+    public void setElementNum(float elementNum) {
+        this.elementNum = elementNum;
     }
 }

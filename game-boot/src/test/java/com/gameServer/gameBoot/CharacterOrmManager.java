@@ -52,6 +52,10 @@ public class CharacterOrmManager {
             entity.setCharacterDefaultWeaponId(data.getCharacterDefaultWeaponId());
             entity.setWeaponType(data.getWeaponType());
             entity.setLevel1NoWAtk(data.getLevel1NoWAtk());
+            entity.setMaxReinforcementEqualOrder(data.getMaxReinforcementEqualOrder());
+            entity.setLvInit(data.getLvInit());
+            entity.setInitLvMax(data.getInitLvMax());
+            entity.setElementType(data.getElementType());
             if (isCreate) {
                 OrmContext.getAccessor().insert(entity);
             } else {

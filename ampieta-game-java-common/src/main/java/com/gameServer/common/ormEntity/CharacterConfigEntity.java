@@ -72,6 +72,18 @@ public class CharacterConfigEntity implements IEntity<Integer> {
      */
     private int maxReinforcementEqualOrder;
     /**
+     * 角色创建出来的初始等级
+     */
+    private int lvInit;
+    /**
+     * 角色创建出来初始最大等级
+     */
+    private int initLvMax;
+    /**
+     * 角色元素伤害类型
+     */
+    private int elementType;
+    /**
      * 当前数据创建时间
      */
     private String createAt;
@@ -231,5 +243,29 @@ public class CharacterConfigEntity implements IEntity<Integer> {
 
     public void setMaxReinforcementEqualOrder(int maxReinforcementEqualOrder) {
         this.maxReinforcementEqualOrder = maxReinforcementEqualOrder;
+    }
+
+    public int getLvInit() {
+        return lvInit;
+    }
+
+    public void setLvInit(int lvInit) {
+        this.lvInit = lvInit;
+    }
+
+    public int getInitLvMax() {
+        return initLvMax;
+    }
+
+    public void setInitLvMax(int initLvMax) {
+        this.initLvMax = initLvMax;
+    }
+
+    public int getElementType() {
+        return elementType;
+    }
+
+    public void setElementType(int elementType) {
+        this.elementType = elementType;
     }
 }
