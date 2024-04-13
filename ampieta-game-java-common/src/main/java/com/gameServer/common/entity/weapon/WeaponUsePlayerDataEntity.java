@@ -10,7 +10,7 @@ import com.zfoo.orm.model.IEntity;
  */
 public class WeaponUsePlayerDataEntity implements IEntity<Long> {
     /**
-     * 下标
+     * 下标 武器是可以重复的
      */
     @Id
     private long id;

@@ -2,9 +2,12 @@ package com.gameServer.home.character.controller;
 
 import com.gameServer.common.cache.character.LoginCreateCharacterAnswer;
 import com.gameServer.common.cache.character.LoginCreateCharacterAsk;
+import com.gameServer.common.cache.weapon.CreateWeaponDefaultAnswer;
+import com.gameServer.common.cache.weapon.CreateWeaponDefaultAsk;
 import com.gameServer.common.entity.CharacterPlayerUserEntity;
 import com.gameServer.common.entity.composite.CharacterUserCompositeDataID;
 import com.gameServer.common.entity.composite.CharacterUserWeaponCompositeDataID;
+import com.gameServer.common.entity.weapon.WeaponUsePlayerDataEntity;
 import com.gameServer.common.ormEntity.CharacterConfigEntity;
 import com.gameServer.common.protocol.character.*;
 import com.gameServer.home.character.service.ICharacterService;
@@ -45,7 +48,7 @@ public class CharacterUserController {
     }
 
     @PacketReceiver
-    public void atCreateCharacterRequest(Session session, CreateCharacterRequest request, GatewayAttachment gatewayAttachment) {
+    public void atCreateCharacterRequest(Session session, CreateCharacterRequest request, GatewayAttachment gatewayAttachment) throws Exception {
         logger.info("[当前服务器调用时间{}] [调用协议：{}]", TimeUtils.simpleDateString(), request.protocolId());
         var findId = new CharacterUserCompositeDataID();
         findId.setCharacterId(request.getCharacterId());
@@ -65,10 +68,21 @@ public class CharacterUserController {
             NetContext.getRouter().send(session, Error.valueOf("数据错误"), gatewayAttachment);
             return;
         }
-        var weaponCreateData =
-                characterService.createCharacterUserWeaponCompositeDataID(
-                        config.getCharacterDefaultWeaponId(),
-                        config.getWeaponType(), 0);
+        var weaponConfig = OrmContext.getQuery(WeaponUsePlayerDataEntity.class)
+                                     .eq("weaponId", config.getCharacterDefaultWeaponId()).eq("userUid", session.getUid()).
+                                     gt("userPlayerId", 0).queryFirst();
+        if (weaponConfig == null) {
+            var sk = CreateWeaponDefaultAsk.valueOf(config.getCharacterDefaultWeaponId(), config.getWeaponType(), 10001, session.getUid());
+            var Data = NetContext.getConsumer().syncAsk(sk, CreateWeaponDefaultAnswer.class, null).packet();
+            weaponConfig = OrmContext.getAccessor().load(Data.getWeaponIndex(), WeaponUsePlayerDataEntity.class);
+        }
+        CharacterUserWeaponCompositeDataID weaponCreateData =
+                null;
+        if (weaponConfig != null) {
+            weaponCreateData = characterService.createCharacterUserWeaponCompositeDataID(
+                    config.getCharacterDefaultWeaponId(),
+                    config.getWeaponType(), weaponConfig.id());
+        }
         var entityCreate = characterService.createCharacterPlayerUserEntity(findId,
                                                                             config.getLevel1HpValue(),
                                                                             config.getLevel1HpValue(),
@@ -84,11 +98,14 @@ public class CharacterUserController {
                                                                             config.getLevel1CriticalHitDamage(),
                                                                             config.getLevel1ChargingEfficiencyOfElements(),
                                                                             0,
-                                                                            1,
+                                                                            config.getElementType(),
                                                                             weaponCreateData);
         logger.info("createCharacterPlayerUserEntity:{}", JsonUtils.object2String(entityCreate));
         OrmContext.getAccessor().insert(entityCreate);
-        var data = getInitCreateCharacterResponse(weaponCreateData, config);
+        CreateCharacterResponse data = null;
+        if (weaponCreateData != null) {
+            data = getInitCreateCharacterResponse(weaponCreateData, config);
+        }
         NetContext.getRouter().send(session, data, gatewayAttachment);
     }
 

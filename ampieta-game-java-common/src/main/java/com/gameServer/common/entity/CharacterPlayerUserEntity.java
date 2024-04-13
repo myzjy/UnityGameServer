@@ -16,13 +16,13 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
     /**
      * 角色id + uid
      */
-    @Id
     private CharacterUserCompositeDataID dataID;
-
+    @Id
+    private CharacterUserCompositeDataID id;
 
     @Override
     public CharacterUserCompositeDataID id() {
-        return null;
+        return id;
     }
 
     /**
@@ -30,7 +30,6 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
      */
     private int nowLv;
     private int nowMaxLv;
-
     /**
      * 当前角色 HP 没有加上 装备词条
      */
@@ -120,6 +119,7 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
     }
 
     public void setDataID(CharacterUserCompositeDataID dataID) {
+        this.id = dataID;
         this.dataID = dataID;
     }
 

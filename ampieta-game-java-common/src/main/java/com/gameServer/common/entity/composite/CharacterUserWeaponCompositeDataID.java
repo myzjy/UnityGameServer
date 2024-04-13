@@ -24,7 +24,7 @@ public class CharacterUserWeaponCompositeDataID implements Comparable<CharacterU
     /**
      * 武器 下标
      */
-    private int weaponOrmIndex;
+    private long weaponOrmIndex;
 
     public int getWeaponId() {
         return weaponId;
@@ -42,11 +42,11 @@ public class CharacterUserWeaponCompositeDataID implements Comparable<CharacterU
         this.weaponType = weaponType;
     }
 
-    public int getWeaponOrmIndex() {
+    public long getWeaponOrmIndex() {
         return weaponOrmIndex;
     }
 
-    public void setWeaponOrmIndex(int weaponOrmIndex) {
+    public void setWeaponOrmIndex(long weaponOrmIndex) {
         this.weaponOrmIndex = weaponOrmIndex;
     }
 

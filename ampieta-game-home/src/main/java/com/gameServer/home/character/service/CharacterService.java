@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CharacterService implements ICharacterService {
     @Override
-    public CharacterUserWeaponCompositeDataID createCharacterUserWeaponCompositeDataID(int weaponId, int weaponType, int weaponOrmIndex) {
+    public CharacterUserWeaponCompositeDataID createCharacterUserWeaponCompositeDataID(int weaponId, int weaponType, long weaponOrmIndex) {
         var weaponCreateData = CharacterUserWeaponCompositeDataID.valueOf();
         weaponCreateData.setWeaponId(weaponId);
         weaponCreateData.setWeaponType(weaponType);

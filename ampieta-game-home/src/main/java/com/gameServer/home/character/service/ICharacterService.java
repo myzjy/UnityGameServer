@@ -14,7 +14,7 @@ public interface ICharacterService {
      * @param weaponOrmIndex 武器下标
      * @return 武器 id 加 type index
      */
-    CharacterUserWeaponCompositeDataID createCharacterUserWeaponCompositeDataID(int weaponId, int weaponType, int weaponOrmIndex);
+    CharacterUserWeaponCompositeDataID createCharacterUserWeaponCompositeDataID(int weaponId, int weaponType, long weaponOrmIndex);
 
     /**
      *

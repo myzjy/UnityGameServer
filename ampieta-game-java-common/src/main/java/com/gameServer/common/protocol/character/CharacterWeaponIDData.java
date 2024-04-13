@@ -19,7 +19,7 @@ public class CharacterWeaponIDData implements IPacket {
     /**
      * 武器id --> 对应 WeaponUsePlayerDataEntity 中的 id
      */
-    private int weaponFindId;
+    private long weaponFindId;
 
     public int getWeaponId() {
         return weaponId;
@@ -29,11 +29,11 @@ public class CharacterWeaponIDData implements IPacket {
         this.weaponId = weaponId;
     }
 
-    public int getWeaponFindId() {
+    public long getWeaponFindId() {
         return weaponFindId;
     }
 
-    public void setWeaponFindId(int weaponFindId) {
+    public void setWeaponFindId(long weaponFindId) {
         this.weaponFindId = weaponFindId;
     }
 
