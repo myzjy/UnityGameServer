@@ -26,9 +26,12 @@ public class CharacterPlayerUserEntity implements IEntity<CharacterUserComposite
     }
 
     /**
-     *
+     * 当前 角色 等级
      */
     private int nowLv;
+    /**
+     * 当前 角色 最大 等级
+     */
     private int nowMaxLv;
     /**
      * 当前角色 HP 没有加上 装备词条

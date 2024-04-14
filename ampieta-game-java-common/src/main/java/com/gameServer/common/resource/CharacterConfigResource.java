@@ -68,7 +68,7 @@ public class CharacterConfigResource {
      */
     private int characterDefaultWeaponId;
     /**
-     * 角色默认武器id
+     * 角色默认武器是什么类型
      */
     private int weaponType;
     /**

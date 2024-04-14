@@ -3,7 +3,6 @@ package com.gameServer.common.protocol.character;
 import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -39,7 +38,7 @@ public class CharacterBaseData implements IPacket {
     /**
      * 当前最大经验
      */
-    private int noeMaxExp;
+    private int nowMaxExp;
     /**
      * 等级 星级数量
      */
@@ -101,12 +100,12 @@ public class CharacterBaseData implements IPacket {
         this.nowExp = nowExp;
     }
 
-    public int getNoeMaxExp() {
-        return noeMaxExp;
+    public int getNowMaxExp() {
+        return nowMaxExp;
     }
 
-    public void setNoeMaxExp(int noeMaxExp) {
-        this.noeMaxExp = noeMaxExp;
+    public void setNowMaxExp(int nowMaxExp) {
+        this.nowMaxExp = nowMaxExp;
     }
 
     public int getLvQuantity() {
