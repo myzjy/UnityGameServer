@@ -1,4 +1,4 @@
-package com.gameServer.common.protocol.character;
+package com.gameServer.common.protocol.gameMain;
 
 import com.zfoo.protocol.anno.Protocol;
 

@@ -1,4 +1,6 @@
-package com.gameServer.common.protocol.character;
+package com.gameServer.common.protocol.gameMain;
+
+import com.gameServer.common.protocol.character.GameMainTeamCharacterIDData;
 
 import java.util.List;
 
