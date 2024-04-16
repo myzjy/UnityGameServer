@@ -18,7 +18,7 @@ public class GameMainTeamCharacterIDData {
     /**
      * 玩家 id
      */
-    private int uid;
+    private long uid;
     /**
      * 这个角色在 队伍 的 第几位
      */
@@ -36,11 +36,11 @@ public class GameMainTeamCharacterIDData {
         this.characterId = characterId;
     }
 
-    public int getUid() {
+    public long getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(long uid) {
         this.uid = uid;
     }
 
@@ -64,7 +64,7 @@ public class GameMainTeamCharacterIDData {
         return new GameMainTeamCharacterIDData();
     }
 
-    public static GameMainTeamCharacterIDData valueOf(int characterId, int uid, int teamIndex, int fightTeamIndex) {
+    public static GameMainTeamCharacterIDData valueOf(int characterId, long uid, int teamIndex, int fightTeamIndex) {
         var data = new GameMainTeamCharacterIDData();
         data.setCharacterId(characterId);
         data.setUid(uid);

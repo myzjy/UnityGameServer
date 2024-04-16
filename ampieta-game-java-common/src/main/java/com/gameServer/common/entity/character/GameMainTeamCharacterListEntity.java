@@ -16,9 +16,21 @@ import java.util.List;
 public class GameMainTeamCharacterListEntity implements IEntity<Long> {
     @Id
     private long id;
+    /**
+     * 第一个队伍
+     */
     private List<GameMainTeamCharacterCompositeDataID> teamCharacter;
+    /**
+     * 第2个队伍
+     */
     private List<GameMainTeamCharacterCompositeDataID> teamCharacter2;
+    /**
+     * 第3个队伍
+     */
     private List<GameMainTeamCharacterCompositeDataID> teamCharacter3;
+    /**
+     * 第4个队伍
+     */
     private List<GameMainTeamCharacterCompositeDataID> teamCharacter4;
 
     public static GameMainTeamCharacterListEntity valueOf() {

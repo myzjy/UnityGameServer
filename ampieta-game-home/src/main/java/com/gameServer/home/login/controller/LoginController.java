@@ -9,6 +9,7 @@ import com.gameServer.common.constant.TankDeployEnum;
 import com.gameServer.common.entity.AccountEntity;
 import com.gameServer.common.entity.CharacterPlayerUserEntity;
 import com.gameServer.common.entity.PlayerUserEntity;
+import com.gameServer.common.entity.character.GameMainTeamCharacterListEntity;
 import com.gameServer.common.entity.composite.CharacterUserCompositeDataID;
 import com.gameServer.common.entity.composite.CharacterUserWeaponCompositeDataID;
 import com.gameServer.common.ormEntity.CharacterConfigEntity;
@@ -19,6 +20,7 @@ import com.gameServer.common.protocol.login.LogoutRequest;
 import com.gameServer.common.util.TokenUtils;
 import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
 import com.gameServer.home.character.service.ICharacterService;
+import com.gameServer.home.gameMain.service.IGameMainService;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.anno.PacketReceiver;
@@ -56,6 +58,8 @@ public class LoginController {
     private IPhysicalPowerService physicalPowerService;
     @Autowired
     private ICharacterService characterService;
+    @Autowired
+    private IGameMainService gameMainService;
     @Value("${spring.profiles.active}")
     private TankDeployEnum deployEnum;
 
@@ -163,18 +167,23 @@ public class LoginController {
         //不需要 创建 角色
         var list = OrmContext.getQuery(CharacterPlayerUserEntity.class).queryAll();
         if (list.isEmpty()) {
-
             //当前 角色 配置
             var config = OrmContext.getAccessor().load(10001, CharacterConfigEntity.class);
             if (config != null) {
                 // 创建武器的 rpc
-                var sk = CreateWeaponDefaultAsk.valueOf(config.getCharacterDefaultWeaponId(), config.getWeaponType(), 10001,session.getUid());
+                var sk = CreateWeaponDefaultAsk.valueOf(config.getCharacterDefaultWeaponId(), config.getWeaponType(), 10001, session.getUid());
                 var Data = NetContext.getConsumer().syncAsk(sk, CreateWeaponDefaultAnswer.class, null).packet();
                 NetContext.getConsumer().syncAsk(LoginCreateCharacterAsk.valueOf(10001, Data.getWeaponIndex()), LoginCreateCharacterAnswer.class, null).packet();
                 //返回数据
+                var entity = OrmContext.getAccessor().load(session.getUid(), GameMainTeamCharacterListEntity.class);
+                if (entity == null) {
+                    entity = gameMainService.CreateInitGameMainTeamCharacterListEntity(10001, session.getUid());
+                    logger.info("插入 当前玩家[uid:{}], GameMainTeamCharacterListEntity:{}", session.getUid(), JsonUtils.object2String(entity));
+                    OrmContext.getAccessor().insert(entity);
+                }
             }
         }
-        var resposne = LoginResponse.valueOf(userCache.getToken(),
+        var response = LoginResponse.valueOf(userCache.getToken(),
                                              userCache.getName(),
                                              userCache.id(),
                                              userCache.getGoldNum(),
@@ -184,8 +193,8 @@ public class LoginController {
                                              userCache.getNowExp(),
                                              userLoginService.ConfigResourceLength(),
                                              userCache.getNowLvMaxExp());
-        logger.info("LoginResponse:{}", JsonUtils.object2String(resposne));
-        NetContext.getRouter().send(session, resposne
+        logger.info("LoginResponse:{}", JsonUtils.object2String(response));
+        NetContext.getRouter().send(session, response
                 , gatewayAttachment);
     }
 
