@@ -109,7 +109,7 @@ public class LoginController {
         //通过UID获取
         var userCache = userLoginService.LoadPlayerUserEntity(uid);
         if (userCache == null) {
-            logger.error("发送过来 [uid:{}] 数据库不存在相关人物，请注意！！！！！！！", uid);
+            logger.error("发送过来 [uid:{}] 数据库不存在相关人物，请注意！！！！！！！ 登录失败", uid);
             //必须保证账号存在
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_not_exit.toString()), gatewayAttachment);
             return;
@@ -125,6 +125,7 @@ public class LoginController {
         var powerData = physicalPowerService.FindOnePhysicalPower(session.getUid());
         if (powerData == null) {
             logger.error("[uid:{}] 刷新 玩家自己体力 缓存数据库 出现错误,error:{}", uid, I18nEnum.error_login_process_not.toString());
+            logger.error("[uid:{}] 玩家登录失败",uid);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_login_process_not.toString()), gatewayAttachment);
             return;
         }
