@@ -225,16 +225,7 @@ public class LoginController {
         player.session = session;
         session.setUid(uid);
         logger.info("返回玩家 [uid:{}]  基础信息", player.getId());
-        NetContext.getRouter().send(session, LoginResponse.valueOf(token,
-                                                                   player.getName(),
-                                                                   player.id(),
-                                                                   player.getGoldNum(),
-                                                                   player.getPremiumDiamondNum(),
-                                                                   player.getDiamondNum(),
-                                                                   player.getPlayerLv(),
-                                                                   player.getNowExp(),
-                                                                   userLoginService.ConfigResourceLength(),
-                                                                   player.getNowLvMaxExp()),
+        NetContext.getRouter().send(session, LoginResponse.valueOf(),
                                     gatewayAttachment);
     }
 
