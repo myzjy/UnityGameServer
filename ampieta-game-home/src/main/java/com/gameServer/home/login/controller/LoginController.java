@@ -13,10 +13,8 @@ import com.gameServer.common.entity.character.GameMainTeamCharacterListEntity;
 import com.gameServer.common.entity.composite.CharacterUserCompositeDataID;
 import com.gameServer.common.entity.composite.CharacterUserWeaponCompositeDataID;
 import com.gameServer.common.ormEntity.CharacterConfigEntity;
-import com.gameServer.common.protocol.login.GetPlayerInfoRequest;
-import com.gameServer.common.protocol.login.LoginRequest;
-import com.gameServer.common.protocol.login.LoginResponse;
-import com.gameServer.common.protocol.login.LogoutRequest;
+import com.gameServer.common.protocol.login.*;
+import com.gameServer.common.protocol.playerUser.UserMsgInfoData;
 import com.gameServer.common.util.TokenUtils;
 import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
 import com.gameServer.home.character.service.ICharacterService;
@@ -183,16 +181,21 @@ public class LoginController {
                 }
             }
         }
-        var response = LoginResponse.valueOf(userCache.getToken(),
-                                             userCache.getName(),
-                                             userCache.id(),
-                                             userCache.getGoldNum(),
-                                             userCache.getPremiumDiamondNum(),
-                                             userCache.getDiamondNum(),
-                                             userCache.getPlayerLv(),
-                                             userCache.getNowExp(),
-                                             userLoginService.ConfigResourceLength(),
-                                             userCache.getNowLvMaxExp());
+        var response = LoginResponse.valueOf();
+        response.setUid(userCache.id());
+        response.setToken(userCache.getToken());
+        var userInfo = LoginUserServerInfoData.valueOf();
+        var userMsgInfoData = UserMsgInfoData.valueOf();
+        userMsgInfoData.setUserName(userCache.getName());
+        userMsgInfoData.setExp(userCache.getNowExp());
+        userMsgInfoData.setMaxExp(userCache.getNowLvMaxExp());
+        userMsgInfoData.setLv(userCache.getPlayerLv());
+        userMsgInfoData.setMaxLv(userLoginService.ConfigResourceLength());
+        userMsgInfoData.setDiamondNum(userCache.getDiamondNum());
+        userMsgInfoData.setGoldNum(userCache.getGoldNum());
+        userMsgInfoData.setPremiumDiamondNum(userCache.getPremiumDiamondNum());
+        userInfo.setUserMsgInfoData(userMsgInfoData);
+        response.setLoginUserServerInfoData(userInfo);
         logger.info("LoginResponse:{}", JsonUtils.object2String(response));
         NetContext.getRouter().send(session, response
                 , gatewayAttachment);
