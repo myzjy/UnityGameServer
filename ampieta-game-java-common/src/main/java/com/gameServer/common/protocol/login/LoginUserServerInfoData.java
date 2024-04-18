@@ -2,12 +2,14 @@ package com.gameServer.common.protocol.login;
 
 import com.gameServer.common.protocol.playerUser.PlayerSceneInfoData;
 import com.gameServer.common.protocol.playerUser.UserMsgInfoData;
+import com.zfoo.protocol.anno.Protocol;
 
 /**
  * @author zjy
  * @version 1.0
  * @since 2024/4/17 19 49
  */
+@Protocol(id=220)
 public class LoginUserServerInfoData {
     /**
      * 角色在场景中得位置信息

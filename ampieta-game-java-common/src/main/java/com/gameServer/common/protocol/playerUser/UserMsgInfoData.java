@@ -1,10 +1,13 @@
 package com.gameServer.common.protocol.playerUser;
 
+import com.zfoo.protocol.anno.Protocol;
+
 /**
  * @author zjy
  * @version 1.0
  * @since 2024/4/17 23 40
  */
+@Protocol(id = 222)
 public class UserMsgInfoData {
     private String userName;
     /**

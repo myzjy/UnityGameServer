@@ -107,6 +107,9 @@
         <protocol id="217" location="com.gameServer.common.protocol.character.CharacterWeaponIDData"/>
         <protocol id="218" location="com.gameServer.common.protocol.character.CharacterEquipmentIDData"/>
         <protocol id="219" location="com.gameServer.common.protocol.character.GameMainTeamCharacterIDData"/>
+        <protocol id="220" location="com.gameServer.common.protocol.login.LoginUserServerInfoData"/>
+        <protocol id="221" location="com.gameServer.common.protocol.playerUser.PlayerSceneInfoData"/>
+        <protocol id="222" location="com.gameServer.common.protocol.playerUser.UserMsgInfoData"/>
 
     </module>
 
