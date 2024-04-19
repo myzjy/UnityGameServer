@@ -17,11 +17,11 @@ public class UserMsgInfoData {
     /**
      * 付费钻石 一般充值才有，付费钻石转换成普通钻石
      */
-    private long PremiumDiamondNum;
+    private long premiumDiamondNum;
     /**
      * 普通钻石 由付费钻石转换成普通钻石，比例为 1:1
      */
-    private long DiamondNum;
+    private long diamondNum;
     /**
      * 登记
      */
@@ -56,19 +56,19 @@ public class UserMsgInfoData {
     }
 
     public long getPremiumDiamondNum() {
-        return PremiumDiamondNum;
+        return premiumDiamondNum;
     }
 
     public void setPremiumDiamondNum(long premiumDiamondNum) {
-        PremiumDiamondNum = premiumDiamondNum;
+        this.premiumDiamondNum = premiumDiamondNum;
     }
 
     public long getDiamondNum() {
-        return DiamondNum;
+        return diamondNum;
     }
 
     public void setDiamondNum(long diamondNum) {
-        DiamondNum = diamondNum;
+        this.diamondNum = diamondNum;
     }
 
     public int getLv() {
