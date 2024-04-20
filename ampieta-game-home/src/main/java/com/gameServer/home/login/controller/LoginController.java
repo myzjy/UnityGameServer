@@ -14,6 +14,7 @@ import com.gameServer.common.entity.composite.CharacterUserCompositeDataID;
 import com.gameServer.common.entity.composite.CharacterUserWeaponCompositeDataID;
 import com.gameServer.common.ormEntity.CharacterConfigEntity;
 import com.gameServer.common.protocol.login.*;
+import com.gameServer.common.protocol.playerUser.PlayerSceneInfoData;
 import com.gameServer.common.protocol.playerUser.UserMsgInfoData;
 import com.gameServer.common.util.TokenUtils;
 import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
@@ -125,7 +126,7 @@ public class LoginController {
         var powerData = physicalPowerService.FindOnePhysicalPower(session.getUid());
         if (powerData == null) {
             logger.error("[uid:{}] 刷新 玩家自己体力 缓存数据库 出现错误,error:{}", uid, I18nEnum.error_login_process_not.toString());
-            logger.error("[uid:{}] 玩家登录失败",uid);
+            logger.error("[uid:{}] 玩家登录失败", uid);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_login_process_not.toString()), gatewayAttachment);
             return;
         }
@@ -195,6 +196,9 @@ public class LoginController {
         userMsgInfoData.setDiamondNum(userCache.getDiamondNum());
         userMsgInfoData.setGoldNum(userCache.getGoldNum());
         userMsgInfoData.setPremiumDiamondNum(userCache.getPremiumDiamondNum());
+        var playerSceneInfoData = PlayerSceneInfoData.valueOf();
+
+        userInfo.setPlayerSceneInfoData(playerSceneInfoData);
         userInfo.setUserMsgInfoData(userMsgInfoData);
         response.setLoginUserServerInfoData(userInfo);
         logger.info("LoginResponse:{}", JsonUtils.object2String(response));
