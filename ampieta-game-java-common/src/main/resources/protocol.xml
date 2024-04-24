@@ -66,6 +66,8 @@
         <protocol id="1047" location="com.gameServer.common.protocol.character.CreateCharacterRequest"/>
         <protocol id="1048" location="com.gameServer.common.protocol.character.CreateCharacterResponse"/>
 
+
+
         <protocol id="6000" location="com.gameServer.common.cache.weapon.CreateWeaponDefaultAsk"/>
         <protocol id="6001" location="com.gameServer.common.cache.weapon.CreateWeaponDefaultAnswer"/>
 
