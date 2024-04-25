@@ -203,11 +203,7 @@ public class PhysicalPowerUsePropsController {
         //玩家UID
         if (!isCheating) {
             //正常发请求时间没有错乱，如果时间错乱需要
-            var refresh = physicalPowerService.RefreshLoginPhysicalPower(session.getUid());
-            //if (refresh) {
-            //    NetContext.getRouter().send(session, Error.valueOf("体力错误"), gatewayAttachment);
-            //    return;
-            //}
+            physicalPowerService.RefreshLoginPhysicalPower(session.getUid());
             //rpc 体力缓存已经刷新 返回出去
             var PhysicalCache = physicalPowerService.FindOnePhysicalPower(session.getUid());
             logger.info("PhysicalPowerEntity:{}", JsonUtils.object2String(PhysicalCache));
