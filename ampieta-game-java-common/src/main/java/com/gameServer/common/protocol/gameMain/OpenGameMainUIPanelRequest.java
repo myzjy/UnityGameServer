@@ -9,7 +9,7 @@ import com.zfoo.protocol.anno.Protocol;
  * @version 1.0
  * @since 2024/4/24 23 53
  */
-@Protocol(id = 1049)
+@Protocol(id = 1051)
 public class OpenGameMainUIPanelRequest {
     /**
      * 打开界面名

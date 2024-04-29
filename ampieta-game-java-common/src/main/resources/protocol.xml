@@ -66,6 +66,11 @@
         <protocol id="1047" location="com.gameServer.common.protocol.character.CreateCharacterRequest"/>
         <protocol id="1048" location="com.gameServer.common.protocol.character.CreateCharacterResponse"/>
 
+        <protocol id="1049" location="com.gameServer.common.protocol.gameMain.GetGameMainCharacterAllRequest"/>
+        <protocol id="1050" location="com.gameServer.common.protocol.gameMain.GetGameMainCharacterAllResponse"/>
+
+        <protocol id="1051" location="com.gameServer.common.protocol.gameMain.OpenGameMainUIPanelRequest"/>
+        <protocol id="1052" location="com.gameServer.common.protocol.resources.GameMainUserResourcesResponse"/>
 
 
         <protocol id="6000" location="com.gameServer.common.cache.weapon.CreateWeaponDefaultAsk"/>
