@@ -30,7 +30,7 @@ public class GameMainController {
     private IUserLoginService userLoginService;
 
     @PacketReceiver
-    private void atOpenGameMainUIPanelRequest(Session session, OpenGameMainUIPanelRequest request, GatewayAttachment attachment) {
+    public void atOpenGameMainUIPanelRequest(Session session, OpenGameMainUIPanelRequest request, GatewayAttachment attachment) {
         logger.info("调用协议号：1049");
         var uid = session.getUid();
         // 返回 角色 相关信息
