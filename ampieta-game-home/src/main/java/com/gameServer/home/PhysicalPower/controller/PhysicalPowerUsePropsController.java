@@ -150,14 +150,10 @@ public class PhysicalPowerUsePropsController {
             logger.error("[uid:{}] 获取体力 时,数据库相关不存在，开始创建", session.getUid());
             //体力重新创建出来了，返回出去
             physicalPowerService.CreatePhysicalPower(user.getPlayerLv(), user.getId());
-            /**
-             * 上创建成功了 重新获取
-             */
+            //上创建成功了 重新获取
             data = physicalPowerService.FindOnePhysicalPower(session.getUid());
-            /**
-             * 上面rpc 通信 创建 体力失败了 没有创建成功
-             * 没有获取到对应
-             */
+            // 上面rpc 通信 创建 体力失败了 没有创建成功
+            //没有获取到对应
             if (data == null) {
                 logger.error("[uid:{}] 获取体力 时,数据库错误，创建数据错误", session.getUid());
                 NetContext.getRouter().send(session, Error.valueOf("数据库错误，创建数据错误，请联系客服"), gatewayAttachment);

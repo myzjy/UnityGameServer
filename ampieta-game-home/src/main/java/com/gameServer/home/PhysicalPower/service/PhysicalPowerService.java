@@ -3,7 +3,6 @@ package com.gameServer.home.PhysicalPower.service;
 import com.gameServer.common.entity.PhysicalPowerEntity;
 import com.gameServer.common.entity.PlayerUserEntity;
 import com.gameServer.common.entity.config.ConfigResourceEntity;
-import com.gameServer.common.resource.ConfigResource;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.orm.OrmContext;
 import com.zfoo.orm.anno.EntityCacheAutowired;
@@ -21,7 +20,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PhysicalPowerService implements IPhysicalPowerService {
-    private  final Logger logger = LoggerFactory.getLogger(PhysicalPowerService.class);
+    private final Logger logger = LoggerFactory.getLogger(PhysicalPowerService.class);
     @EntityCacheAutowired
     private IEntityCache<Long, PhysicalPowerEntity> physicalPowerEntityIEntityCaches;
     @Autowired
@@ -29,25 +28,19 @@ public class PhysicalPowerService implements IPhysicalPowerService {
 
     @Override
     public PhysicalPowerEntity FindOnePhysicalPower(long uid) {
-        var data = physicalPowerEntityIEntityCaches.load(uid);
-        /**
-         * 之前的缓存 中没有对应玩家数据
-         * 在数据库中拿到，存放到缓存中
-         */
-        if (data == null) {
-            data = OrmContext.getAccessor().load(uid, PhysicalPowerEntity.class);
-            /**
-             * 放入缓存
-             */
-            physicalPowerEntityIEntityCaches.update(data);
-        }
-        return data;
+        // 之前的缓存 中没有对应玩家数据
+        // 在数据库中拿到，存放到缓存中
+        return OrmContext.getAccessor().load(uid, PhysicalPowerEntity.class);
     }
 
     @Override
     public void UpdatePhysicalPowerEntityOrm(PhysicalPowerEntity entity) {
         OrmContext.getAccessor().update(entity);
-        physicalPowerEntityIEntityCaches.update(entity);
+    }
+
+    @Override
+    public void InsertPhysicalPowerEntityOrm(PhysicalPowerEntity entity) {
+        OrmContext.getAccessor().insert(entity);
     }
 
     @Override
@@ -263,7 +256,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
     }
 
     @Override
-    public PlayerUserEntity RefreshLoginPhysicalPower(long uid) {
+    public void RefreshLoginPhysicalPower(long uid) {
         var userEntity = userLoginService.LoadPlayerUserEntity(uid);
         var data = FindOnePhysicalPower(uid);
         var config = userLoginService.GetConfigResourceData(userEntity.getPlayerLv());
@@ -274,7 +267,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
         }
         var nowPhysicalPower = data.getNowPhysicalPowerNum();
         if (nowPhysicalPower >= data.getMaximumStrength()) {
-            return userEntity;
+            return;
         }
         //相差的时间 精确到毫秒级别
         //相差秒数
@@ -282,9 +275,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
         var dateTime = TimeUtils.timeToString(data.getResidueNowTime());
         logger.info("[uid:{}] 体力恢复实时时间：{},更当前时间相差秒数为{}", userEntity.getId(), dateTime, differenceToTime);
         if (differenceToTime >= 0) {
-            /**
-             * 体力完全恢复 剩余时间
-             */
+            // 体力完全恢复 剩余时间
             data = PhysicalPowerGetResidueEndTime(data, differenceToTime, config, userEntity);
             data = PhysicalPowerGetResidueTime(data, differenceToTime, config, userEntity);
         }
@@ -293,12 +284,11 @@ public class PhysicalPowerService implements IPhysicalPowerService {
         //更新 缓存 数据库
         UpdatePhysicalPowerEntityOrm(data);
         logger.info("[uid:{}]体力回复，[当前体力：{}] [目前等级为止的最大体力：{}] 更新数据库", uid, nowPhysicalPower, data.getMaximumStrength());
-        return userEntity;
     }
 
     @Override
     public void CreatePhysicalPower(int lv, long uid) {
-        var physicalData =  OrmContext.getAccessor().load(uid, PhysicalPowerEntity.class);
+        var physicalData = OrmContext.getAccessor().load(uid, PhysicalPowerEntity.class);
         var userData = userLoginService.LoadPlayerUserEntity(uid);
         var config = userLoginService.GetConfigResourceData(userData.getPlayerLv());
         /**
@@ -313,7 +303,7 @@ public class PhysicalPowerService implements IPhysicalPowerService {
                                                              0,
                                                              config.getMaxPhysical(),
                                                              0);
-            UpdatePhysicalPowerEntityOrm(createPhysical);
+            InsertPhysicalPowerEntityOrm(createPhysical);
         }
         logger.info("[UserLoginController] 体力数据创建成功 插入数据库成功");
         //设置最大经验

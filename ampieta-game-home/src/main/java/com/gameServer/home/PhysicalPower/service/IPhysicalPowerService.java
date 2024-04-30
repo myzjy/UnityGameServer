@@ -3,7 +3,6 @@ package com.gameServer.home.PhysicalPower.service;
 import com.gameServer.common.entity.PhysicalPowerEntity;
 import com.gameServer.common.entity.PlayerUserEntity;
 import com.gameServer.common.entity.config.ConfigResourceEntity;
-import com.gameServer.common.resource.ConfigResource;
 
 /**
  * 体力相关service
@@ -20,8 +19,12 @@ public interface IPhysicalPowerService {
      * @param entity 体力缓存 更新到数据库中
      */
     void UpdatePhysicalPowerEntityOrm(PhysicalPowerEntity entity);
-
-
+    /**
+     * 插入数据库 体力
+     *
+     * @param entity 体力缓存 更新到数据库中
+     */
+    void InsertPhysicalPowerEntityOrm(PhysicalPowerEntity entity);
 
     /**
      * 剩余恢复1点体力时间 进行处理
@@ -42,8 +45,8 @@ public interface IPhysicalPowerService {
      *
      * @param entity           当前体力 Entity
      * @param differenceToTime 离线时间
-     * @param userEntity 用户数据
-     * @param config  配置
+     * @param userEntity       用户数据
+     * @param config           配置
      * @return 返回处理过后的 Entity
      */
     PhysicalPowerEntity PhysicalPowerGetResidueEndTime(PhysicalPowerEntity entity,
@@ -53,14 +56,16 @@ public interface IPhysicalPowerService {
 
     /**
      * 刷新 体力 数据库
+     *
      * @param uid 玩家 UID
      */
-    PlayerUserEntity RefreshLoginPhysicalPower(long uid);
+    void RefreshLoginPhysicalPower(long uid);
 
     /**
      * Create
-     * @param lv 玩家等级
+     *
+     * @param lv  玩家等级
      * @param uid 玩家 UID
      */
-    void CreatePhysicalPower(int lv,long uid);
+    void CreatePhysicalPower(int lv, long uid);
 }
