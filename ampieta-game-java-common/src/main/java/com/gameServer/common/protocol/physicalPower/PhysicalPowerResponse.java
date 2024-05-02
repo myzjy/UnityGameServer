@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.physicalPower;
 
+import com.gameServer.common.entity.PhysicalPowerEntity;
 import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
@@ -14,6 +15,24 @@ public class PhysicalPowerResponse implements IPacket {
      * 数据 体力
      */
     private PhysicalPowerInfoData physicalPowerInfoData;
+
+    public static PhysicalPowerResponse valueOf(PhysicalPowerEntity entity) {
+        PhysicalPowerResponse response = new PhysicalPowerResponse();
+        var data = new PhysicalPowerInfoData();
+        data.setNowPhysicalPower(entity.getNowPhysicalPowerNum());
+        data.setMaximumStrength(entity.getMaximumStrength());
+        data.setMaximusResidueEndTime(entity.getMaximusResidueEndTime());
+        data.setResidueNowTime(entity.getResidueNowTime());
+        data.setResidueTime(entity.getResidueTime());
+        response.setPhysicalPowerInfoData(data);
+        return response;
+    }
+
+    public static PhysicalPowerResponse valueOf(PhysicalPowerInfoData physicalPowerInfoData) {
+        PhysicalPowerResponse response = new PhysicalPowerResponse();
+        response.physicalPowerInfoData = physicalPowerInfoData;
+        return response;
+    }
 
     public static PhysicalPowerResponse ValueOf(int nowPhysicalPower, int residueTime, int maximumStrength, int maximusResidueEndTime, long residueNowTime) {
         var data = new PhysicalPowerResponse();

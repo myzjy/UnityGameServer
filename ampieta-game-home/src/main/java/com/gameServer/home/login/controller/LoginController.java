@@ -14,6 +14,7 @@ import com.gameServer.common.entity.composite.CharacterUserCompositeDataID;
 import com.gameServer.common.entity.composite.CharacterUserWeaponCompositeDataID;
 import com.gameServer.common.ormEntity.CharacterConfigEntity;
 import com.gameServer.common.protocol.login.*;
+import com.gameServer.common.protocol.physicalPower.PhysicalPowerResponse;
 import com.gameServer.common.protocol.playerUser.PlayerSceneInfoData;
 import com.gameServer.common.protocol.playerUser.UserMsgInfoData;
 import com.gameServer.common.util.TokenUtils;
@@ -197,13 +198,14 @@ public class LoginController {
         userMsgInfoData.setGoldNum(userCache.getGoldNum());
         userMsgInfoData.setPremiumDiamondNum(userCache.getPremiumDiamondNum());
         var playerSceneInfoData = PlayerSceneInfoData.valueOf();
-
         userInfo.setPlayerSceneInfoData(playerSceneInfoData);
         userInfo.setUserMsgInfoData(userMsgInfoData);
         response.setLoginUserServerInfoData(userInfo);
         logger.info("LoginResponse:{}", JsonUtils.object2String(response));
         NetContext.getRouter().send(session, response
                 , gatewayAttachment);
+        powerData = physicalPowerService.FindOnePhysicalPower(session.getUid());
+        NetContext.getRouter().send(session, PhysicalPowerResponse.valueOf(powerData), gatewayAttachment);
     }
 
     @PacketReceiver

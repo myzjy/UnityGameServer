@@ -105,7 +105,7 @@ public class ServerBaseConfigController {
         response.setEquipmentGrowthViceConfigBaseDataList(equipmentGrowthViceConfigDataServerList);
         response.setEquipmentConfigBaseDataList(equipmentConfigDataServerList);
         response.setWeaponsConfigDataList(weaponConfigBaseDataServerList);
-        logger.info("ServerConfigResponse:{}", JsonUtils.object2String(response));
+        //logger.info("ServerConfigResponse:{}", JsonUtils.object2String(response));
         NetContext.getRouter().send(session, response, gatewayAttachment);
     }
 

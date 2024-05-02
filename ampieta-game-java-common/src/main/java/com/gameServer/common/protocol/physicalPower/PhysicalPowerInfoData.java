@@ -45,12 +45,7 @@ public class PhysicalPowerInfoData {
     public int getNowPhysicalPower() {
         return nowPhysicalPower;
     }
-
-    /**
-     * 设置当前体力
-     *
-     * @param nowPhysicalPower 当前体力
-     */
+    
     public void setNowPhysicalPower(int nowPhysicalPower) {
         this.nowPhysicalPower = nowPhysicalPower;
     }
