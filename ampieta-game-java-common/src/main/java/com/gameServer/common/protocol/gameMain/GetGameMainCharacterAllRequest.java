@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.gameMain;
 
+import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -12,5 +13,5 @@ import com.zfoo.protocol.anno.Protocol;
  * @since 2024/4/15 19 54
  */
 @Protocol(id = 1049)
-public class GetGameMainCharacterAllRequest {
+public class GetGameMainCharacterAllRequest implements IPacket {
 }

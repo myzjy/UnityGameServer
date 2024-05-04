@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.physicalPower;
 
+import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -8,7 +9,7 @@ import com.zfoo.protocol.anno.Protocol;
  * @since 2024/4/30 23 16
  */
 @Protocol(id = 223)
-public class PhysicalPowerInfoData {
+public class PhysicalPowerInfoData implements IPacket {
     /**
      * 当前体力
      */
@@ -45,7 +46,7 @@ public class PhysicalPowerInfoData {
     public int getNowPhysicalPower() {
         return nowPhysicalPower;
     }
-    
+
     public void setNowPhysicalPower(int nowPhysicalPower) {
         this.nowPhysicalPower = nowPhysicalPower;
     }

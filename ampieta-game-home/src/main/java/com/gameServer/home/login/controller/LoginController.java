@@ -5,21 +5,15 @@ import com.gameServer.common.cache.character.LoginCreateCharacterAsk;
 import com.gameServer.common.cache.weapon.CreateWeaponDefaultAnswer;
 import com.gameServer.common.cache.weapon.CreateWeaponDefaultAsk;
 import com.gameServer.common.constant.I18nEnum;
-import com.gameServer.common.constant.TankDeployEnum;
 import com.gameServer.common.entity.AccountEntity;
 import com.gameServer.common.entity.CharacterPlayerUserEntity;
-import com.gameServer.common.entity.PlayerUserEntity;
 import com.gameServer.common.entity.character.GameMainTeamCharacterListEntity;
-import com.gameServer.common.entity.composite.CharacterUserCompositeDataID;
-import com.gameServer.common.entity.composite.CharacterUserWeaponCompositeDataID;
 import com.gameServer.common.ormEntity.CharacterConfigEntity;
 import com.gameServer.common.protocol.login.*;
 import com.gameServer.common.protocol.physicalPower.PhysicalPowerResponse;
 import com.gameServer.common.protocol.playerUser.PlayerSceneInfoData;
-import com.gameServer.common.protocol.playerUser.UserMsgInfoData;
 import com.gameServer.common.util.TokenUtils;
 import com.gameServer.home.PhysicalPower.service.IPhysicalPowerService;
-import com.gameServer.home.character.service.ICharacterService;
 import com.gameServer.home.gameMain.service.IGameMainService;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.zfoo.net.NetContext;
@@ -27,8 +21,6 @@ import com.zfoo.net.anno.PacketReceiver;
 import com.zfoo.net.core.gateway.model.AuthUidToGatewayCheck;
 import com.zfoo.net.core.gateway.model.AuthUidToGatewayConfirm;
 import com.zfoo.net.packet.common.Error;
-import com.zfoo.net.packet.common.Ping;
-import com.zfoo.net.packet.common.Pong;
 import com.zfoo.net.router.attachment.GatewayAttachment;
 import com.zfoo.net.session.Session;
 import com.zfoo.orm.OrmContext;
@@ -38,7 +30,6 @@ import com.zfoo.scheduler.util.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -57,11 +48,8 @@ public class LoginController {
     @Autowired
     private IPhysicalPowerService physicalPowerService;
     @Autowired
-    private ICharacterService characterService;
-    @Autowired
     private IGameMainService gameMainService;
-    @Value("${spring.profiles.active}")
-    private TankDeployEnum deployEnum;
+
 
     /**
      * @apiNote 登录调用
@@ -92,7 +80,7 @@ public class LoginController {
             } else {
                 logger.info("[uid:{}][password:{}]账号或密码错误", accountUser.getUid(), password);
             }
-            logger.error("[UID:{}],Error{}", accountUser.getUid(), I18nEnum.error_account_password.toString());
+            logger.error("[UID:{}],Error{}", accountUser.getUid(), I18nEnum.error_account_password);
             //给客户端服务器
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_account_password.toString()), gatewayAttachment);
             return;
@@ -126,7 +114,7 @@ public class LoginController {
         session.setUid(userCache.getId());
         var powerData = physicalPowerService.FindOnePhysicalPower(session.getUid());
         if (powerData == null) {
-            logger.error("[uid:{}] 刷新 玩家自己体力 缓存数据库 出现错误,error:{}", uid, I18nEnum.error_login_process_not.toString());
+            logger.error("[uid:{}] 刷新 玩家自己体力 缓存数据库 出现错误,error:{}", uid, I18nEnum.error_login_process_not);
             logger.error("[uid:{}] 玩家登录失败", uid);
             NetContext.getRouter().send(session, Error.valueOf(I18nEnum.error_login_process_not.toString()), gatewayAttachment);
             return;
@@ -188,15 +176,8 @@ public class LoginController {
         response.setUid(userCache.id());
         response.setToken(userCache.getToken());
         var userInfo = LoginUserServerInfoData.valueOf();
-        var userMsgInfoData = UserMsgInfoData.valueOf();
-        userMsgInfoData.setUserName(userCache.getName());
-        userMsgInfoData.setExp(userCache.getNowExp());
-        userMsgInfoData.setMaxExp(userCache.getNowLvMaxExp());
-        userMsgInfoData.setLv(userCache.getPlayerLv());
-        userMsgInfoData.setMaxLv(userLoginService.ConfigResourceLength());
-        userMsgInfoData.setDiamondNum(userCache.getDiamondNum());
-        userMsgInfoData.setGoldNum(userCache.getGoldNum());
-        userMsgInfoData.setPremiumDiamondNum(userCache.getPremiumDiamondNum());
+        var userMsgInfoData = userLoginService.CreateUserMsgInfoData(
+                userCache.getName(), userCache.getGoldNum(), userCache.getPremiumDiamondNum(), userCache.getDiamondNum(), userCache.getPlayerLv(), userLoginService.ConfigResourceLength(), userCache.getNowExp(), userCache.getNowLvMaxExp());
         var playerSceneInfoData = PlayerSceneInfoData.valueOf();
         userInfo.setPlayerSceneInfoData(playerSceneInfoData);
         userInfo.setUserMsgInfoData(userMsgInfoData);

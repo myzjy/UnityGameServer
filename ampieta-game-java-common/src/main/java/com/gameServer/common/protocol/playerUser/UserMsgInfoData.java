@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.playerUser;
 
+import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -8,7 +9,7 @@ import com.zfoo.protocol.anno.Protocol;
  * @since 2024/4/17 23 40
  */
 @Protocol(id = 222)
-public class UserMsgInfoData {
+public class UserMsgInfoData implements IPacket {
     private String userName;
     /**
      * 金币

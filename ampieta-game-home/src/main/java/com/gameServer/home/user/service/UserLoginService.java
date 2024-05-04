@@ -4,6 +4,7 @@ import com.gameServer.common.entity.AccessGameTimeEntity;
 import com.gameServer.common.entity.PhysicalPowerEntity;
 import com.gameServer.common.entity.PlayerUserEntity;
 import com.gameServer.common.entity.config.ConfigResourceEntity;
+import com.gameServer.common.protocol.playerUser.UserMsgInfoData;
 import com.gameServer.common.resource.AccesGameTimeResource;
 import com.gameServer.common.resource.ConfigResource;
 import com.zfoo.orm.OrmContext;
@@ -112,5 +113,19 @@ public class UserLoginService implements IUserLoginService {
     public void UpdateAccessGameTimeEntity(AccessGameTimeEntity entity) {
         OrmContext.getAccessor().update(entity);
         accessGameTimeEntityIEntityCaches.update(entity);
+    }
+
+    @Override
+    public UserMsgInfoData CreateUserMsgInfoData(String userName, long goldNum, long premiumDiamondNum, long diamondNum, int lv, int exp, int maxLv, int maxExp) {
+        var userMsgInfoData = UserMsgInfoData.valueOf();
+        userMsgInfoData.setUserName(userName);
+        userMsgInfoData.setExp(exp);
+        userMsgInfoData.setMaxExp(maxExp);
+        userMsgInfoData.setLv(lv);
+        userMsgInfoData.setMaxLv(maxLv);
+        userMsgInfoData.setDiamondNum(diamondNum);
+        userMsgInfoData.setGoldNum(goldNum);
+        userMsgInfoData.setPremiumDiamondNum(premiumDiamondNum);
+        return userMsgInfoData;
     }
 }

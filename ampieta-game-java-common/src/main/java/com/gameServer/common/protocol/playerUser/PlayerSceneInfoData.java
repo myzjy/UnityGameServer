@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.playerUser;
 
+import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -8,7 +9,7 @@ import com.zfoo.protocol.anno.Protocol;
  * @since 2024/4/17 19 52
  */
 @Protocol(id = 221)
-public class PlayerSceneInfoData {
+public class PlayerSceneInfoData implements IPacket {
     /**
      * 场景id
      */

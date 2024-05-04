@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.gameMain;
 
 import com.gameServer.common.protocol.character.CharacterBaseData;
+import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  * @since 2024/4/15 19 59
  */
 @Protocol(id = 1050)
-public class GetGameMainCharacterAllResponse {
+public class GetGameMainCharacterAllResponse implements IPacket {
     /**
      * 角色数据 当前玩家拥有的角色
      */

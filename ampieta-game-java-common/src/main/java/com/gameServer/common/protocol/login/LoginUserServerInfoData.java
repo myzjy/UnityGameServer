@@ -2,6 +2,7 @@ package com.gameServer.common.protocol.login;
 
 import com.gameServer.common.protocol.playerUser.PlayerSceneInfoData;
 import com.gameServer.common.protocol.playerUser.UserMsgInfoData;
+import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -9,8 +10,8 @@ import com.zfoo.protocol.anno.Protocol;
  * @version 1.0
  * @since 2024/4/17 19 49
  */
-@Protocol(id=220)
-public class LoginUserServerInfoData {
+@Protocol(id = 220)
+public class LoginUserServerInfoData implements IPacket {
     /**
      * 角色在场景中得位置信息
      */

@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.gameMain;
 
+import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -10,7 +11,7 @@ import com.zfoo.protocol.anno.Protocol;
  * @since 2024/4/24 23 53
  */
 @Protocol(id = 1051)
-public class OpenGameMainUIPanelRequest {
+public class OpenGameMainUIPanelRequest implements IPacket {
     /**
      * 打开界面名
      */

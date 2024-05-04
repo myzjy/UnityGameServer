@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.resources;
 
 import com.gameServer.common.protocol.playerUser.UserMsgInfoData;
+import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -9,7 +10,7 @@ import com.zfoo.protocol.anno.Protocol;
  * @since 2024/4/26 00 03
  */
 @Protocol(id = 1052)
-public class GameMainUserResourcesResponse {
+public class GameMainUserResourcesResponse  implements IPacket {
     /**
      * user 相关 资源信息
      */

@@ -34,22 +34,22 @@
         <protocol id="1015" location="com.gameServer.common.protocol.login.LoginByHttpTokenRequest"/>
         <protocol id="1016" location="com.gameServer.common.protocol.login.LoginByHttpTokenResponse"/>
 
-        <protocol location="com.gameServer.common.protocol.physicalPower.PhysicalPowerRequest"/>
-        <protocol location="com.gameServer.common.protocol.physicalPower.PhysicalPowerResponse"/>
-        <protocol location="com.gameServer.common.protocol.physicalPower.PhysicalPowerUserPropsRequest"/>
-        <protocol location="com.gameServer.common.protocol.physicalPower.PhysicalPowerUserPropsResponse"/>
-        <protocol location="com.gameServer.common.protocol.riqueza.RefreshingResourcesMainRequest"/>
-        <protocol location="com.gameServer.common.protocol.riqueza.RefreshingResourcesMainResponse"/>
-        <protocol location="com.gameServer.common.protocol.physicalPower.PhysicalPowerSecondsRequest"/>
-        <protocol location="com.gameServer.common.protocol.physicalPower.PhysicalPowerSecondsResponse"/>
-        <protocol location="com.gameServer.common.protocol.user.GameMainUserInfoToRequest"/>
-        <protocol location="com.gameServer.common.protocol.user.GameMainUserInfoToResponse"/>
-        <protocol location="com.gameServer.common.protocol.bag.UseTheBagItemEffectRequest"/>
-        <protocol location="com.gameServer.common.protocol.bag.UseTheBagItemEffectResponse"/>
-        <protocol location="com.gameServer.common.protocol.Puzzle.PuzzleAllConfigRequest"/>
-        <protocol location="com.gameServer.common.protocol.Puzzle.PuzzleAllConfigResponse"/>
-        <protocol location="com.gameServer.common.protocol.equipment.EquipmentAllDataRequest"/>
-        <protocol location="com.gameServer.common.protocol.equipment.EquipmentAllDataResponse"/>
+        <protocol id="1023" location="com.gameServer.common.protocol.physicalPower.PhysicalPowerRequest"/>
+        <protocol id="1024" location="com.gameServer.common.protocol.physicalPower.PhysicalPowerResponse"/>
+        <protocol id="1025" location="com.gameServer.common.protocol.physicalPower.PhysicalPowerUserPropsRequest"/>
+        <protocol id="1026" location="com.gameServer.common.protocol.physicalPower.PhysicalPowerUserPropsResponse"/>
+        <protocol id="1027" location="com.gameServer.common.protocol.riqueza.RefreshingResourcesMainRequest"/>
+        <protocol id="1028" location="com.gameServer.common.protocol.riqueza.RefreshingResourcesMainResponse"/>
+        <protocol id="1029" location="com.gameServer.common.protocol.physicalPower.PhysicalPowerSecondsRequest"/>
+        <protocol id="1030" location="com.gameServer.common.protocol.physicalPower.PhysicalPowerSecondsResponse"/>
+        <protocol id="1031" location="com.gameServer.common.protocol.user.GameMainUserInfoToRequest"/>
+        <protocol id="1032" location="com.gameServer.common.protocol.user.GameMainUserInfoToResponse"/>
+        <protocol id="1033" location="com.gameServer.common.protocol.bag.UseTheBagItemEffectRequest"/>
+        <protocol id="1034" location="com.gameServer.common.protocol.bag.UseTheBagItemEffectResponse"/>
+        <protocol id="1035" location="com.gameServer.common.protocol.Puzzle.PuzzleAllConfigRequest"/>
+        <protocol id="1036" location="com.gameServer.common.protocol.Puzzle.PuzzleAllConfigResponse"/>
+        <protocol id="1037" location="com.gameServer.common.protocol.equipment.EquipmentAllDataRequest"/>
+        <protocol id="1038" location="com.gameServer.common.protocol.equipment.EquipmentAllDataResponse"/>
 
         <protocol id="1039" location="com.gameServer.common.protocol.weapon.WeaponPlayerUserDataRequest"/>
         <protocol id="1040" location="com.gameServer.common.protocol.weapon.WeaponPlayerUserDataResponse"/>
