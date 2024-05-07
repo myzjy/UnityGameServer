@@ -1,5 +1,7 @@
 package com.gameServer.gameBoot;
 
+import com.gameServer.common.entity.composite.WeaponBreakthroughCompositeData;
+import com.gameServer.common.entity.composite.WeaponProgressDataOrmEntity;
 import com.gameServer.common.ormEntity.WeaponGrowthValueDataConfigOrmEntity;
 import com.gameServer.common.ormEntity.WeaponsDataConfigEntity;
 import com.gameServer.common.resource.ConfigResource;
@@ -15,6 +17,9 @@ import org.apache.commons.lang.NullArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author zjy
@@ -45,11 +50,13 @@ public class WeaponOrmAddManager {
             var ormData = OrmContext.getAccessor().load(item.getId(), WeaponsDataConfigEntity.class);
             var newEntity = WeaponsDataConfigEntity.valueOf();
             var createOrUpdate = TimeUtils.timeToString(TimeUtils.now());
+            List<WeaponBreakthroughCompositeData> weaponBreakthroughList = getWeaponBreakthroughCompositeData(item);
+            List<WeaponProgressDataOrmEntity> weaponProgressDataList = getWeaponProgressDataOrmEntities(item);
             if (ormData == null) {
                 newEntity.setId(item.getId());
                 newEntity.setMaxLv(item.getMaxLv());
                 newEntity.setIconResource(item.getIconResource());
-                newEntity.setWeaponBreakthrough(item.getWeaponBreakthrough());
+                newEntity.setWeaponBreakthrough(weaponBreakthroughList);
                 newEntity.setWeaponName(item.getWeaponName());
                 newEntity.setWeaponType(item.getWeaponType());
                 newEntity.setWeaponSkills(item.getWeaponSkills());
@@ -61,13 +68,15 @@ public class WeaponOrmAddManager {
                 newEntity.setWeaponOrderNum(item.getOrderNum());
                 newEntity.setCreateAt(createOrUpdate);
                 newEntity.setUpdateAt(createOrUpdate);
+                newEntity.setBagIconResource(item.getBagIconResource());
+                newEntity.setWeaponProgressData(weaponProgressDataList);
                 OrmContext.getAccessor().insert(newEntity);
             } else {
                 //覆盖掉
                 ormData.setId(item.getId());
                 ormData.setMaxLv(item.getMaxLv());
                 ormData.setIconResource(item.getIconResource());
-                ormData.setWeaponBreakthrough(item.getWeaponBreakthrough());
+                ormData.setWeaponBreakthrough(weaponBreakthroughList);
                 ormData.setWeaponName(item.getWeaponName());
                 ormData.setWeaponType(item.getWeaponType());
                 ormData.setWeaponSkills(item.getWeaponSkills());
@@ -79,14 +88,45 @@ public class WeaponOrmAddManager {
                 } else {
                     ormData.setCreateAt(ormData.getCreateAt());
                 }
-                newEntity.setWeaponMainInitType(item.getWeaponMainInitType());
-                newEntity.setWeaponReinforcementEqualOrder(item.getReinforcementEqualOrder());
-                newEntity.setWeaponOrderNum(item.getOrderNum());
+                ormData.setWeaponMainInitType(item.getWeaponMainInitType());
+                ormData.setWeaponReinforcementEqualOrder(item.getReinforcementEqualOrder());
+                ormData.setWeaponOrderNum(item.getOrderNum());
+                ormData.setBagIconResource(item.getBagIconResource());
                 ormData.setUpdateAt(createOrUpdate);
+                ormData.setWeaponProgressData(weaponProgressDataList);
                 OrmContext.getAccessor().update(ormData);
             }
         }
         logger.info("插入 WeaponsDataConfigEntity list 数据完成");
+    }
+
+    private List<WeaponProgressDataOrmEntity> getWeaponProgressDataOrmEntities(WeaponsDataConfigResource item) {
+        List<WeaponProgressDataOrmEntity> weaponProgressDataList = new ArrayList<>();
+        String[] split = item.getWeaponProgress().split("\\|");
+        for (String s : split) {
+            String[] split1 = s.split("\\+");
+            WeaponProgressDataOrmEntity entity = WeaponProgressDataOrmEntity.valueOf();
+            int lv = Integer.parseInt(split1[0]);
+            entity.setWeaponLv(lv);
+            entity.setWeaponAddNum(split1[1]);
+            weaponProgressDataList.add(entity);
+        }
+        return weaponProgressDataList;
+    }
+
+    private List<WeaponBreakthroughCompositeData> getWeaponBreakthroughCompositeData(WeaponsDataConfigResource item) {
+        List<WeaponBreakthroughCompositeData> weaponBreakthroughList = new ArrayList<>();
+        String[] split = item.getWeaponBreakthrough().split("\\|");
+        for (String str : split) {
+            var weaponBreakthroughCompositeData = WeaponBreakthroughCompositeData.valueOf();
+            String[] split1 = str.split("\\+");
+            int lv = Integer.parseInt(split1[0]);
+            int num = Integer.parseInt(split1[1]);
+            weaponBreakthroughCompositeData.setWeaponLv(lv);
+            weaponBreakthroughCompositeData.setWeaponAddNum(num);
+            weaponBreakthroughList.add(weaponBreakthroughCompositeData);
+        }
+        return weaponBreakthroughList;
     }
 
     public void UpdateOrInWeaponGrowthValueDataConfigResource() {
@@ -108,7 +148,6 @@ public class WeaponOrmAddManager {
                 newEntity.setLv(item.getLv());
                 newEntity.setExp(item.getExp());
                 newEntity.setQuality(item.getQuality());
-
                 newEntity.setCreateAt(createOrUpdate);
                 newEntity.setUpdateAt(createOrUpdate);
                 OrmContext.getAccessor().insert(newEntity);

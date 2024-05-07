@@ -1,7 +1,11 @@
 package com.gameServer.common.ormEntity;
 
+import com.gameServer.common.entity.composite.WeaponBreakthroughCompositeData;
+import com.gameServer.common.entity.composite.WeaponProgressDataOrmEntity;
 import com.zfoo.orm.anno.Id;
 import com.zfoo.orm.model.IEntity;
+
+import java.util.List;
 
 /**
  * @author zjy
@@ -42,7 +46,7 @@ public class WeaponsDataConfigEntity implements IEntity<Integer> {
     /**
      * 武器升级到特定等21级会突破在之后会加数值
      */
-    protected String weaponBreakthrough;
+    protected List<WeaponBreakthroughCompositeData> weaponBreakthrough;
     /**
      * 当前武器等级最大值
      */
@@ -59,6 +63,14 @@ public class WeaponsDataConfigEntity implements IEntity<Integer> {
      *
      */
     protected int weaponReinforcementEqualOrder;
+    /**
+     * 背包里面 icon
+     */
+    protected String bagIconResource;
+    /**
+     * 武器强化等级
+     */
+    protected List<WeaponProgressDataOrmEntity> weaponProgressData;
     /**
      * 创建时间
      */
@@ -129,11 +141,11 @@ public class WeaponsDataConfigEntity implements IEntity<Integer> {
         this.iconResource = iconResource;
     }
 
-    public String getWeaponBreakthrough() {
+    public List<WeaponBreakthroughCompositeData> getWeaponBreakthrough() {
         return weaponBreakthrough;
     }
 
-    public void setWeaponBreakthrough(String weaponBreakthrough) {
+    public void setWeaponBreakthrough(List<WeaponBreakthroughCompositeData> weaponBreakthrough) {
         this.weaponBreakthrough = weaponBreakthrough;
     }
 
@@ -195,5 +207,21 @@ public class WeaponsDataConfigEntity implements IEntity<Integer> {
 
     public void setWeaponReinforcementEqualOrder(int weaponReinforcementEqualOrder) {
         this.weaponReinforcementEqualOrder = weaponReinforcementEqualOrder;
+    }
+
+    public String getBagIconResource() {
+        return bagIconResource;
+    }
+
+    public void setBagIconResource(String bagIconResource) {
+        this.bagIconResource = bagIconResource;
+    }
+
+    public List<WeaponProgressDataOrmEntity> getWeaponProgressData() {
+        return weaponProgressData;
+    }
+
+    public void setWeaponProgressData(List<WeaponProgressDataOrmEntity> weaponProgressData) {
+        this.weaponProgressData = weaponProgressData;
     }
 }

@@ -18,7 +18,7 @@ public class WeaponService implements IWeaponService {
         data.setId(entity.getId());
         data.setWeaponName(entity.getWeaponName());
         data.setWeaponType(entity.getWeaponType());
-        data.setWeaponBreakthrough(entity.getWeaponBreakthrough());
+        //data.setWeaponBreakthrough(entity.getWeaponBreakthrough());
         data.setWeaponSkills(entity.getWeaponSkills());
         data.setIconResource(entity.getIconResource());
         data.setMaxLv(entity.getMaxLv());

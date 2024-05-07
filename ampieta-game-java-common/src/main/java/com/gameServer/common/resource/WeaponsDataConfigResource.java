@@ -61,6 +61,14 @@ public class WeaponsDataConfigResource {
      * 武器强化到一定等级可以突破 这个过程几次
      */
     protected int reinforcementEqualOrder;
+    /**
+     * 背包里面 icon
+     */
+    protected String bagIconResource;
+    /**
+     * 武器强化20级之每个阶段所强化数值
+     */
+    protected String weaponProgress;
 
     public int getId() {
         return id;
@@ -112,5 +120,13 @@ public class WeaponsDataConfigResource {
 
     public int getReinforcementEqualOrder() {
         return reinforcementEqualOrder;
+    }
+
+    public String getBagIconResource() {
+        return bagIconResource;
+    }
+
+    public String getWeaponProgress() {
+        return weaponProgress;
     }
 }
