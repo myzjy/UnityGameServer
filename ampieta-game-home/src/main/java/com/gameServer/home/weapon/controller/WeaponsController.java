@@ -108,18 +108,19 @@ public class WeaponsController {
         data.setNowSkills(item.getWeaponsSkill());
         data.setWeaponMainValue(item.getWeaponValue());
         data.setWeaponMainValueType(findWeaponConfig.getWeaponMainInitType());
-        data.setWeaponModelNameIcons("");
+        data.setWeaponModelNameIcons(findWeaponConfig.getIconResource());
+        data.setBagWeaponIcon(findWeaponConfig.getBagIconResource());
         data.setNowLvMaxExp(item.getNowLvMaxExp());
         return data;
     }
 
     @PacketReceiver
     public void atCreateWeaponDefaultAsk(Session session, CreateWeaponDefaultAsk answer) {
-        logger.info("[当前服务器调用时间{}] [调用协议：atCreateWeaponDefaultAsk]",TimeUtils.timeToString(TimeUtils.now()));
+        logger.info("[当前服务器调用时间{}] [调用协议：atCreateWeaponDefaultAsk]", TimeUtils.timeToString(TimeUtils.now()));
         var config = OrmContext.getAccessor().load(answer.getPlayerId(), WeaponsDataConfigEntity.class);
         if (config == null) {
             // rpc 返回
-            NetContext.getRouter().send(session,new CreateWeaponDefaultAnswer());
+            NetContext.getRouter().send(session, new CreateWeaponDefaultAnswer());
             throw new NullArgumentException(StringUtils.format("当前 查找武器id:{}，数据库 中不存在", answer.getPlayerId()));
             //return;
         }
@@ -141,16 +142,8 @@ public class WeaponsController {
         entity.setUserPlayerId(answer.getUserPlayerId());
         entity.setLv(1);
         var breakthrough = config.getWeaponBreakthrough();
-        var breakthroughs = breakthrough.split("\\|");
-        if (breakthroughs.length > 0) {
-            var strL = breakthroughs[0].split("\\+");
-            int nowMaxLv = Integer.parseInt(strL[0]);
-            entity.setNowMaxLv(nowMaxLv);
-        } else {
-            NetContext.getRouter().send(session,new CreateWeaponDefaultAnswer());
-            throw new NumberFormatException(StringUtils.format("当前武器 id:{}，基础配置表 中的WeaponBreakthrough字段配置错误或者解析错误", config.getId()));
-            //return;
-        }
+        var breakthroughs = breakthrough.get(0);
+        entity.setNowMaxLv(breakthroughs.getWeaponLv());
         entity.setUserUid(session.getUid());
         entity.setWeaponName(config.getWeaponName());
         entity.setWeaponsSkill(config.getWeaponSkills());
@@ -160,9 +153,9 @@ public class WeaponsController {
         entity.setNewPc(true);
         entity.setNewAndroid(true);
         OrmContext.getAccessor().insert(entity);
-        var answerNew=new CreateWeaponDefaultAnswer();
+        var answerNew = new CreateWeaponDefaultAnswer();
         answerNew.setWeaponIndex(entity.getWeaponId());
         logger.info("WeaponUsePlayerDataEntity:{}", JsonUtils.object2String(entity));
-        NetContext.getRouter().send(session,answerNew);
+        NetContext.getRouter().send(session, answerNew);
     }
 }

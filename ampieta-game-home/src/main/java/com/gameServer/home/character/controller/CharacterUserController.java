@@ -100,7 +100,7 @@ public class CharacterUserController {
                                                                             0,
                                                                             config.getElementType(),
                                                                             weaponCreateData);
-        logger.info("createCharacterPlayerUserEntity:{}", JsonUtils.object2String(entityCreate));
+        logger.info("返回 createCharacterPlayerUserEntity:{}", JsonUtils.object2String(entityCreate));
         OrmContext.getAccessor().insert(entityCreate);
         CreateCharacterResponse data = null;
         if (weaponCreateData != null) {

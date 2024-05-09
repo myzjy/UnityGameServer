@@ -67,6 +67,10 @@ public class WeaponPlayerUserDataStruct implements IPacket {
      * 武器模型所属资源名
      */
     private String weaponModelNameIcons;
+    /**
+     * 背包里面的武器icon
+     */
+    private String bagWeaponIcon;
 
     public long getId() {
         return id;
@@ -144,7 +148,6 @@ public class WeaponPlayerUserDataStruct implements IPacket {
         return nowLvExp;
     }
 
-
     public void setNowLvExp(int nowLvExp) {
         this.nowLvExp = nowLvExp;
     }
@@ -173,19 +176,12 @@ public class WeaponPlayerUserDataStruct implements IPacket {
         this.weaponModelNameIcons = weaponModelNameIcons;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        WeaponPlayerUserDataStruct that = (WeaponPlayerUserDataStruct) o;
-        return id == that.id && weaponType == that.weaponType && nowSkills == that.nowSkills && weaponMainValue == that.weaponMainValue && weaponMainValueType == that.weaponMainValueType && nowLv == that.nowLv && nowMaxLv == that.nowMaxLv && nowLvExp == that.nowLvExp && nowLvMaxExp == that.nowLvMaxExp && Objects.equals(weaponName, that.weaponName) && Objects.equals(haveTimeAt, that.haveTimeAt) && Objects.equals(weaponIcons, that.weaponIcons) && Objects.equals(weaponModelNameIcons, that.weaponModelNameIcons);
+    public String getBagWeaponIcon() {
+        return bagWeaponIcon;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, weaponName, weaponType, nowSkills, weaponMainValue, weaponMainValueType, haveTimeAt, nowLv, nowMaxLv, nowLvExp, nowLvMaxExp, weaponIcons, weaponModelNameIcons);
+    public void setBagWeaponIcon(String bagWeaponIcon) {
+        this.bagWeaponIcon = bagWeaponIcon;
     }
 
     public static WeaponPlayerUserDataStruct ValueOf() {
