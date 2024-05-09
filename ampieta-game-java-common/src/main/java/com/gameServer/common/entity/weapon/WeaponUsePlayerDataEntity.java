@@ -89,6 +89,10 @@ public class WeaponUsePlayerDataEntity implements IEntity<Long> {
      */
     private boolean newPc;
     /**
+     * 武器
+     */
+    private int weaponNum;
+    /**
      * 创建时间
      */
     private String createAt;
@@ -255,6 +259,14 @@ public class WeaponUsePlayerDataEntity implements IEntity<Long> {
 
     public void setUserPlayerId(int userPlayerId) {
         this.userPlayerId = userPlayerId;
+    }
+
+    public int getWeaponNum() {
+        return weaponNum;
+    }
+
+    public void setWeaponNum(int weaponNum) {
+        this.weaponNum = weaponNum;
     }
 
     public static WeaponUsePlayerDataEntity ValueOf() {

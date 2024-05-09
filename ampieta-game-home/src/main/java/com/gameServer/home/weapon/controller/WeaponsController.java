@@ -152,6 +152,7 @@ public class WeaponsController {
         entity.setWeaponValue(config.getWeaponMainInitType());
         entity.setNewPc(true);
         entity.setNewAndroid(true);
+        entity.setWeaponNum(1);
         OrmContext.getAccessor().insert(entity);
         var answerNew = new CreateWeaponDefaultAnswer();
         answerNew.setWeaponIndex(entity.getWeaponId());

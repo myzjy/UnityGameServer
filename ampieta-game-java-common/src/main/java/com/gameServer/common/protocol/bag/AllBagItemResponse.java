@@ -15,23 +15,25 @@ import java.util.List;
  */
 @Protocol(id = 1008)
 public class AllBagItemResponse implements IPacket {
-
-    private List<BagUserItemData> list;
-    private  String protocolStr;
+    /**
+     * 武器
+     */
+    private List<BagUserItemData> weaponUserList;
+    private String protocolStr;
 
     public static AllBagItemResponse ValueOf(List<BagUserItemData> list) {
         var value = new AllBagItemResponse();
-        value.list = new ArrayList<>();
-        value.list.addAll(list);
+        value.weaponUserList = new ArrayList<>();
+        value.weaponUserList.addAll(list);
         return value;
     }
 
-    public List<BagUserItemData> getList() {
-        return list;
+    public List<BagUserItemData> getWeaponUserList() {
+        return weaponUserList;
     }
 
-    public void setList(List<BagUserItemData> list) {
-        this.list = list;
+    public void setWeaponUserList(List<BagUserItemData> weaponUserList) {
+        this.weaponUserList = weaponUserList;
     }
 
     public String getProtocolStr() {

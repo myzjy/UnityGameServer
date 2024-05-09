@@ -48,28 +48,22 @@ public class BagController {
         BagTypeEnum enumType = BagTypeEnum.GetType(request.getType());
         logger.info("[type:{}],BagTypeEnum:{}", request.getType(), enumType);
         List<BagUserItemData> bagUserItemEntities = new ArrayList<>();
-        switch (enumType) {
-            case Weapon: {
-                logger.info("[type:{}],BagTypeEnum:{},msg:{}, switch,request.getMsgProtocol() == \"c001\":{}", request.getType(), enumType, request.getMsgProtocol(),(request.getMsgProtocol() == "c001"));
-                if (Objects.equals(request.getMsgProtocol(), "c001")) {
-                    //武器相关协议处理
-                    var findUidDataList = OrmContext.getQuery(WeaponUsePlayerDataEntity.class).eq("userUid", session.getUid());
-                    var list = findUidDataList.queryAll();
-                    bagUserItemEntities = new ArrayList<>();
-                    for (WeaponUsePlayerDataEntity item : list) {
-                        // 具体数据
-                        var configData = weaponService.FindWeaponsConfigData(item.getWeaponId());
-                        BagUserItemData data = getBagUserItemData(item, configData);
-                        bagUserItemEntities.add(data);
-                    }
-                    var response = AllBagItemResponse.ValueOf(bagUserItemEntities);
-                    response.setProtocolStr("c002");
-                    NetContext.getRouter().send(session, response, gatewayAttachment);
-                } else if (request.getMsgProtocol() == "c002") {
-                }
+        logger.info("[type:{}],BagTypeEnum:{},msg:{}, switch,request.getMsgProtocol() == \"c001\":{}", request.getType(), enumType, request.getMsgProtocol(), (request.getMsgProtocol() == "c001"));
+        if (Objects.equals(request.getMsgProtocol(), "c001")) {
+            //武器相关协议处理
+            var findUidDataList = OrmContext.getQuery(WeaponUsePlayerDataEntity.class).eq("userUid", session.getUid());
+            var list = findUidDataList.queryAll();
+            bagUserItemEntities = new ArrayList<>();
+            for (WeaponUsePlayerDataEntity item : list) {
+                // 具体数据
+                var configData = weaponService.FindWeaponsConfigData(item.getWeaponId());
+                BagUserItemData data = getBagUserItemData(item, configData);
+                bagUserItemEntities.add(data);
             }
-            break;
-
+            var response = AllBagItemResponse.ValueOf(bagUserItemEntities);
+            response.setProtocolStr("c002");
+            NetContext.getRouter().send(session, response, gatewayAttachment);
+        } else if (request.getMsgProtocol() == "c002") {
         }
     }
 
@@ -81,7 +75,7 @@ public class BagController {
         data.setItemNew(item.isNewAndroid());
         data.setQuality(configData.getWeaponQuality());
         data.setMasterUserId(item.getUserUid());
-        data.setNowItemNum(1);
+        data.setNowItemNum(item.getWeaponNum());
         data.setResourcePath(configData.getIconResource());
         data.setUserPlayerId(item.getUserPlayerId());
         return data;
