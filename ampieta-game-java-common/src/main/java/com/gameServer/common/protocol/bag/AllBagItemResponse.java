@@ -20,7 +20,9 @@ public class AllBagItemResponse implements IPacket {
      */
     private List<BagUserItemData> weaponUserList;
     private String protocolStr;
-
+    public static AllBagItemResponse ValueOf() {
+        return new AllBagItemResponse();
+    }
     public static AllBagItemResponse ValueOf(List<BagUserItemData> list) {
         var value = new AllBagItemResponse();
         value.weaponUserList = new ArrayList<>();
