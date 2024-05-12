@@ -10,6 +10,7 @@ import com.gameServer.common.protocol.bag.AllBagItemRequest;
 import com.gameServer.common.protocol.bag.AllBagItemResponse;
 import com.gameServer.common.protocol.bag.BagUserItemData;
 import com.gameServer.common.protocol.bag.UseTheBagItemEffectRequest;
+import com.gameServer.common.protocol.weapon.WeaponPlayerUserDataStruct;
 import com.gameServer.home.bag.service.IBagService;
 import com.gameServer.home.weapon.service.IWeaponService;
 import com.zfoo.event.anno.EventReceiver;
@@ -47,19 +48,20 @@ public class BagController {
     public void atAllBagItemRequest(Session session, AllBagItemRequest request, GatewayAttachment gatewayAttachment) {
         BagTypeEnum enumType = BagTypeEnum.GetType(request.getType());
         logger.info("[type:{}],BagTypeEnum:{}", request.getType(), enumType);
-        List<BagUserItemData> bagUserItemEntities = new ArrayList<>();
+        List<WeaponPlayerUserDataStruct> bagUserItemEntityList = new ArrayList<>();
         //武器相关协议处理
         var findUidDataList = OrmContext.getQuery(WeaponUsePlayerDataEntity.class).eq("userUid", session.getUid());
         var list = findUidDataList.queryAll();
-        bagUserItemEntities = new ArrayList<>();
+
+        bagUserItemEntityList = new ArrayList<>();
         for (WeaponUsePlayerDataEntity item : list) {
             // 具体数据
             var configData = weaponService.FindWeaponsConfigData(item.getWeaponId());
-            BagUserItemData data = getBagUserItemData(item, configData);
-            bagUserItemEntities.add(data);
+            var weaponData = weaponService.getWeaponPlayerUserDataStruct(item, configData);
+            bagUserItemEntityList.add(weaponData);
         }
         var response = AllBagItemResponse.ValueOf();
-        response.setWeaponUserList(bagUserItemEntities);
+        response.setWeaponUserList(bagUserItemEntityList);
         response.setProtocolStr("c002");
         NetContext.getRouter().send(session, response, gatewayAttachment);
     }
@@ -100,7 +102,7 @@ public class BagController {
             });
             logger.info("[uid:{}][当前背包里面count:{}]", session.getUid(), bagUserItemEntities.size());
             //推送发送
-            NetContext.getRouter().send(event.getSession(), AllBagItemResponse.ValueOf(bagUserItemEntities));
+            //NetContext.getRouter().send(event.getSession(), AllBagItemResponse.ValueOf(bagUserItemEntities));
         });
     }
 

@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.bag;
 
+import com.gameServer.common.protocol.weapon.WeaponPlayerUserDataStruct;
 import com.zfoo.net.packet.IPacket;
 import com.zfoo.protocol.anno.Protocol;
 
@@ -18,23 +19,22 @@ public class AllBagItemResponse implements IPacket {
     /**
      * 武器
      */
-    private List<BagUserItemData> weaponUserList;
+    private List<WeaponPlayerUserDataStruct> weaponUserList;
     private String protocolStr;
     public static AllBagItemResponse ValueOf() {
         return new AllBagItemResponse();
     }
-    public static AllBagItemResponse ValueOf(List<BagUserItemData> list) {
+    public static AllBagItemResponse ValueOf(List<WeaponPlayerUserDataStruct> list) {
         var value = new AllBagItemResponse();
         value.weaponUserList = new ArrayList<>();
-        value.weaponUserList.addAll(list);
         return value;
     }
 
-    public List<BagUserItemData> getWeaponUserList() {
+    public List<WeaponPlayerUserDataStruct> getWeaponUserList() {
         return weaponUserList;
     }
 
-    public void setWeaponUserList(List<BagUserItemData> weaponUserList) {
+    public void setWeaponUserList(List<WeaponPlayerUserDataStruct> weaponUserList) {
         this.weaponUserList = weaponUserList;
     }
 
