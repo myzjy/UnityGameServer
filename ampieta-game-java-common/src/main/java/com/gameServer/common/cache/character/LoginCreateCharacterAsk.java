@@ -19,15 +19,17 @@ public class LoginCreateCharacterAsk {
      * 武器 orm index
      */
     private int weaponIndex;
+    private long uid;
 
     public static LoginCreateCharacterAsk valueOf() {
         return new LoginCreateCharacterAsk();
     }
 
-    public static LoginCreateCharacterAsk valueOf(int playerId, int weaponIndex) {
+    public static LoginCreateCharacterAsk valueOf(int playerId, int weaponIndex, long uid) {
         var data = new LoginCreateCharacterAsk();
         data.setPlayerId(playerId);
         data.setWeaponIndex(weaponIndex);
+        data.setUid(uid);
         return data;
     }
 
@@ -45,5 +47,13 @@ public class LoginCreateCharacterAsk {
 
     public void setWeaponIndex(int weaponIndex) {
         this.weaponIndex = weaponIndex;
+    }
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
     }
 }

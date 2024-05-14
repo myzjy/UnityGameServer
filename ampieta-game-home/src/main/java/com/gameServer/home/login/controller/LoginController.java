@@ -50,7 +50,6 @@ public class LoginController {
     @Autowired
     private IGameMainService gameMainService;
 
-
     /**
      * @apiNote 登录调用
      */
@@ -154,19 +153,19 @@ public class LoginController {
         userLoginService.UpdatePlayerUserEntity(userCache);
         logger.info("UID:{}, 更新过后 PlayerUserEntity:{}", uid, JsonUtils.object2String(userCache));
         //不需要 创建 角色
-        var list = OrmContext.getQuery(CharacterPlayerUserEntity.class).queryAll();
+        var list = OrmContext.getQuery(CharacterPlayerUserEntity.class).eq("userUID", uid).queryAll();
         if (list.isEmpty()) {
             //当前 角色 配置
             var config = OrmContext.getAccessor().load(10001, CharacterConfigEntity.class);
             if (config != null) {
                 // 创建武器的 rpc
-                var sk = CreateWeaponDefaultAsk.valueOf(config.getCharacterDefaultWeaponId(), config.getWeaponType(), 10001, session.getUid());
+                var sk = CreateWeaponDefaultAsk.valueOf(config.getCharacterDefaultWeaponId(), config.getWeaponType(), 10001, uid);
                 var Data = NetContext.getConsumer().syncAsk(sk, CreateWeaponDefaultAnswer.class, null).packet();
-                NetContext.getConsumer().syncAsk(LoginCreateCharacterAsk.valueOf(10001, Data.getWeaponIndex()), LoginCreateCharacterAnswer.class, null).packet();
+                NetContext.getConsumer().syncAsk(LoginCreateCharacterAsk.valueOf(10001, Data.getWeaponIndex(), uid), LoginCreateCharacterAnswer.class, null).packet();
                 //返回数据
                 var entity = OrmContext.getAccessor().load(session.getUid(), GameMainTeamCharacterListEntity.class);
                 if (entity == null) {
-                    entity = gameMainService.CreateInitGameMainTeamCharacterListEntity(10001, session.getUid());
+                    entity = gameMainService.CreateInitGameMainTeamCharacterListEntity(10001, uid);
                     logger.info("插入 当前玩家[uid:{}], GameMainTeamCharacterListEntity:{}", session.getUid(), JsonUtils.object2String(entity));
                     OrmContext.getAccessor().insert(entity);
                 }

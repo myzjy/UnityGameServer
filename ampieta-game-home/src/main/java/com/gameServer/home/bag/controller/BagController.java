@@ -47,7 +47,7 @@ public class BagController {
     @PacketReceiver
     public void atAllBagItemRequest(Session session, AllBagItemRequest request, GatewayAttachment gatewayAttachment) {
         BagTypeEnum enumType = BagTypeEnum.GetType(request.getType());
-        logger.info("[type:{}],BagTypeEnum:{}", request.getType(), enumType);
+        logger.info("[type:{}],BagTypeEnum:{},玩家id：{}", request.getType(), enumType,session.getUid());
         List<WeaponPlayerUserDataStruct> bagUserItemEntityList = new ArrayList<>();
         //武器相关协议处理
         var findUidDataList = OrmContext.getQuery(WeaponUsePlayerDataEntity.class).eq("userUid", session.getUid());

@@ -97,7 +97,7 @@ public class WeaponsController {
 
     @PacketReceiver
     public void atCreateWeaponDefaultAsk(Session session, CreateWeaponDefaultAsk answer) {
-        logger.info("[当前服务器调用时间{}] [调用协议：atCreateWeaponDefaultAsk]", TimeUtils.timeToString(TimeUtils.now()));
+        logger.info("[当前服务器调用时间{}] [调用协议：atCreateWeaponDefaultAsk],UID:{}", TimeUtils.timeToString(TimeUtils.now()),answer.getUid());
         var config = OrmContext.getAccessor().load(answer.getPlayerId(), WeaponsDataConfigEntity.class);
         if (config == null) {
             // rpc 返回
@@ -125,7 +125,7 @@ public class WeaponsController {
         var breakthrough = config.getWeaponBreakthrough();
         var breakthroughs = breakthrough.get(0);
         entity.setNowMaxLv(breakthroughs.getWeaponLv());
-        entity.setUserUid(session.getUid());
+        entity.setUserUid(answer.getUid());
         entity.setWeaponName(config.getWeaponName());
         entity.setWeaponsSkill(config.getWeaponSkills());
         entity.setNowOrderNum(1);

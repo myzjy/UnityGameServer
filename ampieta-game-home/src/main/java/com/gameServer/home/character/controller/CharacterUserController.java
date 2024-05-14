@@ -148,7 +148,7 @@ public class CharacterUserController {
 
     @PacketReceiver
     public void atLoginCreateCharacterAsk(Session session, LoginCreateCharacterAsk loginCreateCharacterAsk) throws Exception {
-        logger.info("[当前服务器调用时间{}] [调用协议: 6003 ]", TimeUtils.simpleDateString());
+        logger.info("[当前服务器调用时间{}] [调用协议: 6003 ],uid", TimeUtils.simpleDateString());
         // 需要创建的角色 id
         var playerCreteId = loginCreateCharacterAsk.getPlayerId();
         //当前 角色 配置
@@ -160,7 +160,7 @@ public class CharacterUserController {
         // 创建角色
         var findId = new CharacterUserCompositeDataID();
         findId.setCharacterId(playerCreteId);
-        findId.setUid(session.getUid());
+        findId.setUid(loginCreateCharacterAsk.getUid());
         var characterUser = CharacterPlayerUserEntity.ValueOf();
         CharacterUserWeaponCompositeDataID _weaponCreateData =
                 characterService.createCharacterUserWeaponCompositeDataID(
@@ -178,7 +178,7 @@ public class CharacterUserController {
                         0,
                         config.getElementType(),
                         _weaponCreateData);
-        characterUser.setUserUID(session.getUid());
+        characterUser.setUserUID(loginCreateCharacterAsk.getUid());
         // 角色创建 1级
         characterUser.setNowLv(config.getLvInit());
         // 角色 初始
