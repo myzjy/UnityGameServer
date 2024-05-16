@@ -42,6 +42,7 @@ public class WeaponService implements IWeaponService {
         data.setWeaponName(item.getWeaponName());
         data.setWeaponType(findWeaponConfig.getWeaponType());
         data.setNowLv(item.getLv());
+        data.setWeaponId(findWeaponConfig.getId());
         data.setNowMaxLv(item.getNowMaxLv());
         data.setNowLvExp(item.getNowLvExp());
         data.setNowSkills(item.getWeaponsSkill());

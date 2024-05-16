@@ -13,6 +13,9 @@ import java.util.List;
  * @since 2024/1/11 23 43
  */
 public class WeaponsDataConfigEntity implements IEntity<Integer> {
+    /**
+     * 武器ID
+     */
     @Id
     protected int id;
     /**

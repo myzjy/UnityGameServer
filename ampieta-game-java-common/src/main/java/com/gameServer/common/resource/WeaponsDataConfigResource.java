@@ -11,6 +11,9 @@ import com.zfoo.storage.anno.Storage;
  */
 @Storage
 public class WeaponsDataConfigResource {
+    /**
+     * 武器ID
+     */
     @Id
     protected int id;
     /**

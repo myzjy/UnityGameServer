@@ -13,7 +13,7 @@ import java.util.Objects;
 @Protocol(id = 213)
 public class WeaponPlayerUserDataStruct implements IPacket {
     /**
-     * 武器id
+     * 在
      */
     private long id;
     /**
@@ -71,6 +71,10 @@ public class WeaponPlayerUserDataStruct implements IPacket {
      * 背包里面的武器icon
      */
     private String bagWeaponIcon;
+    /**
+     * 武器 id
+     */
+    private int weaponId;
 
     public long getId() {
         return id;
@@ -182,6 +186,14 @@ public class WeaponPlayerUserDataStruct implements IPacket {
 
     public void setBagWeaponIcon(String bagWeaponIcon) {
         this.bagWeaponIcon = bagWeaponIcon;
+    }
+
+    public int getWeaponId() {
+        return weaponId;
+    }
+
+    public void setWeaponId(int weaponId) {
+        this.weaponId = weaponId;
     }
 
     public static WeaponPlayerUserDataStruct ValueOf() {
