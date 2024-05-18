@@ -71,6 +71,18 @@ public class CharacterLevelConfigResource {
      * 当前等级突破之后的攻击属提升百分比
      */
     private int LevelAtkUpNum;
+    /**
+     * 当前等级每个等级攻击力提升数值
+     */
+    private float LevelAtkUpNumPro;
+    /**
+     * 当个突破限制等级每个等级防御力提升数值
+     */
+    private float LevelDefUpNum;
+    /**
+     * 当个突破限制等级每个等级生命值提升数值
+     */
+    private float LevelHpUpNum;
 
     public int getCId() {
         return CId;
@@ -130,5 +142,17 @@ public class CharacterLevelConfigResource {
 
     public int getLevelNum() {
         return LevelNum;
+    }
+
+    public float getLevelAtkUpNumPro() {
+        return LevelAtkUpNumPro;
+    }
+
+    public float getLevelDefUpNum() {
+        return LevelDefUpNum;
+    }
+
+    public float getLevelHpUpNum() {
+        return LevelHpUpNum;
     }
 }

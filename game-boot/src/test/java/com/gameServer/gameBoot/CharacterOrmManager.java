@@ -94,6 +94,9 @@ public class CharacterOrmManager {
             entity.setLevelNoAtkUp(data.getLevelNoAtkUp());
             entity.setLevelNoAtk(data.getLevelNoAtk());
             entity.setLevelAtkUpNum(data.getLevelAtkUpNum());
+            entity.setLevelAtkUpNumPro(String.format("%.2f", data.getLevelAtkUpNumPro()));
+            entity.setLevelDefUpNum(String.format("%.2f", data.getLevelDefUpNum()));
+            entity.setLevelHpUpNum(String.format("%.2f", data.getLevelHpUpNum()));
             if (isCreate) {
                 OrmContext.getAccessor().insert(entity);
             } else {

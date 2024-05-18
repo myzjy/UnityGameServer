@@ -68,6 +68,18 @@ public class CharacterLevelConfigEntity implements IEntity<Integer> {
      */
     private int LevelAtkUpNum;
     /**
+     * 当前等级每个等级攻击力提升数值
+     */
+    private String LevelAtkUpNumPro;
+    /**
+     * 当个突破限制等级每个等级防御力提升数值
+     */
+    private String LevelDefUpNum;
+    /**
+     * 当个突破限制等级每个等级生命值提升数值
+     */
+    private String LevelHpUpNum;
+    /**
      * 当前数据创建时间
      */
     private String createAt;
@@ -215,6 +227,30 @@ public class CharacterLevelConfigEntity implements IEntity<Integer> {
 
     public void setUpdateAt(String updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public String getLevelAtkUpNumPro() {
+        return LevelAtkUpNumPro;
+    }
+
+    public void setLevelAtkUpNumPro(String levelAtkUpNumPro) {
+        LevelAtkUpNumPro = levelAtkUpNumPro;
+    }
+
+    public String getLevelDefUpNum() {
+        return LevelDefUpNum;
+    }
+
+    public void setLevelDefUpNum(String levelDefUpNum) {
+        LevelDefUpNum = levelDefUpNum;
+    }
+
+    public String getLevelHpUpNum() {
+        return LevelHpUpNum;
+    }
+
+    public void setLevelHpUpNum(String levelHpUpNum) {
+        LevelHpUpNum = levelHpUpNum;
     }
 
     public static CharacterLevelConfigEntity valueOf() {

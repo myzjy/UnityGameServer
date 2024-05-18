@@ -87,6 +87,14 @@ public class CharacterConfigResource {
      * 角色元素伤害类型
      */
     private int elementType;
+    /**
+     *
+     */
+    private String bagSideIcon;
+    /**
+     *
+     */
+    private String bagClickIcon;
 
     public int getCId() {
         return CId;
