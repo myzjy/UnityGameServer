@@ -1,6 +1,7 @@
 package com.gameServer.home.serverConfig.controller;
 
 import com.gameServer.common.constant.I18nEnum;
+import com.gameServer.common.event.CharacterConfigLoginEvent;
 import com.gameServer.common.ormEntity.*;
 import com.gameServer.common.protocol.equipment.base.*;
 import com.gameServer.common.protocol.riqueza.RefreshingResourcesMainRequest;
@@ -13,6 +14,7 @@ import com.gameServer.common.resource.ItemBaseCsvResource;
 import com.gameServer.home.equipment.service.IEquipmentService;
 import com.gameServer.home.user.service.IUserLoginService;
 import com.gameServer.home.weapon.service.IWeaponService;
+import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.anno.PacketReceiver;
 import com.zfoo.net.packet.common.Error;
@@ -105,8 +107,10 @@ public class ServerBaseConfigController {
         response.setEquipmentGrowthViceConfigBaseDataList(equipmentGrowthViceConfigDataServerList);
         response.setEquipmentConfigBaseDataList(equipmentConfigDataServerList);
         response.setWeaponsConfigDataList(weaponConfigBaseDataServerList);
-        //logger.info("ServerConfigResponse:{}", JsonUtils.object2String(response));
         NetContext.getRouter().send(session, response, gatewayAttachment);
+        // 发送其他协议Response
+        // 发送 角色 config 协议
+        EventBus.post(CharacterConfigLoginEvent.valueOf(session,gatewayAttachment));
     }
 
     @PacketReceiver

@@ -171,4 +171,12 @@ public class CharacterConfigResource {
     public int getMaxReinforcementEqualOrder() {
         return maxReinforcementEqualOrder;
     }
+
+    public String getBagSideIcon() {
+        return bagSideIcon;
+    }
+
+    public String getBagClickIcon() {
+        return bagClickIcon;
+    }
 }

@@ -8,10 +8,13 @@ import com.gameServer.common.entity.CharacterPlayerUserEntity;
 import com.gameServer.common.entity.composite.CharacterUserCompositeDataID;
 import com.gameServer.common.entity.composite.CharacterUserWeaponCompositeDataID;
 import com.gameServer.common.entity.weapon.WeaponUsePlayerDataEntity;
+import com.gameServer.common.event.CharacterConfigLoginEvent;
 import com.gameServer.common.ormEntity.CharacterConfigEntity;
 import com.gameServer.common.protocol.character.*;
 import com.gameServer.home.character.service.ICharacterService;
 import com.gameServer.home.weapon.service.IWeaponService;
+import com.zfoo.event.anno.EventReceiver;
+import com.zfoo.event.manager.EventBus;
 import com.zfoo.net.NetContext;
 import com.zfoo.net.anno.PacketReceiver;
 import com.zfoo.net.packet.common.Error;
@@ -26,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 角色 协议回调
@@ -44,7 +48,7 @@ public class CharacterUserController {
 
     @PacketReceiver
     public void atAcquireCharacterRequest(Session session, AcquireCharacterRequest request, GatewayAttachment gatewayAttachment) {
-        logger.info("[当前服务器调用时间{}] [调用协议：{}]", TimeUtils.simpleDateString(), request.protocolId());
+        //logger.info("[当前服务器调用时间{}] [调用协议：{}]", TimeUtils.simpleDateString(), request.protocolId());
     }
 
     @PacketReceiver
@@ -189,5 +193,25 @@ public class CharacterUserController {
         OrmContext.getAccessor().insert(characterUser);
         var data = new LoginCreateCharacterAnswer();
         NetContext.getRouter().send(session, data);
+    }
+
+    @EventReceiver
+    public void onCharacterConfigLoginEvent(CharacterConfigLoginEvent loginEvent) {
+        logger.info("调用 onCharacterConfigLoginEvent");
+        var session = loginEvent.getSession();
+        var gateway = loginEvent.getAttachment();
+        List<CharacterConfigData> characterConfig = new ArrayList<>();
+        EventBus.asyncExecute(() -> {
+            //异步调用
+            var characterConfigEntityList = OrmContext.getQuery(CharacterConfigEntity.class).queryAll();
+            for (CharacterConfigEntity characterConfigEntity : characterConfigEntityList) {
+                var character = CharacterConfigData.valueOf(characterConfigEntity);
+                characterConfig.add(character);
+            }
+            var response = CharacterConfigResponse.valueOf();
+            response.setCharacterConfigDataList(characterConfig);
+            logger.info("CharacterConfigResponse:{}", JsonUtils.object2String(response));
+            NetContext.getRouter().send(session, response, gateway);
+        });
     }
 }

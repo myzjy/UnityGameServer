@@ -1,16 +1,19 @@
-package com.gameServer.common.ormEntity;
+package com.gameServer.common.protocol.character;
 
-import com.zfoo.orm.anno.Id;
-import com.zfoo.orm.model.IEntity;
+import com.gameServer.common.ormEntity.CharacterConfigEntity;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Protocol;
+import com.zfoo.storage.anno.Id;
 
 /**
  * @author zjy
  * @version 1.0
- * @since 2024/4/4 00 17
+ * @since 2024/5/19 12 55
  */
-public class CharacterConfigEntity implements IEntity<Integer> {
+@Protocol(id = 224)
+public class CharacterConfigData implements IPacket {
     @Id
-    private int id;
+    private int CId;
     /**
      * 品质
      */
@@ -56,17 +59,17 @@ public class CharacterConfigEntity implements IEntity<Integer> {
      */
     private int Level1CriticalHitDamage;
     /**
+     * 当前等级没有装备武器攻击属性
+     */
+    private int Level1NoWAtk;
+    /**
      * 角色默认武器id
      */
     private int characterDefaultWeaponId;
     /**
-     * 角色默认武器id
+     * 角色默认武器是什么类型
      */
     private int weaponType;
-    /**
-     * 当前等级没有装备武器攻击属性
-     */
-    private int Level1NoWAtk;
     /**
      * 当前强化的星阶 最大
      */
@@ -91,26 +94,13 @@ public class CharacterConfigEntity implements IEntity<Integer> {
      * 头像
      */
     private String bagClickIcon;
-    /**
-     * 当前数据创建时间
-     */
-    private String createAt;
-    /**
-     * 当前数据更新时间
-     */
-    private String updateAt;
 
-    @Override
-    public Integer id() {
-        return id;
+    public int getCId() {
+        return CId;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int CId) {
-        this.id = CId;
+    public void setCId(int CId) {
+        this.CId = CId;
     }
 
     public int getQuality() {
@@ -201,24 +191,12 @@ public class CharacterConfigEntity implements IEntity<Integer> {
         Level1CriticalHitDamage = level1CriticalHitDamage;
     }
 
-    public String getCreateAt() {
-        return createAt;
+    public int getLevel1NoWAtk() {
+        return Level1NoWAtk;
     }
 
-    public void setCreateAt(String createAt) {
-        this.createAt = createAt;
-    }
-
-    public String getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(String updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public static CharacterConfigEntity valueOf() {
-        return new CharacterConfigEntity();
+    public void setLevel1NoWAtk(int level1NoWAtk) {
+        Level1NoWAtk = level1NoWAtk;
     }
 
     public int getCharacterDefaultWeaponId() {
@@ -235,14 +213,6 @@ public class CharacterConfigEntity implements IEntity<Integer> {
 
     public void setWeaponType(int weaponType) {
         this.weaponType = weaponType;
-    }
-
-    public int getLevel1NoWAtk() {
-        return Level1NoWAtk;
-    }
-
-    public void setLevel1NoWAtk(int level1NoWAtk) {
-        Level1NoWAtk = level1NoWAtk;
     }
 
     public int getMaxReinforcementEqualOrder() {
@@ -291,5 +261,37 @@ public class CharacterConfigEntity implements IEntity<Integer> {
 
     public void setBagClickIcon(String bagClickIcon) {
         this.bagClickIcon = bagClickIcon;
+    }
+
+    public static CharacterConfigData valueOf() {
+        return new CharacterConfigData();
+    }
+
+
+    public static CharacterConfigData valueOf(CharacterConfigEntity entity) {
+        var data = valueOf();
+        data.setCId(entity.getId());
+        data.setQuality(entity.getQuality());
+        data.setCharacterId(entity.getCharacterId());
+        data.setCharacterName(entity.getCharacterName());
+        data.setCharacterRes(entity.getCharacterRes());
+        data.setLevel1Atk(entity.getLevel1Atk());
+        data.setLevel1ChargingEfficiencyOfElements(entity.getLevel1ChargingEfficiencyOfElements());
+        data.setLevel1CriticalHitChance(entity.getLevel1CriticalHitChance());
+        data.setLevel1CriticalHitDamage(entity.getLevel1CriticalHitDamage());
+        data.setLevel1Def(entity.getLevel1Def());
+        data.setLevel1HpValue(entity.getLevel1HpValue());
+        data.setLevel1ElementMastery(entity.getLevel1ElementMastery());
+        data.setCharacterDefaultWeaponId(entity.getCharacterDefaultWeaponId());
+        data.setWeaponType(entity.getWeaponType());
+        data.setLevel1NoWAtk(entity.getLevel1NoWAtk());
+        data.setMaxReinforcementEqualOrder(entity.getMaxReinforcementEqualOrder());
+        data.setLvInit(entity.getLvInit());
+        data.setInitLvMax(entity.getInitLvMax());
+        data.setElementType(entity.getElementType());
+        data.setBagClickIcon(entity.getBagClickIcon());
+        data.setBagSideIcon(entity.getBagSideIcon());
+
+        return data;
     }
 }

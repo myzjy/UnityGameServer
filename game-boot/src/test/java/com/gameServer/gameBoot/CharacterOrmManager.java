@@ -56,6 +56,8 @@ public class CharacterOrmManager {
             entity.setLvInit(data.getLvInit());
             entity.setInitLvMax(data.getInitLvMax());
             entity.setElementType(data.getElementType());
+            entity.setBagClickIcon(data.getBagClickIcon());
+            entity.setBagSideIcon(data.getBagSideIcon());
             if (isCreate) {
                 OrmContext.getAccessor().insert(entity);
             } else {

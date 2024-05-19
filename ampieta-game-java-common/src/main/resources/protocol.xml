@@ -72,6 +72,7 @@
         <protocol id="1051" location="com.gameServer.common.protocol.gameMain.OpenGameMainUIPanelRequest"/>
 
         <protocol id="1052" location="com.gameServer.common.protocol.resources.GameMainUserResourcesResponse"/>
+        <protocol id="1053" location="com.gameServer.common.protocol.character.CharacterConfigResponse"/>
 
 
         <protocol id="6000" location="com.gameServer.common.cache.weapon.CreateWeaponDefaultAsk"/>
@@ -127,6 +128,7 @@
         <protocol id="222" location="com.gameServer.common.protocol.playerUser.UserMsgInfoData"/>
 
         <protocol id="223" location="com.gameServer.common.protocol.physicalPower.PhysicalPowerInfoData"/>
+        <protocol id="224" location="com.gameServer.common.protocol.character.CharacterConfigData"/>
 
     </module>
 
