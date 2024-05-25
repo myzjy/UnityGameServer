@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.character;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -15,10 +16,12 @@ public class CharacterWeaponIDData implements IPacket {
     /**
      * 武器id
      */
+    @Note("武器id")
     private int weaponId;
     /**
      * 武器id --> 对应 WeaponUsePlayerDataEntity 中的 id
      */
+    @Note("武器id --> 对应 WeaponUsePlayerDataEntity 中的 id")
     private long weaponFindId;
 
     public int getWeaponId() {

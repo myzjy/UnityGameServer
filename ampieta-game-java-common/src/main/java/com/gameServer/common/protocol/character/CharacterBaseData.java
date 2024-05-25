@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.character;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 import java.util.List;
@@ -14,54 +15,67 @@ import java.util.List;
  */
 @Protocol(id = 216)
 public class CharacterBaseData implements IPacket {
+    @Note("这个角色index")
     private long id;
     /**
-     * 角色id 获取 数据库中得基础信息
+     * 角色id获取数据库中得基础信息
      */
+    @Note("角色id获取数据库中得基础信息")
     private long roleID;
     /**
      * 角色品质
      */
+    @Note("角色品质")
     private int quantity;
     /**
      * 等级
      */
+    @Note("等级")
     private int lv;
     /**
-     * 当前最大 的等级
+     * 当前最大的等级
      */
+    @Note("当前最大的等级")
     private int nowMaxLv;
     /**
      * 经验
      */
+    @Note("经验")
     private int nowExp;
     /**
      * 当前最大经验
      */
+    @Note("当前最大经验")
     private int nowMaxExp;
     /**
-     * 等级 星级数量
+     * 等级星级数量
      */
+    @Note("等级星级数量")
     private int lvQuantity;
     /**
-     * 等级 最大 星级数量
+     * 等级最大星级数量
      */
+    @Note("等级最大星级数量")
     private int maxLvQuantity;
     /**
-     * 装备圣遗物 id 数据库中的id
+     * 装备圣遗物id数据库中的id
      */
+    @Note("装备圣遗物id数据库中的id")
     private List<CharacterEquipmentIDData> equipmentList;
     /**
-     * 角色装备 武器
+     * 角色装备武器
      */
+    @Note("角色装备武器")
     private CharacterWeaponIDData characterWeaponIDData;
     /**
      * 角色元素伤害类型
      */
+    @Note("角色元素伤害类型")
     private int elementType;
     /**
-     * 元素 伤害 数据 百分比的
+     * 元素伤害数据百分比的
      */
+    @Note("元素伤害数据百分比的")
     private float elementNum;
 
     public static CharacterBaseData valueOf() {

@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.register;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -16,10 +17,12 @@ public class RegisterResponse implements IPacket {
     /**
      * 是否注册成功
      */
+    @Note("是否注册成功")
     private boolean mRegister;
     /**
      * 注册时，没有注册成功时，错误消息
      */
+    @Note("注册时，没有注册成功时，错误消息")
     private String error;
     
     public static RegisterResponse valueOf(boolean mRegister, String message) {

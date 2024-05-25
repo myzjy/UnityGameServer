@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.equipment.base;
 
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -14,30 +15,37 @@ public class EquipmentPrimaryConfigBaseData {
     /**
      * id
      */
+    @Note("id")
     private int id;
     /**
      * 圣遗物品阶
      */
+    @Note("圣遗物品阶")
     private int primaryQuality;
     /**
      * 圣遗物属性位置
      */
+    @Note("圣遗物属性位置")
     private int growthPosInt;
     /**
      * 属性位置所属名字
      */
+    @Note("属性位置所属名字")
     private String primaryGrowthName;
     /**
      * 1级初始属性
      */
+    @Note("1级初始属性")
     private String primaryGrowthInts;
     /**
      * 品阶的最大等级的最大属性值
      */
+    @Note("品阶的最大等级的最大属性值")
     private String primaryGrowthMaxInt;
     /**
      * 属性名字
      */
+    @Note("属性名字")
     private String growthPosName;
 
     public int getId() {

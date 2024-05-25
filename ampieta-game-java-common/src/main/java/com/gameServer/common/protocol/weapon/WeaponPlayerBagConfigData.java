@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.weapon;
 
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -12,11 +13,13 @@ import com.zfoo.protocol.anno.Protocol;
 @Protocol(id = 216)
 public class WeaponPlayerBagConfigData {
     /**
-     * 武器 id
+     * 武器id
      */
+    @Note("武器id")
     private int weaponId;
     /**
      * 武器品质
      */
+    @Note("武器品质")
     private int quality;
 }

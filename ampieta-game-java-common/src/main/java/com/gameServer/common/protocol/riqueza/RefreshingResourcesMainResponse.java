@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.riqueza;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -18,14 +19,17 @@ public class RefreshingResourcesMainResponse implements IPacket {
     /**
      * 金币
      */
+    @Note("金币")
     private long goldNum;
     /**
      * 付费钻石 一般充值才有，付费钻石转换成普通钻石
      */
+    @Note(" 付费钻石 一般充值才有，付费钻石转换成普通钻石")
     private long PremiumDiamondNum;
     /**
      * 普通钻石 由付费钻石转换成普通钻石，比例为 1:1
      */
+    @Note("普通钻石 由付费钻石转换成普通钻石，比例为 1:1")
     private long DiamondNum;
 
     public long getGoldNum() {

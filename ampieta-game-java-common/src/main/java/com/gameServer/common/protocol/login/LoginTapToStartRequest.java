@@ -2,6 +2,7 @@ package com.gameServer.common.protocol.login;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -15,11 +16,10 @@ import com.zfoo.protocol.anno.Protocol;
 public class LoginTapToStartRequest implements IPacket, IGatewayLoadBalancer {
 
 
+    @Note("1级的攻击属性")
     private String clientName;
     public static LoginTapToStartRequest valueOf() {
-        var Request = new LoginTapToStartRequest();
-
-        return Request;
+        return new LoginTapToStartRequest();
     }
 
     @Override

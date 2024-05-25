@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.Puzzle;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 import java.util.ArrayList;
@@ -16,7 +17,9 @@ public class PuzzleAllConfigResponse implements IPacket {
     /**
      * 地图配置
      */
+    @Note("地图配置")
     private List<Puzzle> puzzleConfigList = new ArrayList<>();
+    @Note("配置")
     private List<PuzzleChapter> puzzleChapterConfigList = new ArrayList<>();
 
     public static PuzzleAllConfigResponse ValueOf() {

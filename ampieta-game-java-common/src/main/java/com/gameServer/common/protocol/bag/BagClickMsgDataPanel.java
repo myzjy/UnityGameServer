@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.bag;
 
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -10,6 +11,7 @@ import com.zfoo.protocol.anno.Protocol;
  */
 @Protocol(id = 215)
 public class BagClickMsgDataPanel {
+    @Note("id")
     private int id;
 
     public int getId() {

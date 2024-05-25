@@ -3,6 +3,7 @@ package com.gameServer.common.protocol.login;
 import com.gameServer.common.util.TokenUtils;
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -34,6 +35,7 @@ public class GetPlayerInfoRequest implements IPacket, IGatewayLoadBalancer {
         this.token = token;
     }
 
+    @Note("返回加密的信息")
     private String token;
 
 }

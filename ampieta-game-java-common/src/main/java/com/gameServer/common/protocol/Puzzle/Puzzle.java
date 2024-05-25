@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.Puzzle;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 import java.util.ArrayList;
@@ -15,30 +16,37 @@ import java.util.List;
  */
 @Protocol(id = 202)
 public class Puzzle implements IPacket {
+    @Note("id")
     private int id;
     /**
      * 关卡名字
      */
+    @Note("关卡名字")
     private String puzzleName;
     /**
      * 关联到 上一个关卡id
      */
+    @Note("关联到 上一个关卡id")
     private int lastPuzzleID;
     /**
      * 下一个 关卡id 可用在 跳下一关
      */
+    @Note("下一个 关卡id 可用在 跳下一关")
     private int nextPuzzleID;
     /**
      * 关卡 奖励
      */
+    @Note("关卡 奖励")
     private List<PuzzleRewardsData> puzzleRewardsDatas;
     /**
      * Icon 图片资源名
      */
+    @Note(" Icon 图片资源名")
     private String icon;
     /**
      * 资源路径
      */
+    @Note("资源路径")
     private String resourcePath;
 
     public int getId() {

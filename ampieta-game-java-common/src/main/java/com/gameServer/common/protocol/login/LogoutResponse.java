@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.login;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -10,7 +11,9 @@ import com.zfoo.protocol.anno.Protocol;
  */
 @Protocol(id = 1003)
 public class LogoutResponse implements IPacket {
+    @Note("玩家id")
     private long uid;
+    @Note("sid")
     private long sid;
 
     public long getUid() {

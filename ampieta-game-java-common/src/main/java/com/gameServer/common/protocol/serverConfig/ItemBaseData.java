@@ -2,6 +2,7 @@ package com.gameServer.common.protocol.serverConfig;
 
 import com.gameServer.common.resource.ItemBaseCsvResource;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -15,21 +16,28 @@ public class ItemBaseData implements IPacket {
     /**
      * 道具id
      */
+    @Note("道具id")
     private int id;
     /**
      * 道具名字
      */
+    @Note("道具名字")
     private String name;
     /**
      * 道具Icon
      */
+    @Note("道具Icon")
     private String icon;
     /**
      * 最小数量
      */
+    @Note("最小数量")
     private int minNum;
+    @Note("最大数量")
     private int maxNum;
+    @Note("item类型")
     private int type;
+    @Note("介绍")
     private String des;
 
     public static ItemBaseData ValueOf(ItemBaseCsvResource csvResource) {

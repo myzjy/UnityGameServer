@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.equipment;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 import java.util.List;
@@ -15,8 +16,9 @@ import java.util.List;
 @Protocol(id = 1038)
 public class EquipmentAllDataResponse implements IPacket {
     /**
-     * 圣遗物 List
+     * 圣遗物List
      */
+    @Note("圣遗物List")
     private List<EquipmentData> equipmentDataList;
 
     public static EquipmentAllDataResponse ValueOf(List<EquipmentData> equipmentDataList) {

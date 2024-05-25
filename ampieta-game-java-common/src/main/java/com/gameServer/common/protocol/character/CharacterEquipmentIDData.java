@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.character;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -13,12 +14,14 @@ import com.zfoo.protocol.anno.Protocol;
 @Protocol(id = 218)
 public class CharacterEquipmentIDData implements IPacket {
     /**
-     * 装备 id
+     * 装备id
      */
+    @Note("装备id")
     private int equipmentId;
     /**
-     * 在 数据库中存放的id
+     * 在数据库中存放的id
      */
+    @Note("在数据库中存放的id")
     private int equipmentFindId;
 
     public int getEquipmentId() {

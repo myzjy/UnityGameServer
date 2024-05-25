@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.equipment;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 import java.util.List;
@@ -13,40 +14,49 @@ import java.util.List;
 @Protocol(id = 206)
 public class EquipmentData implements IPacket {
     /**
-     * 当前 圣遗物 装备 id
+     * 当前圣遗物装备id
      */
+    @Note("当前圣遗物装备id")
     private int equipmentId;
     /**
-     * 主属性 词条
+     * 主属性词条
      */
+    @Note("主属性词条")
     private EquipmentGlossaryData SubjectClauseEquipmentData;
     /**
-     * 副 词条 多个词条
+     * 副词条多个词条
      */
+    @Note("副词条多个词条")
     private List<EquipmentGlossaryData> AdverbStripEquipmentDataList;
     /**
      * 等级
      */
+    @Note("等级")
     private int equipmentLv;
     /**
      * 当前圣遗物最大等级
      */
+    @Note("当前圣遗物最大等级")
     private int equipmentMaxLv;
     /**
-     * 圣遗物 升级 的 当前经验
+     * 圣遗物升级的当前经验
      */
+    @Note("圣遗物升级的当前经验")
     private int nowEquipmentExp;
     /**
-     * 圣遗物 升级 的 最大经验
+     * 圣遗物升级的最大经验
      */
+    @Note("圣遗物升级的最大经验")
     private int maxEquipmentExp;
     /**
-     * list  包含 当前等级之前 圣遗物转换 经验值
+     * list包含当前等级之前圣遗物转换经验值
      */
+    @Note("list包含当前等级之前圣遗物转换经验值")
     private List<Integer> rankSwitchingExperienceList;
     /**
-     * 当前装备所属 角色 id
+     * 当前装备所属角色id
      */
+    @Note("当前装备所属角色id")
     private int useTheRole;
 
     public static EquipmentData ValueOf(EquipmentGlossaryData subjectClauseData,

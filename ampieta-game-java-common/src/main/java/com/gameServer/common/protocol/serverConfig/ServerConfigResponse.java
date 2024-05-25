@@ -3,6 +3,7 @@ package com.gameServer.common.protocol.serverConfig;
 import com.gameServer.common.protocol.equipment.base.*;
 import com.gameServer.common.protocol.weapon.WeaponsConfigData;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 import java.util.List;
@@ -20,34 +21,42 @@ public class ServerConfigResponse implements IPacket {
     /**
      * 背包基础类list
      */
+    @Note("背包基础类list")
     private List<ItemBaseData> bagItemEntityList;
     /**
-     * 装备基础相关 根据品节 卡等级 强化获取副属性条
+     * 装备基础相关根据品节卡等级强化获取副属性条
      */
+    @Note("装备基础相关根据品节卡等级强化获取副属性条")
     private List<EquipmentConfigBaseData> equipmentConfigBaseDataList;
     /**
      * 圣遗物基础配置相关
      */
+    @Note("圣遗物基础配置相关")
     private List<EquipmentBaseData> equipmentBaseDataList;
     /**
      * 圣遗物位置信息
      */
+    @Note("圣遗物位置信息")
     private List<EquipmentPrimaryConfigBaseData> equipmentPrimaryConfigBaseDataList;
     /**
      * 圣遗物介绍
      */
+    @Note("圣遗物介绍")
     private List<EquipmentDesBaseData> equipmentDesBaseDataList;
     /**
      * 圣遗物位置名字
      */
+    @Note("圣遗物位置名字")
     private List<EquipmentGrowthConfigBaseData> equipmentGrowthConfigBaseDataList;
     /**
      * 圣遗物副属性
      */
+    @Note("圣遗物副属性")
     private List<EquipmentGrowthViceConfigBaseData> equipmentGrowthViceConfigBaseDataList;
     /**
      * 武器配置
      */
+    @Note("武器配置")
     private List<WeaponsConfigData> weaponsConfigDataList;
 
     @Override

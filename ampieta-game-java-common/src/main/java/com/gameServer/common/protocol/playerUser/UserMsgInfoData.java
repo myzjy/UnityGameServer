@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.playerUser;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -10,34 +11,42 @@ import com.zfoo.protocol.anno.Protocol;
  */
 @Protocol(id = 222)
 public class UserMsgInfoData implements IPacket {
+    @Note("玩家名")
     private String userName;
     /**
      * 金币
      */
+    @Note("金币")
     private long goldNum;
     /**
      * 付费钻石 一般充值才有，付费钻石转换成普通钻石
      */
+    @Note("付费钻石 一般充值才有，付费钻石转换成普通钻石")
     private long premiumDiamondNum;
     /**
      * 普通钻石 由付费钻石转换成普通钻石，比例为 1:1
      */
+    @Note("普通钻石 由付费钻石转换成普通钻石，比例为 1:1")
     private long diamondNum;
     /**
-     * 登记
+     * 等级
      */
+    @Note("等级")
     private int lv;
     /**
      * 经验
      */
+    @Note("经验")
     private int exp;
     /**
      * 最大等级
      */
+    @Note("最大等级")
     private int maxLv;
     /**
      * 当前等级的最大经验值
      */
+    @Note("当前等级的最大经验值")
     private int maxExp;
 
     public String getUserName() {

@@ -2,6 +2,7 @@ package com.gameServer.common.protocol.physicalPower;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -16,6 +17,7 @@ public class PhysicalPowerSecondsRequest implements IPacket , IGatewayLoadBalanc
     /**
      * 当前时间
      */
+    @Note("当前时间")
     private long nowTime;
 
     public static PhysicalPowerSecondsRequest ValueOf() {

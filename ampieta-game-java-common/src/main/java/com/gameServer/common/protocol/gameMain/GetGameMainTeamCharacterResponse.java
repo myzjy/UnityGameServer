@@ -1,6 +1,8 @@
 package com.gameServer.common.protocol.gameMain;
 
 import com.gameServer.common.protocol.character.GameMainTeamCharacterIDData;
+import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 
 import java.util.List;
 
@@ -11,22 +13,27 @@ import java.util.List;
  * @version 1.0
  * @since 2024/4/11 18 43
  */
-public class GetGameMainTeamCharacterResponse {
+@Note("1级的攻击属性")
+public class GetGameMainTeamCharacterResponse implements IPacket {
     /**
-     * 当前出战的队伍 一般为4个人
+     * 当前出战的队伍一般为4个人
      */
+    @Note("当前出战的队伍一般为4个人")
     private List<GameMainTeamCharacterIDData> mainTeamFightCharacterIDData;
     /**
      * 第一支队伍
      */
+    @Note("第一支队伍")
     private List<GameMainTeamCharacterIDData> mainTeamCharacterIDData1;
     /**
      * 第二支队伍
      */
+    @Note("第二支队伍")
     private List<GameMainTeamCharacterIDData> mainTeamCharacterIDData2;
     /**
      * 第三支队伍
      */
+    @Note("第三支队伍")
     private List<GameMainTeamCharacterIDData> mainTeamCharacterIDData3;
 
     public static GetGameMainTeamCharacterResponse valueOf() {

@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.login;
 
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -9,6 +10,7 @@ import com.zfoo.protocol.anno.Protocol;
  */
 @Protocol(id = 1016)
 public class LoginByHttpTokenResponse {
+    @Note("信息")
     private String message;
 
     public static LoginByHttpTokenResponse valueOf(String message) {

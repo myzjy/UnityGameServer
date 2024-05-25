@@ -2,8 +2,8 @@ package com.gameServer.common.protocol.login;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
-
 
 /**
  * @author zjy
@@ -12,26 +12,26 @@ import com.zfoo.protocol.anno.Protocol;
  */
 @Protocol(id = 1000)
 public class LoginRequest implements IPacket, IGatewayLoadBalancer {
-
     /**
-     * @apiNote   account 账号
-     * */
+     * @apiNote account 账号
+     */
+    @Note("账号")
     private String account;
     /**
      * 密码
-     * */
+     */
+    @Note("密码")
     private String password;
 
     /**
-     * @apiNote 创建类
-     * @param account 账号
+     * @param account  账号
      * @param password 密码
-     * */
-
-    public static LoginRequest valueOf(String account,String password) {
+     * @apiNote 创建类
+     */
+    public static LoginRequest valueOf(String account, String password) {
         var Request = new LoginRequest();
-        Request.account=account;
-        Request.password =password;
+        Request.account = account;
+        Request.password = password;
         return Request;
     }
 

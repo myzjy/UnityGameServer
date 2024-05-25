@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.playerUser;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -13,34 +14,42 @@ public class PlayerSceneInfoData implements IPacket {
     /**
      * 场景id
      */
+    @Note("场景id")
     private int sceneId;
     /**
      * 场景名
      */
+    @Note("场景名")
     private String sceneStr;
     /**
      * 场景中 坐标 x
      */
+    @Note(" 场景中 坐标 x")
     private float scenePosX;
     /**
      * 场景中 坐标 y
      */
+    @Note("场景中 坐标 y")
     private float scenePosY;
     /**
      * 场景中 坐标 z
      */
+    @Note("场景中 坐标 z")
     private float scenePosZ;
     /**
      * 角色在场景中得旋转角度 x
      */
+    @Note("角色在场景中得旋转角度 x")
     private float sceneCharacterRotationX;
     /**
      * 角色在场景中得旋转角度 Y
      */
+    @Note("角色在场景中得旋转角度 Y")
     private float sceneCharacterRotationY;
     /**
      * 角色在场景中得旋转角度 z
      */
+    @Note("角色在场景中得旋转角度 z")
     private float sceneCharacterRotationZ;
 
     public int getSceneId() {

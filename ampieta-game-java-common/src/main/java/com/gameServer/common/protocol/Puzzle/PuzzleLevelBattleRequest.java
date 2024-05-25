@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.Puzzle;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -15,7 +16,9 @@ public class PuzzleLevelBattleRequest implements IPacket {
     /**
      * 关卡id
      */
+    @Note("关卡id")
     private int puzzleId;
+    @Note("玩家id")
     private long uid;
 
     public int getPuzzleId() {

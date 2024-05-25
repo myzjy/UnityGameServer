@@ -2,6 +2,7 @@ package com.gameServer.common.protocol.user;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -21,6 +22,7 @@ public class GameMainUserInfoToRequest implements IPacket, IGatewayLoadBalancer 
         this.uid = uid;
     }
 
+    @Note("玩家id")
     private long uid;
 
     @Override

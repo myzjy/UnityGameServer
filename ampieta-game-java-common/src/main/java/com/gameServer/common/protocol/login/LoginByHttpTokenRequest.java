@@ -14,10 +14,13 @@ public class LoginByHttpTokenRequest {
 
     @Note("0是默认登录，1为断线重连")
     private int reason;
+    @Note("配置版本号")
     private String confVersion;
+    @Note("资源版本号")
     private String resourceVersion;
     @Note("客户端版本号")
     private String appVersion;
+    @Note("ip")
     private String ip;
 
     public static LoginByHttpTokenRequest valueOf(String token) {

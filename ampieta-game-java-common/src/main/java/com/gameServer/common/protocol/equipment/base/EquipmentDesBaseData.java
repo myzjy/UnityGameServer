@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.equipment.base;
 
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -13,18 +14,22 @@ public class EquipmentDesBaseData {
     /**
      * 介绍id
      */
+    @Note("介绍id")
     private int desId;
     /**
-     * 这个介绍 圣遗物的名字
+     * 这个介绍圣遗物的名字
      */
+    @Note("这个介绍圣遗物的名字")
     private String name;
     /**
      * 介绍
      */
+    @Note("介绍")
     private String desStr;
     /**
      * 故事
      */
+    @Note("故事")
     private String storyDesStr;
 
     public int getDesId() {

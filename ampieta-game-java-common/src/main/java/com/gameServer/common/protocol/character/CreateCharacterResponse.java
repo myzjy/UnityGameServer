@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.character;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -13,8 +14,9 @@ import com.zfoo.protocol.anno.Protocol;
 @Protocol(id = 1048)
 public class CreateCharacterResponse implements IPacket {
     /**
-     * 角色 数据
+     * 角色数据
      */
+    @Note("角色数据")
     private CharacterBaseData characterBaseData;
 
     public CharacterBaseData getCharacterBaseData() {

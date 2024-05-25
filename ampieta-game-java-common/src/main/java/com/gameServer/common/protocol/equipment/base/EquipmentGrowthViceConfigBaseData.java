@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.equipment.base;
 
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 import java.util.List;
@@ -16,18 +17,22 @@ public class EquipmentGrowthViceConfigBaseData {
     /**
      * id
      */
+    @Note("id")
     private int viceId;
     /**
      * 详细属性
      */
+    @Note("详细属性")
     private String viceName;
     /**
      * 属性所属pos对应
      */
+    @Note("属性所属pos对应")
     private int posGrowthType;
     /**
      * 副属性的初始值数组
      */
+    @Note("副属性的初始值数组")
     private List<String> initNums;
 
     public static EquipmentGrowthViceConfigBaseData valueOf() {

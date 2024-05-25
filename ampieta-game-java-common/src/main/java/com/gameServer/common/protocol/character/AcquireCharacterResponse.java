@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.character;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 import java.util.ArrayList;
@@ -16,8 +17,9 @@ import java.util.List;
 @Protocol(id = 1046)
 public class AcquireCharacterResponse implements IPacket {
     /**
-     * 玩家的角色 所有数据 获取 list
+     * 玩家的角色所有数据获取list
      */
+    @Note("玩家的角色所有数据获取list")
     private List<CharacterBaseData> characterBaseDataList = new ArrayList<>();
 
     public List<CharacterBaseData> getCharacterBaseDataList() {

@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.equipment.base;
 
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -13,22 +14,27 @@ public class EquipmentBaseData {
     /**
      * 介绍id
      */
+    @Note("介绍id")
     private int desId;
     /**
      * 品阶
      */
+    @Note("品阶")
     private int quality;
     /**
      * 装备只能装配在什么位置
      */
+    @Note("装备只能装配在什么位置")
     private int equipmentPosType;
     /**
      * 圣遗物的名字
      */
+    @Note("圣遗物的名字")
     private String equipmentName;
     /**
      * 主属性集合可以获取那些属性
      */
+    @Note("主属性集合可以获取那些属性")
     private String mainAttributes;
     public int getDesId() {
         return desId;

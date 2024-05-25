@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.weapon;
 
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -12,10 +13,12 @@ public class WeaponPlayerBagDataRequest {
     /**
      * 服务器 id？
      */
+    @Note("服务器 id？")
     private long serverId;
     /**
      * 玩家id
      */
+    @Note("玩家id")
     private long uid;
 
     public long getServerId() {

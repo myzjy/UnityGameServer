@@ -2,6 +2,7 @@ package com.gameServer.common.protocol.physicalPower;
 
 import com.gameServer.common.entity.PhysicalPowerEntity;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -12,8 +13,9 @@ import com.zfoo.protocol.anno.Protocol;
 @Protocol(id = 1024)
 public class PhysicalPowerResponse implements IPacket {
     /**
-     * 数据 体力
+     * 数据体力
      */
+    @Note("数据体力")
     private PhysicalPowerInfoData physicalPowerInfoData;
 
     public static PhysicalPowerResponse valueOf(PhysicalPowerEntity entity) {

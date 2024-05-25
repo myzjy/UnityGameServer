@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.weapon;
 
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 import com.zfoo.storage.anno.Id;
 import com.zfoo.storage.anno.Index;
@@ -13,38 +14,47 @@ import com.zfoo.storage.anno.Index;
 public class WeaponsConfigData {
     @Id
     @Index
+    @Note("id")
     private int id;
     /**
      * 武器名字
      */
+    @Note("武器名字")
     private String weaponName;
     /**
      * 武器类型
      */
+    @Note("武器类型")
     private int weaponType;
     /**
      * 武器技能
      */
+    @Note("武器技能")
     private int weaponSkills;
     /**
      * 武器1级初始值
      */
+    @Note("武器1级初始值")
     private String weaponInitValue;
     /**
      * 武器强化1-20级每级强化数字
      */
+    @Note("武器强化1-20级每级强化数字")
     private String weaponInitProgress;
     /**
      * icon资源
      */
+    @Note(" icon资源")
     private String iconResource;
     /**
      * 武器升级到特定等21级会突破在之后会加数值
      */
+    @Note("武器升级到特定等21级会突破在之后会加数值")
     private String weaponBreakthrough;
     /**
      * 当前武器等级最大值
      */
+    @Note("当前武器等级最大值")
     private int maxLv;
 
     public int getId() {

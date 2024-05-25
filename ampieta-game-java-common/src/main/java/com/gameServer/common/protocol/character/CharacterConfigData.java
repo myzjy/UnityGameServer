@@ -2,6 +2,7 @@ package com.gameServer.common.protocol.character;
 
 import com.gameServer.common.ormEntity.CharacterConfigEntity;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 import com.zfoo.storage.anno.Id;
 
@@ -13,86 +14,107 @@ import com.zfoo.storage.anno.Id;
 @Protocol(id = 224)
 public class CharacterConfigData implements IPacket {
     @Id
+    @Note("这个角色ConfigIndex")
     private int CId;
     /**
      * 品质
      */
+    @Note("品质")
     private int quality;
     /**
      * 角色id
      */
+    @Note("角色id")
     private int characterId;
     /**
      * 角色名
      */
+    @Note("角色名")
     private String characterName;
     /**
      * 角色资源名
      */
+    @Note("角色资源名")
     private String characterRes;
     /**
      * 1级的攻击属性
      */
+    @Note("1级的攻击属性")
     private int Level1Atk;
     /**
      * 1级的暴击率
      */
+    @Note("1级的暴击率")
     private int Level1CriticalHitChance;
     /**
      * 1级的生命值
      */
+    @Note("1级的生命值")
     private int Level1HpValue;
     /**
      * 1级防御力
      */
+    @Note("1级防御力")
     private int Level1Def;
     /**
      * 1级元素精通
      */
+    @Note("1级元素精通")
     private int Level1ElementMastery;
     /**
      * 1级元素充能效率
      */
+    @Note("1级元素充能效率")
     private int Level1ChargingEfficiencyOfElements;
     /**
      * 1级暴击伤害
      */
+    @Note("1级暴击伤害")
     private int Level1CriticalHitDamage;
     /**
      * 当前等级没有装备武器攻击属性
      */
+    @Note("当前等级没有装备武器攻击属性")
     private int Level1NoWAtk;
     /**
      * 角色默认武器id
      */
+    @Note("角色默认武器id")
     private int characterDefaultWeaponId;
     /**
      * 角色默认武器是什么类型
      */
+    @Note("角色默认武器是什么类型")
     private int weaponType;
     /**
-     * 当前强化的星阶 最大
+     * 当前强化的星阶最大
      */
+    @Note("当前强化的星阶最大")
     private int maxReinforcementEqualOrder;
     /**
      * 角色创建出来的初始等级
      */
+    @Note("角色创建出来的初始等级")
     private int lvInit;
     /**
      * 角色创建出来初始最大等级
      */
+    @Note("角色创建出来初始最大等级")
     private int initLvMax;
     /**
      * 角色元素伤害类型
      */
+    @Note("角色元素伤害类型")
     private int elementType;
     /**
      * 缩小头像
      */
+    @Note("缩小头像")
     private String bagSideIcon;
     /**
      * 头像
      */
+    @Note("头像")
     private String bagClickIcon;
 
     public int getCId() {

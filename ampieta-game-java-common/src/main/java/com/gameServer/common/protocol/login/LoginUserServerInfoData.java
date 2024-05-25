@@ -3,6 +3,7 @@ package com.gameServer.common.protocol.login;
 import com.gameServer.common.protocol.playerUser.PlayerSceneInfoData;
 import com.gameServer.common.protocol.playerUser.UserMsgInfoData;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -15,10 +16,12 @@ public class LoginUserServerInfoData implements IPacket {
     /**
      * 角色在场景中得位置信息
      */
+    @Note("角色在场景中得位置信息")
     private PlayerSceneInfoData playerSceneInfoData;
     /**
      * 玩家得一些信息 金币 砖石 付费 砖石
      */
+    @Note("玩家得一些信息 金币 砖石 付费 砖石")
     private UserMsgInfoData userMsgInfoData;
 
     public PlayerSceneInfoData getPlayerSceneInfoData() {

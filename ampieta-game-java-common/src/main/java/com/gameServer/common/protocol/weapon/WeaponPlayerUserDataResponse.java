@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.weapon;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 import java.util.List;
@@ -15,12 +16,14 @@ import java.util.List;
 @Protocol(id = 1040)
 public class WeaponPlayerUserDataResponse implements IPacket {
     /**
-     * 当前玩家调用 查询到的是谁的 装备
+     * 当前玩家调用查询到的是谁的装备
      */
+    @Note("当前玩家调用查询到的是谁的装备")
     private long usePlayerUid;
     /**
      * 玩家武器数据
      */
+    @Note("玩家武器数据")
     private List<WeaponPlayerUserDataStruct> weaponPlayerUserDataStructList;
 
     public List<WeaponPlayerUserDataStruct> getWeaponPlayerUserDataStructList() {

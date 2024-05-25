@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.equipment.base;
 
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -10,14 +11,17 @@ import com.zfoo.protocol.anno.Protocol;
  */
 @Protocol(id = 211)
 public class EquipmentGrowthConfigBaseData {
+    @Note("id")
     private int id;
     /**
      * 圣遗物位置
      */
+    @Note("圣遗物位置")
     private int locationOfEquipmentType;
     /**
      * 位置的名字
      */
+    @Note("位置的名字")
     private String posName;
 
     public int getId() {

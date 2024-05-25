@@ -2,6 +2,7 @@ package com.gameServer.common.protocol.bag;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -15,21 +16,25 @@ import com.zfoo.protocol.anno.Protocol;
 public class UseTheBagItemEffectRequest implements IPacket, IGatewayLoadBalancer {
  
     /**
-     * 道具 id
+     * 道具id
      */
+    @Note("道具id")
     private int itemId;
 
     /**
      * 使用数量
      */
+    @Note("使用数量")
     private int userTheNum;
     /**
      * 道具类型
      */
+    @Note("道具类型")
     private int itemType;
     /**
-     * 使用 玩家id
+     * 使用玩家id
      */
+    @Note("使用玩家id")
     private long userID;
 
     @Override

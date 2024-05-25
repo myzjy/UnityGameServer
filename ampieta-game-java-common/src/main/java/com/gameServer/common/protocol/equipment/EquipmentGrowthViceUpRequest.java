@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.equipment;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 import java.util.List;
@@ -16,10 +17,12 @@ public class EquipmentGrowthViceUpRequest implements IPacket {
     /**
      * 当前强化的装备id
      */
+    @Note("当前强化的装备id")
     private int userEquipmentID;
     /**
-     * 当前强化装备的材料 喂食装备 使用exp
+     * 当前强化装备的材料喂食装备使用exp
      */
+    @Note("当前强化装备的材料喂食装备使用exp")
     private List<Integer> materialEquipmentList;
 
     public static EquipmentGrowthViceUpRequest ValueOf(int userEquipmentID, List<Integer> materialEquipmentList) {

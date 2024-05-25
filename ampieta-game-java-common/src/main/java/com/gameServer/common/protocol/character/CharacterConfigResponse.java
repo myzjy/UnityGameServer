@@ -3,6 +3,7 @@ package com.gameServer.common.protocol.character;
 import com.gameServer.common.ormEntity.CharacterConfigEntity;
 import com.gameServer.common.resource.CharacterConfigResource;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 import com.zfoo.storage.anno.Id;
 
@@ -20,6 +21,7 @@ public class CharacterConfigResponse implements IPacket {
     /**
      * 角色相关
      */
+    @Note("角色相关")
     private List<CharacterConfigData> characterConfigDataList;
 
     public List<CharacterConfigData> getCharacterConfigDataList() {

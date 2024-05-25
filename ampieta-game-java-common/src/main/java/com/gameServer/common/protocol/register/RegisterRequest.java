@@ -2,6 +2,7 @@ package com.gameServer.common.protocol.register;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -15,14 +16,17 @@ public class RegisterRequest implements IPacket, IGatewayLoadBalancer {
     /**
      * 账号
      */
+    @Note("账号")
     private String account;
     /**
      * 密码
      */
+    @Note("密码")
     private String password;
     /**
      * 确认密码
      */
+    @Note("确认密码")
     private String affirmPassword;
 
     public String getAccount() {

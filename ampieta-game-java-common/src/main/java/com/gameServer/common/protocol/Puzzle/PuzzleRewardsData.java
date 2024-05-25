@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.Puzzle;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -13,22 +14,27 @@ public class PuzzleRewardsData implements IPacket {
     /**
      * 奖励的物品id
      */
+    @Note("奖励的物品id")
     private int rewardId;
     /**
-     * 奖励 type
+     * 奖励type
      */
+    @Note("奖励type")
     private int rewardType;
     /**
      * 奖励icon
      */
+    @Note("奖励icon")
     private String rewardIcon;
     /**
-     * 奖励 资源
+     * 奖励资源
      */
+    @Note("奖励资源")
     private String rewardResource;
     /**
      * 奖励数量
      */
+    @Note("奖励数量")
     private  int num;
 
     public static PuzzleRewardsData ValueOf(int rewardId, int rewardType, String rewardIcon, String rewardResource, int num) {

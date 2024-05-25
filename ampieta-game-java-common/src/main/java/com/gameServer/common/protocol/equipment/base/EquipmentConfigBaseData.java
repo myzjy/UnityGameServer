@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.equipment.base;
 
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -13,22 +14,27 @@ public class EquipmentConfigBaseData {
     /**
      * quality
      */
+    @Note("quality")
     private int quality;
     /**
-     * 强化到这个等级 强化获取额外属性条或者升级附属性条
+     * 强化到这个等级强化获取额外属性条或者升级附属性条
      */
+    @Note("强化到这个等级强化获取额外属性条或者升级附属性条")
     private int lv1;
     /**
-     * 强化到这个等级 强化获取额外属性条或者升级附属性条
+     * 强化到这个等级强化获取额外属性条或者升级附属性条
      */
+    @Note("强化到这个等级强化获取额外属性条或者升级附属性条")
     private int lv2;
     /**
-     * 强化到这个等级 强化获取额外属性条或者升级附属性条
+     * 强化到这个等级强化获取额外属性条或者升级附属性条
      */
+    @Note("强化到这个等级强化获取额外属性条或者升级附属性条")
     private int lv3;
     /**
-     * 强化到这个等级 强化获取额外属性条或者升级附属性条
+     * 强化到这个等级强化获取额外属性条或者升级附属性条
      */
+    @Note("强化到这个等级强化获取额外属性条或者升级附属性条")
     private int lv4;
 
     public int getQuality() {

@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.user;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -17,30 +18,37 @@ public class GameMainUserInfoToResponse implements IPacket {
     /**
      * 当前经验
      */
+    @Note("当前经验")
     private int nowExp;
     /**
      * 最大经验
      */
+    @Note("最大经验")
     private int maxExp;
     /**
      * 当前等级
      */
+    @Note("当前等级")
     private int nowLv;
     /**
      * 最大等级
      */
+    @Note("最大等级")
     private int maxLv;
     /**
      * 金币
      */
+    @Note("金币")
     private long goldCoinNum;
     /**
      * 钻石
      */
+    @Note("钻石")
     private long diamondsNum;
     /**
      * 付费钻石
      */
+    @Note("付费钻石")
     private long paidDiamondsNum;
 
     public int getNowExp() {

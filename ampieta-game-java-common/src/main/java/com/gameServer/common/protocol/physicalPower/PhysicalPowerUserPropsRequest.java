@@ -2,6 +2,7 @@ package com.gameServer.common.protocol.physicalPower;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -15,8 +16,9 @@ import com.zfoo.protocol.anno.Protocol;
 public class PhysicalPowerUserPropsRequest implements IPacket, IGatewayLoadBalancer {
 
     /**
-     * 使用体力 会被扣除
+     * 使用体力会被扣除
      */
+    @Note("使用体力会被扣除")
     private int usePropNum;
 
     public static PhysicalPowerUserPropsRequest ValueOf() {

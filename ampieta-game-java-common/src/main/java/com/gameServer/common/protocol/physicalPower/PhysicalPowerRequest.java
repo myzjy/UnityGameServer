@@ -2,6 +2,7 @@ package com.gameServer.common.protocol.physicalPower;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -15,8 +16,9 @@ import com.zfoo.protocol.anno.Protocol;
 public class PhysicalPowerRequest implements IPacket, IGatewayLoadBalancer {
 
     /**
-     * 玩家uid 传过来，可能会用到
+     * 玩家uid传过来，可能会用到
      */
+    @Note("玩家uid传过来，可能会用到")
     private long uid;
 
     public static PhysicalPowerRequest ValueOf() {

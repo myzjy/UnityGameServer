@@ -2,6 +2,7 @@ package com.gameServer.common.protocol.bag;
 
 import com.gameServer.common.protocol.weapon.WeaponPlayerUserDataStruct;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 import java.util.ArrayList;
@@ -19,7 +20,9 @@ public class AllBagItemResponse implements IPacket {
     /**
      * 武器
      */
+    @Note("武器")
     private List<WeaponPlayerUserDataStruct> weaponUserList;
+    @Note("返回协议号")
     private String protocolStr;
     public static AllBagItemResponse ValueOf() {
         return new AllBagItemResponse();

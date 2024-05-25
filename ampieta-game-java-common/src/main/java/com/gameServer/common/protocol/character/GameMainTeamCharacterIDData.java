@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.character;
 
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -12,20 +13,24 @@ import com.zfoo.protocol.anno.Protocol;
 @Protocol(id = 219)
 public class GameMainTeamCharacterIDData {
     /**
-     * 角色 id
+     * 角色id
      */
+    @Note("角色id")
     private int characterId;
     /**
-     * 玩家 id
+     * 玩家id
      */
+    @Note("玩家id")
     private long uid;
     /**
-     * 这个角色在 队伍 的 第几位
+     * 这个角色在队伍的第几位
      */
+    @Note("这个角色在队伍的第几位")
     private int teamIndex;
     /**
-     * 这个角色是否出战 为主控
+     * 这个角色是否出战为主控
      */
+    @Note("这个角色是否出战为主控")
     private int fightTeamIndex;
 
     public int getCharacterId() {

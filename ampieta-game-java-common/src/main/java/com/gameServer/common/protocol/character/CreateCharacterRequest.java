@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.character;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -13,8 +14,9 @@ import com.zfoo.protocol.anno.Protocol;
 @Protocol(id = 1047)
 public class CreateCharacterRequest implements IPacket {
     /**
-     * 角色 id
+     * 角色id
      */
+    @Note("角色id")
     private int characterId;
 
     public int getCharacterId() {

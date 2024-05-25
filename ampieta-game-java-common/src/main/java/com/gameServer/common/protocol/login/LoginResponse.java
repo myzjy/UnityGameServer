@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.login;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -10,8 +11,11 @@ import com.zfoo.protocol.anno.Protocol;
  */
 @Protocol(id = 1001)
 public class LoginResponse implements IPacket {
+    @Note("玩家一些数据")
     private LoginUserServerInfoData loginUserServerInfoData;
+    @Note("玩家数据库加密token")
     private String token;
+    @Note("玩家id")
     private long uid;
 
     /**

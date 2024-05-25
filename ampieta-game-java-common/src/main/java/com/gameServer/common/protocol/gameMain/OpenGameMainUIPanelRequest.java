@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.gameMain;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -15,10 +16,12 @@ public class OpenGameMainUIPanelRequest implements IPacket {
     /**
      * 打开界面名
      */
+    @Note("打开界面名")
     private String panelPath;
     /**
-     * 内嵌协议号 希望 能返回那些协议
+     * 内嵌协议号希望能返回那些协议
      */
+    @Note("内嵌协议号希望能返回那些协议")
     private String protocolStr;
 
     public String getPanelPath() {

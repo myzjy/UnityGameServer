@@ -1,5 +1,6 @@
 package com.gameServer.common.protocol.bag;
 
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -11,20 +12,24 @@ import com.zfoo.protocol.anno.Protocol;
 @Protocol(id=1041)
 public class BagClickServerDataMsgRequest {
     /**
-     * 点击的 名字
+     * 点击的名字
      */
+    @Note("点击的名字")
     private String clickNameHandler;
     /**
-     * 根据 所选 type 返回协议不一样
+     * 根据所选type返回协议不一样
      */
+    @Note("根据所选type返回协议不一样")
     private int clickType;
     /**
      * 具体是那个玩家发送
      */
+    @Note("具体是那个玩家发送")
     private long masterUserId;
     /**
-     * 根据不同的武器 道具id 服务器处理不一样
+     * 根据不同的武器道具id服务器处理不一样
      */
+    @Note("根据不同的武器道具id服务器处理不一样")
     private int id;
 
     public String getClickNameHandler() {

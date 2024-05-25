@@ -3,6 +3,7 @@ package com.gameServer.common.protocol.bag;
 import com.gameServer.common.entity.BagUserItemEntity;
 import com.zfoo.net.packet.IPacket;
 import com.zfoo.orm.anno.Id;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -13,42 +14,51 @@ import com.zfoo.protocol.anno.Protocol;
 @Protocol(id = 200)
 public class BagUserItemData implements IPacket {
     /**
-     * 当前道具 在数据库中的唯一id
+     * 当前道具在数据库中的唯一id
      */
     @Id
+    @Note("当前道具在数据库中的唯一id")
     private long _id;
     /**
      * 这个背包道具所属者是谁？
      */
+    @Note("这个背包道具所属者是谁")
     private long masterUserId;
     /**
      * 这个道具如果是武器\圣遗物的话
      * 这个武器\圣遗物 被谁 穿戴
      */
+    @Note("这个道具如果是武器/圣遗物的话")
     private int userPlayerId;
     /**
      * 道具的数量
      */
+    @Note("道具的数量")
     private int nowItemNum;
     /**
      * 道具id
      */
+    @Note("道具id")
     private int itemId;
     /**
-     * 道具 装备 品质
+     * 道具装备品质
      */
+    @Note("道具装备品质")
     private int quality;
     /**
      * 资源路径
      */
+    @Note("资源路径")
     private String resourcePath;
     /**
      * Icon
      */
+    @Note("Icon")
     private String icon;
     /**
      * 是否为新
      */
+    @Note("是否为新")
     private boolean itemNew;
 
     public static BagUserItemData ValueOf(int _id, int itemId, long masterUserId, int nowItemNum, boolean isNew) {

@@ -2,6 +2,7 @@ package com.gameServer.common.protocol.Puzzle;
 
 import com.zfoo.net.core.gateway.IGatewayLoadBalancer;
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -17,6 +18,7 @@ public class PuzzleAllConfigRequest implements IPacket, IGatewayLoadBalancer {
      * 事件ID 也可以说是 活动id
      * 传递为0 的时候 就是代表主线地图之类关卡相关
      */
+    @Note("事件ID 也可以说是 活动id")
     private int eventId;
 
     @Override

@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.equipment;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -12,12 +13,14 @@ import com.zfoo.protocol.anno.Protocol;
 @Protocol(id = 205)
 public class EquipmentGlossaryData implements IPacket {
     /**
-     * 圣遗物 副属性 词条 type
+     * 圣遗物副属性词条type
      */
+    @Note("圣遗物副属性词条type")
     private int equipmentType;
     /**
      * 数值
      */
+    @Note("数值")
     private int equipmentNum;
 
     /**

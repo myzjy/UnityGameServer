@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.equipment;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -15,6 +16,7 @@ public class EquipmentAllDataRequest implements IPacket {
     /**
      * 请求的背包Type
      */
+    @Note("请求的背包Type")
     private int bagType;
 
     public int getBagType() {

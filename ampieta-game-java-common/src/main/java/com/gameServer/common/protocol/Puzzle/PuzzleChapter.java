@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.Puzzle;
 
 import com.zfoo.net.packet.IPacket;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 
 /**
@@ -15,18 +16,22 @@ public class PuzzleChapter implements IPacket {
     /**
      * id
      */
+    @Note("id")
     private int id;
     /**
      * 章节名
      */
+    @Note("章节名")
     private String chapterName;
     /**
      * 当前章节 最小 关卡id
      */
+    @Note("当前章节 最小 关卡id")
     private int minPuzzle;
     /**
      * 当前章节 最大 关卡id
      */
+    @Note("当前章节 最大 关卡id")
     private int maxPuzzle;
     /**
      * 当前 进行中的 关卡id
@@ -35,10 +40,12 @@ public class PuzzleChapter implements IPacket {
      * 是否有值，没有值就代表 没有进行
      * </p>
      */
+    @Note("当前 进行中的 关卡id")
     private int nowCarryOutPuzzleId;
     /**
      * 完成的最大关卡id 只有 关卡完成之后 才会更新
      */
+    @Note("完成的最大关卡id 只有 关卡完成之后 才会更新")
     private int doneMaxPuzzleId;
 
     public int getId() {

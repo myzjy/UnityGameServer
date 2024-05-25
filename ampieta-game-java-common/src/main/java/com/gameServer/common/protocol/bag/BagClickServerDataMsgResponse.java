@@ -1,6 +1,7 @@
 package com.gameServer.common.protocol.bag;
 
 import com.zfoo.orm.anno.Id;
+import com.zfoo.protocol.anno.Note;
 import com.zfoo.protocol.anno.Protocol;
 import com.zfoo.storage.anno.Index;
 
@@ -16,18 +17,22 @@ import com.zfoo.storage.anno.Index;
 public class BagClickServerDataMsgResponse {
     @Id
     @Index
+    @Note("id")
     private int id;
     /**
-     * 返回我调用到面板 类型
+     * 返回我调用到面板类型
      */
+    @Note("返回我调用到面板类型")
     private int msgPalType;
     /**
      * 消息所属者
      */
+    @Note("消息所属者")
     private long msgMasterId;
     /**
-     * 当前道具 武器 等所属玩家 id
+     * 当前道具武器等所属玩家 id
      */
+    @Note("当前道具武器等所属玩家")
     private long subMasterId;
 
     public int getId() {
